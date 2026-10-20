@@ -50,8 +50,8 @@ işaretlenir. Kaynaklar:
 - [x] Başlıktan otomatik slug: yeni içerikte başlık yazılırken güvenli slug üretilir (Türkçe karakter ve aksan normalizasyonu); kullanıcı slug'ı elle düzenlerse otomatik üretim durur; var olan slug `409 SLUG_TAKEN` ile korunur.
 - [x] Güvenilir istemci IP'si: Astro `clientAddress` iç `x-wuppy-client-ip` başlığına yazılır; `WUPPY_TRUSTED_PROXIES` (IP/CIDR) ile ters proxy zinciri güvenilir sayılır; doğrudan bağlantıda spoof edilebilir `X-Forwarded-For` kullanılmaz. Better Auth'un "client IP belirlenemedi" uyarısı kalktı ve hız sınırı istemci bazlı çalışıyor.
 - [x] 2FA politikası: parola girişi TOTP ister; magic link yeni hesap açamaz ve 2FA açık hesaplara gönderilmez; 2FA açılınca o hesabın bekleyen magic-link token'ları geçersiz olur; passkey ve bağlı OAuth sağlayıcıları güçlü alternatif olarak ek kod istemez.
-- [x] Medya detay popup'ı shadcn sekmelerine taşındı: Details / Edit image / Used in sekmeleri klavye ile gezilebilir, ziyaret edilen paneller durumunu korur, kullanım listesi yükleniyor durumu gösterir ve eksik boyutlar önizleme görselinden tamamlanır. Tek dosya yüklemesi tamamlanınca detay popup'ı otomatik açılır; çoklu yüklemede kullanıcı grid'de kalır.
-- [x] Upload to Library yenilendi: dosyalar seçilir seçilmez yükleniyor; satır bazında durum, boyut, ilerleme, retry ve kaldırma; footer'da tamamlanma sayacı ve "Retry failed"; Done ile tek başarılı dosyanın detayları açılıyor. E2E fixture artık starter'daki yerel yüklemeleri kopyalamıyor.
+- [x] Medya detay popup'ı shadcn sekmelerine taşındı: Details / Edit image / Used in sekmeleri klavye ile gezilebilir, ziyaret edilen paneller durumunu korur, kullanım listesi yükleniyor durumu gösterir ve eksik boyutlar önizleme görselinden tamamlanır. Yükleme sonrası otomatik açılmaz; kullanıcı kütüphanedeki dosyaya tıklayınca açılır.
+- [x] Upload to Library yenilendi: dosyalar seçilir seçilmez yükleniyor; satır bazında durum, boyut, ilerleme, retry ve kaldırma; footer'da tamamlanma sayacı ve "Retry failed"; Done yalnızca kuyruğu kapatıp kütüphaneyi yeniliyor. E2E fixture artık starter'daki yerel yüklemeleri kopyalamıyor.
 - [x] Admin select'leri Radix tabanlı shadcn Select'e geçirildi; boş değerler sentinel ile korunuyor, portal popup, klavye/ARIA desteği ve mevcut form çağrıları korunuyor.
 - [x] Liste sayfalarına ortak alt bilgi eklendi: "Showing x-y of n", per-page seçimi ve numaralı sayfalama. İçerik, medya, yorumlar, kullanıcılar, çöp, güvenlik günlüğü ve redirects tablolarında çalışıyor.
 - [x] Medya yüklemesi Git tarafından yok sayılan klasörlerde de tamamlanıyor; `public/uploads` veya `.wuppy/data` ignore edilse bile "Nothing to commit"/ignore kaynaklı Git hatası 500 üretmiyor. Starter'daki yerel yüklemeler kaynak deposuna commit edilmez, E2E fixture onları kopyalamaz.
@@ -261,7 +261,7 @@ işaretlenir. Kaynaklar:
 - [x] Odak noktası, en-boy oranı ön ayarları ve kırpılmış URL (`ar`/`fx`/`fy`)
 - [x] Dosya değiştirme: aynı türde yerinde değiştirir, eski sürüm Git geçmişinde
 - [x] Kullanım takibi: "nerelerde kullanılıyor" + silmeden önce uyarı (409 IN_USE, zorla silme onayı)
-- [x] Medya detay popup'ı: shadcn sekmeleri (Details / Edit image / Used in), klavye gezinmesi, panel durumu koruma, kullanım yükleniyor durumu ve tek yüklemede otomatik açılış
+- [x] Medya detay popup'ı: shadcn sekmeleri (Details / Edit image / Used in), klavye gezinmesi, panel durumu koruma ve kullanım yükleniyor durumu; yalnızca kullanıcı dosyaya tıklayınca açılır
 - [x] Görsel optimizasyonu: izinli genişliklerde WebP/AVIF/JPEG/PNG varyantları (`?w=&format=`, diskte önbellekli), LQIP + boyutlar yüklemede kaydedilir (`sharp`, isteğe bağlı bağımlılık); blurhash yok
 - [ ] Karanlık tema görsel varyantı (opsiyonel)
 - [ ] Depolama adaptörü seçimi: local / S3 (R2 opsiyonel adaptörde)

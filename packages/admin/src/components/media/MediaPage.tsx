@@ -468,12 +468,9 @@ export function MediaPage() {
 						setPending(null);
 						void loadMedia();
 					}}
-					onDone={(urls) => {
+					onDone={() => {
 						setPending(null);
-						void loadMedia().then(() => {
-							const [url] = urls;
-							if (urls.length === 1 && url) setSelected(url);
-						});
+						void loadMedia();
 					}}
 				/>
 			)}

@@ -170,7 +170,7 @@ describe("MediaPage uploads and bulk actions", () => {
 		expect(screen.queryByRole("dialog", { name: "Upload to Library" })).toBeNull();
 	});
 
-	it("opens the details dialog with tabs after a single upload", async () => {
+	it("closes after Done and only opens details when the user chooses the file", async () => {
 		const list: MediaItem[] = [];
 		setup(list);
 		render(<MediaPage />);
@@ -188,6 +188,8 @@ describe("MediaPage uploads and bulk actions", () => {
 		expect(within(upload).getByText("1 of 1 complete")).toBeInTheDocument();
 		await user.click(within(upload).getByRole("button", { name: "Done" }));
 
+		expect(screen.queryByRole("dialog", { name: "Media details" })).toBeNull();
+		await user.click(await screen.findByRole("button", { name: "Open Red barn" }));
 		const details = await screen.findByRole("dialog", { name: "Media details" });
 		expect(within(details).getByLabelText("Filename")).toHaveValue("Red barn");
 		expect(within(details).getByRole("tab", { name: "Used in" })).toBeInTheDocument();

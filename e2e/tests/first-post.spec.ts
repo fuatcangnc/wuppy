@@ -207,7 +207,8 @@ async function mediaJourney(page: Page) {
 	await expect(upload.getByText("Uploaded")).toBeVisible();
 	await upload.getByRole("button", { name: "Done" }).click();
 
-	// A single upload opens its details, so the tabs are immediately visible.
+	// Uploading only closes the queue; details open when the user chooses the file.
+	await page.getByRole("button", { name: "Open barn.png" }).click();
 	const details = page.getByRole("dialog", { name: "Media details" });
 	await expect(details).toBeVisible();
 	await expect(details.getByLabel("Filename")).toHaveValue("barn.png");
