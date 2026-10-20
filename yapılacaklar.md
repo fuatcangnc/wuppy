@@ -34,7 +34,7 @@ işaretlenir. Kaynaklar:
 | Admin modülleri | 🟡 Kısmi | Content Types, Byline Schema, Users+token, Plugins, Import, Settings, Themes |
 | SEO / i18n / önizleme | 🟡 Kısmi | SEO çekirdek + panel, i18n tablo, dev preview; visual editing yok |
 | Eklenti sistemi | 🟡 Kısmi | WASM sandbox + capability + yüklü/hata UI; SDK/registry/marketplace yok |
-| Test / kabul | 🟡 Kısmi | 12 E2E, modül smoke, 354 core + 140 admin + 37 auth testi; görsel regresyon/a11y yok |
+| Test / kabul | 🟡 Kısmi | 13 E2E, modül smoke, 355 core + 140 admin + 37 auth testi; görsel regresyon/a11y yok |
 | Yayın / operasyon | 🟡 Kısmi | Build + dist smoke; CI, Docker, npm publish, docs sitesi yok |
 
 **Öncelik dalgaları**
@@ -54,8 +54,9 @@ işaretlenir. Kaynaklar:
 - [x] Upload to Library yenilendi: dosyalar seçilir seçilmez yükleniyor; satır bazında durum, boyut, ilerleme, retry ve kaldırma; footer'da tamamlanma sayacı ve "Retry failed"; Done ile tek başarılı dosyanın detayları açılıyor. E2E fixture artık starter'daki yerel yüklemeleri kopyalamıyor.
 - [x] Admin select'leri Radix tabanlı shadcn Select'e geçirildi; boş değerler sentinel ile korunuyor, portal popup, klavye/ARIA desteği ve mevcut form çağrıları korunuyor.
 - [x] Liste sayfalarına ortak alt bilgi eklendi: "Showing x-y of n", per-page seçimi ve numaralı sayfalama. İçerik, medya, yorumlar, kullanıcılar, çöp, güvenlik günlüğü ve redirects tablolarında çalışıyor.
+- [x] Medya yüklemesi Git tarafından yok sayılan klasörlerde de tamamlanıyor; "Nothing to commit" veya ignore kaynaklı Git hatası artık yükleme sonrası 500 üretmiyor. Starter'daki yerel yüklemeler kaynak deposuna commit edilmez, E2E fixture onları kopyalamaz.
 
-**Doğrulama:** `pnpm check` → 354 core + 140 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 12/12.
+**Doğrulama:** `pnpm check` → 355 core + 140 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 13/13.
 
 **Sıradaki işler (öncelik sırasıyla)**
 
@@ -264,7 +265,7 @@ işaretlenir. Kaynaklar:
 - [ ] Karanlık tema görsel varyantı (opsiyonel)
 - [ ] Depolama adaptörü seçimi: local / S3 (R2 opsiyonel adaptörde)
 - [ ] İmzalı yükleme URL'i ve doğrudan S3 yükleme
-- [x] Upload to Library: sürükle-bırak, panodan yapıştırma, çoklu yükleme, anında başlatma, satır bazında ilerleme/iptal/retry, tamamlanma sayacı ve Done akışı
+- [x] Upload to Library: sürükle-bırak, panodan yapıştırma, çoklu yükleme, anında başlatma, satır bazında ilerleme/iptal/retry, tamamlanma sayacı ve Done akışı; Git ignore edilen yükleme klasörlerinde de 500 üretmez
 - [x] Yetim medya taraması ve temizleme aracı
 - [x] Tür sahteciliği, boyut, yol aşımı ve kullanım kontrolü testleri
 

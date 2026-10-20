@@ -17,6 +17,15 @@ test("sitemap lists published content, robots hides admin, redirects work", asyn
 	expect(redirect.headers()["location"]).toBe("/posts/hello");
 });
 
+test("the admin icon sprite revalidates and contains new icons", async ({ request }) => {
+	const res = await request.get("/icons.svg");
+	expect(res.status()).toBe(200);
+	expect(res.headers()["cache-control"]).toBe("no-cache");
+	expect(await res.text()).toContain('id="chevron-left"');
+	const cached = await request.get("/icons.svg", { headers: { "if-none-match": res.headers()["etag"]! } });
+	expect(cached.status()).toBe(304);
+});
+
 test("a published post renders with SEO tags and a missing one is a 404", async ({ page, request }) => {
 	await page.goto("/posts/hello");
 	await expect(page.getByRole("heading", { name: "Hello Wuppy" })).toBeVisible();
