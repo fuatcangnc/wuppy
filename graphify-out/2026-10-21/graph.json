@@ -5284,7 +5284,7 @@
       "file_type": "code",
       "norm_label": "bulkcommentstatus()",
       "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L55"
+      "source_location": "L52"
     },
     {
       "id": "packages_admin_src_stores_comments_deletecomment",
@@ -5296,7 +5296,7 @@
       "file_type": "code",
       "norm_label": "deletecomment()",
       "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L59"
+      "source_location": "L56"
     },
     {
       "id": "packages_admin_src_stores_comments_loadcomments",
@@ -5320,7 +5320,7 @@
       "file_type": "code",
       "norm_label": "replytocomment()",
       "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L63"
+      "source_location": "L60"
     },
     {
       "id": "packages_admin_src_stores_comments_setcommentstatus",
@@ -5332,7 +5332,7 @@
       "file_type": "code",
       "norm_label": "setcommentstatus()",
       "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L51"
+      "source_location": "L48"
     },
     {
       "id": "packages_admin_src_stores_content_deletetrash",
@@ -55626,7 +55626,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L56",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
@@ -55638,7 +55638,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L60",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -55650,7 +55650,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L64",
+      "source_location": "L61",
       "weight": 1.0
     },
     {
@@ -55662,7 +55662,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L52",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -119390,6 +119390,17 @@
     },
     {
       "source": "packages_admin_src_stores_comments",
+      "target": "packages_admin_src_stores_comments_setcommentstatus",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/admin/src/stores/comments.ts",
+      "source_location": "L48",
+      "weight": 1.0
+    },
+    {
+      "source": "packages_admin_src_stores_comments",
       "target": "packages_admin_src_stores_comments_comment",
       "relation": "contains",
       "_origin": "ast",
@@ -119401,24 +119412,13 @@
     },
     {
       "source": "packages_admin_src_stores_comments",
-      "target": "packages_admin_src_stores_comments_setcommentstatus",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L51",
-      "weight": 1.0
-    },
-    {
-      "source": "packages_admin_src_stores_comments",
       "target": "packages_admin_src_stores_comments_bulkcommentstatus",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L55",
+      "source_location": "L52",
       "weight": 1.0
     },
     {
@@ -119429,7 +119429,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L59",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -119440,7 +119440,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/stores/comments.ts",
-      "source_location": "L63",
+      "source_location": "L60",
       "weight": 1.0
     },
     {

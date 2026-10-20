@@ -42,9 +42,9 @@
     "semantic_hash": ""
   },
   "e2e/tests/public-site.spec.ts": {
-    "mtime": 1792527773.2263672,
-    "seen": 1792528743.5706782,
-    "ast_hash": "f779aceebfb5bc77d9ea621e961805cd",
+    "mtime": 1792532223.340707,
+    "seen": 1792532342.92451,
+    "ast_hash": "e1321f6e57f78177c571e92ba7018791",
     "semantic_hash": ""
   },
   "e2e/utils/start-fixture.mjs": {
@@ -732,9 +732,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/astro/routes/icons.ts": {
-    "mtime": 1792498187.7800941,
-    "seen": 1792522351.1193106,
-    "ast_hash": "db25d5d6691dd6405c46a90ac0648634",
+    "mtime": 1792532153.6446435,
+    "seen": 1792532342.92469,
+    "ast_hash": "bc1ea2d4172253370e75d7eea9f180e2",
     "semantic_hash": ""
   },
   "packages/core/src/astro/routes/robots.ts": {
@@ -954,9 +954,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/media/index.ts": {
-    "mtime": 1792527773.2495563,
-    "seen": 1792528743.570896,
-    "ast_hash": "8349a0b2f610f2805bb6f6908175eded",
+    "mtime": 1792531649.1377578,
+    "seen": 1792532342.924736,
+    "ast_hash": "4751ca60ce9be97e72cfc984990ea88e",
     "semantic_hash": ""
   },
   "packages/core/src/media/optimize.ts": {
@@ -1158,9 +1158,9 @@
     "semantic_hash": ""
   },
   "packages/core/tests/integration/media-api.test.ts": {
-    "mtime": 1792488058.5853052,
-    "seen": 1792522351.1193764,
-    "ast_hash": "3b64ef79a94f05e535e2e2a4b005289e",
+    "mtime": 1792531614.5881252,
+    "seen": 1792532342.9247766,
+    "ast_hash": "e7ab42a399a3baa388f8480ef5398857",
     "semantic_hash": ""
   },
   "packages/core/tests/integration/media-lifecycle.test.ts": {
@@ -2106,14 +2106,14 @@
     "semantic_hash": ""
   },
   "yap\u0131lacaklar.md": {
-    "mtime": 1792531213.3516808,
-    "seen": 1792531374.048514,
-    "ast_hash": "beb0158e8724a15198a13f4841e60aab",
+    "mtime": 1792532228.170882,
+    "seen": 1792532342.9249866,
+    "ast_hash": "d1d5d1b0397845c7170bab7a2c3003b4",
     "semantic_hash": ""
   },
   "packages/admin/public/icons.svg": {
-    "mtime": 1792531332.0508206,
-    "seen": 1792531374.0485148,
+    "mtime": 1792532294.6237717,
+    "seen": 1792532342.9249876,
     "ast_hash": "501d2ee7d0577f6bb4c08ce192f66227",
     "semantic_hash": ""
   },
@@ -2439,6 +2439,60 @@
     "mtime": 1792530654.720838,
     "seen": 1792531374.0481832,
     "ast_hash": "efa803e2c04b8944a37d1eea2f1a73ee",
+    "semantic_hash": ""
+  },
+  "templates/starter/public/uploads/2026/10/18e7aa22-042d-4ac8-a5c2-6bde26f4b576.png": {
+    "mtime": 1792529375.895644,
+    "seen": 1792532342.9249892,
+    "ast_hash": "ae7922e84f08ecdeebb1b367f3725349",
+    "semantic_hash": ""
+  },
+  "templates/starter/public/uploads/2026/10/3a156082-345f-4b76-91a6-876c62317263.png": {
+    "mtime": 1792531810.5683205,
+    "seen": 1792532342.9249907,
+    "ast_hash": "2987288432a33573a5d235e9925c4972",
+    "semantic_hash": ""
+  },
+  "templates/starter/public/uploads/2026/10/3dab9976-69b9-4a24-890f-99d3e6678d72.png": {
+    "mtime": 1792530061.2481337,
+    "seen": 1792532342.924992,
+    "ast_hash": "b9160d8bf005ee9b5312e5c3c93f5d46",
+    "semantic_hash": ""
+  },
+  "templates/starter/public/uploads/2026/10/726ac49a-289d-4622-82d0-2050d72b79c3.png": {
+    "mtime": 1792530128.8754072,
+    "seen": 1792532342.924993,
+    "ast_hash": "2987288432a33573a5d235e9925c4972",
+    "semantic_hash": ""
+  },
+  "templates/starter/public/uploads/2026/10/7c9f0a14-5be5-4182-968c-0596be3e69be.png": {
+    "mtime": 1792530108.6443284,
+    "seen": 1792532342.924994,
+    "ast_hash": "2987288432a33573a5d235e9925c4972",
+    "semantic_hash": ""
+  },
+  "templates/starter/public/uploads/2026/10/b33a32ff-6183-4ee8-97e1-3e8d0a71d08b.png": {
+    "mtime": 1792530101.803301,
+    "seen": 1792532342.9249952,
+    "ast_hash": "5afc2cb87570bdbbeeeb58d50f6871f2",
+    "semantic_hash": ""
+  },
+  "templates/starter/public/uploads/2026/10/d8cd15da-e03b-44f2-982a-f0436dcd0b5c.png": {
+    "mtime": 1792529350.1992798,
+    "seen": 1792532342.9249961,
+    "ast_hash": "c3b0304e56c6dc88ade549cf83d74100",
+    "semantic_hash": ""
+  },
+  "templates/starter/public/uploads/2026/10/fcdc8c1e-9ffb-4e80-9782-0817d97280c7.png": {
+    "mtime": 1792530102.5993044,
+    "seen": 1792532342.924997,
+    "ast_hash": "5afc2cb87570bdbbeeeb58d50f6871f2",
+    "semantic_hash": ""
+  },
+  "templates/starter/public/uploads/2026/10/ffe59e6c-d72b-4e2f-b51f-30e92f277d2e.png": {
+    "mtime": 1792530096.7119632,
+    "seen": 1792532342.924998,
+    "ast_hash": "5afc2cb87570bdbbeeeb58d50f6871f2",
     "semantic_hash": ""
   }
 }
