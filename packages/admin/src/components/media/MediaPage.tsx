@@ -36,6 +36,7 @@ export function MediaPage() {
 	const [query, setQuery] = useState("");
 	const [selected, setSelected] = useState<string | null>(null);
 	const [usage, setUsage] = useState<Usage[]>([]);
+	const [usageLoading, setUsageLoading] = useState(false);
 	const [newFolder, setNewFolder] = useState("");
 	const [type, setType] = useState("");
 	const [from, setFrom] = useState("");
@@ -55,11 +56,28 @@ export function MediaPage() {
 	useEffect(() => void loadMedia(), []);
 	const current = items.find((m) => m.url === selected) ?? null;
 	useEffect(() => {
-		if (!current) return;
+		if (!current) {
+			setUsage([]);
+			setUsageLoading(false);
+			return;
+		}
+		let cancelled = false;
+		setUsage([]);
+		setUsageLoading(true);
 		void apiData<Usage[]>("GET", `/api/media/usage?url=${encodeURIComponent(current.url)}`)
-			.then(setUsage)
-			.catch(() => setUsage([]));
-	}, [current]);
+			.then((next) => {
+				if (!cancelled) setUsage(next);
+			})
+			.catch(() => {
+				if (!cancelled) setUsage([]);
+			})
+			.finally(() => {
+				if (!cancelled) setUsageLoading(false);
+			});
+		return () => {
+			cancelled = true;
+		};
+	}, [current?.url]);
 
 	const filtered = useMemo(
 		() => filterMedia(items, { folder, query, type, from, to }),
@@ -408,6 +426,7 @@ export function MediaPage() {
 					item={current}
 					folders={folders}
 					usage={usage}
+					usageLoading={usageLoading}
 					onClose={() => setSelected(null)}
 					onSelect={setSelected}
 				/>

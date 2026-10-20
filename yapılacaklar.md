@@ -29,12 +29,12 @@ işaretlenir. Kaynaklar:
 | E-posta | 🟡 Kısmi | Console + Resend, magic-link template, parola sıfırlama ve davet e-postası; production domain/doğrulama sonra |
 | Admin kabuğu | ✅ Çalışıyor | Sidebar grupları, topbar, tema, arama, tüm modül rotaları |
 | İçerik yönetimi | 🟡 Kısmi | Liste/arama/durum filtresi/otomatik slug, editör/SEO/zamanlama, çöp + geri yükleme, toplu publish/delete, Git revizyon paneli; cursor sayfalama, autosave ve çakışma çözümü yok |
-| Medya | 🟡 Kısmi | Kütüphane, klasör, alt metin, silme; kırpma/odak/kullanım/optimizasyon yok |
+| Medya | 🟡 Kısmi | Kütüphane, klasör, alt metin, kırpma/odak, kullanım takibi, görsel optimizasyonu; S3 adaptörü, toplu düzenleme ve blurhash yok |
 | Manage modülleri | 🟡 Kısmi | Comments, Menus, Redirects, Widgets, Sections, Taxonomies, Bylines CRUD |
 | Admin modülleri | 🟡 Kısmi | Content Types, Byline Schema, Users+token, Plugins, Import, Settings, Themes |
 | SEO / i18n / önizleme | 🟡 Kısmi | SEO çekirdek + panel, i18n tablo, dev preview; visual editing yok |
 | Eklenti sistemi | 🟡 Kısmi | WASM sandbox + capability + yüklü/hata UI; SDK/registry/marketplace yok |
-| Test / kabul | 🟡 Kısmi | 10 E2E, modül smoke, 151 core + 59 admin + 37 auth testi; görsel regresyon/a11y yok |
+| Test / kabul | 🟡 Kısmi | 12 E2E, modül smoke, 354 core + 138 admin + 37 auth testi; görsel regresyon/a11y yok |
 | Yayın / operasyon | 🟡 Kısmi | Build + dist smoke; CI, Docker, npm publish, docs sitesi yok |
 
 **Öncelik dalgaları**
@@ -50,8 +50,9 @@ işaretlenir. Kaynaklar:
 - [x] Başlıktan otomatik slug: yeni içerikte başlık yazılırken güvenli slug üretilir (Türkçe karakter ve aksan normalizasyonu); kullanıcı slug'ı elle düzenlerse otomatik üretim durur; var olan slug `409 SLUG_TAKEN` ile korunur.
 - [x] Güvenilir istemci IP'si: Astro `clientAddress` iç `x-wuppy-client-ip` başlığına yazılır; `WUPPY_TRUSTED_PROXIES` (IP/CIDR) ile ters proxy zinciri güvenilir sayılır; doğrudan bağlantıda spoof edilebilir `X-Forwarded-For` kullanılmaz. Better Auth'un "client IP belirlenemedi" uyarısı kalktı ve hız sınırı istemci bazlı çalışıyor.
 - [x] 2FA politikası: parola girişi TOTP ister; magic link yeni hesap açamaz ve 2FA açık hesaplara gönderilmez; 2FA açılınca o hesabın bekleyen magic-link token'ları geçersiz olur; passkey ve bağlı OAuth sağlayıcıları güçlü alternatif olarak ek kod istemez.
+- [x] Medya detay popup'ı shadcn sekmelerine taşındı: Details / Edit image / Used in sekmeleri klavye ile gezilebilir, ziyaret edilen paneller durumunu korur, kullanım listesi yükleniyor durumu gösterir ve eksik boyutlar önizleme görselinden tamamlanır.
 
-**Doğrulama:** `pnpm check` → 151 core + 59 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 10/10.
+**Doğrulama:** `pnpm check` → 354 core + 138 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 12/12.
 
 **Sıradaki işler (öncelik sırasıyla)**
 
@@ -253,6 +254,7 @@ işaretlenir. Kaynaklar:
 - [x] Odak noktası, en-boy oranı ön ayarları ve kırpılmış URL (`ar`/`fx`/`fy`)
 - [x] Dosya değiştirme: aynı türde yerinde değiştirir, eski sürüm Git geçmişinde
 - [x] Kullanım takibi: "nerelerde kullanılıyor" + silmeden önce uyarı (409 IN_USE, zorla silme onayı)
+- [x] Medya detay popup'ı: shadcn sekmeleri (Details / Edit image / Used in), klavye gezinmesi, panel durumu koruma ve kullanım yükleniyor durumu
 - [x] Görsel optimizasyonu: izinli genişliklerde WebP/AVIF/JPEG/PNG varyantları (`?w=&format=`, diskte önbellekli), LQIP + boyutlar yüklemede kaydedilir (`sharp`, isteğe bağlı bağımlılık); blurhash yok
 - [ ] Karanlık tema görsel varyantı (opsiyonel)
 - [ ] Depolama adaptörü seçimi: local / S3 (R2 opsiyonel adaptörde)

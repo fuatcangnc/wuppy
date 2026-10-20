@@ -21,7 +21,18 @@ import {
 } from "../../lib/crop-image.ts";
 import { uploadWithProgress } from "../../lib/upload.ts";
 import { deleteMedia, loadMedia, replaceMedia, updateMedia, type MediaItem } from "../../stores/content.ts";
-import { Button, Dialog, Input, Select, Tabs, Textarea, toast } from "../../ui/index.tsx";
+import {
+	Button,
+	Dialog,
+	Input,
+	Select,
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+	Textarea,
+	toast,
+} from "../../ui/index.tsx";
 import { FocalPointEditor, FocalPreviews, type Focal } from "./FocalPoint.tsx";
 import { ImageCropper } from "./ImageCropper.tsx";
 
@@ -61,17 +72,24 @@ export function MediaDetailDialog({
 	item,
 	folders,
 	usage,
+	usageLoading = false,
 	onClose,
 	onSelect,
 }: {
 	item: MediaItem;
 	folders: string[];
 	usage: Usage[];
+	usageLoading?: boolean;
 	onClose: () => void;
 	/** Called with the URL of a new file (a cropped copy) so the page can open it. */
 	onSelect: (url: string) => void;
 }) {
 	const [tab, setTab] = useState<Tab>("details");
+	const [visited, setVisited] = useState<Set<Tab>>(() => new Set(["details"]));
+	const selectTab = (next: Tab) => {
+		setTab(next);
+		setVisited((current) => (current.has(next) ? current : new Set(current).add(next)));
+	};
 	const [draft, setDraft] = useState({
 		title: item.title ?? item.name.split("/").pop() ?? "",
 		folder: item.folder ?? "",
@@ -91,6 +109,7 @@ export function MediaDetailDialog({
 	const [pixels, setPixels] = useState<PixelCrop | null>(null);
 	const [source, setSource] = useState<{ width: number; height: number } | null>(null);
 	const [image, setImage] = useState<HTMLImageElement | null>(null);
+	const [measured, setMeasured] = useState<{ width: number; height: number } | null>(null);
 	const [busy, setBusy] = useState(false);
 	const original: Focal = { x: (item.focalX ?? 50) / 100, y: (item.focalY ?? 50) / 100 };
 	const [focal, setFocal] = useState<Focal>(original);
@@ -252,34 +271,37 @@ export function MediaDetailDialog({
 			onClose={onClose}
 			footer={footer}
 		>
-			<div className="border-b border-border px-8 py-4">
-				<Tabs
-					stretch
-					className="max-w-lg"
-					value={tab}
-					onChange={setTab}
-					items={[
-						{ value: "details", label: "Details" },
-						{ value: "edit", label: "Edit image" },
-						{ value: "used", label: "Used in" },
-					]}
-				/>
-			</div>
+			<Tabs value={tab} onChange={selectTab}>
+				<div className="border-b border-border px-8 py-4">
+					<TabsList stretch className="max-w-lg">
+						<TabsTrigger value="details">Details</TabsTrigger>
+						<TabsTrigger value="edit">Edit image</TabsTrigger>
+						<TabsTrigger value="used">Used in</TabsTrigger>
+					</TabsList>
+				</div>
 
-			{tab === "details" && (
-				<div className="grid md:grid-cols-2">
+				<TabsContent value="details" forceMount className="grid md:grid-cols-2">
 					<div className="grid content-start gap-4 border-border p-6 md:border-r">
 						<img
 							src={src}
 							alt={item.alt ?? ""}
+							data-testid="media-preview"
 							className="wuppy-checkerboard max-h-80 w-full rounded-xl object-contain ring-1 ring-border"
+							onLoad={(e) => {
+								const { naturalWidth: width, naturalHeight: height } = e.currentTarget;
+								if (width > 0 && height > 0) setMeasured({ width, height });
+							}}
 						/>
 						<dl className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
 							<Meta icon={<HardDrive size={14} />} label="Size">
 								{sizeLabel(item.size)}
 							</Meta>
 							<Meta icon={<Ruler size={14} />} label="Dimensions">
-								{item.width && item.height ? `${item.width} × ${item.height}` : "—"}
+								{item.width && item.height
+									? `${item.width} × ${item.height}`
+									: measured
+										? `${measured.width} × ${measured.height}`
+										: "—"}
 							</Meta>
 							<Meta icon={<Calendar size={14} />} label="Uploaded">
 								{new Date(item.modified).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}
@@ -343,11 +365,9 @@ export function MediaDetailDialog({
 							onChange={(e) => setDraft({ ...draft, caption: e.target.value })}
 						/>
 					</div>
-				</div>
-			)}
+				</TabsContent>
 
-			{tab === "edit" && (
-				<div className="grid md:grid-cols-2">
+				<TabsContent value="edit" forceMount={visited.has("edit")} className="grid md:grid-cols-2">
 					<div className="border-border p-6 md:border-r">
 						{mode === "crop" && canCrop ? (
 							<ImageCropper
@@ -421,16 +441,18 @@ export function MediaDetailDialog({
 							</>
 						)}
 					</div>
-				</div>
-			)}
+				</TabsContent>
 
-			{tab === "used" && (
-				<div className="grid max-w-xl gap-3 p-6">
+				<TabsContent value="used" forceMount={visited.has("used")} className="grid max-w-xl gap-3 p-6">
 					<div>
 						<h3 className="font-semibold">Used in</h3>
 						<p className="text-sm text-muted-foreground">See where this file is used.</p>
 					</div>
-					{usage.length === 0 ? (
+					{usageLoading ? (
+						<p role="status" className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+							Checking where this file is used…
+						</p>
+					) : usage.length === 0 ? (
 						<p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
 							Not referenced by any entry.
 						</p>
@@ -454,8 +476,8 @@ export function MediaDetailDialog({
 							</a>
 						))
 					)}
-				</div>
-			)}
+				</TabsContent>
+			</Tabs>
 		</Dialog>
 	);
 }

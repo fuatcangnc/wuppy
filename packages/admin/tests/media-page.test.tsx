@@ -105,11 +105,52 @@ describe("MediaPage", () => {
 		expect(screen.getByTestId("image-cropper")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Replace original" })).toBeDisabled(); // no area chosen yet
 		await user.click(screen.getByRole("tab", { name: "Focal point" }));
-		fireEvent.load(screen.getByRole("dialog").querySelector("img")!); // jsdom never loads images
+		fireEvent.load(screen.getByTestId("focal-image")); // jsdom never loads images
 		expect(await screen.findByRole("button", { name: /Focal point\. Use arrow keys/ })).toBeInTheDocument();
 		expect(screen.getByTestId("focal-previews")).toBeInTheDocument();
 
 		await user.click(screen.getByRole("tab", { name: /Used in/ }));
 		expect(screen.getByRole("link", { name: /Hello/ })).toHaveAttribute("href", "/admin/e/posts/hello");
+	});
+
+	it("switches details tabs with the keyboard and keeps panels accessible", async () => {
+		server({
+			"GET /api/media/folders": json([]),
+			"GET /api/media/usage": json([]),
+			"GET /api/media": json([item]),
+		});
+		render(<MediaPage />);
+		const user = userEvent.setup();
+		await user.click(await screen.findByRole("button", { name: "Open 2026/01/a.png" }));
+		const details = screen.getByRole("tab", { name: "Details" });
+		const edit = screen.getByRole("tab", { name: "Edit image" });
+		expect(screen.getByRole("tabpanel", { name: "Details" })).toHaveAttribute("data-state", "active");
+
+		details.focus();
+		await user.keyboard("{ArrowRight}");
+		expect(edit).toHaveAttribute("aria-selected", "true");
+		expect(edit).toHaveFocus();
+		expect(screen.getByRole("tabpanel", { name: "Edit image" })).toBeInTheDocument();
+		expect(screen.queryByRole("tabpanel", { name: "Details" })).toBeNull();
+
+		await user.keyboard("{End}");
+		expect(screen.getByRole("tab", { name: "Used in" })).toHaveFocus();
+		await user.keyboard("{Home}");
+		expect(details).toHaveFocus();
+	});
+
+	it("falls back to the preview image dimensions when metadata has none", async () => {
+		server({
+			"GET /api/media/folders": json([]),
+			"GET /api/media/usage": json([]),
+			"GET /api/media": json([item]),
+		});
+		render(<MediaPage />);
+		await userEvent.setup().click(await screen.findByRole("button", { name: "Open 2026/01/a.png" }));
+		const preview = screen.getByTestId("media-preview");
+		Object.defineProperty(preview, "naturalWidth", { configurable: true, value: 640 });
+		Object.defineProperty(preview, "naturalHeight", { configurable: true, value: 480 });
+		fireEvent.load(preview);
+		expect(await screen.findByText("640 × 480")).toBeInTheDocument();
 	});
 });

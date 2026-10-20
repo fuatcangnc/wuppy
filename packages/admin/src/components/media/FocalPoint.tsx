@@ -76,6 +76,7 @@ export function FocalPointEditor({
 					src={src}
 					alt=""
 					draggable={false}
+					data-testid="focal-image"
 					className="block max-h-64 max-w-full object-contain md:max-h-80"
 					style={display ? { width: "100%", height: "100%" } : undefined}
 					onLoad={(e) => setSource({ width: e.currentTarget.naturalWidth, height: e.currentTarget.naturalHeight })}

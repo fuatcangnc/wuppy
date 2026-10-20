@@ -6,7 +6,7 @@ import { Button as ShadButton, type ButtonProps } from "../components/ui/button.
 import { Card as ShadCard, CardContent, CardDescription, CardFooter, CardTitle } from "../components/ui/card.tsx";
 import { Badge as ShadBadge } from "../components/ui/badge.tsx";
 import { Dialog, DialogHeader, DialogTitle } from "../components/ui/dialog.tsx";
-import { Tabs } from "../components/ui/tabs.tsx";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs.tsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Td, Th } from "../components/ui/table.tsx";
 import { Checkbox as ShadCheckbox, Switch as ShadSwitch } from "../components/ui/checkbox.tsx";
 import { Alert } from "../components/ui/alert.tsx";
@@ -17,7 +17,20 @@ import { Select as ShadSelect } from "../components/ui/select.tsx";
 import { NativeSelect } from "../components/ui/select.tsx";
 import { $mode, $radius, $theme, PRESETS, RADII, setMode, setRadius, setTheme } from "../stores/theme.ts";
 
-export { cn, CardContent, CardDescription, CardFooter, CardTitle, Dialog, DialogHeader, DialogTitle, Tabs };
+export {
+	cn,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardTitle,
+	Dialog,
+	DialogHeader,
+	DialogTitle,
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+};
 export {
 	Table,
 	TableBody,
