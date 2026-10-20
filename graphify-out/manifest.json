@@ -42,9 +42,9 @@
     "semantic_hash": ""
   },
   "e2e/tests/public-site.spec.ts": {
-    "mtime": 1792532223.340707,
-    "seen": 1792532342.92451,
-    "ast_hash": "e1321f6e57f78177c571e92ba7018791",
+    "mtime": 1792532692.9461265,
+    "seen": 1792532854.6857617,
+    "ast_hash": "08cc75574af2ca9ac423df19e067ba3e",
     "semantic_hash": ""
   },
   "e2e/utils/start-fixture.mjs": {
@@ -588,9 +588,9 @@
     "semantic_hash": ""
   },
   "packages/admin/vite.config.ts": {
-    "mtime": 1792488058.595605,
-    "seen": 1792522351.1192892,
-    "ast_hash": "d65c11566a72c9f96c5c26883b9fca00",
+    "mtime": 1792532654.2690923,
+    "seen": 1792532854.6859326,
+    "ast_hash": "0e484552f1f417f811f5f8da0f6f93f7",
     "semantic_hash": ""
   },
   "packages/auth/package.json": {
@@ -2106,14 +2106,14 @@
     "semantic_hash": ""
   },
   "yap\u0131lacaklar.md": {
-    "mtime": 1792532228.170882,
-    "seen": 1792532342.9249866,
-    "ast_hash": "d1d5d1b0397845c7170bab7a2c3003b4",
+    "mtime": 1792532838.9012544,
+    "seen": 1792532854.6862984,
+    "ast_hash": "5cda070018e3c8ffc22732784276735b",
     "semantic_hash": ""
   },
   "packages/admin/public/icons.svg": {
-    "mtime": 1792532294.6237717,
-    "seen": 1792532342.9249876,
+    "mtime": 1792532774.6431983,
+    "seen": 1792532854.6862996,
     "ast_hash": "501d2ee7d0577f6bb4c08ce192f66227",
     "semantic_hash": ""
   },
@@ -2493,6 +2493,12 @@
     "mtime": 1792530096.7119632,
     "seen": 1792532342.924998,
     "ast_hash": "5afc2cb87570bdbbeeeb58d50f6871f2",
+    "semantic_hash": ""
+  },
+  "templates/starter/public/uploads/2026/10/a3258039-bea7-475f-a6d0-55d52db94dbe.png": {
+    "mtime": 1792532584.4860344,
+    "seen": 1792532854.6863081,
+    "ast_hash": "74fdb1038aab56329c14d6a85a3633a7",
     "semantic_hash": ""
   }
 }
