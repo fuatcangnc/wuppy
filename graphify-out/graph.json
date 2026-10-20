@@ -23973,7 +23973,7 @@
       "node_kind": "heading",
       "norm_label": "11. yay\u0131n ve operasyon",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L632"
+      "source_location": "L633"
     },
     {
       "id": "yap\u0131lacaklar_12_p2_ve_farkl\u0131la\u015fma",
@@ -23985,7 +23985,7 @@
       "node_kind": "heading",
       "norm_label": "12. p2 ve farkl\u0131lasma",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L649"
+      "source_location": "L650"
     },
     {
       "id": "yap\u0131lacaklar_13_emdash_admin_parity_matrisi",
@@ -23997,7 +23997,7 @@
       "node_kind": "heading",
       "norm_label": "13. emdash admin parity matrisi",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L664"
+      "source_location": "L665"
     },
     {
       "id": "yap\u0131lacaklar_14_tamamlanma_tan\u0131m\u0131_her_mod\u00fcl_i\u00e7in",
@@ -24009,7 +24009,7 @@
       "node_kind": "heading",
       "norm_label": "14. tamamlanma tan\u0131m\u0131 (her modul icin)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L700"
+      "source_location": "L701"
     },
     {
       "id": "yap\u0131lacaklar_3_medya",
@@ -24021,7 +24021,7 @@
       "node_kind": "heading",
       "norm_label": "3. medya",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L252"
+      "source_location": "L253"
     },
     {
       "id": "yap\u0131lacaklar_8_eklenti_sistemi_ve_registry",
@@ -24033,7 +24033,7 @@
       "node_kind": "heading",
       "norm_label": "8. eklenti sistemi ve registry",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L562"
+      "source_location": "L563"
     },
     {
       "id": "yap\u0131lacaklar_9_\u015fablonlar_ve_kurulum",
@@ -24045,7 +24045,7 @@
       "node_kind": "heading",
       "norm_label": "9. sablonlar ve kurulum",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L577"
+      "source_location": "L578"
     },
     {
       "id": "yap\u0131lacaklar_wuppy_yap\u0131lacaklar",
@@ -25269,7 +25269,7 @@
       "node_kind": "heading",
       "norm_label": "4.1 comments (yorumlar)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L278"
+      "source_location": "L279"
     },
     {
       "id": "yap\u0131lacaklar_4_2_menus_men\u00fcler",
@@ -25281,7 +25281,7 @@
       "node_kind": "heading",
       "norm_label": "4.2 menus (menuler)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L291"
+      "source_location": "L292"
     },
     {
       "id": "yap\u0131lacaklar_4_3_redirects_y\u00f6nlendirmeler",
@@ -25293,7 +25293,7 @@
       "node_kind": "heading",
       "norm_label": "4.3 redirects (yonlendirmeler)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L302"
+      "source_location": "L303"
     },
     {
       "id": "yap\u0131lacaklar_4_4_widgets_widget_alanlar\u0131",
@@ -25305,7 +25305,7 @@
       "node_kind": "heading",
       "norm_label": "4.4 widgets (widget alanlar\u0131)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L312"
+      "source_location": "L313"
     },
     {
       "id": "yap\u0131lacaklar_4_5_sections_b\u00f6l\u00fcmler",
@@ -25317,7 +25317,7 @@
       "node_kind": "heading",
       "norm_label": "4.5 sections (bolumler)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L321"
+      "source_location": "L322"
     },
     {
       "id": "yap\u0131lacaklar_4_6_categories_tags_taksonomiler",
@@ -25329,7 +25329,7 @@
       "node_kind": "heading",
       "norm_label": "4.6 categories / tags (taksonomiler)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L331"
+      "source_location": "L332"
     },
     {
       "id": "yap\u0131lacaklar_4_7_bylines_yazar_profilleri",
@@ -25341,7 +25341,7 @@
       "node_kind": "heading",
       "norm_label": "4.7 bylines (yazar profilleri)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L343"
+      "source_location": "L344"
     },
     {
       "id": "yap\u0131lacaklar_4_manage_mod\u00fclleri",
@@ -25353,7 +25353,7 @@
       "node_kind": "heading",
       "norm_label": "4. manage modulleri",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L276"
+      "source_location": "L277"
     },
     {
       "id": "yap\u0131lacaklar_5_1_content_types_i_\u00e7erik_tipleri",
@@ -25365,7 +25365,7 @@
       "node_kind": "heading",
       "norm_label": "5.1 content types (icerik tipleri)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L357"
+      "source_location": "L358"
     },
     {
       "id": "yap\u0131lacaklar_5_2_byline_schema",
@@ -25377,7 +25377,7 @@
       "node_kind": "heading",
       "norm_label": "5.2 byline schema",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L369"
+      "source_location": "L370"
     },
     {
       "id": "yap\u0131lacaklar_5_3_users_kullan\u0131c\u0131lar",
@@ -25389,7 +25389,7 @@
       "node_kind": "heading",
       "norm_label": "5.3 users (kullan\u0131c\u0131lar)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L376"
+      "source_location": "L377"
     },
     {
       "id": "yap\u0131lacaklar_5_4_plugins_eklentiler",
@@ -25401,7 +25401,7 @@
       "node_kind": "heading",
       "norm_label": "5.4 plugins (eklentiler)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L392"
+      "source_location": "L393"
     },
     {
       "id": "yap\u0131lacaklar_5_5_import_i_\u00e7e_aktarma",
@@ -25413,7 +25413,7 @@
       "node_kind": "heading",
       "norm_label": "5.5 import (ice aktarma)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L410"
+      "source_location": "L411"
     },
     {
       "id": "yap\u0131lacaklar_5_6_settings_ayarlar",
@@ -25425,7 +25425,7 @@
       "node_kind": "heading",
       "norm_label": "5.6 settings (ayarlar)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L421"
+      "source_location": "L422"
     },
     {
       "id": "yap\u0131lacaklar_5_7_themes_temalar",
@@ -25437,7 +25437,7 @@
       "node_kind": "heading",
       "norm_label": "5.7 themes (temalar)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L439"
+      "source_location": "L440"
     },
     {
       "id": "yap\u0131lacaklar_5_admin_mod\u00fclleri",
@@ -25449,7 +25449,7 @@
       "node_kind": "heading",
       "norm_label": "5. admin modulleri",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L355"
+      "source_location": "L356"
     },
     {
       "id": "analiz_emdash",
@@ -26444,7 +26444,7 @@
       "node_kind": "heading",
       "norm_label": "7.1 api",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L501"
+      "source_location": "L502"
     },
     {
       "id": "yap\u0131lacaklar_7_2_arama",
@@ -26456,7 +26456,7 @@
       "node_kind": "heading",
       "norm_label": "7.2 arama",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L516"
+      "source_location": "L517"
     },
     {
       "id": "yap\u0131lacaklar_7_3_\u00f6nbellek_ve_performans",
@@ -26468,7 +26468,7 @@
       "node_kind": "heading",
       "norm_label": "7.3 onbellek ve performans",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L524"
+      "source_location": "L525"
     },
     {
       "id": "yap\u0131lacaklar_7_4_1_resend_production_domain_sonra_yap\u0131lacak",
@@ -26480,7 +26480,7 @@
       "node_kind": "heading",
       "norm_label": "7.4.1 resend production domain \u2014 **sonra yap\u0131lacak**",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L539"
+      "source_location": "L540"
     },
     {
       "id": "yap\u0131lacaklar_7_4_e_posta_ve_bildirim",
@@ -26492,7 +26492,7 @@
       "node_kind": "heading",
       "norm_label": "7.4 e-posta ve bildirim",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L531"
+      "source_location": "L532"
     },
     {
       "id": "yap\u0131lacaklar_7_5_mcp_ve_ai_p2",
@@ -26504,7 +26504,7 @@
       "node_kind": "heading",
       "norm_label": "7.5 mcp ve ai (p2)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L553"
+      "source_location": "L554"
     },
     {
       "id": "yap\u0131lacaklar_7_api_ve_platform",
@@ -26516,7 +26516,7 @@
       "node_kind": "heading",
       "norm_label": "7. api ve platform",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L499"
+      "source_location": "L500"
     },
     {
       "id": "opencode_skills_hono_skill_1_setup_5622",
@@ -30003,7 +30003,7 @@
       "node_kind": "heading",
       "norm_label": "1.1 kabuk",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L129"
+      "source_location": "L130"
     },
     {
       "id": "yap\u0131lacaklar_1_2_dashboard_ekran_g\u00f6r\u00fcnt\u00fcs\u00fcndeki_ekran",
@@ -30015,7 +30015,7 @@
       "node_kind": "heading",
       "norm_label": "1.2 dashboard (ekran goruntusundeki ekran)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L146"
+      "source_location": "L147"
     },
     {
       "id": "yap\u0131lacaklar_1_3_calendar",
@@ -30027,7 +30027,7 @@
       "node_kind": "heading",
       "norm_label": "1.3 calendar",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L158"
+      "source_location": "L159"
     },
     {
       "id": "yap\u0131lacaklar_1_4_auth_onboarding_ve_oturum",
@@ -30039,7 +30039,7 @@
       "node_kind": "heading",
       "norm_label": "1.4 auth, onboarding ve oturum",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L168"
+      "source_location": "L169"
     },
     {
       "id": "yap\u0131lacaklar_1_admin_kabu\u011fu_dashboard_ve_bilgi_mimarisi",
@@ -30051,7 +30051,7 @@
       "node_kind": "heading",
       "norm_label": "1. admin kabugu, dashboard ve bilgi mimarisi",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L127"
+      "source_location": "L128"
     },
     {
       "id": "yap\u0131lacaklar_2_1_koleksiyonlar_ve_listeler",
@@ -30063,7 +30063,7 @@
       "node_kind": "heading",
       "norm_label": "2.1 koleksiyonlar ve listeler",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L192"
+      "source_location": "L193"
     },
     {
       "id": "yap\u0131lacaklar_2_2_edit\u00f6r",
@@ -30075,7 +30075,7 @@
       "node_kind": "heading",
       "norm_label": "2.2 editor",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L209"
+      "source_location": "L210"
     },
     {
       "id": "yap\u0131lacaklar_2_3_alan_tipleri_ve_i\u00e7erik_modeli",
@@ -30087,7 +30087,7 @@
       "node_kind": "heading",
       "norm_label": "2.3 alan tipleri ve icerik modeli",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L229"
+      "source_location": "L230"
     },
     {
       "id": "yap\u0131lacaklar_2_4_revizyonlar_ve_geri_alma",
@@ -30099,7 +30099,7 @@
       "node_kind": "heading",
       "norm_label": "2.4 revizyonlar ve geri alma",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L241"
+      "source_location": "L242"
     },
     {
       "id": "yap\u0131lacaklar_2_i_\u00e7erik_y\u00f6netimi",
@@ -30111,7 +30111,7 @@
       "node_kind": "heading",
       "norm_label": "2. icerik yonetimi",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L190"
+      "source_location": "L191"
     },
     {
       "id": "yap\u0131lacaklar_6_1_seo",
@@ -30123,7 +30123,7 @@
       "node_kind": "heading",
       "norm_label": "6.1 seo",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L453"
+      "source_location": "L454"
     },
     {
       "id": "yap\u0131lacaklar_6_2_i18n",
@@ -30135,7 +30135,7 @@
       "node_kind": "heading",
       "norm_label": "6.2 i18n",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L464"
+      "source_location": "L465"
     },
     {
       "id": "yap\u0131lacaklar_6_3_\u00f6nizleme_ve_g\u00f6rsel_d\u00fczenleme",
@@ -30147,7 +30147,7 @@
       "node_kind": "heading",
       "norm_label": "6.3 onizleme ve gorsel duzenleme",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L475"
+      "source_location": "L476"
     },
     {
       "id": "yap\u0131lacaklar_6_4_public_site_\u00f6zellikleri_\u015fablonlar",
@@ -30159,7 +30159,7 @@
       "node_kind": "heading",
       "norm_label": "6.4 public site ozellikleri (sablonlar)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L485"
+      "source_location": "L486"
     },
     {
       "id": "yap\u0131lacaklar_6_seo_i18n_\u00f6nizleme",
@@ -30171,7 +30171,7 @@
       "node_kind": "heading",
       "norm_label": "6. seo, i18n, onizleme",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L451"
+      "source_location": "L452"
     },
     {
       "id": "claude_kararlar_adr_001_cloudflare_opsiyonel_adapt\u00f6rd\u00fcr",
@@ -30942,7 +30942,7 @@
       "node_kind": "heading",
       "norm_label": "0.1 bu turda tamamlanan moduller",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L72"
+      "source_location": "L73"
     },
     {
       "id": "yap\u0131lacaklar_0_2_analiz_ve_envanter_tamamland\u0131",
@@ -30954,7 +30954,7 @@
       "node_kind": "heading",
       "norm_label": "0.2 analiz ve envanter (tamamland\u0131)",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L116"
+      "source_location": "L117"
     },
     {
       "id": "yap\u0131lacaklar_0_durum_\u00f6zeti",
@@ -30978,7 +30978,7 @@
       "node_kind": "heading",
       "norm_label": "10.1 test",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L594"
+      "source_location": "L595"
     },
     {
       "id": "yap\u0131lacaklar_10_2_g\u00fcvenlik",
@@ -30990,7 +30990,7 @@
       "node_kind": "heading",
       "norm_label": "10.2 guvenlik",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L607"
+      "source_location": "L608"
     },
     {
       "id": "yap\u0131lacaklar_10_3_kalite",
@@ -31002,7 +31002,7 @@
       "node_kind": "heading",
       "norm_label": "10.3 kalite",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L622"
+      "source_location": "L623"
     },
     {
       "id": "yap\u0131lacaklar_10_test_g\u00fcvenlik_ve_kalite",
@@ -31014,7 +31014,7 @@
       "node_kind": "heading",
       "norm_label": "10. test, guvenlik ve kalite",
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L592"
+      "source_location": "L593"
     },
     {
       "id": "packages_auth_src_permissions_index",
@@ -32707,7 +32707,7 @@
       "node_kind": "heading",
       "norm_label": "10. ikonlar",
       "source_file": "design-system.md",
-      "source_location": "L236"
+      "source_location": "L237"
     },
     {
       "id": "design_system_11_yerle\u015fim_ve_bo\u015fluk",
@@ -32719,7 +32719,7 @@
       "node_kind": "heading",
       "norm_label": "11. yerlesim ve bosluk",
       "source_file": "design-system.md",
-      "source_location": "L256"
+      "source_location": "L257"
     },
     {
       "id": "design_system_12_koyu_tema",
@@ -32731,7 +32731,7 @@
       "node_kind": "heading",
       "norm_label": "12. koyu tema",
       "source_file": "design-system.md",
-      "source_location": "L273"
+      "source_location": "L274"
     },
     {
       "id": "design_system_13_eri\u015filebilirlik_ve_etkile\u015fim",
@@ -32743,7 +32743,7 @@
       "node_kind": "heading",
       "norm_label": "13. erisilebilirlik ve etkilesim",
       "source_file": "design-system.md",
-      "source_location": "L283"
+      "source_location": "L284"
     },
     {
       "id": "design_system_14_bile\u015fen_envanteri",
@@ -32755,7 +32755,7 @@
       "node_kind": "heading",
       "norm_label": "14. bilesen envanteri",
       "source_file": "design-system.md",
-      "source_location": "L299"
+      "source_location": "L300"
     },
     {
       "id": "design_system_15_h\u0131zl\u0131_referans",
@@ -32767,7 +32767,7 @@
       "node_kind": "heading",
       "norm_label": "15. h\u0131zl\u0131 referans",
       "source_file": "design-system.md",
-      "source_location": "L317"
+      "source_location": "L318"
     },
     {
       "id": "design_system_1_renk_token_lar\u0131",
@@ -32815,7 +32815,7 @@
       "node_kind": "heading",
       "norm_label": "4. button",
       "source_file": "design-system.md",
-      "source_location": "L106"
+      "source_location": "L107"
     },
     {
       "id": "design_system_5_input_textarea",
@@ -32827,7 +32827,7 @@
       "node_kind": "heading",
       "norm_label": "5. input / textarea",
       "source_file": "design-system.md",
-      "source_location": "L147"
+      "source_location": "L148"
     },
     {
       "id": "design_system_6_badge",
@@ -32839,7 +32839,7 @@
       "node_kind": "heading",
       "norm_label": "6. badge",
       "source_file": "design-system.md",
-      "source_location": "L177"
+      "source_location": "L178"
     },
     {
       "id": "design_system_7_tabs",
@@ -32851,7 +32851,7 @@
       "node_kind": "heading",
       "norm_label": "7. tabs",
       "source_file": "design-system.md",
-      "source_location": "L194"
+      "source_location": "L195"
     },
     {
       "id": "design_system_8_dialog",
@@ -32863,7 +32863,7 @@
       "node_kind": "heading",
       "norm_label": "8. dialog",
       "source_file": "design-system.md",
-      "source_location": "L209"
+      "source_location": "L210"
     },
     {
       "id": "design_system_9_di\u011fer_primitifler",
@@ -32875,7 +32875,7 @@
       "node_kind": "heading",
       "norm_label": "9. diger primitifler",
       "source_file": "design-system.md",
-      "source_location": "L223"
+      "source_location": "L224"
     },
     {
       "id": "design_system_boyutlar",
@@ -32887,7 +32887,7 @@
       "node_kind": "heading",
       "norm_label": "boyutlar",
       "source_file": "design-system.md",
-      "source_location": "L125"
+      "source_location": "L126"
     },
     {
       "id": "design_system_durum_ve_\u00e7izgiler",
@@ -32911,7 +32911,7 @@
       "node_kind": "heading",
       "norm_label": "form kurallar\u0131",
       "source_file": "design-system.md",
-      "source_location": "L169"
+      "source_location": "L170"
     },
     {
       "id": "design_system_grafikler",
@@ -32935,7 +32935,7 @@
       "node_kind": "heading",
       "norm_label": "input (`components/ui/input.tsx`)",
       "source_file": "design-system.md",
-      "source_location": "L149"
+      "source_location": "L150"
     },
     {
       "id": "design_system_marka",
@@ -32971,7 +32971,7 @@
       "node_kind": "heading",
       "norm_label": "textarea (`components/ui/input.tsx`)",
       "source_file": "design-system.md",
-      "source_location": "L162"
+      "source_location": "L163"
     },
     {
       "id": "design_system_varyantlar",
@@ -32983,7 +32983,7 @@
       "node_kind": "heading",
       "norm_label": "varyantlar",
       "source_file": "design-system.md",
-      "source_location": "L110"
+      "source_location": "L111"
     },
     {
       "id": "design_system_wuppy_design_system",
@@ -33019,7 +33019,7 @@
       "node_kind": "heading",
       "norm_label": "ornek",
       "source_file": "design-system.md",
-      "source_location": "L136"
+      "source_location": "L137"
     },
     {
       "id": "packages_admin_package_scripts",
@@ -103379,7 +103379,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L110",
+      "source_location": "L111",
       "weight": 1.0
     },
     {
@@ -103390,7 +103390,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L125",
+      "source_location": "L126",
       "weight": 1.0
     },
     {
@@ -103401,7 +103401,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L136",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -103412,7 +103412,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L149",
+      "source_location": "L150",
       "weight": 1.0
     },
     {
@@ -103423,7 +103423,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L162",
+      "source_location": "L163",
       "weight": 1.0
     },
     {
@@ -103434,7 +103434,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L169",
+      "source_location": "L170",
       "weight": 1.0
     },
     {
@@ -103445,7 +103445,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L106",
+      "source_location": "L107",
       "weight": 1.0
     },
     {
@@ -103456,7 +103456,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L147",
+      "source_location": "L148",
       "weight": 1.0
     },
     {
@@ -103478,7 +103478,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L177",
+      "source_location": "L178",
       "weight": 1.0
     },
     {
@@ -103489,7 +103489,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L194",
+      "source_location": "L195",
       "weight": 1.0
     },
     {
@@ -103500,7 +103500,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L209",
+      "source_location": "L210",
       "weight": 1.0
     },
     {
@@ -103511,7 +103511,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L223",
+      "source_location": "L224",
       "weight": 1.0
     },
     {
@@ -103522,7 +103522,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L236",
+      "source_location": "L237",
       "weight": 1.0
     },
     {
@@ -103533,7 +103533,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L256",
+      "source_location": "L257",
       "weight": 1.0
     },
     {
@@ -103544,7 +103544,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L273",
+      "source_location": "L274",
       "weight": 1.0
     },
     {
@@ -103555,7 +103555,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L283",
+      "source_location": "L284",
       "weight": 1.0
     },
     {
@@ -103566,7 +103566,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L299",
+      "source_location": "L300",
       "weight": 1.0
     },
     {
@@ -103577,7 +103577,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L317",
+      "source_location": "L318",
       "weight": 1.0
     },
     {
@@ -132012,7 +132012,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L116",
+      "source_location": "L117",
       "weight": 1.0
     },
     {
@@ -132034,7 +132034,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L72",
+      "source_location": "L73",
       "weight": 1.0
     },
     {
@@ -132045,7 +132045,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L594",
+      "source_location": "L595",
       "weight": 1.0
     },
     {
@@ -132056,7 +132056,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L607",
+      "source_location": "L608",
       "weight": 1.0
     },
     {
@@ -132067,7 +132067,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L622",
+      "source_location": "L623",
       "weight": 1.0
     },
     {
@@ -132078,7 +132078,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L129",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
@@ -132089,7 +132089,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L146",
+      "source_location": "L147",
       "weight": 1.0
     },
     {
@@ -132100,7 +132100,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L158",
+      "source_location": "L159",
       "weight": 1.0
     },
     {
@@ -132111,7 +132111,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L168",
+      "source_location": "L169",
       "weight": 1.0
     },
     {
@@ -132122,7 +132122,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L192",
+      "source_location": "L193",
       "weight": 1.0
     },
     {
@@ -132133,7 +132133,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L209",
+      "source_location": "L210",
       "weight": 1.0
     },
     {
@@ -132144,7 +132144,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L229",
+      "source_location": "L230",
       "weight": 1.0
     },
     {
@@ -132155,7 +132155,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L241",
+      "source_location": "L242",
       "weight": 1.0
     },
     {
@@ -132166,7 +132166,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L278",
+      "source_location": "L279",
       "weight": 1.0
     },
     {
@@ -132177,7 +132177,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L291",
+      "source_location": "L292",
       "weight": 1.0
     },
     {
@@ -132188,7 +132188,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L302",
+      "source_location": "L303",
       "weight": 1.0
     },
     {
@@ -132199,7 +132199,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L312",
+      "source_location": "L313",
       "weight": 1.0
     },
     {
@@ -132210,7 +132210,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L321",
+      "source_location": "L322",
       "weight": 1.0
     },
     {
@@ -132221,7 +132221,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L331",
+      "source_location": "L332",
       "weight": 1.0
     },
     {
@@ -132232,7 +132232,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L343",
+      "source_location": "L344",
       "weight": 1.0
     },
     {
@@ -132243,7 +132243,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L357",
+      "source_location": "L358",
       "weight": 1.0
     },
     {
@@ -132254,7 +132254,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L369",
+      "source_location": "L370",
       "weight": 1.0
     },
     {
@@ -132265,7 +132265,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L376",
+      "source_location": "L377",
       "weight": 1.0
     },
     {
@@ -132276,7 +132276,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L392",
+      "source_location": "L393",
       "weight": 1.0
     },
     {
@@ -132287,7 +132287,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L410",
+      "source_location": "L411",
       "weight": 1.0
     },
     {
@@ -132298,7 +132298,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L421",
+      "source_location": "L422",
       "weight": 1.0
     },
     {
@@ -132309,7 +132309,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L439",
+      "source_location": "L440",
       "weight": 1.0
     },
     {
@@ -132320,7 +132320,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L453",
+      "source_location": "L454",
       "weight": 1.0
     },
     {
@@ -132331,7 +132331,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L464",
+      "source_location": "L465",
       "weight": 1.0
     },
     {
@@ -132342,7 +132342,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L475",
+      "source_location": "L476",
       "weight": 1.0
     },
     {
@@ -132353,7 +132353,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L485",
+      "source_location": "L486",
       "weight": 1.0
     },
     {
@@ -132364,7 +132364,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L539",
+      "source_location": "L540",
       "weight": 1.0
     },
     {
@@ -132375,7 +132375,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L501",
+      "source_location": "L502",
       "weight": 1.0
     },
     {
@@ -132386,7 +132386,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L516",
+      "source_location": "L517",
       "weight": 1.0
     },
     {
@@ -132397,7 +132397,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L524",
+      "source_location": "L525",
       "weight": 1.0
     },
     {
@@ -132408,7 +132408,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L531",
+      "source_location": "L532",
       "weight": 1.0
     },
     {
@@ -132419,7 +132419,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L553",
+      "source_location": "L554",
       "weight": 1.0
     },
     {
@@ -132430,7 +132430,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L127",
+      "source_location": "L128",
       "weight": 1.0
     },
     {
@@ -132441,7 +132441,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L190",
+      "source_location": "L191",
       "weight": 1.0
     },
     {
@@ -132463,7 +132463,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L252",
+      "source_location": "L253",
       "weight": 1.0
     },
     {
@@ -132474,7 +132474,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L276",
+      "source_location": "L277",
       "weight": 1.0
     },
     {
@@ -132485,7 +132485,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L355",
+      "source_location": "L356",
       "weight": 1.0
     },
     {
@@ -132496,7 +132496,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L451",
+      "source_location": "L452",
       "weight": 1.0
     },
     {
@@ -132507,7 +132507,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L499",
+      "source_location": "L500",
       "weight": 1.0
     },
     {
@@ -132518,7 +132518,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L562",
+      "source_location": "L563",
       "weight": 1.0
     },
     {
@@ -132529,7 +132529,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L577",
+      "source_location": "L578",
       "weight": 1.0
     },
     {
@@ -132540,7 +132540,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L592",
+      "source_location": "L593",
       "weight": 1.0
     },
     {
@@ -132551,7 +132551,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L632",
+      "source_location": "L633",
       "weight": 1.0
     },
     {
@@ -132562,7 +132562,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L649",
+      "source_location": "L650",
       "weight": 1.0
     },
     {
@@ -132573,7 +132573,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L664",
+      "source_location": "L665",
       "weight": 1.0
     },
     {
@@ -132584,7 +132584,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "yap\u0131lacaklar.md",
-      "source_location": "L700",
+      "source_location": "L701",
       "weight": 1.0
     },
     {
@@ -135802,5 +135802,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2cfe19eaf394ac4d9f605b0de1868c930e115bd9"
+  "built_at_commit": "e768cce5fa320fa56258e20be7e1a394ffccb256"
 }
