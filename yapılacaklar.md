@@ -57,6 +57,7 @@ işaretlenir. Kaynaklar:
 - [x] Medya yüklemesi Git tarafından yok sayılan klasörlerde de tamamlanıyor; `public/uploads` veya `.wuppy/data` ignore edilse bile "Nothing to commit"/ignore kaynaklı Git hatası 500 üretmiyor. Starter'daki yerel yüklemeler kaynak deposuna commit edilmez, E2E fixture onları kopyalamaz.
 - [x] Admin icon sprite'ı sürümlendi: `/icons.svg?v=<content-hash>`, `no-cache` + ETag ile sunuluyor; yeni eklenen ikonlar eski immutable cache yüzünden kaybolmuyor.
 - [x] Menus ekranı yenilendi: shadcn Accordion tabanlı kaynak seçimi (Pages/Posts/Categories/Custom Links), native HTML5 drag-and-drop sıralama, alt menü yönetimi, klavye/erişilebilir kontroller, menü oluşturma/silme ve Manage Locations sekmesi.
+- [x] Dark tema global yüzeyleri standartlaştırıldı: `#09090B` taban, `#101011` kart/panel, `#151517` yükseltilmiş kontrol; dashboard dış kabuğu `rounded-xl`, kartları 10px radius (`rounded-lg`) ile hizalandı.
 
 **Doğrulama:** `pnpm check` → 355 core + 141 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 13/13.
 

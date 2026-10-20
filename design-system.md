@@ -28,15 +28,15 @@ Kumo mavisi. Light `oklch(0.5772 0.2324 260)`, dark `oklch(0.5195 0.2324 260)`.
 
 | Token | Light | Dark | Kullanım |
 | --- | --- | --- | --- |
-| `--background` | `#ffffff` | `#050505` | Sayfa zemini (siyah ton) |
-| `--foreground` | `#0a0a0a` | `#ffffff` | Ana metin |
-| `--card` / `--popover` | `#ffffff` | `#101010` / `#111111` | Kart, dialog, menü |
-| `--card-foreground` | `#0a0a0a` | `#ffffff` | Kart metni |
-| `--muted` | `#f5f5f5` | `#262626` | Sessiz zemin, skeleton, kod bloğu |
-| `--muted-foreground` | `#737373` | `#a1a1a1` | İkincil metin, açıklama |
-| `--accent` | `#f5f5f5` | `#404040` | Hover, aktif menü satırı |
+| `--background` | `#ffffff` | `#09090b` | Sayfa zemini (global taban) |
+| `--foreground` | `#0a0a0a` | `#fafafa` | Ana metin |
+| `--card` / `--popover` | `#ffffff` | `#101011` | Kart, dialog, menü (ikinci yüzey) |
+| `--card-foreground` | `#0a0a0a` | `#fafafa` | Kart metni |
+| `--muted` | `#f5f5f5` | `#151517` | Sessiz zemin, skeleton, kod bloğu (üçüncü yüzey) |
+| `--muted-foreground` | `#737373` | `#a1a1aa` | İkincil metin, açıklama |
+| `--accent` | `#f5f5f5` | `#151517` | Hover, aktif menü satırı |
 | `--accent-foreground` | `#171717` | `#fafafa` | Accent üzerindeki metin |
-| `--secondary` | `#f4f4f5` | `#27272a` | İkincil yüzey |
+| `--secondary` | `#f4f4f5` | `#151517` | İkincil yüzey |
 | `--secondary-foreground` | `#18181b` | `#fafafa` | İkincil metin |
 
 ### Durum ve çizgiler
@@ -44,18 +44,18 @@ Kumo mavisi. Light `oklch(0.5772 0.2324 260)`, dark `oklch(0.5195 0.2324 260)`.
 | Token | Light | Dark | Kullanım |
 | --- | --- | --- | --- |
 | `--destructive` | `#df2225` | `#ea3c3f` | Silme, hata, yıkıcı eylem |
-| `--border` | `#e5e5e5` | `white / 10%` | Ayraç, kart kenarı |
-| `--input` | `#e5e5e5` | `white / 15%` | Form kenarı |
-| `--ring` | `#a1a1a1` | `#737373` | Odak halkası |
+| `--border` | `#e5e5e5` | `white / 8%` | Ayraç, kart kenarı |
+| `--input` | `#e5e5e5` | `white / 14%` | Form kenarı |
+| `--ring` | `#a1a1a1` | `#52525b` | Odak halkası |
 
 ### Sidebar
 
 | Token | Light | Dark |
 | --- | --- | --- |
-| `--sidebar` | `#fafafa` | `#0a0a0a` |
-| `--sidebar-foreground` | `#0a0a0a` | `#ffffff` |
-| `--sidebar-accent` | `#f5f5f5` | `#1a1a1a` |
-| `--sidebar-border` | `#e5e5e5` | `white / 10%` |
+| `--sidebar` | `#fafafa` | `#09090b` |
+| `--sidebar-foreground` | `#0a0a0a` | `#fafafa` |
+| `--sidebar-accent` | `#f5f5f5` | `#151517` |
+| `--sidebar-border` | `#e5e5e5` | `white / 8%` |
 | `--sidebar-primary` | `#056dff` | `#005aeb` |
 
 ### Grafikler
@@ -85,7 +85,8 @@ Fontlar `@fontsource-variable/inter` ve
 
 ## 3. Yarıçap (radius)
 
-`--radius: 0.625rem` (10px).
+`--radius: 0.625rem` (10px). Dashboard cards and stat tiles use
+`rounded-lg` (10px) to match the compact panel look.
 
 | Token | Değer |
 | --- | --- |

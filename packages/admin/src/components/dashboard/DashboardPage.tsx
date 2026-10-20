@@ -36,7 +36,7 @@ export function DashboardPage() {
 	if (!data) return <Spinner label="Loading dashboard…" />;
 
 	return (
-		<div className="grid gap-5">
+		<div className="grid gap-5 rounded-xl border border-border bg-background p-4 lg:p-5">
 			<PageHeader
 				title="Dashboard"
 				description="What needs attention and what changed recently."

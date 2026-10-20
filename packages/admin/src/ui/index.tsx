@@ -191,11 +191,11 @@ export function StatCard({
 		</>
 	);
 	return href ? (
-		<a href={href} className="block rounded-xl border bg-card p-4 text-card-foreground shadow-sm hover:bg-muted/50">
+		<a href={href} className="block rounded-lg border bg-card p-4 text-card-foreground shadow-sm hover:bg-muted/50">
 			{body}
 		</a>
 	) : (
-		<div className="rounded-xl border bg-card p-4 text-card-foreground shadow-sm">{body}</div>
+		<div className="rounded-lg border bg-card p-4 text-card-foreground shadow-sm">{body}</div>
 	);
 }
 
