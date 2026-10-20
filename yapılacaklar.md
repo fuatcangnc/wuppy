@@ -55,6 +55,7 @@ işaretlenir. Kaynaklar:
 - [x] Admin select'leri Radix tabanlı shadcn Select'e geçirildi; boş değerler sentinel ile korunuyor, portal popup, klavye/ARIA desteği ve mevcut form çağrıları korunuyor.
 - [x] Liste sayfalarına ortak alt bilgi eklendi: "Showing x-y of n", per-page seçimi ve numaralı sayfalama. İçerik, medya, yorumlar, kullanıcılar, çöp, güvenlik günlüğü ve redirects tablolarında çalışıyor.
 - [x] Medya yüklemesi Git tarafından yok sayılan klasörlerde de tamamlanıyor; "Nothing to commit" veya ignore kaynaklı Git hatası artık yükleme sonrası 500 üretmiyor. Starter'daki yerel yüklemeler kaynak deposuna commit edilmez, E2E fixture onları kopyalamaz.
+- [x] Admin icon sprite'ı sürümlendi: `/icons.svg?v=<content-hash>`, `no-cache` + ETag ile sunuluyor; yeni eklenen ikonlar eski immutable cache yüzünden kaybolmuyor.
 
 **Doğrulama:** `pnpm check` → 355 core + 140 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 13/13.
 
