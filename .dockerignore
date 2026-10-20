@@ -1,0 +1,9 @@
+**/node_modules
+**/dist
+**/.astro
+.git
+.wuppy
+**/.env
+e2e/test-results
+e2e/playwright-report
+graphify-out

@@ -10,11 +10,29 @@
 	},
 	"scripts": {
 		"test": "vitest run",
-		"typecheck": "tsc --noEmit"
+		"typecheck": "tsc --noEmit",
+		"build": "tsdown",
+		"prepack": "node scripts/copy-template.mjs && tsdown"
 	},
 	"devDependencies": {
 		"@types/node": "catalog:",
 		"typescript": "catalog:",
-		"vitest": "catalog:"
+		"vitest": "catalog:",
+		"tsdown": "catalog:"
+	},
+	"files": [
+		"dist",
+		"template"
+	],
+	"publishConfig": {
+		"bin": {
+			"create-wuppy": "./dist/cli.mjs"
+		},
+		"exports": {
+			".": {
+				"types": "./dist/index.d.mts",
+				"import": "./dist/index.mjs"
+			}
+		}
 	}
 }

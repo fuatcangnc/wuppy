@@ -12,7 +12,15 @@ export { createServer, type ServerOptions } from "./server.ts";
 export { MediaService, serveUpload, detectImage, MAX_UPLOAD_BYTES } from "./media/index.ts";
 export { buildRobots, buildSeo, buildSitemap, renderHead, type Seo, type SeoInput, type Site } from "./seo/index.ts";
 export { redirectsSchema, resolveRedirect, type RedirectRule } from "./redirects/index.ts";
-export { translationStatus, type TranslationRow } from "./i18n/index.ts";
+export {
+	hreflangAlternates,
+	localeSwitcher,
+	resolveLocale,
+	splitLocale,
+	translationStatus,
+	type LocaleLink,
+	type TranslationRow,
+} from "./i18n/index.ts";
 export { createWebhookSender, webhooksSchema, type WebhookEvent } from "./webhooks/index.ts";
 export { AuditLog } from "./audit/index.ts";
 export { isPublished } from "./publishing/index.ts";
@@ -33,3 +41,8 @@ export {
 	type Theme,
 	type WidgetArea,
 } from "./data/schemas.ts";
+export { pathMatches } from "./data/helpers.ts";
+export { getByline, getCredits, getMenu, getSection, getSections, getTaxonomy, getWidgetArea } from "./data/helpers.ts";
+export { sanitizeHtml } from "./security/sanitize.ts";
+export { assertPublicUrl, fetchPublic, isPrivateAddress, UnsafeUrlError } from "./security/ssrf.ts";
+export { redact } from "./security/redact.ts";

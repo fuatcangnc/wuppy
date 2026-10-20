@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { apiData } from "../../lib/api.ts";
 import { Button, Card, CardHeader, ErrorText, Input, PageHeader, Select, Textarea, toast } from "../../ui/index.tsx";
+import { WordpressImport } from "./WordpressImport.tsx";
 
 export function ImportPage() {
 	const [mode, setMode] = useState<"json" | "wordpress">("json");
 	const [file, setFile] = useState<File | null>(null);
-	const [collection, setCollection] = useState("posts");
 	const [result, setResult] = useState<unknown>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [busy, setBusy] = useState(false);
@@ -27,8 +26,6 @@ export function ImportPage() {
 				const json = (await res.json()) as { data?: unknown; error?: { message?: string } };
 				if (!res.ok) throw new Error(json.error?.message ?? res.statusText);
 				setResult(json.data);
-			} else {
-				setResult(await apiData("POST", "/api/import/wordpress", { xml: text, collection }));
 			}
 			toast("Import finished");
 		} catch (e) {
@@ -49,19 +46,19 @@ export function ImportPage() {
 						<option value="json">Wuppy JSON backup</option>
 						<option value="wordpress">WordPress WXR</option>
 					</Select>
-					{mode === "wordpress" && (
-						<Input label="Target collection" value={collection} onChange={(e) => setCollection(e.target.value)} />
-					)}
 					<Input
 						type="file"
 						accept={mode === "json" ? "application/json,.json" : ".xml,text/xml"}
 						onChange={(e) => setFile(e.target.files?.[0] ?? null)}
 					/>
-					<Button onClick={() => void run()} disabled={!file || busy}>
-						{busy ? "Importing…" : "Start import"}
-					</Button>
+					{mode === "json" && (
+						<Button onClick={() => void run()} disabled={!file || busy}>
+							{busy ? "Importing…" : "Start import"}
+						</Button>
+					)}
 				</div>
 			</Card>
+			{mode === "wordpress" && <WordpressImport file={file} />}
 			{result !== null && (
 				<Card>
 					<CardHeader title="Result" />

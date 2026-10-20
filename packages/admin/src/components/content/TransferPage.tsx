@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { apiData } from "../../lib/api.ts";
-import { ErrorText, Input } from "../../ui/index.tsx";
+import { Button, ErrorText, Input } from "../../ui/index.tsx";
 
 const readText = (f: File) =>
 	new Promise<string>((resolve, reject) => {
@@ -15,7 +15,20 @@ interface ImportResult {
 	errors: { entry: string; message: string }[];
 }
 
+interface Backup {
+	name: string;
+	bytes: number;
+	createdAt: string;
+}
+
 export function TransferPage() {
+	const [backups, setBackups] = useState<Backup[]>([]);
+	const loadBackups = () =>
+		apiData<Backup[]>("GET", "/api/backups")
+			.then((list) => setBackups(Array.isArray(list) ? list : []))
+			.catch(() => undefined);
+	useEffect(() => void loadBackups(), []);
+
 	const [result, setResult] = useState<ImportResult | null>(null);
 	const [error, setError] = useState<string | null>(null);
 
@@ -47,6 +60,35 @@ export function TransferPage() {
 			<a href="/api/export" download className="text-primary underline">
 				Download content (JSON)
 			</a>
+			<div className="grid gap-2">
+				<div className="flex items-center justify-between">
+					<h2 className="font-medium">Saved backups</h2>
+					<Button
+						variant="secondary"
+						onClick={() =>
+							void apiData("POST", "/api/backups")
+								.then(loadBackups)
+								.catch((e: Error) => setError(e.message))
+						}
+					>
+						Back up now
+					</Button>
+				</div>
+				{backups.length === 0 ? (
+					<p className="text-sm text-muted-foreground">No backups yet.</p>
+				) : (
+					<ul className="grid gap-1 text-sm">
+						{backups.map((b) => (
+							<li key={b.name} className="flex justify-between gap-2">
+								<a href={`/api/backups/${b.name}`} download className="text-primary underline">
+									{b.name}
+								</a>
+								<span className="text-muted-foreground">{Math.max(1, Math.round(b.bytes / 1024))} KB</span>
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
 			<Input
 				label="Import content"
 				type="file"

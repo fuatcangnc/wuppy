@@ -1,5 +1,6 @@
+import { deflateSync } from "node:zlib";
 import { totp } from "../utils/totp.ts";
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 test.describe.configure({ mode: "serial" });
 
@@ -62,8 +63,13 @@ test("owner sets up the site, writes a post, edits it and undoes the edit", asyn
 		"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
 		"base64",
 	);
-	page.once("dialog", (d) => void d.accept("A pixel"));
-	await page.getByLabel("Insert image").setInputFiles({ name: "pixel.png", mimeType: "image/png", buffer: png });
+	await page.getByRole("button", { name: "Image from library" }).click();
+	const picker = page.getByRole("dialog", { name: "Choose from the library" });
+	await picker.getByLabel("Upload").setInputFiles({ name: "pixel.png", mimeType: "image/png", buffer: png });
+	await picker.getByRole("button", { name: "Insert", exact: true }).click();
+	const details = page.getByRole("dialog", { name: "Insert image" });
+	await details.getByLabel("Alt text").fill("A pixel");
+	await details.getByRole("button", { name: "Insert", exact: true }).click();
 	await expect(editor).toContainText("![A pixel](/uploads/");
 	await page.getByRole("button", { name: "Save" }).click();
 	await expect(page.getByText("Unsaved changes")).toHaveCount(0);
@@ -156,6 +162,69 @@ test("editor enables two-factor and must present a code on the next sign-in", as
 	await expect(page.getByText("edna@example.com")).toBeVisible();
 });
 
+// Journey: "Upload a photo with its details, fix the alt text, and crop a copy."
+const crc = (buf: Buffer) => {
+	let c = ~0;
+	for (const b of buf) {
+		c ^= b;
+		for (let k = 0; k < 8; k++) c = (c >>> 1) ^ (0xedb88320 & -(c & 1));
+	}
+	return ~c >>> 0;
+};
+const chunk = (type: string, data: Buffer) => {
+	const body = Buffer.concat([Buffer.from(type), data]);
+	const out = Buffer.alloc(body.length + 8);
+	out.writeUInt32BE(data.length, 0);
+	body.copy(out, 4);
+	out.writeUInt32BE(crc(body), body.length + 4);
+	return out;
+};
+
+async function mediaJourney(page: Page) {
+	await page.goto("/admin/media");
+
+	// A solid 200x100 PNG, built here so the test needs no binary fixture.
+	const header = Buffer.alloc(13);
+	header.writeUInt32BE(200, 0);
+	header.writeUInt32BE(100, 4);
+	header.set([8, 2, 0, 0, 0], 8);
+	const row = Buffer.concat([Buffer.from([0]), Buffer.alloc(200 * 3, 0x80)]);
+	const png = Buffer.concat([
+		Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+		chunk("IHDR", header),
+		chunk("IDAT", deflateSync(Buffer.concat(Array.from({ length: 100 }, () => row)))),
+		chunk("IEND", Buffer.alloc(0)),
+	]);
+
+	await page.getByRole("button", { name: "Upload media" }).click();
+	const upload = page.getByRole("dialog", { name: "Upload files" });
+	await upload
+		.getByLabel("Choose files to upload")
+		.setInputFiles({ name: "barn.png", mimeType: "image/png", buffer: png });
+	await upload.getByLabel("Filename of barn.png").fill("Red barn");
+	await upload.getByLabel("Alt text of barn.png").fill("A barn");
+	await upload.getByLabel("Caption of barn.png").fill("At dusk");
+	await upload.getByRole("button", { name: /Upload file/ }).click();
+
+	await page.getByRole("button", { name: "Open Red barn" }).click();
+	const details = page.getByRole("dialog", { name: "Media details" });
+	await expect(details.getByLabel("Filename")).toHaveValue("Red barn");
+	await expect(details.getByLabel("Alt text")).toHaveValue("A barn");
+	await expect(details.getByText("200 × 100")).toBeVisible();
+	await details.getByLabel("Alt text").fill("A red barn at dusk");
+	await details.getByRole("button", { name: "Save" }).click();
+	await expect(page.getByText("Saved")).toBeVisible();
+
+	await details.getByRole("tab", { name: "Edit image" }).click();
+	await details.getByLabel("Aspect ratio").selectOption("square");
+	await expect(details.getByText("Output size").locator("..")).toContainText("100 × 100");
+	await details.getByRole("button", { name: "Create cropped copy" }).click();
+	await expect(page.getByText("Cropped copy created")).toBeVisible();
+	await expect
+		.poll(async () => ((await (await page.request.get("/api/media")).json()) as { data: unknown[] }).data.length)
+		.toBe(3); // the image from the first journey, the upload and its cropped copy
+}
+
 // Smoke: admin modules render; the owner can reset a colleague's authenticator from Users.
 test("admin modules render and the owner resets a colleague's two-factor", async ({ page }) => {
 	await page.goto("/admin/");
@@ -193,6 +262,9 @@ test("admin modules render and the owner resets a colleague's two-factor", async
 		await expect(page.locator("main")).toBeVisible();
 		await expect(page.getByText("Can't reach the server")).toHaveCount(0);
 	}
+
+	await mediaJourney(page);
+	await page.keyboard.press("Escape"); // the cropped copy opened in its own dialog
 
 	await page.getByRole("link", { name: "Users" }).click();
 	const row = page.getByRole("row", { name: /edna@example.com/ });
@@ -243,6 +315,65 @@ test("owner adds a passkey and signs in with it at localhost", async ({ browser 
 	await page.getByRole("button", { name: "Sign out", exact: true }).click();
 	await page.getByRole("button", { name: "Sign in with a passkey" }).click();
 	await expect(page.getByText("owner@example.com")).toBeVisible();
+
+	await context.close();
+});
+
+// Journey: "My browser crashed mid-sentence, and a colleague edited the same page meanwhile."
+test("unsaved work is recovered, a concurrent edit is caught, and publish/unpublish is one click", async ({
+	browser,
+}) => {
+	// A distinct forwarded IP keeps earlier sign-ins from exhausting this test's rate-limit bucket.
+	const context = await browser.newContext({
+		baseURL: "http://127.0.0.1:4444",
+		extraHTTPHeaders: { "x-forwarded-for": "198.51.100.77" },
+	});
+	const page = await context.newPage();
+	page.on("dialog", (d) => void d.accept());
+	await page.goto("/admin/");
+	await page.getByLabel("Email").fill("owner@example.com");
+	await page.getByLabel("Password").fill("correct-horse-battery");
+	await page.getByRole("button", { name: "Sign in", exact: true }).click();
+	await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+	await page.goto("/admin/e/posts/hello-world");
+	const editor = page.getByLabel("Content", { exact: true }).last();
+	await expect(editor).toBeVisible();
+
+	// Typing without saving leaves a recovery copy after a short pause (no Git commit).
+	await editor.click();
+	await page.keyboard.type(" RECOVER-ME");
+	await expect
+		.poll(async () => (await (await page.request.get("/api/autosave/posts/hello-world")).json()).data?.body ?? "")
+		.toContain("RECOVER-ME");
+	await page.reload();
+	await expect(page.getByRole("alert").filter({ hasText: "were recovered" })).toBeVisible();
+	await page.getByRole("button", { name: "Restore them" }).click();
+	await expect(page.getByLabel("Content", { exact: true }).last()).toContainText("RECOVER-ME");
+
+	// A colleague saves the same entry first; our save is refused instead of silently overwriting theirs.
+	const theirs = await (await page.request.get("/api/content/posts/hello-world")).json();
+	await page.request.put("/api/content/posts/hello-world", {
+		headers: { "X-Wuppy-Request": "1" },
+		data: { data: theirs.data.data, body: `${theirs.data.body}\nTHEIR-EDIT`, message: "colleague edit" },
+	});
+	await page.getByRole("button", { name: "Save" }).click();
+	await expect(page.getByText("Someone else saved this entry")).toBeVisible();
+	await page.getByRole("button", { name: "Keep mine (overwrite)" }).click();
+	await expect(page.getByText("All changes saved")).toBeVisible();
+	const merged = await (await page.request.get("/api/content/posts/hello-world")).json();
+	expect(merged.data.body).toContain("RECOVER-ME");
+	expect(merged.data.body).not.toContain("THEIR-EDIT");
+
+	// Publish toggle saves immediately.
+	await page.getByRole("button", { name: "Unpublish" }).click();
+	await expect(page.getByLabel("Draft", { exact: true })).toBeChecked();
+	await page.getByRole("button", { name: "Publish", exact: true }).click();
+	await expect(page.getByLabel("Draft", { exact: true })).not.toBeChecked();
+	await expect(page.getByRole("button", { name: "Unpublish" })).toBeVisible();
+
+	// A shareable preview link is minted for the entry.
+	await page.getByRole("button", { name: "Preview link" }).click();
+	await expect(page.getByText("Anyone with this link can see this entry")).toBeVisible();
 
 	await context.close();
 });

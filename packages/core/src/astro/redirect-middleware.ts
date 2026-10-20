@@ -23,6 +23,6 @@ export const onRequest = async (ctx: { url: URL }, next: () => Promise<Response>
 	const root = process.cwd();
 	config ??= loadConfig(root);
 	const [cfg, dynamic] = await Promise.all([config, storedRedirects(root)]);
-	const hit = resolveRedirect([...cfg.redirects, ...dynamic], ctx.url.pathname);
+	const hit = resolveRedirect([...cfg.redirects, ...dynamic], ctx.url.pathname, ctx.url.search);
 	return hit ? new Response(null, { status: hit.status, headers: { location: hit.to } }) : next();
 };

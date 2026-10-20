@@ -21,6 +21,9 @@ interface Rule {
 	from: string;
 	to: string;
 	status: 301 | 302;
+	match?: "exact" | "wildcard" | "regex";
+	enabled?: boolean;
+	note?: string;
 }
 interface NotFound {
 	path: string;
@@ -34,6 +37,8 @@ export function RedirectsPage() {
 	const [error, setError] = useState<string | null>(null);
 	const [draft, setDraft] = useState<Rule>({ from: "/", to: "/", status: 301 });
 	const [open, setOpen] = useState(false);
+	const [importText, setImportText] = useState("");
+	const [replace, setReplace] = useState(false);
 
 	const load = async () => {
 		try {
@@ -104,7 +109,17 @@ export function RedirectsPage() {
 				<CardHeader
 					title="404 log"
 					description="Recently requested paths that matched nothing."
-					actions={missing.length > 0 && <Button size="sm" variant="secondary" onClick={() => void apiData("DELETE", "/api/redirects/404").then(load)}>Clear</Button>}
+					actions={
+						missing.length > 0 && (
+							<Button
+								size="sm"
+								variant="secondary"
+								onClick={() => void apiData("DELETE", "/api/redirects/404").then(load)}
+							>
+								Clear
+							</Button>
+						)
+					}
 				/>
 				{missing.length === 0 ? (
 					<div className="p-4">
@@ -145,6 +160,52 @@ export function RedirectsPage() {
 				)}
 			</Card>
 
+			<Card>
+				<CardHeader title="Import / export" description="CSV columns: from, to, status, match, enabled, note." />
+				<div className="grid gap-3 p-4">
+					<div className="flex gap-3 text-sm">
+						<a className="text-primary underline" href="/api/redirects/export?format=csv" download>
+							Download CSV
+						</a>
+						<a className="text-primary underline" href="/api/redirects/export" download="redirects.json">
+							Download JSON
+						</a>
+					</div>
+					<label className="grid gap-1 text-sm">
+						Paste CSV
+						<textarea
+							className="min-h-24 rounded-ui border border-border bg-transparent p-2 font-mono text-xs"
+							value={importText}
+							onChange={(e) => setImportText(e.target.value)}
+						/>
+					</label>
+					<label className="flex items-center gap-2 text-sm">
+						<input type="checkbox" checked={replace} onChange={(e) => setReplace(e.target.checked)} />
+						Replace all saved redirects
+					</label>
+					<div>
+						<Button
+							variant="secondary"
+							disabled={!importText.trim()}
+							onClick={() =>
+								void apiData<{ imported: number }>("POST", "/api/redirects/import", {
+									format: "csv",
+									text: importText,
+									mode: replace ? "replace" : "merge",
+								})
+									.then((r) => {
+										toast(`Imported ${r.imported} redirects`);
+										setImportText("");
+										return load();
+									})
+									.catch((e: Error) => setError(e.message))
+							}
+						>
+							Import
+						</Button>
+					</div>
+				</div>
+			</Card>
 			<Dialog
 				open={open}
 				title="Add redirect"
@@ -167,6 +228,21 @@ export function RedirectsPage() {
 				<div className="grid gap-3">
 					<Input label="From" value={draft.from} onChange={(e) => setDraft({ ...draft, from: e.target.value })} />
 					<Input label="To" value={draft.to} onChange={(e) => setDraft({ ...draft, to: e.target.value })} />
+					<Select
+						label="Match"
+						value={draft.match ?? "exact"}
+						onChange={(e) => setDraft({ ...draft, match: e.target.value as Rule["match"] })}
+						hint="Wildcard: /blog/* → /posts/$1. Regex: capture groups become $1…"
+					>
+						<option value="exact">Exact path</option>
+						<option value="wildcard">Wildcard (/prefix/*)</option>
+						<option value="regex">Regular expression</option>
+					</Select>
+					<Input
+						label="Note"
+						value={draft.note ?? ""}
+						onChange={(e) => setDraft({ ...draft, note: e.target.value || undefined })}
+					/>
 					<Select
 						label="Type"
 						value={String(draft.status)}

@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { $data, $dataErrors, loadData, saveData } from "../../stores/dashboard.ts";
 import {
 	Button,
@@ -20,7 +20,9 @@ import {
 export interface ResourceField {
 	key: string;
 	label: string;
-	type?: "text" | "textarea" | "number" | "checkbox" | "json";
+	type?: "text" | "textarea" | "number" | "checkbox" | "json" | "custom";
+	/** For `type: "custom"`: renders the editor for this field's value. */
+	render?: (value: unknown, onChange: (value: unknown) => void) => ReactNode;
 }
 
 export interface ResourcePageProps<T extends Record<string, unknown>> {
@@ -33,6 +35,10 @@ export interface ResourcePageProps<T extends Record<string, unknown>> {
 	columns: Array<{ key: keyof T & string; label: string }>;
 	/** Optional custom summary for nested JSON values. */
 	format?: (item: T) => string;
+	/** Extra text appended to the delete confirmation (e.g. where the item is still used). */
+	deleteNote?: (item: T) => string | undefined;
+	/** A computed column after the stored ones. */
+	extraColumn?: { label: string; value: (item: T) => string };
 }
 
 function readField(item: Record<string, unknown>, key: string): unknown {
@@ -58,6 +64,8 @@ export function ResourcePage<T extends Record<string, unknown>>({
 	fields,
 	columns,
 	format,
+	deleteNote,
+	extraColumn,
 }: ResourcePageProps<T>) {
 	const stored = useStore($data)[name] as T[] | undefined;
 	const error = useStore($dataErrors)[name];
@@ -113,6 +121,7 @@ export function ResourcePage<T extends Record<string, unknown>>({
 								{columns.map((c) => (
 									<Th key={c.key}>{c.label}</Th>
 								))}
+								{extraColumn && <Th>{extraColumn.label}</Th>}
 								<Th />
 							</tr>
 						</thead>
@@ -128,6 +137,7 @@ export function ResourcePage<T extends Record<string, unknown>>({
 													: String(readField(item, c.key) ?? "")}
 										</Td>
 									))}
+									{extraColumn && <Td>{extraColumn.value(item)}</Td>}
 									<Td className="whitespace-nowrap text-end">
 										<Button size="sm" variant="ghost" onClick={() => startEdit(item, i)}>
 											Edit
@@ -136,7 +146,7 @@ export function ResourcePage<T extends Record<string, unknown>>({
 											size="sm"
 											variant="ghost"
 											onClick={() => {
-												if (confirm(`Delete this ${itemLabel}?`))
+												if (confirm([`Delete this ${itemLabel}?`, deleteNote?.(item)].filter(Boolean).join("\n\n")))
 													void save(items.filter((_, itemIndex) => itemIndex !== i));
 											}}
 										>
@@ -176,6 +186,14 @@ export function ResourcePage<T extends Record<string, unknown>>({
 					<div className="grid gap-3">
 						{fields.map((field) => {
 							const value = readField(editing, field.key);
+							if (field.type === "custom" && field.render) {
+								return (
+									<div key={field.key} className="grid gap-1.5">
+										<span className="text-sm font-medium">{field.label}</span>
+										{field.render(value, (next) => setEditing(writeField(editing, field.key, next) as T))}
+									</div>
+								);
+							}
 							if (field.type === "checkbox") {
 								return (
 									<Checkbox

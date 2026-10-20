@@ -21,13 +21,19 @@ import { resolvePasskeyOptions } from "./config/passkey.ts";
 import { resolveSessionPolicy } from "./config/session.ts";
 import { AuditLog } from "./audit/index.ts";
 import { ContentService } from "./content/service.ts";
+import { AutosaveStore } from "./content/autosave.ts";
+import { BackupService } from "./transfer/backups.ts";
 import { createWebhookSender } from "./webhooks/index.ts";
-import { loadPlugins, type PluginSet } from "./plugins/loader.ts";
+import { assertPublicUrl } from "./security/ssrf.ts";
+import { ImportJobs } from "./import/job.ts";
+import { PluginManager } from "./plugins/manager.ts";
+import { RegistryClient } from "./plugins/registry.ts";
 import { MediaService } from "./media/index.ts";
 import { JsonStore } from "./data/store.ts";
 import { CommentService } from "./comments/index.ts";
 import { RedirectService } from "./redirects/service.ts";
 import { ApiTokenService } from "./security/api-tokens.ts";
+import { renderEmail } from "./email/templates.ts";
 import { createEmailSender } from "./email/index.ts";
 import { settingsSchema } from "./data/schemas.ts";
 
@@ -47,6 +53,8 @@ export interface ServerOptions {
 const MAX_PLUGIN_RESPONSE = 1024 * 1024;
 
 async function limitedFetch(url: string, init: { method: string; body?: string; headers?: Record<string, string> }) {
+	// The manifest allowlist names a host; DNS can still point it at the internal network.
+	if (process.env.WUPPY_ALLOW_PRIVATE_URLS !== "1") await assertPublicUrl(url);
 	const res = await fetch(url, { ...init, redirect: "error", signal: AbortSignal.timeout(5000) });
 	const text = await res.text();
 	return { status: res.status, body: text.slice(0, MAX_PLUGIN_RESPONSE) };
@@ -72,7 +80,13 @@ export async function createServer({
 		siteUrl: config.site?.url ?? "",
 		...(await json.read<Record<string, unknown>>("settings", {})),
 	});
-	const sendEmail = createEmailSender(settings);
+	const currentSettings = async () =>
+		settingsSchema.parse({
+			siteName: config.site?.name ?? "Wuppy",
+			siteUrl: config.site?.url ?? "",
+			...(await json.read<Record<string, unknown>>("settings", {})),
+		});
+	const sendEmail = createEmailSender(currentSettings);
 	const oauth = resolveOAuthProviders();
 	const auth = await createMigratedAuth({
 		db,
@@ -84,35 +98,37 @@ export async function createServer({
 		onAuditEvent: (e) => audit.record(e),
 		sendMagicLink: async ({ email, url }) => {
 			const templateId = process.env.RESEND_MAGIC_LINK_TEMPLATE;
+			const current = await currentSettings();
 			await sendEmail({
 				to: email,
-				subject: `Sign in to ${settings.siteName}`,
-				text: `Open this link to sign in to ${settings.siteName}: ${url}`,
-				html: `<p>Open this link to sign in to ${settings.siteName}:</p><p><a href="${url}">Sign in</a></p>`,
+				...renderEmail("magic", current, { siteName: current.siteName, link: url }),
 				...(templateId
 					? {
 							template: {
 								id: templateId,
-								variables: { MAGIC_LINK: url, SITE_NAME: settings.siteName },
+								variables: { MAGIC_LINK: url, SITE_NAME: current.siteName },
 							},
 						}
 					: {}),
 			});
 		},
 		sendResetPassword: async ({ email, url }) => {
+			const current = await currentSettings();
 			await sendEmail({
 				to: email,
-				subject: `Reset your ${settings.siteName} password`,
-				text: `Open this link to choose a new ${settings.siteName} password (valid for 30 minutes): ${url}`,
-				html: `<p>Open this link to choose a new password (valid for 30 minutes):</p><p><a href="${url}">Reset password</a></p>`,
+				...renderEmail("reset", current, { siteName: current.siteName, link: url }),
 			});
 		},
 	});
 
-	const send = createWebhookSender([...config.webhooks, ...(await json.read("webhooks", []))]);
-	let plugins: PluginSet | undefined;
+	const send = createWebhookSender([...config.webhooks, ...(await json.read("webhooks", []))], {
+		allowPrivate: process.env.WUPPY_ALLOW_PRIVATE_URLS === "1",
+	});
+	let plugins: PluginManager | undefined;
+	const pluginWrites = new Set<string>();
 	const emit = (e: Parameters<typeof send>[0]) => {
 		void send(e);
+		if (e.collection && pluginWrites.has(`${e.collection}/${e.slug}`)) return;
 		void plugins?.dispatch(e);
 	};
 	const comments = new CommentService(db);
@@ -127,19 +143,46 @@ export async function createServer({
 	}
 	const service = new ContentService(root, collections, git, { components: config.components, emit });
 	const media = new MediaService(root, git, emit, json);
+	const backups = new BackupService(root, service, settings.backup.keep);
+	// shortcut: settings are read once at startup, so changing the schedule needs a restart.
+	if (settings.backup.enabled) {
+		setInterval(
+			() => void backups.create().catch((e: Error) => log(`[wuppy] scheduled backup failed: ${e.message}`)),
+			settings.backup.intervalHours * 3_600_000,
+		).unref();
+	}
 
-	plugins = await loadPlugins(root, config.plugins, {
+	const emailTimes = new Map<string, number[]>();
+	plugins = new PluginManager(root, json, config.plugins, {
 		log: (m) => log(`[plugin] ${m}`),
 		readContent: async (collection, slug) => {
 			const entry = await service.get(collection, slug);
 			return entry && { data: entry.data, body: entry.body };
 		},
+		writeContent: async (pluginId, collection, slug, doc) => {
+			// The resulting content event must not wake plugins again, or a plugin that writes on update would loop.
+			pluginWrites.add(`${collection}/${slug}`);
+			setTimeout(() => pluginWrites.delete(`${collection}/${slug}`), 5000).unref();
+			await service.put(collection, slug, doc, `plugin ${pluginId}: update ${collection}/${slug}`);
+		},
+		secret: (pluginId, name) => process.env[`WUPPY_PLUGIN_${pluginId.toUpperCase().replaceAll("-", "_")}_${name}`],
+		sendEmail: async (pluginId, message) => {
+			const now = Date.now();
+			const recent = (emailTimes.get(pluginId) ?? []).filter((t) => now - t < 60_000);
+			if (recent.length >= 10) throw new Error("Email limit reached (10 per minute)");
+			emailTimes.set(pluginId, [...recent, now]);
+			await sendEmail(message);
+		},
 		fetch: (url, init) => {
 			log(`[plugin] egress ${init.method} ${url}`);
 			return pluginFetch(url, init);
 		},
+		registry: new RegistryClient(config.registries),
+		onReload: (set) => {
+			for (const err of set.errors) log(`[plugin] not loaded: ${err}`);
+		},
 	});
-	for (const err of plugins.errors) log(`[plugin] not loaded: ${err}`);
+	await plugins.load();
 
 	return new Hono()
 		.get("/api/setup", (c) =>
@@ -160,6 +203,10 @@ export async function createServer({
 				comments,
 				redirects,
 				tokens,
+				backups,
+				autosave: new AutosaveStore(root),
+				sendEmail,
+				previewSecret: secret,
 				resetTwoFactor: (userId) => {
 					const row = db.prepare("SELECT email FROM user WHERE id = ?").get(userId) as { email: string } | undefined;
 					if (!row) return null;
@@ -176,11 +223,15 @@ export async function createServer({
 					const created = createInvitation(db, { email: normalized, role, invitedBy });
 					const link = `${baseURL.replace(/\/+$/, "")}/admin/?invite=${encodeURIComponent(created.token)}`;
 					try {
+						const current = await currentSettings();
 						await sendEmail({
 							to: normalized,
-							subject: `You're invited to ${settings.siteName}`,
-							text: `You have been invited to ${settings.siteName} as ${created.invitation.role}. Choose your password here: ${link}\n\nThis link expires on ${created.invitation.expiresAt}.`,
-							html: `<p>You have been invited to ${settings.siteName} as <strong>${created.invitation.role}</strong>.</p><p><a href="${link}">Accept invitation</a></p><p>This link expires on ${created.invitation.expiresAt}.</p>`,
+							...renderEmail("invite", current, {
+								siteName: current.siteName,
+								role: created.invitation.role,
+								link,
+								expiresAt: created.invitation.expiresAt,
+							}),
 						});
 					} catch (e) {
 						revokeInvitationRecord(db, created.invitation.id);
@@ -198,9 +249,8 @@ export async function createServer({
 				revokeInvitation: (id) => revokeInvitationRecord(db, id),
 				acceptInvitation: (input) => acceptInvitationRecord(db, input),
 				userCount: () => (db.prepare("SELECT COUNT(*) AS n FROM user").get() as { n: number }).n,
-				plugins: { loaded: plugins.loaded, errors: plugins.errors },
-				pluginManifests: plugins.manifests,
-				pluginRequest: (id, method, path, body) => plugins.request(id, method, path, body),
+				pluginManager: plugins,
+				imports: new ImportJobs({ root, service, media, json, redirects }),
 				audit,
 				locales: config.locales,
 				getUser: async (req) => {

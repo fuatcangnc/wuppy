@@ -77,7 +77,11 @@ export function GlobalSearch() {
 							>
 								<span className="font-medium">{hit.title}</span>
 								<span className="ms-2 text-xs text-muted-foreground">{hit.collection}</span>
-								<span className="mt-0.5 block truncate text-xs text-muted-foreground">{hit.excerpt}</span>
+								{/* excerpt is escaped by the server; only <mark> tags survive */}
+								<span
+									className="mt-0.5 block truncate text-xs text-muted-foreground [&_mark]:bg-accent/30 [&_mark]:text-inherit"
+									dangerouslySetInnerHTML={{ __html: hit.excerpt }}
+								/>
 							</a>
 						</li>
 					))}

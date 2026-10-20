@@ -21,7 +21,10 @@ export function TableRow({ className, ...props }: HTMLAttributes<HTMLTableRowEle
 	return (
 		<tr
 			data-slot="table-row"
-			className={cn("border-b border-border/70 transition-colors last:border-0 hover:bg-muted/35 data-[state=selected]:bg-muted/60", className)}
+			className={cn(
+				"border-b border-border/70 transition-colors last:border-0 hover:bg-muted/35 data-[state=selected]:bg-muted/60",
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -31,7 +34,10 @@ export function TableHead({ className, ...props }: ThHTMLAttributes<HTMLTableCel
 	return (
 		<th
 			data-slot="table-head"
-			className={cn("h-11 px-4 text-start align-middle text-[11px] font-medium tracking-wider text-muted-foreground uppercase whitespace-nowrap", className)}
+			className={cn(
+				"h-11 px-4 text-start align-middle text-[11px] font-medium tracking-wider text-muted-foreground uppercase whitespace-nowrap",
+				className,
+			)}
 			{...props}
 		/>
 	);

@@ -1,0 +1,36 @@
+{
+	"$schema": "https://unpkg.com/knip@6/schema.json",
+	"ignoreDependencies": [
+		"vitest"
+	],
+	"workspaces": {
+		"packages/admin": {
+			"ignoreDependencies": [
+				"@lexical/history"
+			]
+		},
+		"packages/auth": {
+			"entry": [
+				"types/index.d.ts",
+				"tests/public-types.ts"
+			]
+		},
+		"packages/core": {
+			"ignoreDependencies": [
+				"@wuppy/admin"
+			]
+		},
+		"templates/starter": {
+			"ignoreDependencies": [
+				"zod"
+			]
+		}
+	},
+	"rules": {
+		"exports": "off",
+		"types": "off",
+		"nsExports": "off",
+		"nsTypes": "off",
+		"duplicates": "off"
+	}
+}

@@ -7,6 +7,7 @@
 		"./astro": "./src/astro/integration.ts",
 		"./seo": "./src/seo/index.ts",
 		"./publishing": "./src/publishing/index.ts",
+		"./site": "./src/site/index.ts",
 		"./package.json": "./package.json"
 	},
 	"scripts": {
@@ -21,6 +22,7 @@
 		"@wuppy/git": "workspace:*",
 		"@wuppy/plugin-types": "workspace:*",
 		"hono": "catalog:",
+		"nodemailer": "^10.1.7",
 		"quickjs-emscripten": "0.32.0",
 		"resend": "^6.34.1",
 		"yaml": "catalog:",
@@ -28,6 +30,7 @@
 	},
 	"devDependencies": {
 		"@types/node": "catalog:",
+		"@types/nodemailer": "^8.0.2",
 		"astro": "catalog:",
 		"tsdown": "catalog:",
 		"typescript": "catalog:",
@@ -59,10 +62,17 @@
 			"./publishing": {
 				"types": "./dist/publishing.d.mts",
 				"import": "./dist/publishing.mjs"
+			},
+			"./site": {
+				"types": "./dist/site.d.mts",
+				"import": "./dist/site.mjs"
 			}
 		},
 		"bin": {
 			"wuppy": "./dist/cli.mjs"
 		}
+	},
+	"optionalDependencies": {
+		"sharp": "0.35.5"
 	}
 }

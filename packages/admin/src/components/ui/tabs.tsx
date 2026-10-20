@@ -6,15 +6,25 @@ export function Tabs<T extends string>({
 	onChange,
 	items,
 	className,
+	stretch = false,
 }: {
 	value: T;
 	onChange: (value: T) => void;
 	items: Array<{ value: T; label: ReactNode }>;
 	className?: string;
+	/** Fill the available width with equal-width tabs. */
+	stretch?: boolean;
 }) {
 	return (
 		<div data-slot="tabs" className={cn("grid gap-2", className)}>
-			<div role="tablist" className="inline-flex h-9 w-fit items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
+			<div
+				role="tablist"
+				className={cn(
+					"inline-flex h-9 items-center",
+					stretch ? "w-full" : "w-fit",
+					" justify-center rounded-lg bg-muted p-1 text-muted-foreground",
+				)}
+			>
 				{items.map((item) => (
 					<button
 						key={item.value}

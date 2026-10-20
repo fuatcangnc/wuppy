@@ -6,6 +6,11 @@
 </symbol><symbol id="blocks" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
   <path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/>
   <rect x="14" y="2" width="8" height="8" rx="1"/>
+</symbol><symbol id="calendar" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M8 2v3"/>
+  <path d="M16 2v3"/>
+  <rect x="3" y="3" width="18" height="18" rx="2"/>
+  <path d="M3 9h18"/>
 </symbol><symbol id="calendar-days" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
   <path d="M8 2v3"/>
   <path d="M16 2v3"/>
@@ -31,12 +36,22 @@
   <path d="M15 3h6v6"/>
   <path d="M10 14 21 3"/>
   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</symbol><symbol id="file-image" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+  <circle cx="10" cy="12" r="2"/>
+  <path d="m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22"/>
 </symbol><symbol id="file-text" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
   <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
   <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
   <path d="M10 9H8"/>
   <path d="M16 13H8"/>
   <path d="M16 17H8"/>
+</symbol><symbol id="hard-drive" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M10 16h.01"/>
+  <path d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+  <path d="M21.946 12.013H2.054"/>
+  <path d="M6 16h.01"/>
 </symbol><symbol id="image" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
   <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
   <circle cx="9" cy="9" r="2"/>
@@ -50,6 +65,21 @@
   <rect width="7" height="5" x="14" y="3" rx="1"/>
   <rect width="7" height="9" x="14" y="12" rx="1"/>
   <rect width="7" height="5" x="3" y="16" rx="1"/>
+</symbol><symbol id="layout-grid" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <rect width="7" height="7" x="3" y="3" rx="1"/>
+  <rect width="7" height="7" x="14" y="3" rx="1"/>
+  <rect width="7" height="7" x="14" y="14" rx="1"/>
+  <rect width="7" height="7" x="3" y="14" rx="1"/>
+</symbol><symbol id="link" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+</symbol><symbol id="list" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M3 5h.01"/>
+  <path d="M3 12h.01"/>
+  <path d="M3 19h.01"/>
+  <path d="M8 5h13"/>
+  <path d="M8 12h13"/>
+  <path d="M8 19h13"/>
 </symbol><symbol id="log-out" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
   <path d="m16 17 5-5-5-5"/>
   <path d="M21 12H9"/>
@@ -74,14 +104,28 @@
   <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
   <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
   <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
-</symbol><symbol id="pencil" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
-  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
-  <path d="m15 5 4 4"/>
 </symbol><symbol id="plus" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
   <path d="M5 12h14"/>
   <path d="M12 5v14"/>
 </symbol><symbol id="puzzle" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
   <path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/>
+</symbol><symbol id="refresh-cw" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+  <path d="M21 3v5h-5"/>
+  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+  <path d="M8 16H3v5"/>
+</symbol><symbol id="rotate-ccw" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+  <path d="M3 3v5h5"/>
+</symbol><symbol id="ruler" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/>
+  <path d="m14.5 12.5 2-2"/>
+  <path d="m11.5 9.5 2-2"/>
+  <path d="m8.5 6.5 2-2"/>
+  <path d="m17.5 15.5 2-2"/>
+</symbol><symbol id="search" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="m21 21-4.34-4.34"/>
+  <circle cx="11" cy="11" r="8"/>
 </symbol><symbol id="settings" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
   <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
   <circle cx="12" cy="12" r="3"/>
@@ -109,4 +153,7 @@
   <path d="M18 16.98h-5.99c-1.1 0-1.95.94-2.48 1.9A4 4 0 0 1 2 17c.01-.7.2-1.4.57-2"/>
   <path d="m6 17 3.13-5.78c.53-.97.1-2.18-.5-3.1a4 4 0 1 1 6.89-4.06"/>
   <path d="m12 6 3.13 5.73C15.66 12.7 16.9 13 18 13a4 4 0 0 1 0 8"/>
+</symbol><symbol id="x" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M18 6 6 18"/>
+  <path d="m6 6 12 12"/>
 </symbol></svg>

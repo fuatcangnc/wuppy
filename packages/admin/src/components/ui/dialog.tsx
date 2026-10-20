@@ -5,15 +5,21 @@ import { Button } from "./button.tsx";
 export function Dialog({
 	open,
 	title,
+	description,
 	children,
 	onClose,
 	footer,
+	size = "default",
 }: {
 	open: boolean;
 	title: string;
+	/** A second line under the title, e.g. the file name. */
+	description?: string;
 	children: ReactNode;
 	onClose: () => void;
 	footer?: ReactNode;
+	/** `wide` is a large dialog with ruled header and footer; its body sets its own padding. */
+	size?: "default" | "wide";
 }) {
 	useEffect(() => {
 		if (!open) return;
@@ -24,24 +30,37 @@ export function Dialog({
 		return () => removeEventListener("keydown", onKey);
 	}, [open, onClose]);
 	if (!open) return null;
+	const wide = size === "wide";
 	return (
-		<div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4" role="presentation" onMouseDown={onClose}>
+		<div
+			className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4"
+			role="presentation"
+			onMouseDown={onClose}
+		>
 			<div
 				role="dialog"
 				aria-modal="true"
 				aria-label={title}
 				data-slot="dialog-content"
-				className="relative grid w-full max-w-lg gap-4 rounded-xl border border-border bg-popover p-6 text-popover-foreground shadow-lg"
+				className={cn(
+					"relative grid w-full rounded-xl border border-border bg-popover text-popover-foreground shadow-lg",
+					wide ? "max-h-[92vh] max-w-[min(68rem,94vw)] grid-rows-[auto_1fr_auto]" : "max-w-lg gap-4 p-6",
+				)}
 				onMouseDown={(event) => event.stopPropagation()}
 			>
-				<header className="flex items-start justify-between gap-3">
-					<h2 className="text-lg leading-none font-semibold">{title}</h2>
+				<header className={cn("flex items-start justify-between gap-3", wide && "border-b border-border px-8 py-5")}>
+					<div className="grid min-w-0 gap-1">
+						<h2 className="text-lg leading-none font-semibold">{title}</h2>
+						{description && <p className="truncate text-sm text-muted-foreground">{description}</p>}
+					</div>
 					<Button variant="ghost" size="icon-sm" aria-label="Close" onClick={onClose}>
 						×
 					</Button>
 				</header>
-				<div className="max-h-[70vh] overflow-y-auto">{children}</div>
-				{footer && <footer className="flex justify-end gap-2">{footer}</footer>}
+				<div className={cn("overflow-y-auto", wide ? "min-h-0" : "max-h-[70vh]")}>{children}</div>
+				{footer && (
+					<footer className={cn("flex justify-end gap-2", wide && "border-t border-border px-8 py-4")}>{footer}</footer>
+				)}
 			</div>
 		</div>
 	);

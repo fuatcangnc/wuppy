@@ -1,5 +1,5 @@
 ---
-import { buildSeo, renderHead } from "wuppy/seo";
+import { buildSeo, renderHead, renderJsonLd, websiteJsonLd } from "wuppy/seo";
 import { readData } from "wuppy";
 import WidgetArea from "../components/WidgetArea.astro";
 import config from "../../wuppy.config.mjs";
@@ -15,7 +15,7 @@ const settings = await readData<{
 	siteName?: string;
 	siteUrl?: string;
 	description?: string;
-	seo?: { title?: string; description?: string; image?: string; noindex?: boolean };
+	seo?: { title?: string; description?: string; image?: string; noindex?: boolean; titleTemplate?: string };
 } | null>("settings", null);
 const site = {
 	name: settings?.siteName || config.site.name,
@@ -27,6 +27,9 @@ interface Props {
 	description?: string;
 	image?: string;
 	noindex?: boolean;
+	canonical?: string;
+	/** schema.org data for this page (see `articleJsonLd`); the home page gets WebSite data by default. */
+	jsonLd?: object;
 	editHref?: string;
 }
 const seo = buildSeo({
@@ -36,15 +39,28 @@ const seo = buildSeo({
 	description: Astro.props.description ?? settings?.seo?.description,
 	image: Astro.props.image ?? settings?.seo?.image,
 	noindex: Astro.props.noindex ?? settings?.seo?.noindex,
+	canonical: Astro.props.canonical,
+	titleTemplate: settings?.seo?.titleTemplate,
 });
+const jsonLd = Astro.props.jsonLd ?? (Astro.url.pathname === "/" ? websiteJsonLd(site, "/search?q={q}") : undefined);
 ---
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<Fragment set:html={renderHead(seo)} />
+		{jsonLd && <Fragment set:html={renderJsonLd(jsonLd)} />}
+		<link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
+		<style is:global>
+			:root { color-scheme: light dark; }
+			@media (prefers-color-scheme: dark) { body { background: #111; color: #eee; } a { color: #8ab4ff; } }
+			a:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+			.skip-link { position: absolute; inset-inline-start: -999px; }
+			.skip-link:focus { inset-inline-start: 1rem; top: 1rem; background: #fff; color: #000; padding: .5rem 1rem; z-index: 10; }
+		</style>
 	</head>
 	<body>
+		<a href="#content" class="skip-link">Skip to content</a>
 		<header class="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
 			<a href="/" class="font-semibold">{site.name}</a>
 			{main && (
@@ -59,7 +75,7 @@ const seo = buildSeo({
 				</nav>
 			)}
 		</header>
-		<main class="mx-auto max-w-3xl px-4 pb-16">
+		<main id="content" class="mx-auto max-w-3xl px-4 pb-16">
 			<slot />
 		</main>
 		{Astro.props.editHref && (import.meta.env.DEV || Astro.url.searchParams.has("wuppy-edit")) && (

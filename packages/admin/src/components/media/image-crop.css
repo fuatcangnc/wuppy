@@ -1,0 +1,175 @@
+@import "react-image-crop/dist/ReactCrop.css";
+
+.wuppy-image-crop {
+	--rc-border-color: var(--primary);
+	--rc-drag-handle-size: 24px;
+	--rc-focus-color: var(--primary);
+}
+
+.wuppy-image-crop.ReactCrop .ReactCrop__crop-selection {
+	container-type: size;
+	animation: none;
+	border: 2px solid var(--primary);
+	background-image: none;
+}
+
+.wuppy-image-crop .ReactCrop__crop-selection:focus-visible,
+.wuppy-image-crop .ReactCrop__drag-handle:focus-visible {
+	outline: 2px solid var(--primary);
+	outline-offset: 2px;
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle,
+.wuppy-image-crop .ReactCrop__drag-handle:focus {
+	width: min(24px, 33.333cqw, 33.333cqh);
+	height: min(24px, 33.333cqw, 33.333cqh);
+	border: 0;
+	background: transparent;
+}
+
+.wuppy-image-crop.ReactCrop--fixed-aspect .ReactCrop__drag-handle {
+	width: min(24px, 50cqw, 50cqh);
+	height: min(24px, 50cqw, 50cqh);
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle::after {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: min(10px, 20cqw, 20cqh);
+	height: min(10px, 20cqw, 20cqh);
+	transform: translate(-50%, -50%);
+	border-radius: 1px;
+	background: var(--primary);
+	box-shadow: 0 0 0 1px var(--background);
+	content: "";
+}
+
+.wuppy-image-crop.ReactCrop--fixed-aspect .ReactCrop__drag-handle::after {
+	width: min(10px, 30cqw, 30cqh);
+	height: min(10px, 30cqw, 30cqh);
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle:hover::after,
+.wuppy-image-crop .ReactCrop__drag-handle:active::after,
+.wuppy-image-crop .ReactCrop__drag-handle:focus-visible::after {
+	box-shadow: 0 0 0 2px var(--background);
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-nw {
+	transform: none;
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-n {
+	transform: translate(-50%, 0);
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-ne {
+	transform: none;
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-e {
+	transform: translate(0, -50%);
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-se {
+	transform: none;
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-s {
+	transform: translate(-50%, 0);
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-sw {
+	transform: none;
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-w {
+	transform: translate(0, -50%);
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-nw::after {
+	top: 0;
+	left: 0;
+	transform: none;
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-n::after {
+	top: 0;
+	transform: translate(-50%, 0);
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-ne::after {
+	top: 0;
+	right: 0;
+	left: auto;
+	transform: none;
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-e::after {
+	top: 50%;
+	right: 0;
+	left: auto;
+	transform: translate(0, -50%);
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-se::after {
+	top: auto;
+	right: 0;
+	bottom: 0;
+	left: auto;
+	transform: none;
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-s::after {
+	top: auto;
+	bottom: 0;
+	transform: translate(-50%, 0);
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-sw::after {
+	top: auto;
+	bottom: 0;
+	left: 0;
+	transform: none;
+}
+
+.wuppy-image-crop .ReactCrop__drag-handle.ord-w::after {
+	top: 50%;
+	left: 0;
+	transform: translate(0, -50%);
+}
+
+.wuppy-image-crop .ReactCrop__rule-of-thirds-vt::before,
+.wuppy-image-crop .ReactCrop__rule-of-thirds-vt::after {
+	width: 0;
+	border-inline-start-width: 1px;
+	border-inline-start-style: dashed;
+	border-inline-start-color: var(--primary);
+	background: transparent;
+}
+
+.wuppy-image-crop .ReactCrop__rule-of-thirds-hz::before,
+.wuppy-image-crop .ReactCrop__rule-of-thirds-hz::after {
+	height: 0;
+	border-top-width: 1px;
+	border-top-style: dashed;
+	border-top-color: var(--primary);
+	background: transparent;
+}
+
+@media (pointer: coarse) {
+	.wuppy-image-crop:not(.ReactCrop--fixed-aspect) .ReactCrop__drag-handle.ord-n,
+	.wuppy-image-crop:not(.ReactCrop--fixed-aspect) .ReactCrop__drag-handle.ord-e,
+	.wuppy-image-crop:not(.ReactCrop--fixed-aspect) .ReactCrop__drag-handle.ord-s,
+	.wuppy-image-crop:not(.ReactCrop--fixed-aspect) .ReactCrop__drag-handle.ord-w {
+		display: block;
+	}
+}
+
+.wuppy-checkerboard {
+	background-color: var(--background);
+	background-image: repeating-conic-gradient(var(--muted) 0% 25%, var(--background) 0% 50%);
+	background-position: 50%;
+	background-size: 20px 20px;
+}

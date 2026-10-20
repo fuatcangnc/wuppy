@@ -2,9 +2,8 @@ import { randomBytes } from "node:crypto";
 import { cp, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
-// shortcut: pinned here until packages are published; replace with versions resolved at publish time.
+// shortcut: Astro-side versions are pinned here; bump them with the starter template.
 const VERSIONS: Record<string, string> = { astro: "^7.3.2", "@astrojs/node": "^11.1.5", zod: "4.5.4" };
-const WUPPY_VERSION = "^0.0.0";
 const SKIP = /(^|[\\/])(node_modules|\.wuppy|\.git|dist|\.astro|\.env)([\\/]|$)/;
 
 export interface ScaffoldOptions {
@@ -13,9 +12,11 @@ export interface ScaffoldOptions {
 	name: string;
 	/** Public origin of the site; Better Auth only accepts requests from it. */
 	url: string;
+	/** Range written for `wuppy`; the CLI passes its own version because all packages are released together. */
+	wuppyVersion?: string;
 }
 
-export async function scaffold({ template, target, name, url }: ScaffoldOptions): Promise<void> {
+export async function scaffold({ template, target, name, url, wuppyVersion = "latest" }: ScaffoldOptions): Promise<void> {
 	if (!/^[a-z][a-z0-9-]*$/.test(name))
 		throw new Error(`Invalid project name: ${JSON.stringify(name)} (use lowercase letters, digits, dashes)`);
 	await mkdir(target, { recursive: true });
@@ -27,7 +28,7 @@ export async function scaffold({ template, target, name, url }: ScaffoldOptions)
 	const pkg = JSON.parse(await readFile(pkgPath, "utf8")) as { name: string; dependencies: Record<string, string> };
 	pkg.name = name;
 	for (const [dep, range] of Object.entries(pkg.dependencies)) {
-		if (range === "workspace:*") pkg.dependencies[dep] = WUPPY_VERSION;
+		if (range === "workspace:*") pkg.dependencies[dep] = wuppyVersion;
 		else if (range === "catalog:") pkg.dependencies[dep] = VERSIONS[dep] ?? "latest";
 	}
 	await writeFile(pkgPath, JSON.stringify(pkg, null, "\t") + "\n");

@@ -11,7 +11,7 @@ wuppy().hooks["astro:config:setup"]({
 	addMiddleware: (m) => entrypoints.push(m.entrypoint),
 });
 const missing = entrypoints.filter((u) => !existsSync(fileURLToPath(u)));
-if (entrypoints.length !== 7 || missing.length) {
+if (entrypoints.length !== 9 || missing.length) {
 	console.error("dist is incomplete:", { count: entrypoints.length, missing: missing.map(String) });
 	process.exit(1);
 }

@@ -295,6 +295,93 @@ kaybı riski ve bakım yükü getirir; P0 için gerekmez.
 
 ---
 
+## ADR-007 — Revizyonlar Git'tir; otomatik kaydetme revizyon değil kurtarma kopyasıdır
+
+### Bağlam
+
+Her kayıt zaten bir Git commit'i (ADR-001). "Otomatik kaydetme revizyonları",
+"revizyon saklama politikası" ve "çakışma" maddeleri, veritabanı merkezli CMS'lerin
+(`revisions` tablosu) varsayımlarından geliyordu.
+
+### Karar
+
+- **Revizyon = Git commit.** Ayrı bir revizyon tablosu yok. Liste: `/api/history`,
+  eski sürüm + alan bazlı özet: `/api/revisions/:collection/:sha/:slug`.
+- **Otomatik kaydetme commit atmaz.** Düzenleyici duraklayınca `.wuppy/autosave/` altına
+  entry başına tek bir kurtarma kopyası yazar; gerçek kayıtta silinir. Böylece
+  "otomatik" ve "kullanıcı" revizyonları karışmaz, geçmiş kirlenmez.
+- **Saklama politikası yok:** Git geçmişi budanmaz (geçmişi yeniden yazmak ADR-001'in
+  "hiçbir şey kaybolmaz" sözüyle çelişir). Depo boyutu sorunu `git gc`/shallow clone
+  ile operasyonel olarak çözülür.
+- **Çakışma:** `ETag`/`If-Match`; uyuşmazlıkta `409 CONFLICT` + sunucudaki sürüm döner.
+  Üstüne, kimin düzenlediğini söyleyen tavsiye niteliğinde bir kilit vardır
+  (`/api/locks`, bellekte, 60 sn'de sona erer).
+
+### Sonuçlar
+
+- Daha az kod ve tek doğruluk kaynağı.
+- Kilit tek süreçlidir; çoklu örnekte yalnızca etag koruması geçerlidir.
+- Geri alma yolu: DB adaptörü gelirse revizyonlar oraya taşınabilir; dosya formatı değişmez.
+
+---
+
+## ADR-008 — Eklenti paketleri: Ed25519 + sha256 sabitleme; tek sürücü (QuickJS-WASM)
+
+### Bağlam
+
+`plugin-registery.md` Sigstore imzası, kilit dosyası, çoklu güven kökü ve ikinci bir
+sürücü (workerd/süreç) öngörüyordu.
+
+### Karar
+
+- **İmza:** Sigstore (OIDC + şeffaflık günlüğü) harici hizmetlere bağlıdır; ilk sürümde
+  **Ed25519 ayrık imza** kullanılır. İmzalanan mesaj `<id>@<sürüm>:<sha256>`'dır; sha256
+  `manifest.json` + `plugin.js` üzerindendir. Her registry kendi `publicKeys` listesini
+  taşır (çoklu güven kökü). Anahtarı olan registry'de imzasız paket kurulmaz.
+- **Kilit:** kurulumda sha256 `.wuppy/data/plugin-state.json`'a yazılır; dosyalar sonradan
+  değişirse eklenti yüklenmez.
+- **Onay:** yetenek hash'i (parse edilmiş `capabilities`) değişirse yeniden onay gerekir.
+  Sonradan eklenen yetenekler boşken hash'e girmez; eski onaylar geçerli kalır.
+- **Sürücü:** yalnızca QuickJS-WASM. `node --permission` + `vm` ile "ikinci sürücü"
+  eşdeğer yalıtım vermez (ağ erişimi ve `vm` kaçışları), bu yüzden eklenmedi.
+  Gerçek bir ikinci sürücü (workerd) gerektiğinde conformance paketi `host.ts`
+  testlerinden çıkarılır.
+
+### Sonuçlar
+
+- Sigstore'a geçiş yalnızca `verifySignature` ve `pack` komutunu değiştirir.
+- Geri alma yolu: imza doğrulamasını registry başına kapatmak için `publicKeys: []`.
+
+---
+
+## ADR-009 — Byline şeması ve içerik tipleri `.wuppy/data/*.json` dosyalarında yaşar
+
+### Bağlam
+
+Byline özel alanları ve yönetici arayüzünden eklenen içerik tipleri için bir kaynak gerekiyordu: config dosyası mı, DB mi?
+
+### Karar
+
+İkisi de `.wuppy/data/byline-schema.json` ve `content-types.json` dosyalarında tutulur (`JsonStore`, her yazma bir Git commit'i). Config dosyasındaki koleksiyonlar kodla yönetilir ve aynı adlı arayüz tanımının üzerine yazılır. Byline değerleri `extra` altında saklanır; `PUT /api/data/bylines` şemayı doğrular (422), `GET /api/bylines/issues` mevcut ihlalleri listeler.
+
+### Sonuçlar
+
+Şema değişimi Git geçmişinde görünür ve geri alınabilir. Şema sonradan sıkılaşırsa eski kayıtlar silinmez, yalnızca raporlanır.
+
+## ADR-010 — Çeviri grubu slug kuralıdır; açık `translationOf` alanı yok
+
+### Bağlam
+
+Aynı içeriğin dil sürümlerini eşleştirmek için iki yol vardı: slug kuralı (`en/hello`, `tr/hello`) ya da her çeviride kaynağı gösteren bir `translationOf` alanı.
+
+### Karar
+
+Slug kuralı kullanılır. Eşleştirme dosya adından çıkar, ayrı bir alan tutulmaz; bu yüzden kaynak ile çeviri birbirinden kopamaz ve Git'te yeniden adlandırma tek yerde yapılır. Dil değiştirici (`localeSwitcher`), yedek dil (`resolveLocale`) ve `hreflang` (`hreflangAlternates`) aynı kuraldan beslenir; yalnızca gerçek çeviriler `hreflang` alır.
+
+### Sonuçlar
+
+Dil öneki olmayan eski slug'lar çeviri grubuna girmez. Sonradan açık eşleştirme gerekirse `translationOf` ek bir kaynak olarak eklenebilir; bu karar o zaman güncellenir.
+
 ## Karar özeti
 
 | Katman | EmDash | Wuppy |

@@ -1,6 +1,6 @@
 import type { DatabaseSync } from "node:sqlite";
 import type { JsonStore } from "../data/store.ts";
-import { type RedirectRule, redirectsSchema } from "./index.ts";
+import { type RedirectInput, type RedirectRule, redirectsSchema } from "./index.ts";
 
 export interface NotFoundRow {
 	path: string;
@@ -12,7 +12,7 @@ export class RedirectService {
 	constructor(
 		private readonly store: JsonStore,
 		private readonly db: DatabaseSync,
-		private readonly configured: RedirectRule[] = [],
+		private readonly configured: RedirectInput[] = [],
 	) {
 		db.exec(`
 			CREATE TABLE IF NOT EXISTS wuppy_redirect_404 (
@@ -25,11 +25,16 @@ export class RedirectService {
 
 	async list(): Promise<RedirectRule[]> {
 		const stored = await this.store.read<RedirectRule[]>("redirects", []);
-		const merged = [...this.configured, ...stored];
+		const merged: RedirectInput[] = [...this.configured, ...stored];
 		return redirectsSchema.parse(merged);
 	}
 
-	async save(rules: RedirectRule[]): Promise<void> {
+	/** Only the rules saved from the admin (not the ones fixed in wuppy.config). */
+	listStored(): Promise<RedirectRule[]> {
+		return this.store.read<RedirectRule[]>("redirects", []);
+	}
+
+	async save(rules: RedirectInput[]): Promise<void> {
 		const parsed = redirectsSchema.parse(rules);
 		await this.store.write("redirects", parsed, "redirects: update");
 	}
@@ -44,11 +49,9 @@ export class RedirectService {
 	}
 
 	list404(limit = 100): NotFoundRow[] {
-		return (
-			this.db
-				.prepare("SELECT path, count, last_seen AS lastSeen FROM wuppy_redirect_404 ORDER BY last_seen DESC LIMIT ?")
-				.all(limit) as unknown as NotFoundRow[]
-		);
+		return this.db
+			.prepare("SELECT path, count, last_seen AS lastSeen FROM wuppy_redirect_404 ORDER BY last_seen DESC LIMIT ?")
+			.all(limit) as unknown as NotFoundRow[];
 	}
 
 	clear404(path?: string): void {

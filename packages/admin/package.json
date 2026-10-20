@@ -10,7 +10,8 @@
 		"build": "vite build",
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit",
-		"prebuild": "zero-icons"
+		"prebuild": "zero-icons",
+		"prepack": "pnpm build"
 	},
 	"dependencies": {
 		"@better-auth/passkey": "1.7.10",
@@ -23,6 +24,7 @@
 		"@lexical/markdown": "0.52.0",
 		"@lexical/react": "0.52.0",
 		"@lexical/rich-text": "0.52.0",
+		"@lexical/selection": "0.52.0",
 		"@nanostores/react": "2.0.1",
 		"@react-zero-ui/icon-sprite": "0.5.1",
 		"@tanstack/react-router": "catalog:",
@@ -30,7 +32,8 @@
 		"lexical": "0.52.0",
 		"nanostores": "1.5.5",
 		"react": "catalog:",
-		"react-dom": "catalog:"
+		"react-dom": "catalog:",
+		"react-image-crop": "^11.1.2"
 	},
 	"devDependencies": {
 		"@tailwindcss/vite": "catalog:",
@@ -46,5 +49,8 @@
 		"typescript": "catalog:",
 		"vite": "catalog:",
 		"vitest": "catalog:"
-	}
+	},
+	"files": [
+		"dist"
+	]
 }

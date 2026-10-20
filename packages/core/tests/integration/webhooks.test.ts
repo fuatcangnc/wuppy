@@ -5,7 +5,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { NoopGit } from "@wuppy/git";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { collectionSchema } from "../../src/content-types/index.ts";
 import { ContentService } from "../../src/content/service.ts";
 import { createWebhookSender, type WebhookEvent } from "../../src/webhooks/index.ts";
@@ -38,7 +38,7 @@ const event: WebhookEvent = { type: "content.updated", collection: "posts", slug
 
 describe("webhooks", () => {
 	it("POSTs the event as JSON with an HMAC-SHA256 signature", async () => {
-		const send = createWebhookSender([{ url, secret: "s3cret" }]);
+		const send = createWebhookSender([{ url, secret: "s3cret" }], { allowPrivate: true });
 		await send(event);
 		expect(received).toHaveLength(1);
 		const { headers, body } = received[0]!;
@@ -48,7 +48,7 @@ describe("webhooks", () => {
 	});
 
 	it("only sends events a hook subscribed to", async () => {
-		const send = createWebhookSender([{ url, events: ["content.deleted"] }]);
+		const send = createWebhookSender([{ url, events: ["content.deleted"] }], { allowPrivate: true });
 		await send(event);
 		expect(received).toHaveLength(0);
 		await send({ ...event, type: "content.deleted" });
@@ -71,5 +71,15 @@ describe("webhooks", () => {
 		await svc.put("posts", "a", { data: {}, body: "x" });
 		await svc.delete("posts", "a");
 		expect(events).toEqual(["content.updated:a", "content.deleted:a"]);
+	});
+});
+
+describe("webhook SSRF guard", () => {
+	it("refuses private targets unless explicitly allowed", async () => {
+		const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+		const send = createWebhookSender([{ url: "http://169.254.169.254/latest" }]);
+		await send({ type: "content.updated", at: "now" });
+		expect(spy.mock.calls[0]?.[0]).toMatch(/private address/);
+		spy.mockRestore();
 	});
 });

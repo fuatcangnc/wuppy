@@ -1,29 +1,52 @@
 ---
-import { readData } from "wuppy";
+import { getCollection } from "astro:content";
+import { getMenu, getWidgetArea, readData } from "wuppy";
+import { isPublished } from "wuppy/publishing";
 
-interface Widget {
-	id: string;
-	type: string;
-	title: string;
-	body: string;
-}
-interface WidgetArea {
+interface Props {
 	name: string;
-	label: string;
-	widgets: Widget[];
+	locale?: string;
+	collection?: string;
 }
-
-const { name } = Astro.props as { name: string };
-const areas = await readData<WidgetArea[]>("widgets", []);
-const area = areas.find((item) => item.name === name);
+const { name, locale, collection } = Astro.props;
+const widgets = await getWidgetArea(name, { locale, collection, path: Astro.url.pathname });
+const areas = await readData<Array<{ name: string; label: string }>>("widgets", []);
+const label = areas.find((area) => area.name === name)?.label ?? name;
+const taxonomies = await readData<Array<{ name: string; terms: Array<{ slug: string; name: string }> }>>("taxonomies", []);
+const recent = widgets.some((w) => w.type === "recent")
+	? (await getCollection("posts", ({ data }) => isPublished(data)))
+			.toSorted((a, b) => +(b.data.date ?? 0) - +(a.data.date ?? 0))
+			.slice(0, 5)
+	: [];
 ---
-{area && area.widgets.length > 0 && (
-	<aside aria-label={area.label} class="grid gap-4">
-		{area.widgets.map((widget) => (
-			<section class="rounded border border-black/10 p-4">
-				{widget.title && <h2 class="font-semibold">{widget.title}</h2>}
-				{widget.body && <p class="mt-1 whitespace-pre-wrap text-sm">{widget.body}</p>}
-			</section>
-		))}
+{widgets.length > 0 && (
+	<aside aria-label={label} class="grid gap-4">
+		{await Promise.all(widgets.map(async (widget) => {
+			const menu = widget.type === "menu" && widget.menu ? await getMenu(widget.menu, locale) : null;
+			const terms = widget.type === "taxonomy" ? (taxonomies.find((t) => t.name === widget.taxonomy)?.terms ?? []) : [];
+			return (
+				<section class="rounded border border-black/10 p-4">
+					{widget.title && <h2 class="font-semibold">{widget.title}</h2>}
+					{widget.type === "text" && widget.body && <p class="mt-1 whitespace-pre-wrap text-sm">{widget.body}</p>}
+					{/* getWidgetArea has already sanitized html widgets */}
+					{widget.type === "html" && <div class="mt-1 text-sm" set:html={widget.body} />}
+					{menu && (
+						<ul class="mt-1 text-sm">
+							{menu.items.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+						</ul>
+					)}
+					{widget.type === "recent" && (
+						<ul class="mt-1 text-sm">
+							{recent.map((post) => <li><a href={`/posts/${post.id}`}>{post.data.title}</a></li>)}
+						</ul>
+					)}
+					{terms.length > 0 && (
+						<ul class="mt-1 flex flex-wrap gap-2 text-sm">
+							{terms.map((term) => <li>{term.name}</li>)}
+						</ul>
+					)}
+				</section>
+			);
+		}))}
 	</aside>
 )}

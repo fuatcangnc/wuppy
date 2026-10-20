@@ -89,6 +89,15 @@ export class RealGit implements GitAdapter {
 		return this.git("show", "--format=", sha);
 	}
 
+	async show(sha: string, path: string): Promise<string | null> {
+		assertSha(sha);
+		assertRepoPath(path);
+		return this.git("show", `${sha}:${path}`).catch((e: Error) => {
+			if (/does not exist|exists on disk, but not in|bad object|invalid object name/i.test(e.message)) return null;
+			throw e;
+		});
+	}
+
 	async revert(sha: string): Promise<string> {
 		assertSha(sha);
 		await this.git("revert", "--no-edit", sha);

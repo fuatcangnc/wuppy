@@ -1,6 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { useEffect } from "react";
-import { $diff, $gitError, $history, loadHistory, revert, showDiff } from "../../stores/git.ts";
+import { $compare, $diff, $gitError, $history, compareWith, loadHistory, revert, showDiff } from "../../stores/git.ts";
+import { RevisionCompare } from "./RevisionCompare.tsx";
 import { DiffView } from "./DiffView.tsx";
 import { GhostButton, ErrorText } from "../../ui/index.tsx";
 
@@ -15,6 +16,7 @@ export function HistoryPanel({
 }) {
 	const history = useStore($history);
 	const diff = useStore($diff);
+	const compare = useStore($compare);
 	const error = useStore($gitError);
 	useEffect(() => void loadHistory(collection, slug), [collection, slug]);
 
@@ -32,6 +34,7 @@ export function HistoryPanel({
 						</div>
 						<div className="mt-1 flex gap-2">
 							<GhostButton onClick={() => void showDiff(c.sha)}>Changes</GhostButton>
+							<GhostButton onClick={() => void compareWith(c.sha, collection, slug)}>Compare</GhostButton>
 							<GhostButton
 								onClick={() => {
 									if (confirm("Undo this change? A new version is added; nothing is lost."))
@@ -45,6 +48,7 @@ export function HistoryPanel({
 				))}
 			</ul>
 			{diff && <DiffView text={diff.text} />}
+			{compare && <RevisionCompare changes={compare.changes} />}
 		</aside>
 	);
 }

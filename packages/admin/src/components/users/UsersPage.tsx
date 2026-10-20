@@ -23,14 +23,38 @@ import type { InvitationRow, UserRow } from "./types.ts";
 
 const ROLES = ["admin", "editor", "author", "viewer"];
 
+/** What a token may do. "same" sends no list, so the server uses the creator's own permissions. */
+export const TOKEN_SCOPES = {
+	same: { label: "Everything I can do", permissions: undefined },
+	read: { label: "Read content only", permissions: ["content:read"] },
+	write: { label: "Read and write content", permissions: ["content:read", "content:write", "media:write"] },
+	publish: {
+		label: "Write and publish content",
+		permissions: ["content:read", "content:write", "content:publish", "content:schedule", "media:write"],
+	},
+} as const;
+
 export function UsersPage() {
 	const session = useStore($session);
 	const currentUserId = session.status === "authed" ? session.user.id : null;
 	const [users, setUsers] = useState<UserRow[] | null>(null);
 	const [tokens, setTokens] = useState<
-		Array<{ id: string; name: string; createdAt: string; lastUsedAt: string | null }>
+		Array<{
+			id: string;
+			name: string;
+			createdAt: string;
+			lastUsedAt: string | null;
+			expiresAt?: string | null;
+			permissions?: string[];
+		}>
 	>([]);
 	const [tokenName, setTokenName] = useState("");
+	const [tokenScope, setTokenScope] = useState<keyof typeof TOKEN_SCOPES>("same");
+	const [tokenDays, setTokenDays] = useState("");
+	const [matrix, setMatrix] = useState<{
+		permissions: string[];
+		roles: Array<{ name: string; permissions: string[] }>;
+	} | null>(null);
 	const [createdToken, setCreatedToken] = useState<string | null>(null);
 	const [invitations, setInvitations] = useState<InvitationRow[]>([]);
 	const [inviteOpen, setInviteOpen] = useState(false);
@@ -50,6 +74,9 @@ export function UsersPage() {
 		} catch (e) {
 			setError((e as Error).message);
 		}
+		void api<{ data: NonNullable<typeof matrix> }>("GET", "/api/roles")
+			.then((r) => setMatrix(r.data))
+			.catch(() => setMatrix(null));
 		try {
 			const tokenList = await api<{
 				data?: Array<{ id: string; name: string; createdAt: string; lastUsedAt: string | null }>;
@@ -277,11 +304,36 @@ export function UsersPage() {
 				<div className="grid gap-3 p-4">
 					<div className="flex flex-wrap items-end gap-2">
 						<Input label="Token name" value={tokenName} onChange={(e) => setTokenName(e.target.value)} />
+						<Select
+							label="Access"
+							value={tokenScope}
+							onChange={(e) => setTokenScope(e.target.value as typeof tokenScope)}
+						>
+							{Object.entries(TOKEN_SCOPES).map(([key, scope]) => (
+								<option key={key} value={key}>
+									{scope.label}
+								</option>
+							))}
+						</Select>
+						<Select label="Expires" value={tokenDays} onChange={(e) => setTokenDays(e.target.value)}>
+							<option value="">Never</option>
+							<option value="30">In 30 days</option>
+							<option value="90">In 90 days</option>
+							<option value="365">In a year</option>
+						</Select>
 						<Button
 							variant="secondary"
 							disabled={!tokenName.trim()}
 							onClick={() =>
-								void api<{ data: { token: string } }>("POST", "/api/tokens", { name: tokenName.trim() }).then((res) => {
+								void api<{ data: { token: string } }>("POST", "/api/tokens", {
+									name: tokenName.trim(),
+									...(TOKEN_SCOPES[tokenScope].permissions
+										? { permissions: TOKEN_SCOPES[tokenScope].permissions }
+										: {}),
+									...(tokenDays
+										? { expiresAt: new Date(Date.now() + Number(tokenDays) * 86_400_000).toISOString() }
+										: {}),
+								}).then((res) => {
 									setCreatedToken(res.data.token);
 									setTokenName("");
 									void load();
@@ -302,6 +354,8 @@ export function UsersPage() {
 							<thead>
 								<tr>
 									<Th>Name</Th>
+									<Th>Access</Th>
+									<Th>Expires</Th>
 									<Th>Created</Th>
 									<Th>Last used</Th>
 									<Th />
@@ -311,6 +365,10 @@ export function UsersPage() {
 								{tokens.map((token) => (
 									<tr key={token.id}>
 										<Td>{token.name}</Td>
+										<Td className="text-muted-foreground">{token.permissions?.length ?? 0} permissions</Td>
+										<Td className="text-muted-foreground">
+											{token.expiresAt ? new Date(token.expiresAt).toLocaleDateString() : "never"}
+										</Td>
 										<Td className="text-muted-foreground">{new Date(token.createdAt).toLocaleDateString()}</Td>
 										<Td className="text-muted-foreground">
 											{token.lastUsedAt ? new Date(token.lastUsedAt).toLocaleString() : "never"}
@@ -331,6 +389,39 @@ export function UsersPage() {
 					)}
 				</div>
 			</Card>
+
+			{matrix && (
+				<Card>
+					<CardHeader
+						title="Roles and permissions"
+						description="What each built-in role can do. Tokens can only narrow these."
+					/>
+					<div className="overflow-x-auto p-4">
+						<Table>
+							<thead>
+								<tr>
+									<Th>Permission</Th>
+									{matrix.roles.map((r) => (
+										<Th key={r.name}>{r.name}</Th>
+									))}
+								</tr>
+							</thead>
+							<tbody>
+								{matrix.permissions.map((p) => (
+									<tr key={p}>
+										<Td className="font-mono text-xs">{p}</Td>
+										{matrix.roles.map((r) => (
+											<Td key={r.name} aria-label={`${r.name} ${r.permissions.includes(p) ? "can" : "cannot"} ${p}`}>
+												{r.permissions.includes(p) ? "✓" : "—"}
+											</Td>
+										))}
+									</tr>
+								))}
+							</tbody>
+						</Table>
+					</div>
+				</Card>
+			)}
 
 			<Dialog
 				open={inviteOpen}

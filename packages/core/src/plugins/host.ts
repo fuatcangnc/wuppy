@@ -1,9 +1,29 @@
-import { canFetch, canReadContent, type HookName, type Manifest } from "@wuppy/plugin-types";
+import {
+	canFetch,
+	canReadContent,
+	canReadSecret,
+	canWriteContent,
+	type HookName,
+	type Manifest,
+} from "@wuppy/plugin-types";
 import { newQuickJSWASMModule, type QuickJSContext } from "quickjs-emscripten";
 
 export interface HostDeps {
 	log: (message: string) => void;
 	readContent: (collection: string, slug: string) => Promise<{ data: Record<string, unknown>; body: string } | null>;
+	/** Creates or overwrites an entry. Only called for collections the manifest lists under `content.write`. */
+	writeContent?: (
+		pluginId: string,
+		collection: string,
+		slug: string,
+		doc: { data: Record<string, unknown>; body: string },
+	) => Promise<void>;
+	/** Looks up a secret the manifest declared. Returns undefined when it is not configured. */
+	secret?: (pluginId: string, name: string) => string | undefined;
+	/** Sends an email on the plugin's behalf; only called when the manifest has `capabilities.email`. */
+	sendEmail?: (pluginId: string, message: { to: string; subject: string; text: string }) => Promise<void>;
+	/** Current settings values (defaults applied). Read on every call so changes apply immediately. */
+	settings?: (pluginId: string) => Record<string, string | boolean | number>;
 	/** Called only for requests the manifest allows. Responsible for size caps and redirect policy. */
 	fetch: (
 		url: string,
@@ -15,19 +35,30 @@ export type DispatchResult = { ok: true; skipped?: true } | { ok: false; error: 
 
 export interface LoadedPlugin {
 	dispatch(hook: HookName, event: unknown): Promise<DispatchResult>;
-	request(method: string, path: string, body: string | undefined): Promise<{ status: number; headers?: Record<string, string>; body: string }>;
+	request(
+		method: string,
+		path: string,
+		body: string | undefined,
+	): Promise<{ status: number; headers?: Record<string, string>; body: string }>;
 	dispose(): void;
 }
 
 // Host functions are captured here and removed from the global object so plugin code only sees `ctx`.
 const PRELUDE = `
 (() => {
-	const log = __hostLog, get = __hostContentGet, fetchFn = __hostFetch;
-	delete globalThis.__hostLog; delete globalThis.__hostContentGet; delete globalThis.__hostFetch;
+	const log = __hostLog, get = __hostContentGet, put = __hostContentPut, fetchFn = __hostFetch;
+	const secretFn = __hostSecret, mail = __hostEmail, settingsFn = __hostSettings;
+	for (const n of ["__hostLog", "__hostContentGet", "__hostContentPut", "__hostFetch", "__hostSecret", "__hostEmail", "__hostSettings"]) delete globalThis[n];
 	const ctx = Object.freeze({
 		log: (m) => log(String(m)),
-		content: Object.freeze({ get: async (c, s) => JSON.parse(await get(String(c), String(s))) }),
+		content: Object.freeze({
+			get: async (c, s) => JSON.parse(await get(String(c), String(s))),
+			put: async (c, s, doc) => { await put(String(c), String(s), JSON.stringify(doc || {})); },
+		}),
 		fetch: async (u, init) => JSON.parse(await fetchFn(String(u), JSON.stringify(init || {}))),
+		secret: (name) => { const v = secretFn(String(name)); return v === "" ? undefined : v; },
+		email: Object.freeze({ send: async (m) => { await mail(JSON.stringify(m || {})); } }),
+		get settings() { return Object.freeze(JSON.parse(settingsFn())); },
 	});
 	globalThis.__run = async (hook, ev) => {
 		const fn = globalThis.__plugin && globalThis.__plugin[hook];
@@ -92,11 +123,43 @@ export async function loadPlugin(manifest: Manifest, code: string, deps: HostDep
 		h.dispose();
 	};
 
+	/** Like `syncFn` but returns a string to the plugin. */
+	const valueFn = (name: string, impl: (args: string[]) => string) => {
+		const h = vm.newFunction(name, (...argHandles) => vm.newString(impl(argHandles.map((a) => vm.getString(a)))));
+		vm.setProp(vm.global, name, h);
+		h.dispose();
+	};
+
 	syncFn("__hostLog", ([m]) => deps.log(String(m).slice(0, 2000)));
 	asyncFn("__hostContentGet", async ([collection = "", slug = ""]) => {
 		if (!canReadContent(manifest, collection)) throw new Error(`Content access denied: ${collection}`);
 		return JSON.stringify(await deps.readContent(collection, slug));
 	});
+	asyncFn("__hostContentPut", async ([collection = "", slug = "", raw = "{}"]) => {
+		if (!canWriteContent(manifest, collection)) throw new Error(`Content write denied: ${collection}`);
+		if (!deps.writeContent) throw new Error("Content writing is unavailable");
+		const doc = JSON.parse(raw) as { data?: Record<string, unknown>; body?: unknown };
+		if (typeof doc.body !== "string" || !doc.data || typeof doc.data !== "object" || Array.isArray(doc.data)) {
+			throw new Error("content.put needs { data: object, body: string }");
+		}
+		await deps.writeContent(manifest.id, collection, slug, { data: doc.data, body: doc.body });
+		return "";
+	});
+	valueFn("__hostSecret", ([name = ""]) => {
+		if (!canReadSecret(manifest, name)) throw new Error(`Secret access denied: ${name}`);
+		return deps.secret?.(manifest.id, name) ?? "";
+	});
+	asyncFn("__hostEmail", async ([raw = "{}"]) => {
+		if (!manifest.capabilities.email) throw new Error("Email access denied");
+		if (!deps.sendEmail) throw new Error("Email is unavailable");
+		const m = JSON.parse(raw) as { to?: unknown; subject?: unknown; text?: unknown };
+		if (typeof m.to !== "string" || typeof m.subject !== "string" || typeof m.text !== "string") {
+			throw new Error("email.send needs { to, subject, text } strings");
+		}
+		await deps.sendEmail(manifest.id, { to: m.to, subject: m.subject.slice(0, 200), text: m.text.slice(0, 5000) });
+		return "";
+	});
+	valueFn("__hostSettings", () => JSON.stringify(deps.settings?.(manifest.id) ?? {}));
 	asyncFn("__hostFetch", async ([url = "", rawInit = "{}"]) => {
 		const init = JSON.parse(rawInit) as { method?: string; body?: string; headers?: Record<string, string> };
 		const method = (init.method ?? "GET").toUpperCase();

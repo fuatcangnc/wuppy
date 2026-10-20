@@ -46,11 +46,13 @@ import { BylineSchemaPage } from "../components/bylines/BylineSchemaPage.tsx";
 import { ContentTypesPage } from "../components/content-types/ContentTypesPage.tsx";
 import { UsersPage } from "../components/users/UsersPage.tsx";
 import { PluginsPage } from "../components/plugins/PluginsPage.tsx";
+import { PluginPage } from "../components/plugins/PluginPage.tsx";
 import { ImportPage } from "../components/import/ImportPage.tsx";
 import { SettingsPage } from "../components/settings/SettingsPage.tsx";
 import { WebhooksPage } from "../components/settings/WebhooksPage.tsx";
 import { ThemesPage } from "../components/settings/ThemesPage.tsx";
 import { GlobalSearch } from "../components/shared/GlobalSearch.tsx";
+import { apiData } from "../lib/api.ts";
 import { $collections, loadCollections } from "../stores/content.ts";
 import { $session, loadSession, signOut } from "../stores/session.ts";
 import { ThemeSwitcher, Button, GhostButton, Spinner, ToastHost } from "../ui/index.tsx";
@@ -71,7 +73,10 @@ function NavLink({
 			to={to}
 			params={params}
 			className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[13px] text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground"
-			activeProps={{ className: "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[13px] font-medium bg-sidebar-accent text-sidebar-foreground" }}
+			activeProps={{
+				className:
+					"flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[13px] font-medium bg-sidebar-accent text-sidebar-foreground",
+			}}
 		>
 			{icon && <span className="grid size-4 place-items-center text-sidebar-foreground opacity-40">{icon}</span>}
 			{children}
@@ -92,17 +97,42 @@ function Shell() {
 	const session = useStore($session);
 	const collections = useStore($collections);
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const [pluginLinks, setPluginLinks] = useState<Array<{ id: string; index: number; label: string }>>([]);
 	useEffect(() => {
-		if (session.status === "authed") void loadCollections();
+		if (session.status !== "authed") return;
+		void loadCollections();
+		// Pages contributed by active plugins; users without plugins:manage simply get none.
+		void apiData<{
+			plugins: Array<{ id: string | null; state: string; manifest?: { adminPages: Array<{ label: string }> } }>;
+		}>("GET", "/api/plugins")
+			.then((d) =>
+				setPluginLinks(
+					d.plugins.flatMap((p) =>
+						p.state === "active" && p.id
+							? (p.manifest?.adminPages ?? []).map((page, index) => ({ id: p.id!, index, label: page.label }))
+							: [],
+					),
+				),
+			)
+			.catch(() => setPluginLinks([]));
 	}, [session.status]);
 
-	if (session.status === "loading") return <div className="grid min-h-screen place-items-center"><Spinner /></div>;
+	if (session.status === "loading")
+		return (
+			<div className="grid min-h-screen place-items-center">
+				<Spinner />
+			</div>
+		);
 	if (session.status === "error") {
 		return (
 			<main className="mx-auto grid max-w-md gap-3 p-6">
 				<h1 className="text-xl font-semibold">Can't reach the server</h1>
-				<p role="alert" className="text-destructive">{session.message}</p>
-				<p className="text-sm text-muted-foreground">Check the terminal running Wuppy; WUPPY_SECRET must be set (32+ characters).</p>
+				<p role="alert" className="text-destructive">
+					{session.message}
+				</p>
+				<p className="text-sm text-muted-foreground">
+					Check the terminal running Wuppy; WUPPY_SECRET must be set (32+ characters).
+				</p>
 				<GhostButton onClick={() => void loadSession()}>Try again</GhostButton>
 			</main>
 		);
@@ -113,8 +143,12 @@ function Shell() {
 	const nav = (
 		<>
 			<Group title="Overview">
-				<NavLink to="/" icon={<LayoutDashboard size={16} />}>Dashboard</NavLink>
-				<NavLink to="/calendar" icon={<CalendarDays size={16} />}>Calendar</NavLink>
+				<NavLink to="/" icon={<LayoutDashboard size={16} />}>
+					Dashboard
+				</NavLink>
+				<NavLink to="/calendar" icon={<CalendarDays size={16} />}>
+					Calendar
+				</NavLink>
 			</Group>
 			<Group title="Content">
 				{collections.map((c) => (
@@ -122,35 +156,86 @@ function Shell() {
 						<span aria-label={c.name}>{c.name.charAt(0).toUpperCase() + c.name.slice(1)}</span>
 					</NavLink>
 				))}
-				<NavLink to="/trash" icon={<FileText size={16} />}>Trash</NavLink>
+				<NavLink to="/trash" icon={<FileText size={16} />}>
+					Trash
+				</NavLink>
 			</Group>
 			<Group title="Library">
-				<NavLink to="/media" icon={<ImageIcon size={16} />}>Media</NavLink>
+				<NavLink to="/media" icon={<ImageIcon size={16} />}>
+					Media
+				</NavLink>
 			</Group>
 			<Group title="Manage">
-				<NavLink to="/comments" icon={<MessageSquare size={16} />}>Comments</NavLink>
-				<NavLink to="/menus" icon={<MenuIcon size={16} />}>Menus</NavLink>
-				<NavLink to="/redirects" icon={<ArrowRightLeft size={16} />}>Redirects</NavLink>
-				<NavLink to="/widgets" icon={<Blocks size={16} />}>Widgets</NavLink>
-				<NavLink to="/sections" icon={<Layers size={16} />}>Sections</NavLink>
-				<NavLink to="/taxonomies" icon={<Tags size={16} />}>Categories &amp; tags</NavLink>
-				<NavLink to="/bylines" icon={<UserRound size={16} />}>Bylines</NavLink>
+				<NavLink to="/comments" icon={<MessageSquare size={16} />}>
+					Comments
+				</NavLink>
+				<NavLink to="/menus" icon={<MenuIcon size={16} />}>
+					Menus
+				</NavLink>
+				<NavLink to="/redirects" icon={<ArrowRightLeft size={16} />}>
+					Redirects
+				</NavLink>
+				<NavLink to="/widgets" icon={<Blocks size={16} />}>
+					Widgets
+				</NavLink>
+				<NavLink to="/sections" icon={<Layers size={16} />}>
+					Sections
+				</NavLink>
+				<NavLink to="/taxonomies" icon={<Tags size={16} />}>
+					Categories &amp; tags
+				</NavLink>
+				<NavLink to="/bylines" icon={<UserRound size={16} />}>
+					Bylines
+				</NavLink>
 			</Group>
+			{pluginLinks.length > 0 && (
+				<Group title="Plugins">
+					{pluginLinks.map((l) => (
+						<NavLink key={`${l.id}:${l.index}`} to="/p/$id/$index" params={{ id: l.id, index: String(l.index) }}>
+							{l.label}
+						</NavLink>
+					))}
+				</Group>
+			)}
 			{isAdmin && (
 				<Group title="Admin">
-					<NavLink to="/content-types" icon={<Newspaper size={16} />}>Content types</NavLink>
-					<NavLink to="/byline-schema" icon={<UserRound size={16} />}>Byline schema</NavLink>
-					<NavLink to="/users" icon={<UserRound size={16} />}>Users</NavLink>
-					<NavLink to="/plugins" icon={<Puzzle size={16} />}>Plugins</NavLink>
-					<NavLink to="/import" icon={<Upload size={16} />}>Import</NavLink>
-					<NavLink to="/webhooks" icon={<Webhook size={16} />}>Webhooks</NavLink>
-				<NavLink to="/settings" icon={<Settings size={16} />}>Settings</NavLink>
-					<NavLink to="/themes" icon={<Palette size={16} />}>Themes</NavLink>
+					<NavLink to="/content-types" icon={<Newspaper size={16} />}>
+						Content types
+					</NavLink>
+					<NavLink to="/byline-schema" icon={<UserRound size={16} />}>
+						Byline schema
+					</NavLink>
+					<NavLink to="/users" icon={<UserRound size={16} />}>
+						Users
+					</NavLink>
+					<NavLink to="/plugins" icon={<Puzzle size={16} />}>
+						Plugins
+					</NavLink>
+					<NavLink to="/import" icon={<Upload size={16} />}>
+						Import
+					</NavLink>
+					<NavLink to="/webhooks" icon={<Webhook size={16} />}>
+						Webhooks
+					</NavLink>
+					<NavLink to="/settings" icon={<Settings size={16} />}>
+						Settings
+					</NavLink>
+					<NavLink to="/themes" icon={<Palette size={16} />}>
+						Themes
+					</NavLink>
 				</Group>
 			)}
 			<div className="mt-4 border-t border-border pt-2">
-				{isAdmin && <NavLink to="/audit" icon={<ShieldCheck size={16} />}>Security log</NavLink>}
-				{isAdmin && <NavLink to="/transfer" icon={<DatabaseBackup size={16} />}>Backup</NavLink>}
+				{isAdmin && (
+					<NavLink to="/audit" icon={<ShieldCheck size={16} />}>
+						Security log
+					</NavLink>
+				)}
+				{isAdmin && (
+					<NavLink to="/transfer" icon={<DatabaseBackup size={16} />}>
+						Backup
+					</NavLink>
+				)}
 				<NavLink to="/security">Account security</NavLink>
 			</div>
 		</>
@@ -159,9 +244,13 @@ function Shell() {
 	return (
 		<div className="min-h-screen bg-background text-foreground">
 			<div className="flex min-h-screen">
-				<aside className={`${mobileOpen ? "block" : "hidden"} w-64 shrink-0 border-e border-sidebar-border bg-sidebar p-3 text-sidebar-foreground lg:block`}>
+				<aside
+					className={`${mobileOpen ? "block" : "hidden"} w-64 shrink-0 border-e border-sidebar-border bg-sidebar p-3 text-sidebar-foreground lg:block`}
+				>
 					<div className="mb-4 flex items-center gap-2 px-2">
-						<span className="grid size-8 place-items-center rounded-ui bg-primary text-sm font-bold text-primary-foreground">W</span>
+						<span className="grid size-8 place-items-center rounded-ui bg-primary text-sm font-bold text-primary-foreground">
+							W
+						</span>
 						<div>
 							<p className="text-sm font-semibold">Wuppy</p>
 							<p className="text-xs text-muted-foreground">Content studio</p>
@@ -177,15 +266,30 @@ function Shell() {
 				<div className="min-w-0 flex-1">
 					<header className="flex items-center justify-between gap-3 border-b border-border bg-background px-4 py-2">
 						<div className="flex items-center gap-2">
-							<Button variant="ghost" className="lg:hidden" onClick={() => setMobileOpen((v) => !v)} aria-label="Toggle navigation">
+							<Button
+								variant="ghost"
+								className="lg:hidden"
+								onClick={() => setMobileOpen((v) => !v)}
+								aria-label="Toggle navigation"
+							>
 								<MenuIcon size={18} />
 							</Button>
-							<a href="/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+							<a
+								href="/"
+								target="_blank"
+								rel="noreferrer"
+								className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+							>
 								<ExternalLink size={14} /> View site
 							</a>
 							<span className="flex items-center gap-1 rounded-full border border-border p-0.5 text-xs">
 								<span className="rounded-full bg-secondary px-2 py-0.5 font-medium">Edit</span>
-								<a href="/" target="_blank" rel="noreferrer" className="px-2 py-0.5 text-muted-foreground hover:text-foreground">
+								<a
+									href="/"
+									target="_blank"
+									rel="noreferrer"
+									className="px-2 py-0.5 text-muted-foreground hover:text-foreground"
+								>
 									Preview
 								</a>
 							</span>
@@ -227,6 +331,7 @@ const bylines = createRoute({ getParentRoute: () => root, path: "/bylines", comp
 const bylineSchema = createRoute({ getParentRoute: () => root, path: "/byline-schema", component: BylineSchemaPage });
 const contentTypes = createRoute({ getParentRoute: () => root, path: "/content-types", component: ContentTypesPage });
 const users = createRoute({ getParentRoute: () => root, path: "/users", component: UsersPage });
+const pluginPage = createRoute({ getParentRoute: () => root, path: "/p/$id/$index", component: PluginPage });
 const plugins = createRoute({ getParentRoute: () => root, path: "/plugins", component: PluginsPage });
 const importPage = createRoute({ getParentRoute: () => root, path: "/import", component: ImportPage });
 const webhooks = createRoute({ getParentRoute: () => root, path: "/webhooks", component: WebhooksPage });
@@ -260,6 +365,7 @@ export const router = createRouter({
 		contentTypes,
 		users,
 		plugins,
+		pluginPage,
 		importPage,
 		webhooks,
 		settings,

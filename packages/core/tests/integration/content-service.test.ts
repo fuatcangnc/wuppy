@@ -1,7 +1,7 @@
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { RealGit } from "@wuppy/git";
+import { NoopGit, RealGit } from "@wuppy/git";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { collectionSchema } from "../../src/content-types/index.ts";
 import { ContentService } from "../../src/content/service.ts";
@@ -61,5 +61,15 @@ describe("ContentService", () => {
 		await svc.put("posts", "same", { data: {}, body: "x\n" });
 		await svc.put("posts", "same", { data: {}, body: "x\n" });
 		expect(await svc.history("posts", "same")).toHaveLength(1);
+	});
+});
+
+describe("allowedComponents", () => {
+	it("lists the MDX components the site allows, none by default", () => {
+		const posts = collectionSchema.parse({ name: "posts", dir: "content/posts" });
+		expect(new ContentService("/tmp", [posts], new NoopGit()).allowedComponents).toEqual([]);
+		expect(new ContentService("/tmp", [posts], new NoopGit(), { components: ["Callout"] }).allowedComponents).toEqual([
+			"Callout",
+		]);
 	});
 });

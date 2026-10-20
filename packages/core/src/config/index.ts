@@ -5,6 +5,7 @@ import { z } from "zod";
 import { collectionSchema } from "../content-types/index.ts";
 import { webhooksSchema } from "../webhooks/index.ts";
 import { redirectsSchema } from "../redirects/index.ts";
+import { registryConfigSchema } from "../plugins/registry.ts";
 
 const safeDir = collectionSchema.shape.dir.refine(
 	(d) => !d.startsWith("/") && !d.split(/[\\/]/).includes(".."),
@@ -21,6 +22,8 @@ export const configSchema = z
 		components: z.array(z.string().regex(/^[A-Z][A-Za-z0-9]*$/)).default([]),
 		/** Sandboxed plugins. `approve` is the capability hash printed when a plugin is first added. */
 		plugins: z.array(z.object({ dir: z.string().min(1), approve: z.string().length(64) })).default([]),
+		/** Where the admin can search for and install plugins. Keys pin who may publish there. */
+		registries: z.array(registryConfigSchema).default([]),
 		/** Notified (signed POST) when content or media changes, e.g. to trigger a rebuild. */
 		webhooks: webhooksSchema,
 		redirects: redirectsSchema.default([]),

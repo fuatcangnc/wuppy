@@ -1,16 +1,16 @@
 import { Copy, Plus, Trash2 } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { api, apiData, slugPath } from "../../lib/api.ts";
 import {
 	$collections,
-	$entries,
 	$contentError,
 	deleteEntry,
 	duplicateEntry,
 	loadCollections,
-	loadEntries,
 	setEntryDraft,
+	type EntrySummary,
 } from "../../stores/content.ts";
 import { slugifyTitle } from "../../lib/slug.ts";
 import { newEntry } from "../../stores/editor.ts";
@@ -33,21 +33,48 @@ import {
 	TableRow,
 } from "../../ui/index.tsx";
 
-function statusOf(data: Record<string, unknown>): { label: string; tone: "success" | "warning" | "accent" } {
-	if (data.draft === true) {
-		const at = data.publishAt ? new Date(String(data.publishAt)).getTime() : NaN;
-		return at > Date.now() ? { label: "scheduled", tone: "accent" } : { label: "draft", tone: "warning" };
-	}
-	return { label: "published", tone: "success" };
+const TONES = { published: "success", draft: "warning", scheduled: "accent" } as const;
+const PAGE = 50;
+
+type Row = EntrySummary & { status: keyof typeof TONES };
+interface Page {
+	data: Row[];
+	total: number;
+	nextCursor: string | null;
+}
+interface Filters {
+	q: string;
+	status: string;
+	sort: string;
+	author: string;
+	lang: string;
+	from: string;
+	to: string;
+}
+const NO_FILTERS: Filters = { q: "", status: "", sort: "-modified", author: "", lang: "", from: "", to: "" };
+
+/** Query string for the list API: only filters that are set, dates widened to whole days. */
+export function listQuery(f: Filters, cursor?: string): string {
+	const params = new URLSearchParams({ limit: String(PAGE), sort: f.sort });
+	for (const key of ["q", "status", "author", "lang"] as const) if (f[key].trim()) params.set(key, f[key].trim());
+	if (f.from) params.set("from", `${f.from}T00:00:00.000Z`);
+	if (f.to) params.set("to", `${new Date(new Date(`${f.to}T00:00:00.000Z`).getTime() + 86_400_000).toISOString()}`);
+	if (cursor) params.set("cursor", cursor);
+	return params.toString();
 }
 
 export function EntriesPage() {
 	const { collection } = useParams({ from: "/c/$collection" });
-	const entries = useStore($entries)[collection] ?? [];
 	const collections = useStore($collections);
 	const error = useStore($contentError);
-	const [query, setQuery] = useState("");
-	const [status, setStatus] = useState("all");
+	const [filters, setFilters] = useState<Filters>(NO_FILTERS);
+	const [rows, setRows] = useState<Row[]>([]);
+	const [total, setTotal] = useState(0);
+	const [next, setNext] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
+	const [listError, setListError] = useState<string | null>(null);
+	const [bylines, setBylines] = useState<Array<{ slug: string; name: string }>>([]);
+	const [locales, setLocales] = useState<string[]>([]);
 	const [createOpen, setCreateOpen] = useState(false);
 	const [title, setTitle] = useState("");
 	const [slug, setSlug] = useState("");
@@ -58,21 +85,41 @@ export function EntriesPage() {
 	const info = collections.find((c) => c.name === collection);
 	const label = collection.charAt(0).toUpperCase() + collection.slice(1);
 
+	const fetchPage = useCallback(
+		async (cursor?: string) => {
+			setLoading(true);
+			try {
+				const page = await api<Page>("GET", `/api/content/${collection}?${listQuery(filters, cursor)}`);
+				setRows((prev) => (cursor ? [...prev, ...page.data] : page.data));
+				setTotal(page.total);
+				setNext(page.nextCursor);
+				setListError(null);
+			} catch (e) {
+				setListError((e as Error).message);
+			}
+			setLoading(false);
+		},
+		[collection, filters],
+	);
+	const reload = () => fetchPage();
+
 	useEffect(() => {
 		void loadCollections();
-		void loadEntries(collection);
+		void apiData<Array<{ slug: string; name: string }>>("GET", "/api/data/bylines")
+			.then(setBylines)
+			.catch(() => undefined);
+		void api<{ locales: string[] }>("GET", `/api/i18n/${collection}`)
+			.then((r) => setLocales(r.locales))
+			.catch(() => undefined);
 	}, [collection]);
 
-	const filtered = useMemo(
-		() =>
-			entries.filter((entry) => {
-				const entryTitle = String(entry.data.title ?? entry.slug).toLowerCase();
-				if (query && !entryTitle.includes(query.toLowerCase()) && !entry.slug.includes(query)) return false;
-				if (status === "all") return true;
-				return statusOf(entry.data).label === status;
-			}),
-		[entries, query, status],
-	);
+	// Typing in the search box should not fire a request per key.
+	useEffect(() => {
+		const timer = setTimeout(() => void fetchPage(), filters.q ? 250 : 0);
+		return () => clearTimeout(timer);
+	}, [fetchPage, filters.q]);
+	const filtersActive = JSON.stringify({ ...filters, sort: "" }) !== JSON.stringify({ ...NO_FILTERS, sort: "" });
+	const set = (patch: Partial<Filters>) => setFilters((f) => ({ ...f, ...patch }));
 
 	const openCreate = () => {
 		setTitle("");
@@ -94,14 +141,19 @@ export function EntriesPage() {
 		setCreateError(null);
 	};
 
-	const create = () => {
+	const create = async () => {
 		const nextSlug = slug.trim();
 		const nextTitle = title.trim();
 		if (!nextSlug) {
 			setCreateError("Enter a title or slug.");
 			return;
 		}
-		if (entries.some((entry) => entry.slug === nextSlug)) {
+		// The list is paged, so ask the server whether the slug is taken.
+		const taken = await apiData("GET", `/api/content/${collection}/${slugPath(nextSlug)}`).then(
+			() => true,
+			() => false,
+		);
+		if (taken) {
 			setCreateError("An entry with this slug already exists.");
 			return;
 		}
@@ -118,7 +170,7 @@ export function EntriesPage() {
 		<div className="grid gap-4">
 			<PageHeader
 				title={label}
-				description={`${entries.length} entries in ${info?.dir ?? collection}`}
+				description={`${total} entries in ${info?.dir ?? collection}`}
 				actions={
 					<>
 						<Link to="/t/$collection" params={{ collection }} className="contents">
@@ -130,15 +182,49 @@ export function EntriesPage() {
 					</>
 				}
 			/>
-			<ErrorText>{createError ?? error}</ErrorText>
+			<ErrorText>{createError ?? listError ?? error}</ErrorText>
 			<div className="flex flex-wrap items-end gap-2">
-				<Input label="Search" placeholder="Title or slug" value={query} onChange={(e) => setQuery(e.target.value)} />
-				<Select label="Status" value={status} onChange={(e) => setStatus(e.target.value)}>
-					<option value="all">All</option>
+				<Input
+					label="Search"
+					placeholder="Title, slug or text"
+					value={filters.q}
+					onChange={(e) => set({ q: e.target.value })}
+				/>
+				<Select label="Status" value={filters.status} onChange={(e) => set({ status: e.target.value })}>
+					<option value="">All</option>
 					<option value="published">Published</option>
 					<option value="draft">Draft</option>
 					<option value="scheduled">Scheduled</option>
 				</Select>
+				<Select label="Sort" value={filters.sort} onChange={(e) => set({ sort: e.target.value })}>
+					<option value="-modified">Recently modified</option>
+					<option value="modified">Least recently modified</option>
+					<option value="title">Title A–Z</option>
+					<option value="-title">Title Z–A</option>
+					<option value="slug">Slug</option>
+				</Select>
+				{bylines.length > 0 && (
+					<Select label="Author" value={filters.author} onChange={(e) => set({ author: e.target.value })}>
+						<option value="">Anyone</option>
+						{bylines.map((b) => (
+							<option key={b.slug} value={b.slug}>
+								{b.name}
+							</option>
+						))}
+					</Select>
+				)}
+				{locales.length > 0 && (
+					<Select label="Language" value={filters.lang} onChange={(e) => set({ lang: e.target.value })}>
+						<option value="">All</option>
+						{locales.map((l) => (
+							<option key={l} value={l}>
+								{l}
+							</option>
+						))}
+					</Select>
+				)}
+				<Input label="Modified from" type="date" value={filters.from} onChange={(e) => set({ from: e.target.value })} />
+				<Input label="Modified to" type="date" value={filters.to} onChange={(e) => set({ to: e.target.value })} />
 				<Input
 					label="New entry title"
 					placeholder="My first post"
@@ -151,7 +237,7 @@ export function EntriesPage() {
 					value={slug}
 					onChange={(e) => changeSlug(e.target.value)}
 				/>
-				<Button onClick={create} disabled={!/^[a-z0-9][a-z0-9/_.-]*$/i.test(slug)}>
+				<Button onClick={() => void create()} disabled={!/^[a-z0-9][a-z0-9/_.-]*$/i.test(slug)}>
 					Create
 				</Button>
 			</div>
@@ -163,7 +249,9 @@ export function EntriesPage() {
 						<Button
 							size="sm"
 							onClick={() =>
-								void Promise.all(selected.map((s) => setEntryDraft(collection, s, false))).then(() => setSelected([]))
+								void Promise.all(selected.map((s) => setEntryDraft(collection, s, false))).then(
+									() => (setSelected([]), reload()),
+								)
 							}
 						>
 							Publish
@@ -172,7 +260,9 @@ export function EntriesPage() {
 							size="sm"
 							variant="secondary"
 							onClick={() =>
-								void Promise.all(selected.map((s) => setEntryDraft(collection, s, true))).then(() => setSelected([]))
+								void Promise.all(selected.map((s) => setEntryDraft(collection, s, true))).then(
+									() => (setSelected([]), reload()),
+								)
 							}
 						>
 							Unpublish
@@ -182,18 +272,20 @@ export function EntriesPage() {
 							variant="destructive"
 							onClick={() => {
 								if (!confirm(`Delete ${selected.length} entries? Git history keeps them recoverable.`)) return;
-								void Promise.all(selected.map((s) => deleteEntry(collection, s))).then(() => setSelected([]));
+								void Promise.all(selected.map((s) => deleteEntry(collection, s))).then(
+									() => (setSelected([]), reload()),
+								);
 							}}
 						>
 							Delete
 						</Button>
 					</div>
 				)}
-				{filtered.length === 0 ? (
+				{rows.length === 0 ? (
 					<div className="p-4">
 						<EmptyState
-							title={entries.length ? "No matches" : `No ${collection} yet`}
-							description={entries.length ? "Try a different search or status." : "Create the first entry."}
+							title={loading ? "Loading…" : filtersActive ? "No matches" : `No ${collection} yet`}
+							description={filtersActive ? "Try different filters." : "Create the first entry."}
 							action={<Button onClick={openCreate}>+ New entry</Button>}
 						/>
 					</div>
@@ -204,14 +296,15 @@ export function EntriesPage() {
 								<TableHead className="w-12" />
 								<TableHead className="min-w-56">Title</TableHead>
 								<TableHead className="min-w-40">Slug</TableHead>
+								<TableHead className="w-28">Author</TableHead>
+								<TableHead className="w-20">Lang</TableHead>
 								<TableHead className="w-28">Status</TableHead>
 								<TableHead className="w-36">Modified</TableHead>
 								<TableHead className="w-52" />
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{filtered.map((entry) => {
-								const s = statusOf(entry.data);
+							{rows.map((entry) => {
 								return (
 									<TableRow key={entry.slug}>
 										<TableCell className="w-12">
@@ -235,8 +328,12 @@ export function EntriesPage() {
 											</Link>
 										</TableCell>
 										<TableCell className="text-muted-foreground">{entry.slug}</TableCell>
+										<TableCell className="text-muted-foreground">{String(entry.data.author ?? "")}</TableCell>
+										<TableCell className="text-muted-foreground">
+											{entry.slug.includes("/") ? entry.slug.split("/")[0] : ""}
+										</TableCell>
 										<TableCell>
-											<Badge tone={s.tone}>{s.label}</Badge>
+											<Badge tone={TONES[entry.status]}>{entry.status}</Badge>
 										</TableCell>
 										<TableCell className="text-muted-foreground" title={new Date(entry.modified).toLocaleString()}>
 											{new Date(entry.modified).toLocaleDateString(undefined, {
@@ -246,7 +343,11 @@ export function EntriesPage() {
 											})}
 										</TableCell>
 										<TableCell className="whitespace-nowrap text-end">
-											<Button variant="ghost" size="sm" onClick={() => void duplicateEntry(collection, entry.slug)}>
+											<Button
+												variant="ghost"
+												size="sm"
+												onClick={() => void duplicateEntry(collection, entry.slug).then(reload)}
+											>
 												<Copy size={14} /> Duplicate
 											</Button>
 											<Button
@@ -254,7 +355,7 @@ export function EntriesPage() {
 												size="sm"
 												onClick={() => {
 													if (confirm(`Delete ${entry.slug}? It stays recoverable in the trash.`))
-														void deleteEntry(collection, entry.slug);
+														void deleteEntry(collection, entry.slug).then(reload);
 												}}
 											>
 												<Trash2 size={14} /> Delete
@@ -265,6 +366,13 @@ export function EntriesPage() {
 							})}
 						</TableBody>
 					</Table>
+				)}
+				{next && (
+					<div className="border-t border-border p-2 text-center">
+						<Button variant="ghost" disabled={loading} onClick={() => void fetchPage(next)}>
+							Load more ({rows.length} of {total})
+						</Button>
+					</div>
 				)}
 			</Card>
 
@@ -277,7 +385,7 @@ export function EntriesPage() {
 						<Button variant="ghost" onClick={() => setCreateOpen(false)}>
 							Cancel
 						</Button>
-						<Button onClick={create} disabled={!/^[a-z0-9][a-z0-9/_.-]*$/i.test(slug)}>
+						<Button onClick={() => void create()} disabled={!/^[a-z0-9][a-z0-9/_.-]*$/i.test(slug)}>
 							Create
 						</Button>
 					</>

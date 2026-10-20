@@ -1,5 +1,4 @@
 import { $convertFromMarkdownString, $convertToMarkdownString } from "@lexical/markdown";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
@@ -9,44 +8,11 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { $createParagraphNode, $createTextNode, $getRoot } from "lexical";
 import { NODES, TRANSFORM } from "../../lib/markdown.ts";
-import { Input } from "../../ui/index.tsx";
-
-function ImageButton({ onUpload }: { onUpload: (file: File) => Promise<string> }) {
-	const [editor] = useLexicalComposerContext();
-	return (
-		<Input
-			type="file"
-			accept="image/png,image/jpeg,image/gif,image/webp"
-			aria-label="Insert image"
-			onChange={(e) => {
-				const file = e.target.files?.[0];
-				e.target.value = "";
-				if (!file) return;
-				const alt = window.prompt("Describe the image (alt text)", file.name.replace(/\.[^.]+$/, "")) ?? "";
-				void onUpload(file)
-					.then((url) =>
-						editor.update(() => {
-							$getRoot().append($createParagraphNode().append($createTextNode(`![${alt}](${url})`)));
-						}),
-					)
-					.catch((error: Error) => alert(`Upload failed: ${error.message}`));
-			}}
-		/>
-	);
-}
+import { EditorToolbar } from "./EditorToolbar.tsx";
 
 /** Uncontrolled: `initial` seeds the editor once; remount (key) to load another document. */
-export function MarkdownEditor({
-	initial,
-	onChange,
-	onUpload,
-}: {
-	initial: string;
-	onChange: (markdown: string) => void;
-	onUpload?: (file: File) => Promise<string>;
-}) {
+export function MarkdownEditor({ initial, onChange }: { initial: string; onChange: (markdown: string) => void }) {
 	return (
 		<LexicalComposer
 			initialConfig={{
@@ -62,7 +28,7 @@ export function MarkdownEditor({
 				},
 			}}
 		>
-			{onUpload && <ImageButton onUpload={onUpload} />}
+			<EditorToolbar />
 			<RichTextPlugin
 				contentEditable={
 					<ContentEditable

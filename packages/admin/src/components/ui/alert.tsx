@@ -16,7 +16,11 @@ export function Alert({
 	...props
 }: HTMLAttributes<HTMLDivElement> & { tone?: keyof typeof tones; title?: string; children: ReactNode }) {
 	return (
-		<div role="alert" className={cn("relative grid w-full gap-1 rounded-lg border px-4 py-3 text-sm", tones[tone], className)} {...props}>
+		<div
+			role="alert"
+			className={cn("relative grid w-full gap-1 rounded-lg border px-4 py-3 text-sm", tones[tone], className)}
+			{...props}
+		>
 			{title && <p className="font-medium">{title}</p>}
 			<div>{children}</div>
 		</div>

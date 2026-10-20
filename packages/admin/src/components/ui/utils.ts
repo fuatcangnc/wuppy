@@ -1,4 +1,5 @@
-export type ClassValue = string | number | null | undefined | false | ClassValue[] | Record<string, boolean | null | undefined>;
+export type ClassValue =
+	string | number | null | undefined | false | ClassValue[] | Record<string, boolean | null | undefined>;
 
 /** Minimal class combiner; keeps shadcn's single `cn` entry point. */
 export function cn(...inputs: ClassValue[]): string {

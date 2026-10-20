@@ -14,8 +14,7 @@
 		"build": "tsdown"
 	},
 	"dependencies": {
-		"@wuppy/plugin-types": "workspace:*",
-		"zod": "catalog:"
+		"@wuppy/plugin-types": "workspace:*"
 	},
 	"devDependencies": {
 		"@types/node": "catalog:",
@@ -23,8 +22,18 @@
 		"typescript": "catalog:",
 		"vitest": "catalog:"
 	},
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"publishConfig": {
-		"bin": { "wuppy-plugin": "./dist/main.mjs" }
+		"bin": {
+			"wuppy-plugin": "./dist/main.mjs"
+		},
+		"exports": {
+			".": {
+				"types": "./dist/index.d.mts",
+				"import": "./dist/index.mjs"
+			}
+		}
 	}
 }

@@ -49,12 +49,10 @@ export class ApiTokenService {
 		`);
 	}
 
-	create(input: {
-		name: string;
-		userId: string;
-		permissions: string[];
-		expiresAt?: string | null;
-	}): { token: string; record: ApiToken } {
+	create(input: { name: string; userId: string; permissions: string[]; expiresAt?: string | null }): {
+		token: string;
+		record: ApiToken;
+	} {
 		const token = `wuppy_${randomBytes(32).toString("base64url")}`;
 		const record: ApiToken = {
 			id: randomUUID(),
@@ -95,11 +93,12 @@ export class ApiTokenService {
 	verify(token: string): { userId: string; permissions: string[] } | null {
 		if (!token.startsWith("wuppy_")) return null;
 		const found = this.db.prepare("SELECT * FROM wuppy_api_tokens WHERE token_hash = ?").get(hash(token)) as
-			| Row
-			| undefined;
+			Row | undefined;
 		if (!found) return null;
 		if (found.expires_at && new Date(found.expires_at).getTime() <= Date.now()) return null;
-		this.db.prepare("UPDATE wuppy_api_tokens SET last_used_at = ? WHERE id = ?").run(new Date().toISOString(), found.id);
+		this.db
+			.prepare("UPDATE wuppy_api_tokens SET last_used_at = ? WHERE id = ?")
+			.run(new Date().toISOString(), found.id);
 		return { userId: found.user_id, permissions: JSON.parse(found.permissions) as string[] };
 	}
 }

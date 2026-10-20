@@ -1,5 +1,7 @@
 import { createHmac } from "node:crypto";
 import { z } from "zod";
+import { redact } from "../security/redact.ts";
+import { assertPublicUrl } from "../security/ssrf.ts";
 
 export const EVENT_TYPES = ["content.updated", "content.deleted", "content.reverted", "media.uploaded"] as const;
 
@@ -26,7 +28,10 @@ export const webhooksSchema = z
 export type WebhookConfig = z.output<typeof webhooksSchema>[number];
 
 /** Deliveries are best-effort (no retries) and never throw into the code that caused the event. */
-export function createWebhookSender(hooks: WebhookConfig[], { timeoutMs = 5000 } = {}) {
+export function createWebhookSender(
+	hooks: WebhookConfig[],
+	{ timeoutMs = 5000, allowPrivate = false }: { timeoutMs?: number; allowPrivate?: boolean } = {},
+) {
 	return async (event: WebhookEvent): Promise<void> => {
 		const body = JSON.stringify(event);
 		await Promise.all(
@@ -34,6 +39,7 @@ export function createWebhookSender(hooks: WebhookConfig[], { timeoutMs = 5000 }
 				.filter((h) => !h.events || h.events.includes(event.type))
 				.map(async (h) => {
 					try {
+						if (!allowPrivate) await assertPublicUrl(h.url);
 						await fetch(h.url, {
 							method: "POST",
 							redirect: "error",
@@ -48,7 +54,7 @@ export function createWebhookSender(hooks: WebhookConfig[], { timeoutMs = 5000 }
 							body,
 						});
 					} catch (e) {
-						console.error(`webhook ${h.url} failed: ${(e as Error).message}`);
+						console.error(redact(`webhook ${h.url} failed: ${(e as Error).message}`));
 					}
 				}),
 		);

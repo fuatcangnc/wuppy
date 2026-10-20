@@ -11,6 +11,9 @@ export class NoopGit implements GitAdapter {
 	async diff(): Promise<string> {
 		return "";
 	}
+	async show(): Promise<string | null> {
+		return null;
+	}
 	async revert(): Promise<string> {
 		throw new Error("Revert is unavailable without Git");
 	}

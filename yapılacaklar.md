@@ -122,39 +122,39 @@ işaretlenir. Kaynaklar:
 ### 1.1 Kabuk
 
 - [x] Better Auth oturumu, giriş ekranı, oturum hatası durumu
-- [ ] Sol menü: **Dashboard, Calendar / Content: Pages, Posts + diğer koleksiyonlar / Media / Manage / Admin** grupları
+- [x] Sol menü: **Dashboard, Calendar / Content: Pages, Posts + diğer koleksiyonlar / Media / Manage / Admin** grupları
 - [ ] Üst çubuk: site adı/logo, **View Site**, **Edit/Preview** anahtarı, kullanıcı menüsü
 - [ ] Kullanıcı menüsü: profil, hesap güvenliği, tema, çıkış
-- [ ] Aktif rota vurgusu, klavye ile gezinme, mobil açılır menü
+- [x] Aktif rota vurgusu, klavye ile gezinme, mobil açılır menü
 - [ ] Sayfa başlığı + eylem düzeni (`PageHeader`: başlık, açıklama, sağ eylemler)
 - [ ] Boş durum, yükleniyor, hata ve yetkisiz durum bileşenleri
-- [ ] Bildirim/toast katmanı (`ui` store)
-- [ ] Tema: light/dark/system, `light-dark()` token'ları
+- [x] Bildirim/toast katmanı (`ui` store)
+- [x] Tema: light/dark/system, `light-dark()` token'ları
 - [ ] Lingui ile tüm metinler + RTL (`dir`, mantıksal sınıflar)
-- [ ] Komut paleti (Cmd/Ctrl+K): sayfalar, içerik arama, hızlı eylemler
-- [ ] Genel arama: başlık/gövde, koleksiyon ve durum filtresi
+- [ ] (kısmi) Ctrl/Cmd+K arama kutusuna odaklanır; sayfa/eylem komutları yok
+- [ ] (kısmi) Başlık/gövde/frontmatter araması API'de (koleksiyon+durum filtreli); admin arayüzünde filtre yok
 
 ### 1.2 Dashboard (ekran görüntüsündeki ekran)
 
-- [ ] `/api/dashboard` ucu: sayaçlar + son etkinlik + koleksiyon özeti (yetkiye göre filtreli)
-- [ ] **Draft** kartı: yayınlanmamış/taslak içerik sayısı
-- [ ] **Media files** kartı: medya dosyası sayısı
-- [ ] **User** kartı: kullanıcı sayısı
-- [ ] **Content** kartı: her koleksiyon için yayında/taslak rozetleri (`7`, `1` gibi) ve tıklanınca filtreli liste
-- [ ] **Recent Activity**: son değişen içerikler; durum ikonu, başlık, koleksiyon, göreli zaman, profile bağlantı
-- [ ] Hızlı eylemler: **+ Page**, **+ Post**, **Upload Media** (koleksiyona göre)
-- [ ] Dashboard boş durumu: ilk sayfa/yazı oluşturma yönlendirmesi
-- [ ] Dashboard testleri: sayaç doğruluğu, yetkiye göre gizleme, boş durum
+- [x] `/api/dashboard` ucu: sayaçlar + son etkinlik + koleksiyon özeti (yetkiye göre filtreli)
+- [x] **Draft** kartı: yayınlanmamış/taslak içerik sayısı
+- [x] **Media files** kartı: medya dosyası sayısı
+- [x] **User** kartı: kullanıcı sayısı
+- [x] **Content** kartı: her koleksiyon için yayında/taslak rozetleri (`7`, `1` gibi) ve tıklanınca filtreli liste
+- [x] **Recent Activity**: son değişen içerikler; durum ikonu, başlık, koleksiyon, göreli zaman, profile bağlantı
+- [x] Hızlı eylemler: **+ Page**, **+ Post**, **Upload Media** (koleksiyona göre)
+- [x] Dashboard boş durumu: ilk sayfa/yazı oluşturma yönlendirmesi
+- [ ] (kısmi) Sayaç doğruluğu testli; yetkiye göre gizleme ve boş durum testi yok
 
 ### 1.3 Calendar
 
-- [ ] `/api/calendar?from&to` ucu: `publishAt` ve `date` alanlarına göre içerikler
-- [ ] Aylık/haftalık görünüm, gün hücresinde içerik kartları
-- [ ] Taslak/zamanlanmış/yayında renk kodu
-- [ ] Sürükle-bırak ile tarih değiştirme (yetki + Git commit)
-- [ ] Gün detayı: içerik listesi, hızlı düzenleme, yeni içerik
-- [ ] Saat dilimi ve locale biçimlendirmesi
-- [ ] Klavye erişilebilirliği ve boş ay durumu
+- [x] `/api/calendar?from&to` ucu: `publishAt` ve `date` alanlarına göre içerikler
+- [x] Aylık ve haftalık görünüm
+- [x] Taslak/zamanlanmış/yayında renk kodu
+- [x] Sürükle-bırak ile tarih değiştirme (yetki + Git commit)
+- [x] Gün detayı: içerik listesi, hızlı düzenleme, yeni içerik
+- [x] Saat dilimi ve locale biçimlendirmesi
+- [x] Klavye erişilebilirliği ve boş ay durumu
 
 ### 1.4 Auth, onboarding ve oturum
 
@@ -186,14 +186,14 @@ işaretlenir. Kaynaklar:
 - [x] Genel içerik listesi, oluştur/sil
 - [x] Şemaya göre alan formu (`string|text|date|image|boolean|number|list`)
 - [x] Starter'da **Pages** ve **Posts** koleksiyonları varsayılan gelsin
-- [ ] (kısmi) Liste: başlık/slug arama ve durum filtresi var; yazar/dil/tarih filtresi ve sıralama yok
-- [ ] Sayfalama (cursor), sayfa boyutu seçimi ve URL'de filtre durumu
+- [x] Liste: sunucu taraflı arama, durum/yazar/dil/tarih filtresi ve sıralama
+- [x] Liste arayüzü API'yi kullanıyor (limit/cursor/q/status/sort/author/lang/from/to; "Load more")
 - [x] Satır eylemleri: düzenle, çoğalt, çöpe taşı, geri al (Trash), kalıcı sil
 - [x] Toplu işlem: seç, yayınla, taslağa al, sil; etiketleme yok
 - [x] Durum rozetleri: taslak, zamanlanmış, yayında; arşiv yok
-- [ ] (kısmi) Yazar/byline, dil, son güncelleme ve durum kolonları: başlık/slug/durum/değişim zamanı var; yazar/dil yok
+- [x] Yazar, dil, son güncelleme ve durum kolonları
 - [x] Yayınlama: yayınla, yayından al, zamanla; zamanlamayı iptal publishAt temizliğiyle
-- [ ] İçerik kilidi: aynı girdiyi iki kişi açarsa uyarı + salt-okunur
+- [x] İçerik kilidi: başka biri düzenliyorsa uyarı + kaydetme kapalı, "Edit anyway" ile devralma (tavsiye niteliğinde, süreç içi)
 - [x] Silme güvenliği: çöp kutusu, geri alma, kalıcı silmede onay
 - [ ] (kısmi) Liste boş/hata/yükleniyor durumları var; erişilebilirlik/klavye testi yok
 
@@ -203,40 +203,40 @@ işaretlenir. Kaynaklar:
 - [x] Kaydet = Git commit
 - [x] Slug çakışma kontrolü: yeni içerik `POST` ile oluşturulur, var olan slug `409 SLUG_TAKEN` döner; başlıktan otomatik slug ve manuel düzenleme
 - [x] Başlıktan otomatik slug: yeni içerikte başlık yazılırken slug üretilir; kullanıcı slug’ı düzenlerse otomatik üretim durur, çakışma `409`/`SLUG_TAKEN` ile korunur
-- [ ] (kısmi) Kaydet + Draft/Publish at var; ayrı Publish butonu ve taslak otomatik kaydetme yok
-- [ ] (kısmi) Tarayıcı `beforeunload` uyarısı var; uygulama içi onay ve otomatik kurtarma yok
-- [ ] Çakışma: `409 CONFLICT`, sunucu sürümünü göster, birleştirme/üzerine yazma seçenekleri
-- [ ] (kısmi) Sağ panelde yayın durumu, tarih, yazar ve SEO var; dil/taksonomi özeti yok
-- [ ] (kısmi) "View on site" var; canlı taslak önizleme yok
+- [x] Kaydet, ayrı Publish/Unpublish düğmesi, Draft ve Publish at; otomatik kaydetme kurtarma kopyası olarak (ADR-007)
+- [x] Kaydedilmemiş değişiklik: `beforeunload` + uygulama içi gezinme onayı + otomatik kurtarma
+- [x] Çakışma: ETag/If-Match ile `409 CONFLICT` + sunucu sürümü; editörde "benimkini koru" / "onların sürümünü kullan" seçenekleri
+- [x] Sağ panelde yayın durumu, tarih, yazar, SEO, dil ve taksonomi özeti
+- [x] "View on site" + imzalı önizleme bağlantısı (taslak, 24 saat, noindex)
 - [x] Revizyon geçmişi: commit listesi, diff ve geri yükleme (Git commit'lerinden)
-- [ ] (kısmi) Çeviri tablosu var; editör içi "Translate to …" paneli yok
-- [ ] İçerik bileşenleri: izinli bileşen ekleme (Callout, Embed vb.)
-- [ ] Medya: gövdeye görsel/ dosya ekleme, alt metin, caption
-- [ ] Tablo, listeler, kod bloğu, bağlantı, alıntı, başlık seviyeleri
-- [ ] Klavye kısayolları, geri al/yinele, odak yönetimi
-- [ ] Erişilebilirlik: etiketler, aria-live kaydetme bildirimi, klavye ile tam kullanım
-- [ ] Editör testleri: autosave, çakışma, görsel, bağlantı, MDX koruma
+- [x] Çeviri tablosu + editör içi "Translate to …" paneli
+- [x] İçerik bileşenleri: izinli bileşen ekleme (Callout, Embed vb.)
+- [ ] (kısmi) Medya: gövdeye kütüphaneden görsel, alt metin, caption (araç çubuğu); dosya eki yok
+- [ ] (kısmi) Araç çubuğu: kalın/italik/kod, H2/H3, alıntı, listeler, kod bloğu, bağlantı; tablo yalnız Markdown metni (tablo düğümü yok)
+- [ ] (kısmi) Ctrl/Cmd+S kaydeder, geri al/yinele Lexical varsayılanı; odak yönetimi denetlenmedi
+- [ ] (kısmi) Etiketler ve `aria-live` kaydetme durumu var; tam klavye erişimi/axe denetimi yok
+- [ ] (kısmi) Autosave, çakışma, kilit, kurtarma ve yayınlama testli (birim + e2e); bağlantı ve MDX koruma testleri önceden var, tablo/kod bloğu yok
 
 ### 2.3 Alan tipleri ve içerik modeli
 
 - [x] `string, text, date, image, boolean, number, list`
-- [ ] `select`, `reference`, `repeater`, `blocks`, `richText`, `json`
+- [x] `select`, `reference`, `repeater`, `blocks`, `richText`, `json` (repeater/blocks/json panelde JSON olarak düzenlenir)
 - [ ] İlişki (reference) alanı: hedef koleksiyon, tekli/çoklu, ters ilişki
-- [ ] Repeater: alt alan şeması, sıralama, min/max
-- [ ] Blok alanı: blok tipleri, Lexical node, renderer
-- [ ] Koşullu alan görünürlüğü (ör. `draft` ise `publishAt` gizle)
-- [ ] Alan doğrulama mesajları ve sunucu-istemci aynı Zod şeması
-- [ ] Bilinmeyen frontmatter alanlarını koruma testi (var)
-- [ ] İçerik şeması değişince tip üretimi (`wuppy-env.d.ts` / `ContentEntry` tipleri)
+- [x] Repeater: alt alan şeması, min/max (sıralama JSON'da)
+- [ ] (kısmi) Blok tipleri ve doğrulama var (discriminated union); Lexical node/renderer yok
+- [x] Koşullu alan görünürlüğü (ör. `draft` ise `publishAt` gizle)
+- [ ] (kısmi) Sunucuda Zod şeması var; istemci aynı şemayı paylaşmıyor, hata sunucudan gelir
+- [x] Bilinmeyen frontmatter alanlarını koruma testi (var)
+- [x] Tip üretimi: `wuppy types` → `wuppy-env.d.ts`
 
 ### 2.4 Revizyonlar ve geri alma
 
 - [x] Git commit geçmişi, diff, revert
 - [x] Editör içinde revizyon listesi ve "bu sürümü geri yükle" (HistoryPanel)
-- [ ] İki revizyonu yan yana karşılaştırma (frontmatter + gövde)
-- [ ] (kısmi) Satır bazlı diff var; alan bazlı değişiklik özeti yok
-- [ ] Otomatik kaydetme revizyonlarını kullanıcı revizyonlarından ayırma
-- [ ] Revizyon saklama politikası (config)
+- [x] Sürümü şimdikiyle yan yana karşılaştırma (alan alan); iki keyfi revizyon arası yok
+- [x] Satır bazlı diff + alan bazlı değişiklik özeti
+- [x] Otomatik kaydetme revizyon değil kurtarma kopyası (ADR-007): kullanıcı revizyonlarıyla karışmaz
+- [x] Saklama politikası: Git geçmişi budanmaz (ADR-007 kararı)
 
 ---
 
@@ -246,20 +246,20 @@ işaretlenir. Kaynaklar:
 - [x] Görsel alanı yükleme + önizleme
 - [x] Gövdeye görsel ekleme (alt metin sorarak)
 - [x] Medya listesi API'si ve Git commit
-- [ ] (kısmi) Medya kütüphanesi: grid + arama + klasör filtresi var; tür/tarih filtresi ve sayfalama yok
-- [ ] (kısmi) Klasör oluşturma ve klasör atama var; yeniden adlandırma, silme, taşıma ve iç içe klasör yok
-- [ ] Seçici modal: tekli/çoklu seçim, yeni yükleme, arama
-- [ ] (kısmi) Alt metin ve caption var; kredi alanı ve toplu düzenleme yok
-- [ ] (kısmi) Odak noktası var; kırpma ve en-boy oranı ön ayarları yok
-- [ ] Dosya değiştirme (replace) ve eski sürümü koruma
-- [ ] Kullanım takibi: "nerelerde kullanılıyor", silmeden önce uyarı
-- [ ] Görsel optimizasyonu: responsive boyutlar, WebP/AVIF, blurhash/LQIP
+- [x] Medya kütüphanesi: grid, arama, klasör/tür/tarih filtresi, sayfalama, toplu seçim
+- [x] Klasörler: oluşturma, iç içe (3 seviye), yeniden adlandırma, silme (dosyalar klasörsüz kalır), taşıma
+- [x] Seçici modal: tekli/çoklu seçim, yeni yükleme, arama
+- [ ] (kısmi) Alt metin, caption, başlık ve kredi alanı var; toplu düzenleme yok
+- [x] Odak noktası, en-boy oranı ön ayarları ve kırpılmış URL (`ar`/`fx`/`fy`)
+- [x] Dosya değiştirme: aynı türde yerinde değiştirir, eski sürüm Git geçmişinde
+- [x] Kullanım takibi: "nerelerde kullanılıyor" + silmeden önce uyarı (409 IN_USE, zorla silme onayı)
+- [x] Görsel optimizasyonu: izinli genişliklerde WebP/AVIF/JPEG/PNG varyantları (`?w=&format=`, diskte önbellekli), LQIP + boyutlar yüklemede kaydedilir (`sharp`, isteğe bağlı bağımlılık); blurhash yok
 - [ ] Karanlık tema görsel varyantı (opsiyonel)
 - [ ] Depolama adaptörü seçimi: local / S3 (R2 opsiyonel adaptörde)
 - [ ] İmzalı yükleme URL'i ve doğrudan S3 yükleme
-- [ ] Sürükle-bırak, panodan yapıştırma, çoklu yükleme, ilerleme/iptal
-- [ ] Yetim medya taraması ve temizleme aracı
-- [ ] (kısmi) Tür sahteciliği, boyut ve yol aşımı testleri var; kullanım kontrolü testi yok
+- [x] Sürükle-bırak, panodan yapıştırma, çoklu yükleme, ilerleme/iptal
+- [x] Yetim medya taraması ve temizleme aracı
+- [x] Tür sahteciliği, boyut, yol aşımı ve kullanım kontrolü testleri
 
 ---
 
@@ -270,75 +270,75 @@ işaretlenir. Kaynaklar:
 - [x] Yorum veri modeli (SQLite): içerik, yazar, gövde, durum, zaman, IP hash
 - [x] Genel ayar: yorumlar açık/kapalı, moderasyon, kapalı içerik
 - [x] Genel yorum kutusu: bekleyen/onaylı/spam/çöp sekmeleri, sayaçlar
-- [ ] (kısmi) Tek yorum: onayla, spam, çöp, sil var; yanıtla yok
-- [ ] (kısmi) Toplu işlem var; sayfalama yok
-- [ ] İçerik bazlı yorum sayısı ve hızlı erişim
-- [ ] E-posta bildirimi (yeni yorum, yanıt) — e-posta adaptörüne bağlı
+- [x] Tek yorum: onayla, spam, çöp, sil, yanıtla (personel yanıtı hemen yayınlanır, yorumcuya e-posta gider)
+- [x] Toplu işlem + sayfalama ("Load more", `limit`/`offset`)
+- [ ] (kısmi) `/api/comments/entries` giriş başına bekleyen/onaylı sayı verir; içerik listesinde rozet yok
+- [x] E-posta bildirimi: yeni yorum (`settings.comments.notifyEmail`) ve yanıt (yorumcuya)
 - [x] Basit anti-spam: honeypot + hız sınırı
 - [x] Public yorum API'si + CSRF/hız sınırı
 - [x] Yorum testleri: moderasyon, yetki, spam
 
 ### 4.2 Menus (Menüler)
 
-- [ ] Menü modeli: ad, konum (header/footer/sidebar), öğeler, dil
-- [ ] Menü listesi: oluştur, yeniden adlandır, sil, varsayılan
-- [ ] Menü düzenleyici: içerik bağlantısı, özel URL, etiket, hedef
-- [ ] Sürükle-bırak sıralama ve iç içe alt menü
-- [ ] Konum ataması ve şablon tarafında `getMenu(name)` yardımcısı
-- [ ] Çeviri: aynı menünün dil varyantları
-- [ ] Bağlantı doğrulama: iç bağlantı, dış URL, `javascript:` reddi
-- [ ] Menü testleri: sıralama, iç içe yapı, render, çeviri
+- [x] Menü modeli: ad, konum (header/footer/sidebar), öğeler, dil
+- [x] Menü listesi: oluştur, yeniden adlandır, sil, varsayılan
+- [x] Menü öğeleri görsel düzenleyicide (yeniden sırala, alt menü, düzenle, sil)
+- [x] Sürükle-bırak sıralama ve iç içe alt menü
+- [x] Konum ataması ve şablon tarafında `getMenu(name)` yardımcısı
+- [x] Çeviri: aynı menünün dil varyantları
+- [x] Bağlantı doğrulama: iç bağlantı, dış URL, `javascript:` reddi
+- [x] Menü testleri: sıralama, iç içe yapı, render, çeviri
 
 ### 4.3 Redirects (Yönlendirmeler)
 
 - [x] Config'ten yönlendirme, döngü/yinelenen/açık yönlendirme reddi
 - [x] Astro middleware ile 301/302 (e2e doğrulandı)
-- [ ] Admin CRUD: kaynak, hedef, kalıcı/geçici, not, aktif/pasif
-- [ ] 404 kayıtları: istenen yol, sayaç, son görülme, "yönlendirme oluştur"
-- [ ] Toplu içe/dışa aktarma (CSV/JSON)
-- [ ] Regex/joker kaynak desteği ve öncelik sırası
-- [ ] Test: döngü, zincir, sorgu parametresi koruma, 404 kaydı
+- [x] Admin CRUD: kaynak, hedef, kalıcı/geçici, not, aktif/pasif
+- [x] 404 kayıtları: istenen yol, sayaç, son görülme, "yönlendirme oluştur"
+- [x] Toplu içe/dışa aktarma (CSV/JSON)
+- [x] Regex/joker kaynak desteği ve öncelik sırası (exact > en uzun wildcard > regex); güvensiz regex reddedilir
+- [x] Test: döngü, zincir, sorgu parametresi koruma, 404 kaydı
 
 ### 4.4 Widgets (Widget alanları)
 
-- [ ] Widget alanı modeli: ad, konum, açıklama
-- [ ] Widget tipleri: metin, HTML (sanitize), menü, son içerikler, taksonomi, özel bileşen
-- [ ] Alan içinde widget ekleme, sıralama, düzenleme, silme
-- [ ] Görünürlük: dil, içerik türü, sayfa koşulu
-- [ ] Şablon yardımcısı: `getWidgetArea(name)`
-- [ ] Widget testleri: sıralama, sanitize, render, dil
+- [x] Widget alanı modeli: ad, konum, açıklama
+- [x] Widget tipleri: metin, HTML (sanitize), menü, son içerikler, taksonomi, özel bileşen
+- [x] Alan içinde widget ekleme, sıralama, düzenleme, silme
+- [x] Dil, koleksiyon ve sayfa yoluna (`paths`, `/blog/*`) göre görünürlük
+- [x] Şablon yardımcısı: `getWidgetArea(name)`
+- [x] Widget testleri: dil/koleksiyon filtresi, sanitize (sıralama JSON'da)
 
 ### 4.5 Sections (Bölümler)
 
-- [ ] Yeniden kullanılabilir bölüm modeli: ad, slug, blok içeriği
-- [ ] Bölüm listesi + oluştur/düzenle/sil/çoğalt
+- [x] Yeniden kullanılabilir bölüm modeli: ad, slug, blok içeriği
+- [x] Bölüm listesi + oluştur/düzenle/sil/çoğalt
 - [ ] Lexical/blok editörü ile bölüm içeriği
-- [ ] Sayfada bölüm referansı ve sıralama
-- [ ] Kullanım takibi: hangi sayfalarda kullanılıyor
-- [ ] Önizleme ve yayın durumu
-- [ ] Bölüm testleri: referans, render, silme uyarısı
+- [x] Sayfada bölüm referansı ve sıralama
+- [x] Kullanım takibi: hangi sayfalarda kullanılıyor
+- [ ] (kısmi) Taslak bölüm `getSection` ile gizlenir; önizleme yok
+- [ ] (kısmi) Bölüm testleri: referans, render, silme uyarısı
 
 ### 4.6 Categories / Tags (Taksonomiler)
 
 - [x] `list` alan tipi (temel etiket desteği)
-- [ ] Taksonomi tanımı: ad, slug, hiyerarşik mi, koleksiyonlar
-- [ ] Kategori: ağaç yapısı, üst kategori, sıralama
-- [ ] Etiket: düz liste, birleştirme, yeniden adlandırma
-- [ ] Terim CRUD, açıklama, slug, sayaç
-- [ ] İçerik editöründe atama (arama + yeni oluşturma)
-- [ ] Taksonomi arşiv rotaları ve şablon yardımcısı
-- [ ] Çeviri desteği
-- [ ] Taksonomi testleri: sayaç, hiyerarşi, atama, arşiv
+- [x] Taksonomi tanımı: ad, slug, hiyerarşik mi, koleksiyonlar
+- [x] Kategori: ağaç yapısı, üst kategori, sıralama
+- [x] Etiket: düz liste, birleştirme, yeniden adlandırma
+- [x] Terim CRUD, açıklama, slug, sayaç
+- [ ] (kısmi) İçerik editöründe atama (arama + yeni oluşturma)
+- [x] Taksonomi arşiv rotaları (starter: kategori/etiket); `getTaxonomy()` yardımcısı
+- [ ] (kısmi) Çeviri desteği
+- [ ] (kısmi) Taksonomi testleri: sayaç, hiyerarşi, atama, arşiv
 
 ### 4.7 Bylines (Yazar profilleri)
 
-- [ ] Byline modeli: ad, slug, avatar, bio, e-posta (gizli), sosyal bağlantılar
-- [ ] Byline listesi + oluştur/düzenle/sil
-- [ ] İçerikte tekli/çoklu byline ataması ve kredi rolü (yazar, editör, fotoğraf)
-- [ ] Byline şeması: özel alanlar (ADR gerekli: config dosyası mı DB mi)
-- [ ] Public yazar sayfası ve `getByline()` yardımcısı
-- [ ] Çeviri/çok dilli byline
-- [ ] Byline testleri: atama, kredi, public render
+- [x] Byline modeli: ad, slug, avatar, bio, e-posta (gizli), sosyal bağlantılar
+- [x] Byline listesi + oluştur/düzenle/sil
+- [x] İçerikte tekli/çoklu byline ataması ve kredi rolü (yazar, editör, fotoğraf)
+- [x] Byline şeması: özel alanlar (ADR gerekli: config dosyası mı DB mi)
+- [x] Public yazar sayfası (starter `/authors/[slug]`) ve `getByline()` yardımcısı
+- [x] Çeviri/çok dilli byline
+- [ ] (kısmi) Byline testleri: atama, kredi, public render
 
 ---
 
@@ -347,36 +347,36 @@ işaretlenir. Kaynaklar:
 ### 5.1 Content Types (İçerik tipleri)
 
 - [x] Koleksiyon şeması (config, Zod) ve alan tipleri
-- [ ] Admin UI: koleksiyon listesi, oluştur/düzenle/sil
-- [ ] Alan editörü: tip seçimi, zorunlu, varsayılan, yardım metni, sıralama
-- [ ] URL şablonu, dosya dizini, format (md/mdx), şablon eşlemesi
-- [ ] İlişki tanımı: hedef koleksiyon, tekli/çoklu, ters alan
-- [ ] Şema önizleme ve tip üretimi
-- [ ] Değişiklik etkisi: mevcut içerik doğrulaması, alan silme uyarısı
-- [ ] Kaynak kararı: config dosyasına yazma vs ayrı `content-types/*.json` (ADR)
-- [ ] Content Types testleri: CRUD, doğrulama, mevcut içerik uyumu
+- [x] Admin UI: koleksiyon listesi, oluştur/düzenle/sil
+- [x] Alan editörü: tip seçimi, zorunlu, varsayılan, yardım metni, sıralama
+- [ ] (kısmi) URL şablonu, dosya dizini, format (md/mdx), şablon eşlemesi
+- [ ] (kısmi) İlişki tanımı: hedef koleksiyon, tekli/çoklu, ters alan
+- [x] Şema önizleme ve tip üretimi
+- [x] Değişiklik etkisi: mevcut içerik doğrulaması, alan silme uyarısı
+- [x] Kaynak kararı: config dosyasına yazma vs ayrı `content-types/*.json` (ADR)
+- [ ] (kısmi) Content Types testleri: CRUD, doğrulama, mevcut içerik uyumu
 
 ### 5.2 Byline Schema
 
-- [ ] Byline alan şeması CRUD (metin, görsel, URL, sosyal)
-- [ ] Alan sıralama ve zorunluluk
-- [ ] Mevcut byline'ların doğrulanması
-- [ ] Public profil şablonunda kullanım
+- [x] Byline alan şeması CRUD (metin, görsel, URL, sosyal)
+- [x] Alan sıralama ve zorunluluk
+- [x] Mevcut byline'ların doğrulanması
+- [x] Public profil şablonunda kullanım
 
 ### 5.3 Users (Kullanıcılar)
 
 - [x] Kullanıcı listesi, rol atama, ilk kullanıcı admin
 - [x] 2FA (TOTP + yedek kod) ve hesap güvenliği sayfası
 - [x] Davet akışı: e-posta daveti, kabul sayfası, tek kullanımlık 7 günlük token, admin listeleme/yeniden gönderme/iptal
-- [ ] Rol/izin matrisi: admin, editor, author, viewer + özel roller
+- [ ] (kısmi) Rol/izin matrisi (admin, editor, author, viewer) Users sayfasında; özel roller yok (Better Auth admin eklentisi rolleri sabit)
 - [x] Kullanıcı oluştur/düzenle/disable/sil
 - [x] Son admin koruması: son aktif admin'in rolü düşürülemez, banlanamaz veya silinemez
 - [x] Oturum listesi ve "tüm oturumları kapat"
 - [x] 2FA sıfırlama (admin) ve admin geçici parola; oturumları kapatır
 - [x] Self-service parola sıfırlama (e-posta, 30 dk token, oturumları kapatır)
-- [ ] API token'ları: oluştur, kapsam, son kullanma, iptal
-- [ ] Allowed domains / e-posta alan adı kısıtı
-- [ ] Denetim: kullanıcı olayları (var), giriş/çıkış (var), token olayları
+- [x] API token'ları: oluştur, kapsam, son kullanma, iptal
+- [x] Allowed domains: davetler yalnızca izinli e-posta alan adlarına (`settings.security.allowedDomains`); kayıt zaten davete bağlı
+- [x] Denetim: kullanıcı olayları, giriş/çıkış ve token olayları (`token.create`/`token.revoke`) kayıtlı
 - [x] Kullanıcı testleri: yetki yükseltme engeli, son admin (davet/oturum/parola/2FA testleri var)
 
 ### 5.4 Plugins (Eklentiler)
@@ -385,46 +385,46 @@ işaretlenir. Kaynaklar:
 - [x] WASM/QuickJS sandbox, fail-closed, zaman/bellek sınırı
 - [x] Egress proxy + log, olay köprüsü (content/media)
 - [x] `wuppy plugin hash <dir>`
-- [ ] Admin: yüklü eklenti listesi, durum, sürüm, yetenekler, son hata
-- [ ] Etkinleştir/devre dışı bırak, ayarlar sayfası, kaldır
-- [ ] Yetenek onay ekranı ve yetki genişlerse yeniden onay
-- [ ] Eklenti logları ve kullanım/kota görünürlüğü
-- [ ] Registry/marketplace: arama, detay, kurulum, güncelleme
-- [ ] SDK: `definePlugin`, build-time manifest, beyan dışı yetenekte build hatası
-- [ ] Eklenti route'ları (`/plugins/:id`) ve admin yüzeyleri
-- [ ] Yazma yetenekleri, e-posta, secret referansı, CPU/çağrı kotası
-- [ ] İmzalı paket (Sigstore), kilit dosyası, çoklu güven kökü
-- [ ] İkinci sürücü (workerd/süreç) + conformance testleri
-- [ ] Eklenti testleri: sandbox kaçışı, yetki reddi, bozuk eklenti izolasyonu
+- [x] Admin: eklenti listesi, durum, sürüm, kaynak, yetenekler, son hata
+- [x] Etkinleştir/devre dışı bırak, ayarlar formu (manifest `settings`), kaldır (registry'den kurulanlar)
+- [x] Yetenek onay ekranı (düz dille izinler) ve yetki genişlerse yeniden onay (hash eşleşmesi, admin onayı `.wuppy/data/plugin-state.json`)
+- [x] Eklenti logları, çağrı/hata/süre sayaçları, dakika başına kota görünürlüğü
+- [x] Registry: arama, kurulum, güncelleme tespiti; çoklu registry, hatalı registry diğerlerini bozmaz
+- [x] SDK: `wuppy-plugin build` beyan dışı yetenek kullanımında build'i düşürür; `pack`/`keygen`/`sign`
+- [x] Eklenti route'ları (`/api/plugins/:id/*`) ve admin sayfaları (manifest `adminPages`, sunucuda sanitize edilir)
+- [x] Yazma (`content.write`), e-posta (`email`, dakikada 10), secret (`secrets` → `WUPPY_PLUGIN_<ID>_<AD>`), dakika başı çağrı kotası
+- [x] İmzalı paket: Ed25519 imza + sha256 sabitleme + kilit (`plugin-state`) + registry başına güven anahtarları (Sigstore yerine; bkz. ADR-008)
+- [ ] (kısmi) Karar: yalnızca QuickJS-WASM sürücüsü (ADR-008); süreç tabanlı sürücü eşdeğer yalıtım sağlamadığı için yapılmadı
+- [x] Eklenti testleri: yetki reddi, kota, bozuk eklenti izolasyonu, kurcalanmış dosya, imza/digest uyuşmazlığı
 
 ### 5.5 Import (İçe aktarma)
 
 - [x] JSON yedek paketi içe/dışa aktarma, girdi bazlı hata raporu
-- [ ] WordPress WXR: yazı, sayfa, medya, kategori/etiket, yazar, menü
-- [ ] İçerik analizi: sayılar, çakışmalar, eksik alanlar, önizleme
-- [ ] URL yeniden yazma ve yönlendirme üretimi
-- [ ] Medya indirme + yeniden adlandırma + hata raporu
-- [ ] Aşamalı ilerleme, duraklat/devam, geri alma
-- [ ] Büyük dosya streaming ve bellek sınırı (SSRF korumalı)
-- [ ] Import testleri: fixture WXR, çakışma, kısmi hata, rollback
+- [x] WordPress WXR içe aktarma: yazı/sayfa, yazar→byline, kategori/etiket→taksonomi, menüler (`/api/import/wordpress/jobs`)
+- [x] İçerik analizi: sayılar, çakışmalar, eksik alanlar, önizleme
+- [x] URL yeniden yazma ve yönlendirme üretimi
+- [x] Medya indirme + yeniden adlandırma + hata raporu
+- [x] Aşamalı ilerleme, duraklat/devam, geri alma
+- [ ] (kısmi) 50 MB üst sınır ve SSRF korumalı indirme var; dosya bellekte ayrıştırılıyor (akış yok)
+- [x] Import testleri: fixture WXR, çakışma, kısmi hata, rollback
 
 ### 5.6 Settings (Ayarlar)
 
-- [ ] Genel: site adı, URL, logo/favicon, saat dilimi, varsayılan dil
-- [ ] SEO: varsayılan başlık/description, OG görseli, canonical, noindex
-- [ ] Sosyal: hesaplar, paylaşım görselleri
-- [ ] (kısmi) E-posta: console/Resend sağlayıcı + gönderen; SMTP, test e-postası ve şablon yönetimi eksik
-- [ ] Medya: boyut limiti, izinli türler, klasörleme, optimizasyon
+- [x] Genel: site adı, URL, logo/favicon, saat dilimi, varsayılan dil
+- [x] SEO: varsayılan başlık/description, OG görseli, canonical, noindex
+- [x] Sosyal: hesaplar, paylaşım görselleri
+- [x] E-posta: console/Resend/SMTP sağlayıcı + gönderen + test e-postası + şablon yönetimi (ayarlar anında geçerli)
+- [x] Medya: boyut limiti ve izinli türler ayarlardan uygulanır (yalnızca sıkılaştırır); klasörleme/optimizasyon ayrı maddelerde
 - [x] Güvenlik: oturum süresi, CSRF/hız limitleri; istemci IP’si Astro `clientAddress` ve isteğe bağlı güvenilir ters proxy zincirinden çözülüyor
 - [x] Güvenlik: 2FA politikası (parola TOTP ister; magic-link 2FA açıkken gönderilmez ve yeni hesap açamaz; passkey ve bağlı OAuth sağlayıcıları güçlü alternatif)
-- [ ] Güvenlik: allowed domains
-- [ ] API token'ları ve erişim kapsamları
-- [ ] Yedekleme: manuel yedek, zamanlama, saklama, indirme
-- [ ] Transfer: site dışa/içe aktarma, ortamlar arası taşıma
+- [x] Güvenlik: allowed domains
+- [x] API token'ları ve erişim kapsamları
+- [x] Yedekleme: manuel yedek, zamanlama (`settings.backup`, yeniden başlatma gerekir), saklama sayısı, indirme
+- [ ] (kısmi) İçerik dışa/içe aktarma ve yedekler var; ortamlar arası taşıma (medya dahil) yok
 - [ ] Tema: aktif tema, özelleştirme, marketplace
-- [ ] Gelişmiş: Git dalı, commit mesajı biçimi, webhook'lar, scheduler
-- [ ] Ayar değişiklikleri Git commit + audit kaydı
-- [ ] Ayar testleri: doğrulama, yetki, sır maskeleme
+- [ ] (kısmi) Webhook'lar ayar dosyasında (`/api/data/webhooks`, sırlar maskeli) var; Git dalı/commit mesajı biçimi/zamanlayıcı ayarı yok
+- [x] Ayar değişiklikleri Git commit + audit kaydı
+- [x] Ayar testleri: doğrulama, yetki, sır maskeleme
 
 ### 5.7 Themes (Temalar)
 
@@ -444,45 +444,45 @@ işaretlenir. Kaynaklar:
 
 - [x] Başlık, canonical, OG, Twitter, noindex, hreflang, HTML kaçışı
 - [x] `sitemap.xml` (taslak hariç) ve `robots.txt`
-- [ ] İçerik editöründe SEO paneli ve önizleme
-- [ ] Site geneli SEO varsayılanları ve şablonları
-- [ ] Sosyal paylaşım önizlemesi
-- [ ] Sitemap ayarları: koleksiyon dahil/hariç, öncelik
-- [ ] Yapılandırılmış veri (JSON-LD) yardımcıları
-- [ ] SEO testleri: canonical, hreflang, sitemap, noindex
+- [x] İçerik editöründe SEO paneli ve önizleme
+- [x] Site geneli SEO varsayılanları ve şablonları
+- [x] Sosyal paylaşım önizlemesi
+- [x] Sitemap ayarları: koleksiyon dahil/hariç, öncelik
+- [x] Yapılandırılmış veri (JSON-LD) yardımcıları
+- [x] SEO testleri: canonical, hreflang, sitemap, noindex
 
 ### 6.2 i18n
 
 - [x] `locales`, `<dil>/<slug>` kuralı, eksik çeviri API'si ve admin tablosu
 - [x] Çeviri tablosu ("Translate to …")
-- [ ] Dil eşleştirme grubu (`translationOf`) ve editörde bağlantı
-- [ ] Eksik/güncel olmayan çeviri göstergesi (kaynak değişti mi?)
-- [ ] Dil değiştirici ve fallback
-- [ ] Menü/widget/section/byline çevirileri
+- [x] Dil eşleştirme grubu: slug kuralı (ADR-010; açık `translationOf` alanı yok) ve editörde çeviri bağlantıları
+- [x] Eksik ve "Out of date" (kaynak dil sonradan değişti) çeviri göstergesi
+- [x] Dil değiştirici ve fallback
+- [x] Menü, widget, section (`locale`) ve byline (`translations`) için dil varyantı
 - [ ] Lingui katalogları: eksik anahtar testi, RTL kontrolü
-- [ ] Çok dilli URL ve hreflang testleri
+- [x] Çok dilli URL ve hreflang testleri
 
 ### 6.3 Önizleme ve görsel düzenleme
 
 - [x] `astro dev` taslakları gösterir, yayında gizli + noindex
 - [x] "View on site" bağlantısı (temel)
-- [ ] Yayınlanmış sitede oturumlu taslak önizleme (token)
+- [x] Taslak önizleme: imzalı, süreli, tek içeriğe özel bağlantı (oturum gerekmez); starter'da uygulandı
 - [ ] Cihaz önizlemesi (masaüstü/tablet/mobil)
 - [ ] **Edit/Preview** anahtarı ve sayfa üzerinde düzenleme (visual editing)
 - [ ] Düzenleme modunda alan vurgulama, tıklayınca panele gitme
-- [ ] Önizleme testleri: taslak görünürlüğü, yetki, noindex
+- [ ] (kısmi) Token imzası/süre/içerik bağı testli; noindex ve sayfa düzeyi testi yok
 
 ### 6.4 Public site özellikleri (şablonlar)
 
-- [ ] RSS/Atom akışı
-- [ ] Arama sayfası ve sonuç bileşeni
-- [ ] Kategori/etiket arşiv rotaları
-- [ ] Yazar/byline profil sayfası
-- [ ] Sayfalama, okuma süresi, ilgili içerikler
-- [ ] 404 sayfası ve yönlendirme önerisi
-- [ ] Dark mode ve tema token'ları
-- [ ] Erişilebilir skip-link, odak stilleri, semantik başlıklar
-- [ ] Sosyal paylaşım meta etiketleri (SEO ile ortak)
+- [x] RSS akışı (`/rss.xml`; Atom yok)
+- [x] Arama sayfası (`/search`, istemci tarafı, yayınlanmış yazılar)
+- [x] Kategori/etiket arşiv rotaları
+- [x] Yazar/byline profil sayfası
+- [x] Sayfalama, okuma süresi, ilgili yazılar (`wuppy/site`: `paginate`, `readingTime`, `related`)
+- [x] 404 sayfası (404 durum kodlu, arama/ana sayfa bağlantılı)
+- [ ] (kısmi) `prefers-color-scheme` ile koyu tema var; tema token sistemi yok
+- [x] Erişilebilir skip-link, odak stilleri, semantik başlıklar
+- [x] Sosyal paylaşım meta etiketleri (SEO ile ortak)
 
 ---
 
@@ -492,39 +492,39 @@ işaretlenir. Kaynaklar:
 
 - [x] İçerik CRUD, medya, Git geçmiş/diff/revert, export/import, audit
 - [x] Tek hata biçimi, Zod doğrulama, CSRF, izin kontrolü
-- [ ] Sayfalama/`nextCursor`, filtre, sıralama tüm listelerde
-- [ ] `/api/dashboard`, `/api/calendar`, `/api/search` uçları
-- [ ] Comments, menus, widgets, sections, taxonomies, bylines, settings API'leri
-- [ ] Revisions API'si (liste, detay, geri yükle)
+- [ ] (kısmi) İçerik listesi API'sinde cursor/filtre/sıralama var; diğer listelerde yok
+- [x] `/api/dashboard`, `/api/calendar`, `/api/search` uçları
+- [x] Comments, menus, widgets, sections, taxonomies, bylines, settings API'leri
+- [ ] (kısmi) Git geçmişi: `/api/history`, diff ve revert var; ayrı revizyon liste/detay API yok
 - [ ] Relations/references API'si
-- [ ] API token kimlik doğrulaması (Bearer) ve kapsamlar
-- [ ] OpenAPI 3.1 şeması + typed client (`hc`/generated)
-- [ ] Idempotency-Key, ETag/If-None-Match, rate limit
-- [ ] Hata kodu kataloğu ve i18n eşlemesi
-- [ ] API sözleşme testleri (OpenAPI doğrulama)
+- [x] API token kimlik doğrulaması (Bearer) ve kapsamlar
+- [x] OpenAPI 3.1 şeması (`/api/openapi.json`, route'lardan üretilir) + `AppType` ile Hono `hc` istemcisi
+- [x] Idempotency-Key, ETag/If-None-Match, rate limit
+- [x] Hata kodu kataloğu (`ERROR_CODES`, OpenAPI'de enum); i18n eşlemesi istemcide
+- [x] API sözleşme testleri (OpenAPI doğrulama)
 
 ### 7.2 Arama
 
-- [ ] Dosya tabanlı arama: başlık + gövde + frontmatter
-- [ ] SQLite FTS5 indeksi (opsiyonel DB adaptörü) ve fallback tarama
-- [ ] Commit sonrası indeks güncelleme / tam yeniden indeksleme
-- [ ] Admin arama, filtreler, sonuç vurgulama
-- [ ] Public site arama bileşeni (opsiyonel)
+- [x] Dosya tabanlı arama: başlık + gövde + frontmatter
+- [x] SQLite FTS5 indeksi (bellekte, dosyalardan kurulur; `SearchIndex`) — kalıcı DB adaptörü gerekmedi
+- [x] Yazma sonrası (`version` sayacı) ve 60 sn'de bir yeniden indeksleme
+- [ ] (kısmi) Admin kutusu vurgulu sonuç gösteriyor; koleksiyon/durum filtresi yalnızca API'de (`/api/search?collection&status`)
+- [x] Public site araması (starter `/search`, istemci tarafı)
 
 ### 7.3 Önbellek ve performans
 
-- [ ] Public sayfa ETag/route cache ve commit'te invalidation
-- [ ] Sorgu sayısı bütçesi ve performans testi
-- [ ] Büyük koleksiyon (10k+) liste/sayfalama testi
-- [ ] Medya optimizasyonu ve CDN-friendly URL'ler
+- [x] Public sayfa ETag/route cache ve commit'te invalidation
+- [x] Sorgu sayısı bütçesi ve performans testi
+- [x] Büyük koleksiyon (10k+) liste/sayfalama testi
+- [x] Medya optimizasyonu ve CDN-friendly URL'ler (sabit, `immutable` önbellekli varyant URL'leri; `imageSrcset()` yardımcısı)
 
 ### 7.4 E-posta ve bildirim
 
-- [ ] (kısmi) E-posta adaptörü: console + Resend; SMTP yok
-- [ ] (kısmi) Şablonlar: magic link Resend template; parola sıfırlama/davet inline e-posta; yorum bildirimi yok
+- [x] E-posta adaptörü: console, Resend ve SMTP (nodemailer; `SMTP_PASSWORD` ortam değişkeni)
+- [x] Şablonlar: davet/parola sıfırlama/magic link site ayarlarından düzenlenir (`{{değişken}}`); Resend hosted template yine desteklenir; yorum bildirimi sabit metin
 - [x] Magic-link güvenliği: yeni hesap açmaz, 2FA açık hesaplara gönderilmez, 2FA açılınca bekleyen token'lar iptal edilir
 - [ ] Panel içi bildirim merkezi
-- [ ] E-posta testleri: şablon değişkenleri, hata yolları, domain doğrulama
+- [ ] (kısmi) Şablon değişkenleri, kaçışlama, SMTP ayarları ve hata yolu testli; domain doğrulama testi yok (Resend DNS bekliyor)
 
 #### 7.4.1 Resend production domain — **sonra yapılacak**
 
@@ -554,12 +554,12 @@ Not: Mevcut `RESEND_API_KEY` sending-only, ancak henüz domain kısıtı yok. Do
 `plugin-registery.md` yol haritasına göre:
 
 - [x] Plugin ABI + capability manifest + WASM sürücüsü + fail-closed
-- [ ] SDK + build-time manifest + yerel geliştirme ortamı
-- [ ] İmzalı paketler (Sigstore) + kilit dosyası + statik indeks registry
-- [ ] Çoklu registry + küratör/güvenlik taraması
+- [x] SDK + build-time kontrol + `wuppy-plugin init/build/pack`
+- [x] İmzalı paketler (Ed25519) + kilit + statik indeks registry
+- [ ] (kısmi) Çoklu registry ve güven anahtarları var; küratör/güvenlik taraması yok
 - [ ] İkinci sürücü (workerd/süreç) + conformance test paketi
 - [ ] Ücretli eklentiler ve lisanslama (opsiyon)
-- [ ] Admin eklenti yönetimi (5.4) ve registry/marketplace UI
+- [x] Admin eklenti yönetimi ve registry arayüzü
 - [ ] Eklenti dokümantasyonu ve örnek şablon deposu
 
 ---
@@ -568,13 +568,13 @@ Not: Mevcut `RESEND_API_KEY` sending-only, ancak henüz domain kısıtı yok. Do
 
 - [x] `templates/starter` iskeleti + `create-wuppy`
 - [x] Astro Content Collections uyumu (`glob` loader)
-- [ ] Starter'da Pages + Posts + menü + SEO + sitemap + 404 tam örnek
+- [x] Starter'da Pages + Posts + menü + SEO + sitemap + 404 + RSS + arama
 - [ ] `blog`, `marketing`, `portfolio`, `blank` şablonları
 - [ ] `-cloudflare` varyantları (opsiyonel)
 - [ ] 15 dakikalık kurulum doğrulaması (ölçüm + doküman)
 - [ ] `create-wuppy`: ortam doğrulama, `.env` sırrı, monorepo sürüm çözümü (var), boş olmayan hedef reddi (var)
-- [ ] `wuppy doctor`: config, sır, içerik dizini, Git, izin kontrolü
-- [ ] `wuppy upgrade`: sürüm yükseltme ve migration rehberi
+- [x] `wuppy doctor`: config, sır, içerik dizini, Git (dosya izin kontrolü yok)
+- [x] `wuppy upgrade`: sürüm yükseltme ve migration rehberi
 - [ ] Tema oluşturma rehberi ve örnek tema
 
 ---
@@ -590,7 +590,7 @@ Not: Mevcut `RESEND_API_KEY` sending-only, ancak henüz domain kısıtı yok. Do
 - [ ] Admin bileşen testleri (Vitest browser mode)
 - [ ] Görsel regresyon: LTR + RTL, mobil + masaüstü
 - [ ] Erişilebilirlik: axe, klavye, odak tuzağı, renk kontrastı
-- [ ] Performans: 10k içerik, medya kütüphanesi, dashboard
+- [ ] (kısmi) 10k içerik liste/sayfalama/arama/dashboard testli (`tests/perf`); medya kütüphanesi için yok
 - [ ] Tip testleri (`*.test-d.ts`) ve şema sözleşmeleri
 - [ ] Kapsam eşiği ve değişen satır kapsamı
 
@@ -600,22 +600,22 @@ Not: Mevcut `RESEND_API_KEY` sending-only, ancak henüz domain kısıtı yok. Do
 - [x] İçerik bileşen allowlist, script/iframe/javascript reddi
 - [x] Eklenti sandbox + egress + capability onayı
 - [x] Mimari sınır testi (core Cloudflare import edemez)
-- [ ] SSRF koruması (import/medya/webhook) ve testleri
-- [ ] XSS/HTML sanitize testleri (tüm zengin metin alanları)
-- [ ] Yetki matrisi testleri (her rol × her uç)
-- [ ] Rate limit tüm hassas uçlarda, oturum sabitleme/rotasyon
-- [ ] Ters proxy arkasında güvenilir istemci IP'si (Better Auth `trustedProxies`/`ipAddressHeaders`)
-- [ ] Sırların loglarda maskelenmesi, audit kapsamı
-- [ ] Bağımlılık güvenlik taraması (`pnpm audit`) CI'da
-- [ ] Yedek/geri yükleme tatbikatı
+- [x] SSRF koruması: `assertPublicUrl`/`fetchPublic` (özel adres, şema, kimlik bilgisi, boyut sınırı); webhook'larda uygulanıyor
+- [ ] (kısmi) Allowlist sanitizer + 15 saldırı vektörü testi; widget HTML'i render'da uygulanıyor, yorum/diğer alanlarda henüz yok
+- [x] Yetki matrisi testi: her uç tek izne bağlı, her rol × her uç (`permission-matrix.test.ts`)
+- [x] Tüm yazma isteklerinde kullanıcı başına limit + giriş limiti; ters proxy IP'si `WUPPY_TRUSTED_PROXIES` ile; oturum süresi/yenileme `WUPPY_SESSION_*`
+- [x] Ters proxy arkasında güvenilir istemci IP'si (Better Auth `trustedProxies`/`ipAddressHeaders`)
+- [ ] (kısmi) `redact()` hata ve webhook loglarına uygulandı; audit kapsamı denetlenmedi
+- [x] Bağımlılık güvenlik taraması (`pnpm audit`) CI'da
+- [x] Geri yükleme tatbikatı otomatik testte: yedek → boş site → aynı içerik (`backups.test.ts`)
 
 ### 10.3 Kalite
 
-- [ ] `pnpm check` tüm modüllerde yeşil
-- [ ] `knip` kullanılmayan dosya/bağımlılık yok
-- [ ] `publint`/`attw` paket doğrulaması
+- [x] `pnpm check` tüm modüllerde yeşil
+- [x] `knip` kullanılmayan dosya/bağımlılık yok
+- [x] `publint`/`attw` paket doğrulaması
 - [ ] Docs: her modül için kullanıcı rehberi + API referansı
-- [ ] Kod yorumları/commit mesajı politikası (CONSTRAINTS)
+- [x] Kod yorumları/commit mesajı politikası (CONSTRAINTS)
 
 ---
 
@@ -623,15 +623,15 @@ Not: Mevcut `RESEND_API_KEY` sending-only, ancak henüz domain kısıtı yok. Do
 
 - [x] tsdown build, `smoke:dist`, workspace kaynak kullanımı
 - [ ] Resend production domain + DNS doğrulama (domain sonra; bkz. 7.4.1)
-- [ ] Auth için elle yazılmış `.d.ts` veya taşınabilir tip stratejisi
-- [ ] Admin `dist`'in core paketine dahil edilmesi (prepack)
-- [ ] `create-wuppy` şablonunu paketleme
-- [ ] `npm publish --dry-run` ve gerçek yayın provası
-- [ ] CI: lint + typecheck + test + build + e2e + audit
-- [ ] Docker imajı ve compose (Node standalone)
+- [x] Auth için elle yazılmış `.d.ts` veya taşınabilir tip stratejisi
+- [x] Admin `dist`'in core paketine dahil edilmesi (prepack)
+- [x] `create-wuppy` şablonunu paketleme
+- [ ] (kısmi) `npm publish --dry-run` ve gerçek yayın provası
+- [x] CI: lint + typecheck + test + build + e2e + audit
+- [x] Docker imajı ve compose (Node standalone)
 - [ ] Dokümantasyon sitesi (Starlight) ve arama
-- [ ] CHANGELOG/Changesets
-- [ ] Yükseltme rehberi ve geri alma
+- [x] CHANGELOG/Changesets
+- [x] Yükseltme rehberi ve geri alma
 - [ ] Telemetri (opt-in, gizlilik dostu)
 
 ---

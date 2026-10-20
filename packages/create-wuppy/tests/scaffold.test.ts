@@ -27,6 +27,13 @@ describe("scaffold", () => {
 		await expect(stat(join(target, ".wuppy"))).rejects.toThrow();
 	});
 
+	it("pins wuppy to the version the CLI was released with", async () => {
+		const target = join(base, "pinned");
+		await scaffold({ template: TEMPLATE, target, name: "pinned", url: "http://x", wuppyVersion: "^1.2.3" });
+		const pkg = JSON.parse(await readFile(join(target, "package.json"), "utf8"));
+		expect(pkg.dependencies.wuppy).toBe("^1.2.3");
+	});
+
 	it("generates a different secret every time", async () => {
 		await scaffold({ template: TEMPLATE, target: join(base, "a"), name: "a", url: "http://x" });
 		await scaffold({ template: TEMPLATE, target: join(base, "b"), name: "b", url: "http://x" });

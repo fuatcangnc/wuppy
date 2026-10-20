@@ -1,5 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { buildRobots, buildSeo, buildSitemap, renderHead } from "../../src/seo/index.ts";
+import {
+	articleJsonLd,
+	breadcrumbJsonLd,
+	buildRobots,
+	buildRss,
+	buildSeo,
+	buildSitemap,
+	renderHead,
+	renderJsonLd,
+	websiteJsonLd,
+} from "../../src/seo/index.ts";
 
 const site = { url: "https://example.com", name: "Example" };
 
@@ -50,5 +60,88 @@ describe("sitemap and robots", () => {
 		expect(txt).toContain("Sitemap: https://example.com/sitemap.xml");
 		expect(txt).toContain("Disallow: /admin");
 		expect(txt).toContain("Disallow: /api");
+	});
+});
+
+describe("buildRss", () => {
+	it("emits escaped items with RFC 822 dates", () => {
+		const xml = buildRss(site, [
+			{ link: "https://example.com/a?x=1&y=2", title: "A <b>", date: new Date("2026-01-02T00:00:00Z") },
+		]);
+		expect(xml).toContain("<title>A &lt;b&gt;</title>");
+		expect(xml).toContain("<link>https://example.com/a?x=1&amp;y=2</link>");
+		expect(xml).toContain("<pubDate>Fri, 02 Jan 2026 00:00:00 GMT</pubDate>");
+	});
+});
+
+const link = (canonical: string) =>
+	buildSeo({ site, path: "/a", canonical }).links.find((l) => l.rel === "canonical")?.href;
+
+describe("title template and canonical override", () => {
+	it("applies the template and treats $ in titles literally", () => {
+		expect(buildSeo({ site, path: "/a", title: "Cost $& more", titleTemplate: "{site}: {title}" }).title).toBe(
+			"Example: Cost $& more",
+		);
+	});
+	it("uses an explicit canonical, relative or absolute", () => {
+		expect(link("/original")).toBe("https://example.com/original");
+		expect(link("https://other.example/x")).toBe("https://other.example/x");
+	});
+});
+
+describe("hreflang", () => {
+	it("emits one alternate per locale with absolute URLs", () => {
+		const links = buildSeo({
+			site,
+			path: "/en/a",
+			alternates: { en: "/en/a", tr: "/tr/a", "x-default": "/en/a" },
+		}).links;
+		expect(links.filter((l) => l.rel === "alternate").map((l) => [l.hreflang, l.href])).toEqual([
+			["en", "https://example.com/en/a"],
+			["tr", "https://example.com/tr/a"],
+			["x-default", "https://example.com/en/a"],
+		]);
+	});
+});
+
+describe("JSON-LD", () => {
+	it("builds article, website and breadcrumb data with absolute URLs", () => {
+		const a = articleJsonLd({
+			site,
+			url: "/blog/a",
+			title: "A",
+			image: "/i.png",
+			author: "Ada",
+			datePublished: "2026-01-01",
+		});
+		expect(a).toMatchObject({
+			"@type": "Article",
+			mainEntityOfPage: "https://example.com/blog/a",
+			image: "https://example.com/i.png",
+			author: { name: "Ada" },
+		});
+		expect(websiteJsonLd(site, "/search?q={q}")).toMatchObject({
+			potentialAction: { target: "https://example.com/search?q={search_term_string}" },
+		});
+		expect(
+			breadcrumbJsonLd(site, [
+				{ name: "Home", path: "/" },
+				{ name: "Blog", path: "/blog" },
+			]).itemListElement[1],
+		).toMatchObject({
+			position: 2,
+			item: "https://example.com/blog",
+		});
+	});
+	it("cannot be used to close the script tag", () => {
+		const html = renderJsonLd(articleJsonLd({ site, url: "/a", title: "</script><script>alert(1)</script>" }));
+		expect(html.match(/<\/script>/g)).toHaveLength(1);
+		expect(html).not.toContain("<script>alert");
+	});
+});
+
+describe("sitemap priority", () => {
+	it("writes priority with one decimal", () => {
+		expect(buildSitemap([{ loc: "https://example.com/a", priority: 0.8 }])).toContain("<priority>0.8</priority>");
 	});
 });

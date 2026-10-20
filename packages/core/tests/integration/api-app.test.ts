@@ -84,7 +84,7 @@ describe("content API", () => {
 	it("PUT then GET round-trips, nested slug works", async () => {
 		expect((await put("a/b", { data: { title: "T" }, body: "hi\n" })).status).toBe(200);
 		const res = await app().request("/api/content/posts/a/b");
-		expect(await res.json()).toEqual({ data: { slug: "a/b", data: { title: "T" }, body: "hi\n" } });
+		expect(await res.json()).toMatchObject({ data: { slug: "a/b", data: { title: "T" }, body: "hi\n" } });
 		const list = (await (await app().request("/api/content/posts")).json()) as {
 			data: Array<{ slug: string }>;
 		};
@@ -94,7 +94,7 @@ describe("content API", () => {
 	it("POST creates an entry and refuses to overwrite an existing slug", async () => {
 		const first = await create({ slug: "new-post", data: { title: "One" }, body: "one\n" });
 		expect(first.status).toBe(201);
-		expect(await first.json()).toEqual({ data: { ok: true, slug: "new-post" } });
+		expect(await first.json()).toMatchObject({ data: { ok: true, slug: "new-post" } });
 
 		const conflict = await create({ slug: "new-post", data: { title: "Two" }, body: "two\n" });
 		expect(conflict.status).toBe(409);
@@ -148,6 +148,7 @@ describe("content API", () => {
 			commit: async () => "",
 			history: async () => [],
 			diff: async () => "",
+			show: async () => null,
 			revert: async () => "",
 		});
 		broken.listEntries = async () => {
@@ -174,8 +175,8 @@ describe("content API", () => {
 		const { data, locales } = (await res.json()) as { data: { key: string; missing: string[] }[]; locales: string[] };
 		expect(locales).toEqual(["en", "tr"]);
 		expect(data).toEqual([
-			{ key: "hi", translations: { en: "en/hi", tr: "tr/hi" }, missing: [] },
-			{ key: "solo", translations: { en: "en/solo" }, missing: ["tr"] },
+			{ key: "hi", translations: { en: "en/hi", tr: "tr/hi" }, missing: [], stale: [] },
+			{ key: "solo", translations: { en: "en/solo" }, missing: ["tr"], stale: [] },
 		]);
 	});
 
@@ -307,5 +308,96 @@ describe("user security API", () => {
 			{ method: "POST", headers: H },
 		);
 		expect(res.status).toBe(403);
+	});
+});
+
+const get = (path: string, headers: Record<string, string> = {}) => app().request(path, { headers });
+
+describe("list, conflicts and request guards", () => {
+	beforeEach(() => {
+		user = ALL;
+	});
+
+	it("filters, sorts and paginates with a cursor", async () => {
+		for (const [slug, title, draft] of [
+			["a", "Apple", false],
+			["b", "Banana", true],
+			["c", "Cherry", false],
+		] as const) {
+			await put(slug, { data: { title, draft }, body: `about ${title}` });
+		}
+		const first = await (await get("/api/content/posts?sort=title&limit=2")).json();
+		expect(first.data.map((e: { slug: string }) => e.slug)).toEqual(["a", "b"]);
+		expect(first.total).toBe(3);
+		const second = await (await get(`/api/content/posts?sort=title&limit=2&cursor=${first.nextCursor}`)).json();
+		expect(second.data.map((e: { slug: string }) => e.slug)).toEqual(["c"]);
+		expect(second.nextCursor).toBeNull();
+		expect((await (await get("/api/content/posts?status=draft")).json()).data).toHaveLength(1);
+		expect((await (await get("/api/content/posts?q=cherry")).json()).data).toHaveLength(1);
+		expect((await (await get("/api/content/posts")).json()).data).toHaveLength(3);
+	});
+
+	it("serves an ETag, answers 304, and rejects a stale If-Match with 409", async () => {
+		await put("a", { data: { title: "One", draft: false }, body: "x" });
+		const res = await get("/api/content/posts/a");
+		const etag = res.headers.get("etag")!;
+		expect((await get("/api/content/posts/a", { "If-None-Match": etag })).status).toBe(304);
+		await put("a", { data: { title: "Two", draft: false }, body: "x" });
+		const stale = await put("a", { data: { title: "Mine", draft: false }, body: "x" }, { ...H, "If-Match": etag });
+		expect(stale.status).toBe(409);
+		const body = await stale.json();
+		expect(body.error.code).toBe("CONFLICT");
+		expect(body.error.details.current.data.title).toBe("Two");
+		const fresh = (await get("/api/content/posts/a")).headers.get("etag")!;
+		expect(
+			(await put("a", { data: { title: "Mine", draft: false }, body: "x" }, { ...H, "If-Match": fresh })).status,
+		).toBe(200);
+	});
+
+	it("replays a repeated POST with the same Idempotency-Key instead of creating twice", async () => {
+		const headers = { ...H, "Idempotency-Key": "k1" };
+		const body = { slug: "once", data: { title: "Once", draft: true }, body: "" };
+		const a = app(); // the replay cache lives in the app instance
+		const post = () => a.request("/api/content/posts", { method: "POST", headers, body: JSON.stringify(body) });
+		expect((await post()).status).toBe(201);
+		const again = await post();
+		expect(again.status).toBe(201);
+		expect(again.headers.get("idempotent-replayed")).toBe("true");
+	});
+});
+
+describe("OpenAPI contract", () => {
+	it("documents every registered /api route and every error code", async () => {
+		user = ALL;
+		const a = app();
+		const spec = await (await a.request("/api/openapi.json")).json();
+		expect(spec.openapi).toBe("3.1.0");
+		for (const r of a.routes.filter((x) => x.method !== "ALL" && x.path.startsWith("/api/"))) {
+			const path = r.path.replace(/:(\w+)(\{[^}]*\})?/g, "{$1}");
+			expect(spec.paths[path]?.[r.method.toLowerCase()], `${r.method} ${r.path}`).toBeDefined();
+		}
+		const codes: string[] =
+			spec.components.responses.Error.content["application/json"].schema.properties.error.properties.code.enum;
+		for (const code of ["CONFLICT", "RATE_LIMITED", "VALIDATION_ERROR", "FORBIDDEN"]) expect(codes).toContain(code);
+	});
+	it("needs a signed-in user", async () => {
+		user = null;
+		expect((await app().request("/api/openapi.json")).status).toBe(401);
+	});
+});
+
+describe("error catalog", () => {
+	it("lists every code the source can emit, with the status it is emitted with", async () => {
+		const { ERROR_CODES } = await import("../../src/api/openapi.ts");
+		const { readdir, readFile } = await import("node:fs/promises");
+		const dir = join(import.meta.dirname, "../../src");
+		const files = (await readdir(dir, { recursive: true })).filter((f) => f.endsWith(".ts"));
+		const used = new Map<string, number>();
+		for (const f of files) {
+			const text = await readFile(join(dir, f), "utf8");
+			for (const m of text.matchAll(/(?:ApiError\(|fail\(c, )(\d{3}), "([A-Z_]+)"/g)) used.set(m[2]!, Number(m[1]));
+		}
+		expect(used.size).toBeGreaterThan(15);
+		for (const [code, status] of used) expect(ERROR_CODES[code as keyof typeof ERROR_CODES], code).toBe(status);
 	});
 });

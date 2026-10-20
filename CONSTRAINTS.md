@@ -19,8 +19,10 @@
 | Unit/integration | all green, real fs/Git/SQLite, no DB mocks | `pnpm test` |
 | User journey | first-post journey passes in real Chromium | `pnpm test:e2e` (`pnpm test:e2e` builds admin + starter first) |
 | Dev server | `astro dev` serves API, admin, sitemap, robots | `pnpm test:e2e` (project `dev`) |
-| Build | every package builds; core's published layout has all 6 Astro entrypoints | `pnpm build` (runs `smoke:dist`) |
+| Build | every package builds; core's published layout has every Astro entrypoint | `pnpm build` (runs `smoke:dist`) |
 | Supply chain | 24 h release age, trust-downgrade block, install scripts denied | `pnpm-workspace.yaml` |
+| Dead code | no unused files or dependencies | `pnpm knip` |
+| Packages | every tarball passes publint and attw | `pnpm verify:pack` (after `pnpm build`) |
 | Architecture | `packages/core/src` imports no `cloudflare:*`, `@cloudflare/*`, `wrangler`, `kysely-d1` | `packages/core/tests/unit/architecture.test.ts` |
 
 `pnpm check` runs lint, typecheck and tests.
@@ -31,7 +33,13 @@
 | --- | --- | --- |
 | Test count (unit+integration) | see `pnpm -r test` | must not fall |
 | Coverage of changed lines | not measured | add `vitest --coverage` |
-| Dependency audit | not run in CI | add `pnpm audit` to CI |
+| Dependency audit | `pnpm audit --prod --audit-level high` in CI (`audit` job) | keep green |
+
+## Comments and commits
+
+- Comment the why the code cannot show, in one line. A known shortcut is written `shortcut: <the limit>, <when to upgrade>`.
+- Commit messages: imperative subject under 72 characters, a blank line, then the reason when it is not obvious. One logical change per commit.
+- A user-visible change also gets a changeset (`pnpm changeset`).
 
 ## Exceptions
 

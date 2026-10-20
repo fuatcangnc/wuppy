@@ -22,10 +22,7 @@ export async function loadDotEnv(root: string): Promise<void> {
 		const raw = match[2] ?? "";
 		if (process.env[key] !== undefined) continue;
 		let value = raw.trim();
-		if (
-			(value.startsWith('"') && value.endsWith('"')) ||
-			(value.startsWith("'") && value.endsWith("'"))
-		) {
+		if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
 			value = value.slice(1, -1);
 		}
 		process.env[key] = value;

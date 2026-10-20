@@ -1,0 +1,9 @@
+{
+	"$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
+	"changelog": "@changesets/cli/changelog",
+	"commit": false,
+	"access": "public",
+	"baseBranch": "main",
+	"fixed": [["wuppy", "@wuppy/admin", "@wuppy/auth", "@wuppy/git", "@wuppy/plugin-types", "@wuppy/plugin-cli", "create-wuppy"]],
+	"ignore": ["wuppy-starter", "@wuppy/e2e"]
+}

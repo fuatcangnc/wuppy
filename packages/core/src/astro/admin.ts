@@ -14,7 +14,7 @@ const TYPES: Record<string, string> = {
 	".woff2": "font/woff2",
 };
 
-const CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'";
+const CSP = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'";
 
 const notFound = () => new Response("Not found", { status: 404 });
 

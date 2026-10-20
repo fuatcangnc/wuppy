@@ -5,6 +5,8 @@ export interface TranslationRow {
 	key: string;
 	translations: Record<string, string>;
 	missing: string[];
+	/** Locales whose translation predates the latest edit of the source language. */
+	stale?: string[];
 }
 
 interface Props {
@@ -16,7 +18,8 @@ interface Props {
 }
 
 export function TranslationTable({ locales, rows, renderLink }: Props) {
-	if (locales.length === 0) return <p className="text-muted-foreground">Add `locales` to wuppy.config to manage translations.</p>;
+	if (locales.length === 0)
+		return <p className="text-muted-foreground">Add `locales` to wuppy.config to manage translations.</p>;
 	return (
 		<Table>
 			<TableHeader>
@@ -34,7 +37,10 @@ export function TranslationTable({ locales, rows, renderLink }: Props) {
 						{locales.map((l) => (
 							<TableCell key={l}>
 								{row.translations[l] ? (
-									renderLink("Open", row.translations[l])
+									<span className="flex items-center gap-2">
+										{renderLink("Open", row.translations[l])}
+										{row.stale?.includes(l) && <span className="text-warning">Out of date</span>}
+									</span>
 								) : (
 									<span className="flex items-center gap-2">
 										<span className="text-destructive">Missing</span>

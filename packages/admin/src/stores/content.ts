@@ -2,17 +2,17 @@ import { atom, map } from "nanostores";
 import { apiData } from "../lib/api.ts";
 
 export type FieldDef =
-	| "string"
-	| "text"
-	| "date"
-	| "image"
-	| "boolean"
-	| "number"
-	| "list"
-	| "byline"
-	| "taxonomy"
-	| "reference"
-	| { type: string; collection?: string; taxonomy?: string; multiple?: boolean };
+	| string
+	| {
+			type: string;
+			collection?: string;
+			taxonomy?: string;
+			multiple?: boolean;
+			required?: boolean;
+			help?: string;
+			options?: string[];
+			showIf?: { field: string; equals: unknown };
+	  };
 
 export interface CollectionInfo {
 	name: string;
@@ -122,6 +122,9 @@ export interface MediaItem {
 	folder?: string;
 	focalX?: number;
 	focalY?: number;
+	credit?: string;
+	width?: number;
+	height?: number;
 }
 
 export const $media = atom<MediaItem[]>([]);
@@ -141,8 +144,32 @@ export async function updateMedia(url: string, patch: Partial<MediaItem>): Promi
 	await loadMedia();
 }
 
-export async function deleteMedia(url: string): Promise<void> {
-	await apiData("DELETE", `/api/media?url=${encodeURIComponent(url)}`);
+/** Throws ApiError `IN_USE` while an entry still references the file, unless `force`. */
+export async function deleteMedia(url: string, force = false): Promise<void> {
+	await apiData("DELETE", `/api/media?url=${encodeURIComponent(url)}${force ? "&force=1" : ""}`);
+	await loadMedia();
+}
+
+export async function replaceMedia(url: string, file: File): Promise<void> {
+	const form = new FormData();
+	form.set("file", file);
+	await apiData("PUT", `/api/media/replace?url=${encodeURIComponent(url)}`, form);
+	await loadMedia();
+}
+
+export async function deleteUnusedMedia(): Promise<number> {
+	const { deleted } = await apiData<{ deleted: number }>("DELETE", "/api/media/orphans");
+	await loadMedia();
+	return deleted;
+}
+
+export async function renameMediaFolder(from: string, to: string): Promise<void> {
+	await apiData("POST", "/api/media/folders/rename", { from, to });
+	await loadMedia();
+}
+
+export async function deleteMediaFolder(name: string): Promise<void> {
+	await apiData("DELETE", `/api/media/folders?name=${encodeURIComponent(name)}`);
 	await loadMedia();
 }
 

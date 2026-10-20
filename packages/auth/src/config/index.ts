@@ -288,7 +288,7 @@ export async function userFromRequest(auth: WuppyAuth, req: Request) {
 	const session = await auth.api.getSession({ headers: req.headers });
 	if (!session) return null;
 	const role = (session.user as { role?: string | null }).role;
-	return { id: session.user.id, permissions: permissionsFor(role) };
+	return { id: session.user.id, name: session.user.name || session.user.email, permissions: permissionsFor(role) };
 }
 
 /** Creates/updates the auth tables. Safe to call on every startup. */

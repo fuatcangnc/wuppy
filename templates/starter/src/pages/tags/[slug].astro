@@ -4,7 +4,7 @@ import Base from "../../layouts/Base.astro";
 
 const slug = Astro.params.slug ?? "";
 const posts = await getCollection("posts", ({ data }) => data.draft !== true && (data.tags ?? []).includes(slug));
-if (posts.length === 0) return new Response("Not found", { status: 404 });
+if (posts.length === 0) return Astro.rewrite("/404");
 ---
 <Base title={`Tag: ${slug}`}>
 	<h1>Tag: {slug}</h1>

@@ -41,6 +41,17 @@ describe("RealGit", () => {
 		expect(diff).toContain("+two");
 	});
 
+	it("show returns a file as of a commit, or null if it did not exist then", async () => {
+		await write("a.md", "one\n");
+		const first = await git.commit(["a.md"], "add");
+		await write("a.md", "two\n");
+		await git.commit(["a.md"], "edit");
+		expect(await git.show(first, "a.md")).toBe("one\n");
+		expect(await git.show(first, "missing.md")).toBeNull();
+		await expect(git.show("-x", "a.md")).rejects.toThrow(/invalid/i);
+		await expect(git.show(first, "../a.md")).rejects.toThrow(/unsafe/i);
+	});
+
 	it("revert creates a new commit and keeps history", async () => {
 		await write("a.md", "one\n");
 		await git.commit(["a.md"], "add");

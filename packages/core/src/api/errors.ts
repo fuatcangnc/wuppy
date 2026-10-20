@@ -2,6 +2,7 @@ import type { Context } from "hono";
 import { ZodError } from "zod";
 import { ContentExistsError, DisallowedContentError, UnknownCollectionError } from "../content/service.ts";
 import { MediaTooLargeError, UnsupportedMediaError } from "../media/index.ts";
+import { redact } from "../security/redact.ts";
 import { UnsafePathError } from "../content/validation/path.ts";
 
 export class ApiError extends Error {
@@ -28,6 +29,6 @@ export function onError(err: Error, c: Context) {
 	if (err instanceof MediaTooLargeError) return fail(c, 413, "PAYLOAD_TOO_LARGE", err.message);
 	if (err instanceof UnsupportedMediaError) return fail(c, 415, "UNSUPPORTED_MEDIA", err.message);
 	if (err instanceof UnknownCollectionError) return fail(c, 404, "NOT_FOUND", "Unknown collection");
-	console.error(err);
+	console.error(redact(String(err.stack ?? err)));
 	return fail(c, 500, "INTERNAL", "Internal server error");
 }

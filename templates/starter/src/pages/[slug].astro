@@ -1,5 +1,6 @@
 ---
 import { getEntry, render } from "astro:content";
+import { verifyPreview } from "wuppy/publishing";
 import InlineTitle from "../components/InlineTitle.astro";
 import Base from "../layouts/Base.astro";
 
@@ -7,13 +8,21 @@ const editable = Astro.url.searchParams.has("wuppy-edit");
 
 const slug = Astro.params.slug ?? "";
 const page = await getEntry("pages", slug);
-if (!page) return new Response("Not found", { status: 404 });
+if (!page) return Astro.rewrite("/404");
+const previewing = verifyPreview(
+	import.meta.env.WUPPY_SECRET ?? process.env.WUPPY_SECRET ?? "",
+	"pages",
+	slug,
+	Astro.url.searchParams.get("wuppy-preview"),
+);
+if (page.data.draft === true && !import.meta.env.DEV && !previewing) return Astro.rewrite("/404");
+if (previewing) Astro.response.headers.set("Cache-Control", "no-store");
 const { Content } = await render(page);
 ---
 <Base
 	title={page.data.seoTitle ?? page.data.title}
 	description={page.data.seoDescription}
-	noindex={page.data.noindex === true}
+	noindex={page.data.noindex === true || previewing}
 	editHref={`/admin/e/pages/${slug}`}
 >
 	<article class="prose">

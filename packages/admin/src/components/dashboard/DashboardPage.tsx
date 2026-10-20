@@ -3,7 +3,17 @@ import { useStore } from "@nanostores/react";
 import { Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { $dashboard, $dashboardError, loadDashboard } from "../../stores/dashboard.ts";
-import { Badge, Button, Card, CardHeader, EmptyState, ErrorText, PageHeader, Spinner, StatCard } from "../../ui/index.tsx";
+import {
+	Badge,
+	Button,
+	Card,
+	CardHeader,
+	EmptyState,
+	ErrorText,
+	PageHeader,
+	Spinner,
+	StatCard,
+} from "../../ui/index.tsx";
 
 const relative = (iso: string) => {
 	const diff = Date.now() - new Date(iso).getTime();
@@ -40,7 +50,9 @@ export function DashboardPage() {
 							</Link>
 						))}
 						<Link to="/media" className="contents">
-							<Button variant="secondary"><Upload size={14} /> Upload media</Button>
+							<Button variant="secondary">
+								<Upload size={14} /> Upload media
+							</Button>
 						</Link>
 					</>
 				}
@@ -71,9 +83,7 @@ export function DashboardPage() {
 								<span className="font-medium capitalize">{c.name}</span>
 								<span className="flex gap-2">
 									<Badge tone="success">{c.published} published</Badge>
-									{(c.draft > 0 || c.scheduled > 0) && (
-										<Badge tone="warning">{c.draft + c.scheduled} drafts</Badge>
-									)}
+									{(c.draft > 0 || c.scheduled > 0) && <Badge tone="warning">{c.draft + c.scheduled} drafts</Badge>}
 								</span>
 							</Link>
 						))}

@@ -28,9 +28,11 @@ export const RADII = [
 	{ label: "Extra large", value: "1rem" },
 ] as const;
 
-const savedTheme = typeof localStorage === "undefined" ? "kumo" : localStorage.getItem("wuppy.theme") ?? "kumo";
-const savedMode = typeof localStorage === "undefined" ? "dark" : (localStorage.getItem("wuppy.mode") as Mode) ?? "dark";
-const savedRadius = typeof localStorage === "undefined" ? "0.625rem" : localStorage.getItem("wuppy.radius") ?? "0.625rem";
+const savedTheme = typeof localStorage === "undefined" ? "kumo" : (localStorage.getItem("wuppy.theme") ?? "kumo");
+const savedMode =
+	typeof localStorage === "undefined" ? "dark" : ((localStorage.getItem("wuppy.mode") as Mode) ?? "dark");
+const savedRadius =
+	typeof localStorage === "undefined" ? "0.625rem" : (localStorage.getItem("wuppy.radius") ?? "0.625rem");
 
 export const $theme = atom(savedTheme);
 export const $mode = atom<Mode>(savedMode);

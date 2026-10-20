@@ -145,3 +145,80 @@ describe("plugin sandbox", () => {
 		await expect(loadPlugin(manifest(), `this is not javascript`, deps())).rejects.toThrow(/load/i);
 	});
 });
+
+const run = async (m: Manifest, body: string, d = deps()) => {
+	const p = await loadPlugin(m, `globalThis.__plugin = { onContentUpdated: async (e, ctx) => { ${body} } };`, d);
+	const res = await p.dispatch("onContentUpdated", event);
+	p.dispose();
+	return res;
+};
+
+describe("write, secret, email and settings capabilities", () => {
+	const caps = manifest({
+		capabilities: { content: { read: ["posts"], write: ["posts"] }, secrets: ["API_KEY"], email: true },
+		settings: [
+			{ key: "greeting", label: "Greeting", default: "hi" },
+			{ key: "count", label: "Count", type: "number" },
+		],
+	});
+
+	it("writes only to declared collections, validating the document shape", async () => {
+		const written: unknown[] = [];
+		const d = deps({ writeContent: async (id, c, s, doc) => void written.push([id, c, s, doc]) });
+		expect(await run(caps, `await ctx.content.put("posts", "new", { data: { title: "T" }, body: "b" });`, d)).toEqual({
+			ok: true,
+		});
+		expect(written).toEqual([["t", "posts", "new", { data: { title: "T" }, body: "b" }]]);
+
+		const denied = await run(caps, `await ctx.content.put("pages", "x", { data: {}, body: "" });`, d);
+		expect(denied).toMatchObject({ ok: false, error: expect.stringContaining("write denied") });
+		const bad = await run(caps, `await ctx.content.put("posts", "x", { data: [], body: 1 });`, d);
+		expect(bad).toMatchObject({ ok: false, error: expect.stringContaining("needs { data: object, body: string }") });
+		expect(written).toHaveLength(1);
+		const readOnly = await run(manifest(), `await ctx.content.put("posts", "x", { data: {}, body: "" });`, d);
+		expect(readOnly.ok).toBe(false);
+	});
+
+	it("hands out only declared secrets, and undefined when unset", async () => {
+		const seen: unknown[] = [];
+		const d = deps({
+			secret: (_id, name) => (name === "API_KEY" ? "s3cr3t" : undefined),
+			log: (m) => void seen.push(m),
+		});
+		await run(caps, `ctx.log(String(ctx.secret("API_KEY")));`, d);
+		expect(seen).toEqual(["s3cr3t"]);
+		const other = await run(caps, `ctx.secret("OTHER");`, d);
+		expect(other).toMatchObject({ ok: false, error: expect.stringContaining("Secret access denied") });
+		seen.length = 0;
+		await run(caps, `ctx.log(String(ctx.secret("API_KEY")));`, deps({ log: (m) => void seen.push(m) }));
+		expect(seen).toEqual(["undefined"]);
+	});
+
+	it("sends email only with the capability and a well-formed message", async () => {
+		const sent: unknown[] = [];
+		const d = deps({ sendEmail: async (id, m) => void sent.push([id, m]) });
+		await run(caps, `await ctx.email.send({ to: "a@example.com", subject: "S", text: "T" });`, d);
+		expect(sent).toEqual([["t", { to: "a@example.com", subject: "S", text: "T" }]]);
+		const noCap = await run(manifest(), `await ctx.email.send({ to: "a@example.com", subject: "S", text: "T" });`, d);
+		expect(noCap).toMatchObject({ ok: false, error: expect.stringContaining("Email access denied") });
+		const malformed = await run(caps, `await ctx.email.send({ to: 1 });`, d);
+		expect(malformed.ok).toBe(false);
+		expect(sent).toHaveLength(1);
+	});
+
+	it("exposes frozen settings with defaults, read fresh on each call", async () => {
+		let stored: Record<string, string | boolean | number> = { greeting: "hello" };
+		const seen: string[] = [];
+		const d = deps({ settings: () => stored, log: (m) => void seen.push(m) });
+		const p = await loadPlugin(
+			caps,
+			`globalThis.__plugin = { onContentUpdated: async (e, ctx) => { ctx.log(JSON.stringify(ctx.settings) + Object.isFrozen(ctx.settings)); } };`,
+			d,
+		);
+		await p.dispatch("onContentUpdated", event);
+		stored = { greeting: "changed", count: 3 };
+		await p.dispatch("onContentUpdated", event);
+		p.dispose();
+		expect(seen).toEqual(['{"greeting":"hello"}true', '{"greeting":"changed","count":3}true']);
+	});
+});

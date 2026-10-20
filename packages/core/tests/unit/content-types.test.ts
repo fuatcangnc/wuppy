@@ -28,3 +28,46 @@ describe("dataSchema", () => {
 		expect(dataSchema(posts).parse({})).toEqual({});
 	});
 });
+
+const make = (fields: Record<string, unknown>) =>
+	dataSchema(collectionSchema.parse({ name: "posts", dir: "content/posts", fields }));
+
+const ok = (schema: ReturnType<typeof make>, data: unknown) => schema.safeParse(data).success;
+
+describe("rich fields", () => {
+	it("select accepts only declared options", () => {
+		const s = make({ kind: { type: "select", options: ["a", "b"] } });
+		expect(ok(s, { kind: "a" })).toBe(true);
+		expect(ok(s, { kind: "c" })).toBe(false);
+	});
+	it("required, min and max are enforced", () => {
+		const s = make({ title: { type: "string", required: true, min: 2 }, rating: { type: "number", max: 5 } });
+		expect(ok(s, {})).toBe(false);
+		expect(ok(s, { title: "x" })).toBe(false);
+		expect(ok(s, { title: "xy", rating: 6 })).toBe(false);
+		expect(ok(s, { title: "xy", rating: 5 })).toBe(true);
+	});
+	it("repeater validates rows and item count", () => {
+		const s = make({ faq: { type: "repeater", max: 1, fields: { q: { type: "string", required: true } } } });
+		expect(ok(s, { faq: [{ q: "why" }] })).toBe(true);
+		expect(ok(s, { faq: [{}] })).toBe(false);
+		expect(ok(s, { faq: [{ q: "a" }, { q: "b" }] })).toBe(false);
+	});
+	it("blocks pick the schema by block type", () => {
+		const s = make({
+			body: { type: "blocks", blocks: { quote: { text: { type: "string", required: true } }, rule: {} } },
+		});
+		expect(ok(s, { body: [{ type: "quote", text: "hi" }, { type: "rule" }] })).toBe(true);
+		expect(ok(s, { body: [{ type: "quote" }] })).toBe(false);
+		expect(ok(s, { body: [{ type: "video" }] })).toBe(false);
+	});
+	it("json accepts any JSON; showIf makes a required field conditional", () => {
+		const s = make({
+			meta: "json",
+			publishAt: { type: "date", required: true, showIf: { field: "draft", equals: true } },
+		});
+		expect(ok(s, { meta: { a: [1, "b"] }, draft: false })).toBe(true);
+		expect(ok(s, { draft: true })).toBe(false);
+		expect(ok(s, { draft: true, publishAt: "2030-01-01" })).toBe(true);
+	});
+});

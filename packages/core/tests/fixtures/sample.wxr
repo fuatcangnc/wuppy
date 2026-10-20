@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/">
+<channel>
+	<title>Old Blog</title>
+	<link>https://old.example</link>
+	<wp:base_site_url>https://old.example</wp:base_site_url>
+	<wp:author><wp:author_id>1</wp:author_id><wp:author_login><![CDATA[ada]]></wp:author_login><wp:author_email><![CDATA[ada@old.example]]></wp:author_email><wp:author_display_name><![CDATA[Ada Lovelace]]></wp:author_display_name></wp:author>
+	<wp:category><wp:term_id>3</wp:term_id><wp:category_nicename><![CDATA[news]]></wp:category_nicename><wp:category_parent><![CDATA[]]></wp:category_parent><wp:cat_name><![CDATA[News]]></wp:cat_name></wp:category>
+	<wp:category><wp:term_id>4</wp:term_id><wp:category_nicename><![CDATA[releases]]></wp:category_nicename><wp:category_parent><![CDATA[news]]></wp:category_parent><wp:cat_name><![CDATA[Releases]]></wp:cat_name></wp:category>
+	<wp:tag><wp:term_id>5</wp:term_id><wp:tag_slug><![CDATA[astro]]></wp:tag_slug><wp:tag_name><![CDATA[Astro]]></wp:tag_name></wp:tag>
+	<item>
+		<title>Hello &amp; welcome</title>
+		<link>https://old.example/2024/05/hello/</link>
+		<dc:creator><![CDATA[ada]]></dc:creator>
+		<content:encoded><![CDATA[<!-- wp:paragraph --><p>Read <a href="https://old.example/about/">about us</a> and <strong>enjoy</strong>.</p><!-- /wp:paragraph -->
+<h2>Photos</h2>
+<img src="https://old.example/wp-content/uploads/pic.png" alt="A pic" />
+<ul><li>one</li><li>two</li></ul>
+<p>1 &lt; 2 &lt;script&gt;alert(1)&lt;/script&gt;</p>]]></content:encoded>
+		<wp:post_id>10</wp:post_id>
+		<wp:post_date_gmt><![CDATA[2024-05-02 10:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[hello]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<category domain="category" nicename="releases"><![CDATA[Releases]]></category>
+		<category domain="post_tag" nicename="astro"><![CDATA[Astro]]></category>
+	</item>
+	<item>
+		<title>Work in progress</title>
+		<link>https://old.example/?p=11</link>
+		<dc:creator><![CDATA[ada]]></dc:creator>
+		<content:encoded><![CDATA[<p>Soon</p>]]></content:encoded>
+		<wp:post_id>11</wp:post_id>
+		<wp:post_date_gmt><![CDATA[0000-00-00 00:00:00]]></wp:post_date_gmt>
+		<wp:post_date><![CDATA[2024-06-01 08:00:00]]></wp:post_date>
+		<wp:post_name><![CDATA[wip]]></wp:post_name>
+		<wp:status><![CDATA[draft]]></wp:status>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+	</item>
+	<item>
+		<title>About</title>
+		<link>https://old.example/about/</link>
+		<dc:creator><![CDATA[ada]]></dc:creator>
+		<content:encoded><![CDATA[<p>About page</p>]]></content:encoded>
+		<wp:post_id>12</wp:post_id>
+		<wp:post_date_gmt><![CDATA[2024-01-01 00:00:00]]></wp:post_date_gmt>
+		<wp:post_name><![CDATA[about]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+	</item>
+	<item>
+		<title></title>
+		<link>https://old.example/?p=13</link>
+		<content:encoded><![CDATA[<p>No title</p>]]></content:encoded>
+		<wp:post_id>13</wp:post_id>
+		<wp:post_name><![CDATA[]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+	</item>
+	<item>
+		<title>pic</title>
+		<link>https://old.example/pic/</link>
+		<wp:post_id>20</wp:post_id>
+		<wp:post_type><![CDATA[attachment]]></wp:post_type>
+		<wp:attachment_url><![CDATA[https://old.example/wp-content/uploads/pic.png]]></wp:attachment_url>
+	</item>
+	<item>
+		<title>Home</title>
+		<link>https://old.example/?p=30</link>
+		<wp:post_id>30</wp:post_id>
+		<wp:menu_order>1</wp:menu_order>
+		<wp:post_type><![CDATA[nav_menu_item]]></wp:post_type>
+		<category domain="nav_menu" nicename="main"><![CDATA[Main]]></category>
+		<wp:postmeta><wp:meta_key><![CDATA[_menu_item_type]]></wp:meta_key><wp:meta_value><![CDATA[custom]]></wp:meta_value></wp:postmeta>
+		<wp:postmeta><wp:meta_key><![CDATA[_menu_item_menu_item_parent]]></wp:meta_key><wp:meta_value><![CDATA[0]]></wp:meta_value></wp:postmeta>
+		<wp:postmeta><wp:meta_key><![CDATA[_menu_item_url]]></wp:meta_key><wp:meta_value><![CDATA[https://old.example/]]></wp:meta_value></wp:postmeta>
+	</item>
+	<item>
+		<title>About us</title>
+		<link>https://old.example/?p=31</link>
+		<wp:post_id>31</wp:post_id>
+		<wp:menu_order>2</wp:menu_order>
+		<wp:post_type><![CDATA[nav_menu_item]]></wp:post_type>
+		<category domain="nav_menu" nicename="main"><![CDATA[Main]]></category>
+		<wp:postmeta><wp:meta_key><![CDATA[_menu_item_type]]></wp:meta_key><wp:meta_value><![CDATA[post_type]]></wp:meta_value></wp:postmeta>
+		<wp:postmeta><wp:meta_key><![CDATA[_menu_item_object_id]]></wp:meta_key><wp:meta_value><![CDATA[12]]></wp:meta_value></wp:postmeta>
+		<wp:postmeta><wp:meta_key><![CDATA[_menu_item_menu_item_parent]]></wp:meta_key><wp:meta_value><![CDATA[30]]></wp:meta_value></wp:postmeta>
+	</item>
+</channel>
+</rss>

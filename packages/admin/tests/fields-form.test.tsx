@@ -51,4 +51,29 @@ describe("FieldsForm", () => {
 		fireEvent.change(input, { target: { value: "a, b ,, c" } });
 		expect(onChange).toHaveBeenLastCalledWith("tags", ["a", "b", "c"]);
 	});
+
+	it("select offers the declared options", async () => {
+		const onChange = vi.fn();
+		render(<FieldsForm fields={{ kind: { type: "select", options: ["a", "b"] } }} data={{}} onChange={onChange} />);
+		await userEvent.setup().selectOptions(screen.getByLabelText("kind"), "b");
+		expect(onChange).toHaveBeenCalledWith("kind", "b");
+	});
+
+	it("hides a conditional field until its condition holds", () => {
+		const conditional = { draft: "boolean", publishAt: { type: "date", showIf: { field: "draft", equals: true } } };
+		const { rerender } = render(<FieldsForm fields={conditional} data={{ draft: false }} onChange={() => {}} />);
+		expect(screen.queryByLabelText("publishAt")).toBeNull();
+		rerender(<FieldsForm fields={conditional} data={{ draft: true }} onChange={() => {}} />);
+		expect(screen.getByLabelText("publishAt")).toBeInTheDocument();
+	});
+
+	it("structured fields emit parsed JSON and flag invalid JSON", () => {
+		const onChange = vi.fn();
+		render(<FieldsForm fields={{ meta: "json" }} data={{}} onChange={onChange} />);
+		const box = screen.getByLabelText("meta");
+		fireEvent.change(box, { target: { value: '{"a":1}' } });
+		expect(onChange).toHaveBeenLastCalledWith("meta", { a: 1 });
+		fireEvent.change(box, { target: { value: "{" } });
+		expect(screen.getByText("Invalid JSON")).toBeInTheDocument();
+	});
 });

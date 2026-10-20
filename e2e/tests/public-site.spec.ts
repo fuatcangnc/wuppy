@@ -4,6 +4,10 @@ test("sitemap lists published content, robots hides admin, redirects work", asyn
 	const sitemap = await (await request.get("/sitemap.xml")).text();
 	expect(sitemap).toContain("<loc>http://127.0.0.1:4444/posts/hello</loc>");
 
+	const rss = await request.get("/rss.xml");
+	expect(rss.headers()["content-type"]).toContain("application/rss+xml");
+	expect(await rss.text()).toContain('<rss version="2.0">');
+
 	const robots = await (await request.get("/robots.txt")).text();
 	expect(robots).toContain("Disallow: /admin");
 	expect(robots).toContain("Sitemap: http://127.0.0.1:4444/sitemap.xml");
@@ -18,7 +22,17 @@ test("a published post renders with SEO tags and a missing one is a 404", async 
 	await expect(page.getByRole("heading", { name: "Hello Wuppy" })).toBeVisible();
 	await expect(page).toHaveTitle("Hello Wuppy | Wuppy Starter");
 	await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "http://127.0.0.1:4444/posts/hello");
+	const ld = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent()) ?? "{}");
+	expect(ld).toMatchObject({ "@type": "Article", headline: "Hello Wuppy" });
+	await expect(page.getByText(/\d+ min read/)).toBeVisible();
+	await expect(page.getByRole("link", { name: "Skip to content" })).toBeAttached();
 	expect((await request.get("/posts/nope")).status()).toBe(404);
+});
+
+test("unknown URLs get the designed 404 page with the 404 status", async ({ page }) => {
+	const res = await page.goto("/no-such-page");
+	expect(res?.status()).toBe(404);
+	await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
 });
 
 test("a visitor can submit a moderated comment", async ({ page }) => {

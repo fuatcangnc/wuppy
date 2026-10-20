@@ -1,5 +1,6 @@
 ---
 import { isPublished } from "wuppy/publishing";
+import { paginate } from "wuppy/site";
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 
@@ -7,10 +8,18 @@ import Base from "../layouts/Base.astro";
 const posts = (await getCollection("posts", ({ data }) => import.meta.env.DEV || isPublished(data))).toSorted(
 	(a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0),
 );
+const { items, page, pages, prev, next } = paginate(posts, Astro.url.searchParams.get("page"), 10);
 ---
 <Base>
 	<h1>Wuppy Starter</h1>
 	<ul>
-		{posts.map((p) => <li><a href={`/posts/${p.id}`}>{p.data.title}</a>{p.data.draft && " (draft)"}</li>)}
+		{items.map((p) => <li><a href={`/posts/${p.id}`}>{p.data.title}</a>{p.data.draft && " (draft)"}</li>)}
 	</ul>
+	{pages > 1 && (
+		<nav aria-label="Pagination" class="mt-6 flex gap-4 text-sm">
+			{prev && <a href={`/?page=${prev}`} rel="prev">Newer</a>}
+			<span aria-current="page">Page {page} of {pages}</span>
+			{next && <a href={`/?page=${next}`} rel="next">Older</a>}
+		</nav>
+	)}
 </Base>

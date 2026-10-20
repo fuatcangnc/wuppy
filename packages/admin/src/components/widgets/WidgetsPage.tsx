@@ -1,4 +1,5 @@
 import { ResourcePage } from "../shared/ResourcePage.tsx";
+import { WidgetListEditor, type Widget } from "./WidgetListEditor.tsx";
 
 export function WidgetsPage() {
 	return (
@@ -7,7 +8,7 @@ export function WidgetsPage() {
 			title="Widgets"
 			description="Reusable blocks for sidebars and footers."
 			itemLabel="widget area"
-			template={{ name: "", label: "", widgets: [] }}
+			template={{ name: "", label: "", description: "", widgets: [] }}
 			columns={[
 				{ key: "label", label: "Label" },
 				{ key: "name", label: "Key" },
@@ -16,7 +17,23 @@ export function WidgetsPage() {
 			fields={[
 				{ key: "name", label: "Key" },
 				{ key: "label", label: "Label" },
-				{ key: "widgets", label: "Widgets (JSON)", type: "json" },
+				{ key: "description", label: "Description" },
+				{
+					key: "widgets",
+					label: "Widgets",
+					type: "custom",
+					render: (value, onChange) => (
+						<WidgetListEditor
+							widgets={((Array.isArray(value) ? value : []) as Widget[]).map((w) => ({
+								...w,
+								locales: w.locales ?? [],
+								collections: w.collections ?? [],
+								paths: w.paths ?? [],
+							}))}
+							onChange={onChange}
+						/>
+					),
+				},
 			]}
 		/>
 	);

@@ -68,7 +68,13 @@ beforeEach(async () => {
 	redirects = new RedirectService(json, new DatabaseSync(":memory:"), []);
 	service = new ContentService(
 		root,
-		[collectionSchema.parse({ name: "posts", dir: "content/posts", fields: { title: "string", draft: "boolean", date: "date" } })],
+		[
+			collectionSchema.parse({
+				name: "posts",
+				dir: "content/posts",
+				fields: { title: "string", draft: "boolean", date: "date" },
+			}),
+		],
 		git,
 	);
 });
@@ -76,7 +82,12 @@ afterEach(() => rm(root, { recursive: true, force: true }));
 
 describe("site data", () => {
 	it("round-trips menus and commits the JSON file", async () => {
-		const menu = { name: "main", label: "Main", location: "header", items: [{ label: "Home", href: "/", children: [] }] };
+		const menu = {
+			name: "main",
+			label: "Main",
+			location: "header",
+			items: [{ label: "Home", href: "/", children: [] }],
+		};
 		const put = await app().request("/api/data/menus", {
 			method: "PUT",
 			headers: H,
@@ -158,14 +169,83 @@ describe("dashboard, calendar and search", () => {
 	});
 });
 
+const move = (slug: string, at: string) =>
+	app().request(`/api/calendar/posts/${slug}`, { method: "PATCH", headers: H, body: JSON.stringify({ at }) });
+
+describe("calendar status and rescheduling", () => {
+	it("labels drafts, scheduled and live entries by the same rule as isPublished", async () => {
+		await service.put("posts", "live", { data: { title: "Live", date: "2020-01-01T00:00:00.000Z" }, body: "" });
+		await service.put("posts", "wip", {
+			data: { title: "Wip", draft: true, date: "2020-01-02T00:00:00.000Z" },
+			body: "",
+		});
+		await service.put("posts", "later", { data: { title: "Later", publishAt: "2999-01-01T00:00:00.000Z" }, body: "" });
+		const items = (await (await app().request("/api/calendar")).json()).data as Array<{
+			slug: string;
+			status: string;
+			field: string;
+		}>;
+		expect(Object.fromEntries(items.map((i) => [i.slug, [i.status, i.field]]))).toEqual({
+			live: ["published", "date"],
+			wip: ["draft", "date"],
+			later: ["scheduled", "publishAt"],
+		});
+	});
+
+	it("moves an entry to another day through the field it is dated by, keeping date-only values date-only", async () => {
+		await service.put("posts", "a", { data: { title: "A", publishAt: "2999-01-01T09:30:00.000Z" }, body: "Body" });
+		await service.put("posts", "b", { data: { title: "B", date: "2026-05-10" }, body: "" });
+		expect((await move("a", "2999-01-05T09:30:00.000Z")).status).toBe(200);
+		expect((await service.get("posts", "a"))?.data.publishAt).toBe("2999-01-05T09:30:00.000Z");
+		expect((await service.get("posts", "a"))?.body).toBe("Body");
+		await move("b", "2026-05-12T00:00:00.000Z");
+		expect((await service.get("posts", "b"))?.data.date).toBe("2026-05-12");
+		expect((await move("nope", "2026-05-12T00:00:00.000Z")).status).toBe(404);
+		expect((await move("a", "yesterday")).status).toBe(422);
+	});
+});
+
 describe("redirects", () => {
 	it("merges saved rules and records 404s", async () => {
 		await redirects.save([{ from: "/old", to: "/new", status: 301 }]);
 		const list = (await (await app().request("/api/redirects")).json()).data;
-		expect(list).toEqual([{ from: "/old", to: "/new", status: 301 }]);
+		expect(list).toMatchObject([{ from: "/old", to: "/new", status: 301, match: "exact", enabled: true }]);
 
 		redirects.record404("/missing");
 		const missing = (await (await app().request("/api/redirects/404")).json()).data;
 		expect(missing[0]).toMatchObject({ path: "/missing", count: 1 });
+	});
+});
+
+const send = (path: string, body?: unknown) =>
+	app().request(path, { method: body ? "POST" : "GET", headers: H, body: body ? JSON.stringify(body) : undefined });
+
+describe("redirect import/export", () => {
+	it("exports CSV, imports with merge or replace, and rejects a bad row without saving anything", async () => {
+		await redirects.save([{ from: "/old", to: "/new" }]);
+
+		const csv = await (await send("/api/redirects/export?format=csv")).text();
+		expect(csv.split("\n")[0]).toBe("from,to,status,match,enabled,note");
+		expect(csv).toContain("/old,/new,301,exact,true");
+
+		const merged = await send("/api/redirects/import", { format: "csv", text: "/a,/b\n/old,/newer" });
+		expect((await merged.json()).data).toEqual({ imported: 2, total: 2 });
+		expect((await redirects.list()).map((r) => `${r.from}>${r.to}`).toSorted()).toEqual(["/a>/b", "/old>/newer"]);
+
+		const bad = await send("/api/redirects/import", {
+			format: "csv",
+			text: "/ok,/fine\n/bad,javascript:x",
+			mode: "replace",
+		});
+		expect(bad.status).toBe(422);
+		expect(await redirects.list()).toHaveLength(2);
+
+		const replaced = await send("/api/redirects/import", {
+			format: "json",
+			text: JSON.stringify([{ from: "/only", to: "/one" }]),
+			mode: "replace",
+		});
+		expect(replaced.status).toBe(200);
+		expect((await redirects.list()).map((r) => r.from)).toEqual(["/only"]);
 	});
 });

@@ -34,7 +34,6 @@ catalog:
   astro: ^7.3.2
   "@astrojs/node": ^11.1.5
   hono: 4.12.27
-  kysely: ^0.29.0
   typescript: ^6.0.3
   vitest: 4.1.10
   yaml: ^2.8.0

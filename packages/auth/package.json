@@ -22,11 +22,13 @@
 		"vitest": "catalog:"
 	},
 	"files": [
-		"dist"
+		"dist",
+		"types"
 	],
 	"publishConfig": {
 		"exports": {
 			".": {
+				"types": "./types/index.d.ts",
 				"import": "./dist/index.mjs"
 			}
 		}

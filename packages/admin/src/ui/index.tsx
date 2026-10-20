@@ -3,13 +3,7 @@ import { atom } from "nanostores";
 import type { ComponentProps, InputHTMLAttributes, ReactNode } from "react";
 import { cn } from "../components/ui/utils.ts";
 import { Button as ShadButton, type ButtonProps } from "../components/ui/button.tsx";
-import {
-	Card as ShadCard,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardTitle,
-} from "../components/ui/card.tsx";
+import { Card as ShadCard, CardContent, CardDescription, CardFooter, CardTitle } from "../components/ui/card.tsx";
 import { Badge as ShadBadge } from "../components/ui/badge.tsx";
 import { Dialog, DialogHeader, DialogTitle } from "../components/ui/dialog.tsx";
 import { Tabs } from "../components/ui/tabs.tsx";
@@ -24,7 +18,21 @@ import { NativeSelect } from "../components/ui/select.tsx";
 import { $mode, $radius, $theme, PRESETS, RADII, setMode, setRadius, setTheme } from "../stores/theme.ts";
 
 export { cn, CardContent, CardDescription, CardFooter, CardTitle, Dialog, DialogHeader, DialogTitle, Tabs };
-export { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Td, Th, Field, Alert, Separator, Skeleton, Spinner };
+export {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+	Td,
+	Th,
+	Field,
+	Alert,
+	Separator,
+	Skeleton,
+	Spinner,
+};
 export type { ButtonProps };
 
 export function Button({ variant = "default", ...props }: ButtonProps) {
@@ -106,7 +114,15 @@ export function Badge({
 }
 
 /** App-level card header kept compatible with the existing screens. */
-export function CardHeader({ title, description, actions }: { title: ReactNode; description?: ReactNode; actions?: ReactNode }) {
+export function CardHeader({
+	title,
+	description,
+	actions,
+}: {
+	title: ReactNode;
+	description?: ReactNode;
+	actions?: ReactNode;
+}) {
 	return (
 		<div className="flex flex-wrap items-start justify-between gap-3 border-b px-6 py-4">
 			<div className="grid gap-1">
@@ -145,7 +161,17 @@ export function PageHeader({
 	);
 }
 
-export function StatCard({ label, value, hint, href }: { label: string; value: ReactNode; hint?: string; href?: string }) {
+export function StatCard({
+	label,
+	value,
+	hint,
+	href,
+}: {
+	label: string;
+	value: ReactNode;
+	hint?: string;
+	href?: string;
+}) {
 	const body = (
 		<>
 			<p className="text-sm text-muted-foreground">{label}</p>
@@ -162,7 +188,15 @@ export function StatCard({ label, value, hint, href }: { label: string; value: R
 	);
 }
 
-export function EmptyState({ title, description, action }: { title: string; description?: string; action?: ReactNode }) {
+export function EmptyState({
+	title,
+	description,
+	action,
+}: {
+	title: string;
+	description?: string;
+	action?: ReactNode;
+}) {
 	return (
 		<div className="grid place-items-center gap-2 rounded-lg border border-dashed p-10 text-center">
 			<p className="font-medium">{title}</p>

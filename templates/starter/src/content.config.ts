@@ -26,6 +26,7 @@ const pages = defineCollection({
 		draft: z.boolean().default(false),
 		seoTitle: z.string().optional(),
 		seoDescription: z.string().optional(),
+		noindex: z.boolean().default(false),
 	}),
 });
 

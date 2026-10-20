@@ -5,7 +5,7 @@ import { dataSchema, type Collection } from "../content-types/index.ts";
 import type { WebhookEvent } from "../webhooks/index.ts";
 import { findDisallowed } from "../mdx/index.ts";
 import { FilesystemContent, type ContentEntry } from "./adapters/filesystem.ts";
-import type { ParsedDocument } from "./parsers/frontmatter.ts";
+import { parseDocument, type ParsedDocument } from "./parsers/frontmatter.ts";
 
 export class UnknownCollectionError extends Error {}
 export class ContentExistsError extends Error {
@@ -27,6 +27,13 @@ export class ContentService {
 	private readonly stores = new Map<string, FilesystemContent>();
 	private readonly schemas = new Map<string, ReturnType<typeof dataSchema>>();
 	private tail: Promise<unknown> = Promise.resolve();
+	/** Bumped on every successful mutation; indexes compare it to know when to rebuild. */
+	version = 0;
+	/** Parsed entries per collection, reused until a mutation (version) or the TTL; see `listEntries`. */
+	private readonly listed = new Map<
+		string,
+		{ at: number; version: number; rows: Array<ContentEntry & { modified: string }> }
+	>();
 
 	/** Git allows one writer per repo (index.lock), so mutations run one at a time. */
 	private serial<T>(fn: () => Promise<T>): Promise<T> {
@@ -39,7 +46,12 @@ export class ContentService {
 		private readonly root: string,
 		readonly collections: Collection[],
 		private readonly git: GitAdapter,
-		private readonly options: { components?: string[]; emit?: (event: WebhookEvent) => void } = {},
+		private readonly options: {
+			components?: string[];
+			emit?: (event: WebhookEvent) => void;
+			/** How long a listing may be reused when files change outside Wuppy (git pull, editor). Default 2 s; 0 turns the cache off. */
+			listCacheMs?: number;
+		} = {},
 	) {
 		for (const c of collections) {
 			this.stores.set(c.name, new FilesystemContent(root, c));
@@ -47,7 +59,13 @@ export class ContentService {
 		}
 	}
 
+	/** MDX components an entry body may use (empty means none). */
+	get allowedComponents(): readonly string[] {
+		return this.options.components ?? [];
+	}
+
 	private emit(type: WebhookEvent["type"], extra: Omit<WebhookEvent, "type" | "at">): void {
+		this.version++;
 		this.options.emit?.({ type, ...extra, at: new Date().toISOString() });
 	}
 
@@ -61,8 +79,21 @@ export class ContentService {
 		return this.store(collection).list();
 	}
 
-	/** Metadata for dashboard/search/list views; reads each entry once. */
+	/**
+	 * Metadata for dashboard/search/list views; reads each entry once. A big collection is expensive to read (10k files
+	 * take about half a second), so the result is reused until Wuppy itself writes or `listCacheMs` passes.
+	 */
 	async listEntries(collection: string): Promise<Array<ContentEntry & { modified: string }>> {
+		const ttl = this.options.listCacheMs ?? 2000;
+		const hit = this.listed.get(collection);
+		if (hit && hit.version === this.version && Date.now() - hit.at < ttl) return hit.rows.slice();
+		const version = this.version;
+		const rows = await this.readEntries(collection);
+		this.listed.set(collection, { at: Date.now(), version, rows });
+		return rows.slice();
+	}
+
+	private async readEntries(collection: string): Promise<Array<ContentEntry & { modified: string }>> {
 		const store = this.store(collection);
 		const slugs = await store.list();
 		const { stat } = await import("node:fs/promises");
@@ -202,6 +233,12 @@ export class ContentService {
 
 	async history(collection: string, slug: string): Promise<Commit[]> {
 		return this.git.history(this.store(collection).relPath(slug));
+	}
+
+	/** The entry as it was in commit `sha`, or null if it did not exist then. */
+	async revision(collection: string, slug: string, sha: string): Promise<ParsedDocument | null> {
+		const text = await this.git.show(sha, this.store(collection).relPath(slug));
+		return text === null ? null : parseDocument(text);
 	}
 
 	diff(sha: string): Promise<string> {
