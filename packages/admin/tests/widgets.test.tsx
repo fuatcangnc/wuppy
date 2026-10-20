@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, expect, it } from "vitest";
 import { newWidget, WidgetListEditor, type Widget } from "../src/components/widgets/WidgetListEditor.tsx";
+import { chooseSelect } from "./utils/select.ts";
 
 const w = (id: string, over: Partial<Widget> = {}): Widget => ({
 	id,
@@ -40,7 +41,7 @@ describe("WidgetListEditor", () => {
 		expect(state().map((x) => x.id)).toEqual(["a", "b", "widget-3"]);
 
 		fireEvent.change(screen.getByLabelText("Title of b"), { target: { value: "Bee" } });
-		await user.selectOptions(screen.getByLabelText("Type of b"), "html");
+		await chooseSelect(user, "Type of b", "html");
 		fireEvent.change(screen.getByLabelText("Content of b"), { target: { value: "<p>x</p>" } });
 		expect(state()[1]).toMatchObject({ title: "Bee", type: "html", body: "<p>x</p>" });
 
@@ -72,7 +73,7 @@ describe("WidgetListEditor", () => {
 		render(<Harness initial={[w("a")]} />);
 		const user = userEvent.setup();
 		expect(screen.queryByLabelText("Menu of a")).toBeNull();
-		await user.selectOptions(screen.getByLabelText("Type of a"), "menu");
+		await chooseSelect(user, "Type of a", "menu");
 		expect(screen.getByLabelText("Menu of a")).toBeInTheDocument();
 		expect(screen.queryByLabelText("Content of a")).toBeNull();
 	});

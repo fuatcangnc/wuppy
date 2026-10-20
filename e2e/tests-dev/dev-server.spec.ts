@@ -33,7 +33,8 @@ test("owner invites an author and the invitee accepts the emailed link", async (
 	await page.getByRole("button", { name: "Invite user" }).click();
 	const dialog = page.getByRole("dialog");
 	await dialog.getByLabel("Email").fill("dev-author@example.com");
-	await dialog.getByLabel("Role").selectOption("author");
+	await dialog.getByLabel("Role").click();
+	await page.getByRole("option", { name: "author" }).click();
 	await dialog.getByRole("button", { name: "Send invitation" }).click();
 	await expect(page.getByRole("row", { name: /dev-author@example\.com/ })).toBeVisible();
 

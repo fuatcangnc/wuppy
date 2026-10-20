@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { FieldsForm } from "../src/components/content/FieldsForm.tsx";
+import { chooseSelect } from "./utils/select.ts";
 
 describe("FieldsForm", () => {
 	const fields = { title: "string", views: "number", draft: "boolean", date: "date", summary: "text" } as const;
@@ -55,7 +56,7 @@ describe("FieldsForm", () => {
 	it("select offers the declared options", async () => {
 		const onChange = vi.fn();
 		render(<FieldsForm fields={{ kind: { type: "select", options: ["a", "b"] } }} data={{}} onChange={onChange} />);
-		await userEvent.setup().selectOptions(screen.getByLabelText("kind"), "b");
+		await chooseSelect(userEvent.setup(), "kind", "b");
 		expect(onChange).toHaveBeenCalledWith("kind", "b");
 	});
 

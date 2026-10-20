@@ -5,6 +5,7 @@ import {
 	Button,
 	Card,
 	CardHeader,
+	DataPagination,
 	Dialog,
 	EmptyState,
 	ErrorText,
@@ -34,6 +35,10 @@ interface NotFound {
 export function RedirectsPage() {
 	const [rules, setRules] = useState<Rule[]>([]);
 	const [missing, setMissing] = useState<NotFound[]>([]);
+	const [rulePage, setRulePage] = useState(1);
+	const [rulePageSize, setRulePageSize] = useState(20);
+	const [missingPage, setMissingPage] = useState(1);
+	const [missingPageSize, setMissingPageSize] = useState(20);
 	const [error, setError] = useState<string | null>(null);
 	const [draft, setDraft] = useState<Rule>({ from: "/", to: "/", status: 301 });
 	const [open, setOpen] = useState(false);
@@ -49,6 +54,23 @@ export function RedirectsPage() {
 		}
 	};
 	useEffect(() => void load(), []);
+	const rulePageCount = Math.max(1, Math.ceil(rules.length / rulePageSize));
+	const currentRulePage = Math.min(rulePage, rulePageCount);
+	const visibleRules = rules
+		.map((rule, index) => ({ rule, index }))
+		.slice((currentRulePage - 1) * rulePageSize, currentRulePage * rulePageSize);
+	const missingPageCount = Math.max(1, Math.ceil(missing.length / missingPageSize));
+	const currentMissingPage = Math.min(missingPage, missingPageCount);
+	const visibleMissing = missing.slice(
+		(currentMissingPage - 1) * missingPageSize,
+		currentMissingPage * missingPageSize,
+	);
+	useEffect(() => {
+		if (rulePage > rulePageCount) setRulePage(rulePageCount);
+	}, [rulePage, rulePageCount]);
+	useEffect(() => {
+		if (missingPage > missingPageCount) setMissingPage(missingPageCount);
+	}, [missingPage, missingPageCount]);
 
 	const save = async (next: Rule[]) => {
 		setError(null);
@@ -86,7 +108,7 @@ export function RedirectsPage() {
 							</tr>
 						</thead>
 						<tbody>
-							{rules.map((rule, index) => (
+							{visibleRules.map(({ rule, index }) => (
 								<tr key={`${rule.from}:${index}`}>
 									<Td className="font-mono text-xs">{rule.from}</Td>
 									<Td className="font-mono text-xs">{rule.to}</Td>
@@ -102,6 +124,19 @@ export function RedirectsPage() {
 							))}
 						</tbody>
 					</Table>
+				)}
+				{rules.length > 0 && (
+					<DataPagination
+						page={currentRulePage}
+						pageCount={rulePageCount}
+						pageSize={rulePageSize}
+						total={rules.length}
+						onPageChange={setRulePage}
+						onPageSizeChange={(nextSize) => {
+							setRulePageSize(nextSize);
+							setRulePage(1);
+						}}
+					/>
 				)}
 			</Card>
 
@@ -136,7 +171,7 @@ export function RedirectsPage() {
 							</tr>
 						</thead>
 						<tbody>
-							{missing.map((row) => (
+							{visibleMissing.map((row) => (
 								<tr key={row.path}>
 									<Td className="font-mono text-xs">{row.path}</Td>
 									<Td>{row.count}</Td>
@@ -157,6 +192,19 @@ export function RedirectsPage() {
 							))}
 						</tbody>
 					</Table>
+				)}
+				{missing.length > 0 && (
+					<DataPagination
+						page={currentMissingPage}
+						pageCount={missingPageCount}
+						pageSize={missingPageSize}
+						total={missing.length}
+						onPageChange={setMissingPage}
+						onPageSizeChange={(nextSize) => {
+							setMissingPageSize(nextSize);
+							setMissingPage(1);
+						}}
+					/>
 				)}
 			</Card>
 

@@ -274,7 +274,7 @@ Kırılma noktaları Tailwind varsayılanları: `sm 640`, `md 768`, `lg 1024`,
 
 - `.dark` sınıfı `<html>`e eklenir; `color-scheme: dark`.
 - Token’lar `.dark` bloğunda override edilir; bileşen sınıfları değişmez.
-- Native kontroller (select popup, scrollbar) `color-scheme` ile temaya uyar.
+- Native scrollbar `color-scheme` ile temaya uyar; Select Radix portalında tema token'larını kullanır.
 - Dark’ta `border`/`input` yarı saydam beyazdır (`white / 10%`, `white / 15%`).
 - Sidebar metni beyaz (`--sidebar-foreground`), sidebar ikonları beyazın %40’ı (`opacity-40`) kullanır.
 
@@ -286,6 +286,8 @@ Kırılma noktaları Tailwind varsayılanları: `sm 640`, `md 768`, `lg 1024`,
 - İkon-only butonlarda `aria-label` + `title`.
 - Dialog: odak tuzağı, Escape, `aria-modal`, başlık referansı.
 - Tabs: `role="tablist"`, `aria-selected`, klavye gezinmesi.
+- Select: Radix tabanlı shadcn portu; `role="combobox"`, portallı liste, ok tuşları/Escape ve boş değer desteği.
+- Pagination: `nav[aria-label="Pagination"]`, `aria-current="page"`, per-page seçimi ve görünür aralık özeti.
 - Kontrast: metin `foreground`, ikincil `muted-foreground`; `primary` üzerinde
   `primary-foreground`.
 - Tailwind v4 preflight imleci kaldırdığı için `global.css`te
@@ -297,8 +299,8 @@ Kırılma noktaları Tailwind varsayılanları: `sm 640`, `md 768`, `lg 1024`,
 ## 14. Bileşen envanteri
 
 **React (admin, `components/ui/`):** Alert, Badge, Button, Card, Checkbox,
-Dialog, Feedback (Separator/Skeleton/Spinner), Field, Input, Label, Select,
-Switch, Table, Tabs, Textarea, Utils.
+Dialog, Feedback (Separator/Skeleton/Spinner), Field, Input, Label, Pagination,
+Select (Radix), Switch, Table, Tabs, Textarea, Utils.
 
 **Astro site (`templates/*`):** Bejamas UI bileşenleri (`button`, `card`,
 `input`, `field`, `badge`, `dialog`, `tabs`, `table`, `tooltip`, …).

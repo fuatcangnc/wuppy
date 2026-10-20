@@ -11,10 +11,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Td, Th }
 import { Checkbox as ShadCheckbox, Switch as ShadSwitch } from "../components/ui/checkbox.tsx";
 import { Alert } from "../components/ui/alert.tsx";
 import { Separator, Skeleton, Spinner } from "../components/ui/feedback.tsx";
-import { Field, FieldInput, FieldSelect, FieldTextarea } from "../components/ui/field.tsx";
+import { Field, FieldInput, FieldTextarea } from "../components/ui/field.tsx";
 import { Input as ShadInput, Textarea as ShadTextarea } from "../components/ui/input.tsx";
-import { Select as ShadSelect } from "../components/ui/select.tsx";
-import { NativeSelect } from "../components/ui/select.tsx";
+import { Select } from "../components/ui/select.tsx";
+import { DataPagination } from "../components/ui/pagination.tsx";
 import { $mode, $radius, $theme, PRESETS, RADII, setMode, setRadius, setTheme } from "../stores/theme.ts";
 
 export {
@@ -41,6 +41,8 @@ export {
 	Td,
 	Th,
 	Field,
+	Select,
+	DataPagination,
 	Alert,
 	Separator,
 	Skeleton,
@@ -76,15 +78,6 @@ export function Textarea({
 	...props
 }: ComponentProps<typeof ShadTextarea> & { label?: string; hint?: string; error?: string | null }) {
 	return <FieldTextarea label={label} hint={hint} error={error} {...props} />;
-}
-
-export function Select({
-	label,
-	hint,
-	error,
-	...props
-}: ComponentProps<typeof ShadSelect> & { label?: string; hint?: string; error?: string | null }) {
-	return <FieldSelect label={label} hint={hint} error={error} {...props} />;
 }
 
 export function Checkbox({ label, ...props }: InputHTMLAttributes<HTMLInputElement> & { label?: string }) {
@@ -281,9 +274,11 @@ export function ThemeSwitcher() {
 					style={{ background: preset.light }}
 				/>
 			))}
-			<NativeSelect
+			<Select
 				aria-label="Corner radius"
-				className="h-7 w-auto px-2 text-xs"
+				size="sm"
+				className="px-2 text-xs"
+				style={{ width: "auto" }}
 				value={radius}
 				onChange={(event) => setRadius(event.target.value)}
 			>
@@ -292,17 +287,19 @@ export function ThemeSwitcher() {
 						{item.label}
 					</option>
 				))}
-			</NativeSelect>
-			<NativeSelect
+			</Select>
+			<Select
 				aria-label="Color mode"
-				className="h-7 w-auto px-2 text-xs"
+				size="sm"
+				className="px-2 text-xs"
+				style={{ width: "auto" }}
 				value={mode}
 				onChange={(event) => setMode(event.target.value as typeof mode)}
 			>
 				<option value="system">System</option>
 				<option value="light">Light</option>
 				<option value="dark">Dark</option>
-			</NativeSelect>
+			</Select>
 		</div>
 	);
 }

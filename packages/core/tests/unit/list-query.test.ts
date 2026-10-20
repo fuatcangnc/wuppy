@@ -46,5 +46,6 @@ describe("queryEntries filters", () => {
 		expect(queryEntries(rows, { sort: "slug", limit: "2", cursor: first.nextCursor! }).rows.map((r) => r.slug)).toEqual(
 			["tr/a"],
 		);
+		expect(queryEntries(rows, { sort: "slug", limit: "2", offset: "2" }).rows.map((r) => r.slug)).toEqual(["tr/a"]);
 	});
 });

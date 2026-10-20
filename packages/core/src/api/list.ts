@@ -14,6 +14,8 @@ export interface ListQuery {
 	sort?: string;
 	limit?: string;
 	cursor?: string;
+	/** Absolute zero-based offset; takes precedence over `cursor`. */
+	offset?: string;
 	/** Byline slug in the `author` field. */
 	author?: string;
 	/** Language: the slug starts with `<lang>/`. */
@@ -29,7 +31,7 @@ const statusOf = (e: Listed) => entryStatus(e.data);
 /** Filter, sort and cursor-paginate. Without `limit` everything is returned (no cursor), so existing callers keep working. */
 export function queryEntries(
 	entries: Listed[],
-	{ q, status, sort = "-modified", limit, cursor, author, lang, from, to }: ListQuery,
+	{ q, status, sort = "-modified", limit, cursor, offset, author, lang, from, to }: ListQuery,
 ) {
 	let rows = entries;
 	const needle = q?.trim().toLowerCase();
@@ -46,7 +48,8 @@ export function queryEntries(
 	const total = rows.length;
 	const size = Math.min(Math.max(Number(limit) || 0, 0), 200);
 	if (!size) return { rows, total };
-	const start = cursor ? Math.max(rows.findIndex((e) => e.slug === cursor) + 1, 0) : 0;
+	const cursorStart = cursor ? Math.max(rows.findIndex((e) => e.slug === cursor) + 1, 0) : 0;
+	const start = offset === undefined ? cursorStart : Math.min(Math.max(Number(offset) || 0, 0), total);
 	const page = rows.slice(start, start + size);
 	const last = page.at(-1);
 	return { rows: page, total, nextCursor: start + size < total && last ? last.slug : null };

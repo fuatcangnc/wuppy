@@ -19,6 +19,7 @@ import {
 	Button,
 	Card,
 	Checkbox,
+	DataPagination,
 	Dialog,
 	EmptyState,
 	ErrorText,
@@ -34,7 +35,7 @@ import {
 } from "../../ui/index.tsx";
 
 const TONES = { published: "success", draft: "warning", scheduled: "accent" } as const;
-const PAGE = 50;
+const DEFAULT_PAGE_SIZE = 20;
 
 type Row = EntrySummary & { status: keyof typeof TONES };
 interface Page {
@@ -54,12 +55,15 @@ interface Filters {
 const NO_FILTERS: Filters = { q: "", status: "", sort: "-modified", author: "", lang: "", from: "", to: "" };
 
 /** Query string for the list API: only filters that are set, dates widened to whole days. */
-export function listQuery(f: Filters, cursor?: string): string {
-	const params = new URLSearchParams({ limit: String(PAGE), sort: f.sort });
+export function listQuery(f: Filters, page = 1, pageSize = DEFAULT_PAGE_SIZE): string {
+	const params = new URLSearchParams({
+		limit: String(pageSize),
+		offset: String((Math.max(page, 1) - 1) * pageSize),
+		sort: f.sort,
+	});
 	for (const key of ["q", "status", "author", "lang"] as const) if (f[key].trim()) params.set(key, f[key].trim());
 	if (f.from) params.set("from", `${f.from}T00:00:00.000Z`);
 	if (f.to) params.set("to", `${new Date(new Date(`${f.to}T00:00:00.000Z`).getTime() + 86_400_000).toISOString()}`);
-	if (cursor) params.set("cursor", cursor);
 	return params.toString();
 }
 
@@ -70,7 +74,8 @@ export function EntriesPage() {
 	const [filters, setFilters] = useState<Filters>(NO_FILTERS);
 	const [rows, setRows] = useState<Row[]>([]);
 	const [total, setTotal] = useState(0);
-	const [next, setNext] = useState<string | null>(null);
+	const [page, setPage] = useState(1);
+	const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 	const [loading, setLoading] = useState(true);
 	const [listError, setListError] = useState<string | null>(null);
 	const [bylines, setBylines] = useState<Array<{ slug: string; name: string }>>([]);
@@ -86,24 +91,25 @@ export function EntriesPage() {
 	const label = collection.charAt(0).toUpperCase() + collection.slice(1);
 
 	const fetchPage = useCallback(
-		async (cursor?: string) => {
+		async (target: number) => {
 			setLoading(true);
 			try {
-				const page = await api<Page>("GET", `/api/content/${collection}?${listQuery(filters, cursor)}`);
-				setRows((prev) => (cursor ? [...prev, ...page.data] : page.data));
-				setTotal(page.total);
-				setNext(page.nextCursor);
+				const result = await api<Page>("GET", `/api/content/${collection}?${listQuery(filters, target, pageSize)}`);
+				setRows(result.data);
+				setTotal(result.total);
 				setListError(null);
 			} catch (e) {
 				setListError((e as Error).message);
 			}
 			setLoading(false);
 		},
-		[collection, filters],
+		[collection, filters, pageSize],
 	);
-	const reload = () => fetchPage();
+	const reload = () => fetchPage(page);
 
 	useEffect(() => {
+		setPage(1);
+		setSelected([]);
 		void loadCollections();
 		void apiData<Array<{ slug: string; name: string }>>("GET", "/api/data/bylines")
 			.then(setBylines)
@@ -115,11 +121,19 @@ export function EntriesPage() {
 
 	// Typing in the search box should not fire a request per key.
 	useEffect(() => {
-		const timer = setTimeout(() => void fetchPage(), filters.q ? 250 : 0);
+		const timer = setTimeout(() => void fetchPage(page), filters.q ? 250 : 0);
 		return () => clearTimeout(timer);
-	}, [fetchPage, filters.q]);
+	}, [fetchPage, filters.q, page]);
+	const pageCount = Math.max(1, Math.ceil(total / pageSize));
+	useEffect(() => {
+		if (page > pageCount) setPage(pageCount);
+	}, [page, pageCount]);
 	const filtersActive = JSON.stringify({ ...filters, sort: "" }) !== JSON.stringify({ ...NO_FILTERS, sort: "" });
-	const set = (patch: Partial<Filters>) => setFilters((f) => ({ ...f, ...patch }));
+	const set = (patch: Partial<Filters>) => {
+		setFilters((f) => ({ ...f, ...patch }));
+		setPage(1);
+		setSelected([]);
+	};
 
 	const openCreate = () => {
 		setTitle("");
@@ -367,12 +381,22 @@ export function EntriesPage() {
 						</TableBody>
 					</Table>
 				)}
-				{next && (
-					<div className="border-t border-border p-2 text-center">
-						<Button variant="ghost" disabled={loading} onClick={() => void fetchPage(next)}>
-							Load more ({rows.length} of {total})
-						</Button>
-					</div>
+				{total > 0 && (
+					<DataPagination
+						page={page}
+						pageCount={pageCount}
+						pageSize={pageSize}
+						total={total}
+						onPageChange={(nextPage) => {
+							setPage(nextPage);
+							setSelected([]);
+						}}
+						onPageSizeChange={(nextSize) => {
+							setPageSize(nextSize);
+							setPage(1);
+							setSelected([]);
+						}}
+					/>
 				)}
 			</Card>
 

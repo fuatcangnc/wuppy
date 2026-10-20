@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { FieldsForm } from "../src/components/content/FieldsForm.tsx";
+import { chooseSelect } from "./utils/select.ts";
 import { flatten, type Term } from "../src/components/taxonomies/TermManager.tsx";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -88,7 +89,7 @@ describe("byline credits", () => {
 		);
 		const user = userEvent.setup();
 		await screen.findByText("Ada");
-		await user.selectOptions(screen.getByLabelText("Add by"), "bob");
+		await chooseSelect(user, "Add by", "Bob");
 		expect(onChange).toHaveBeenLastCalledWith("by", ["ada", "bob"]);
 		await user.type(screen.getByLabelText("Role of ada"), "x");
 		expect(onChange).toHaveBeenLastCalledWith("by", [{ byline: "ada", role: "x" }]);

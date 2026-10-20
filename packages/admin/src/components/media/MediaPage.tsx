@@ -14,13 +14,24 @@ import {
 	updateMedia,
 } from "../../stores/content.ts";
 import { imagesFrom } from "../../lib/upload.ts";
-import { Badge, Button, Checkbox, Dialog, EmptyState, Input, PageHeader, Select, toast } from "../../ui/index.tsx";
+import {
+	Badge,
+	Button,
+	Checkbox,
+	DataPagination,
+	Dialog,
+	EmptyState,
+	Input,
+	PageHeader,
+	Select,
+	toast,
+} from "../../ui/index.tsx";
 import type { MediaItem } from "../../stores/content.ts";
 import { filterMedia } from "./filter.ts";
 import { fresh, MediaDetailDialog, sizeLabel, type Usage } from "./MediaDetailDialog.tsx";
 import { UploadDialog } from "./UploadDialog.tsx";
 
-const PAGE = 36;
+const DEFAULT_PAGE_SIZE = 20;
 const TYPES = { png: "PNG", jpg: "JPEG", gif: "GIF", webp: "WebP" } as const;
 const labelOf = (m: MediaItem) => m.title || m.name.split("/").pop() || m.name;
 const formatOf = (m: MediaItem) => {
@@ -40,7 +51,8 @@ export function MediaPage() {
 	const [type, setType] = useState("");
 	const [from, setFrom] = useState("");
 	const [to, setTo] = useState("");
-	const [shown, setShown] = useState(PAGE);
+	const [page, setPage] = useState(1);
+	const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 	const [picked, setPicked] = useState<string[]>([]);
 	// Files waiting in the upload dialog; `null` keeps it closed.
 	const [pending, setPending] = useState<File[] | null>(null);
@@ -78,7 +90,19 @@ export function MediaPage() {
 		() => filterMedia(items, { folder, query, type, from, to }),
 		[items, folder, query, type, from, to],
 	);
-	useEffect(() => setShown(PAGE), [folder, query, type, from, to]);
+	const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
+	const currentPage = Math.min(page, pageCount);
+	const visible = useMemo(
+		() => filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize),
+		[filtered, currentPage, pageSize],
+	);
+	useEffect(() => {
+		if (page > pageCount) setPage(pageCount);
+	}, [page, pageCount]);
+	useEffect(() => {
+		setPage(1);
+		setPicked([]);
+	}, [folder, query, type, from, to, pageSize]);
 
 	// Pasting an image anywhere on the page uploads it.
 	useEffect(() => {
@@ -295,7 +319,7 @@ export function MediaPage() {
 				<EmptyState title="No media yet" description="Upload an image or change the filters." />
 			) : view === "grid" ? (
 				<ul className="grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-6">
-					{filtered.slice(0, shown).map((m) => (
+					{visible.map((m) => (
 						<li
 							key={m.url}
 							className={`group relative overflow-hidden rounded-lg border bg-card transition hover:border-foreground/40 ${picked.includes(m.url) ? "border-primary ring-1 ring-primary" : "border-border"}`}
@@ -343,7 +367,7 @@ export function MediaPage() {
 						</tr>
 					</thead>
 					<tbody>
-						{filtered.slice(0, shown).map((m) => (
+						{visible.map((m) => (
 							<tr key={m.url} className="border-b hover:bg-muted/50">
 								<td className="p-2">
 									<Checkbox
@@ -373,11 +397,23 @@ export function MediaPage() {
 					</tbody>
 				</table>
 			)}
-			{filtered.length > shown && (
-				<div className="text-center">
-					<Button variant="secondary" onClick={() => setShown((n) => n + PAGE)}>
-						Show more ({shown} of {filtered.length})
-					</Button>
+			{filtered.length > 0 && (
+				<div className="rounded-lg border border-border bg-card">
+					<DataPagination
+						page={currentPage}
+						pageCount={pageCount}
+						pageSize={pageSize}
+						total={filtered.length}
+						onPageChange={(nextPage) => {
+							setPage(nextPage);
+							setPicked([]);
+						}}
+						onPageSizeChange={(nextSize) => {
+							setPageSize(nextSize);
+							setPage(1);
+							setPicked([]);
+						}}
+					/>
 				</div>
 			)}
 

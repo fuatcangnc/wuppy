@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { compactField, ContentTypesPage } from "../src/components/content-types/ContentTypesPage.tsx";
+import { chooseSelect } from "./utils/select.ts";
 
 afterEach(() => {
 	vi.unstubAllGlobals();
@@ -42,7 +43,7 @@ describe("ContentTypesPage", () => {
 		const user = userEvent.setup();
 		await user.click(await screen.findByRole("button", { name: "Edit" }));
 		await user.click(screen.getByRole("button", { name: "+ Add field" }));
-		await user.selectOptions(screen.getByLabelText("Type of field1"), "number");
+		await chooseSelect(user, "Type of field1", "number");
 		await user.click(screen.getAllByLabelText("Required")[1]!);
 		await user.click(screen.getByRole("button", { name: "Check impact" }));
 		expect(await screen.findByText(/views: Invalid input/)).toBeInTheDocument();

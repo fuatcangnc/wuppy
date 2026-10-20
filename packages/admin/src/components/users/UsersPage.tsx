@@ -8,6 +8,7 @@ import {
 	Button,
 	Card,
 	CardHeader,
+	DataPagination,
 	Dialog,
 	ErrorText,
 	Input,
@@ -38,6 +39,8 @@ export function UsersPage() {
 	const session = useStore($session);
 	const currentUserId = session.status === "authed" ? session.user.id : null;
 	const [users, setUsers] = useState<UserRow[] | null>(null);
+	const [page, setPage] = useState(1);
+	const [pageSize, setPageSize] = useState(20);
 	const [tokens, setTokens] = useState<
 		Array<{
 			id: string;
@@ -93,6 +96,11 @@ export function UsersPage() {
 		}
 	}, []);
 	useEffect(() => void load(), [load]);
+	const pageCount = Math.max(1, Math.ceil((users?.length ?? 0) / pageSize));
+	const visibleUsers = users?.slice((Math.min(page, pageCount) - 1) * pageSize, Math.min(page, pageCount) * pageSize);
+	useEffect(() => {
+		if (page > pageCount) setPage(pageCount);
+	}, [page, pageCount]);
 
 	const act = async (fn: () => Promise<unknown>) => {
 		try {
@@ -169,14 +177,15 @@ export function UsersPage() {
 							</tr>
 						</thead>
 						<tbody>
-							{users?.map((u) => (
+							{visibleUsers?.map((u) => (
 								<tr key={u.id} className="hover:bg-secondary">
 									<Td className="font-medium">{u.name}</Td>
 									<Td>{u.email}</Td>
 									<Td>
 										<Select
 											aria-label={`Role for ${u.email}`}
-											className="h-8 w-28"
+											size="sm"
+											style={{ width: "7rem" }}
 											value={u.role ?? "viewer"}
 											onChange={(e) =>
 												void act(() => api("POST", "/api/auth/admin/set-role", { userId: u.id, role: e.target.value }))
@@ -236,6 +245,19 @@ export function UsersPage() {
 							))}
 						</tbody>
 					</Table>
+				)}
+				{users && users.length > 0 && (
+					<DataPagination
+						page={page}
+						pageCount={pageCount}
+						pageSize={pageSize}
+						total={users.length}
+						onPageChange={setPage}
+						onPageSizeChange={(nextSize) => {
+							setPageSize(nextSize);
+							setPage(1);
+						}}
+					/>
 				)}
 			</Card>
 

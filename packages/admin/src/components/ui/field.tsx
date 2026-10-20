@@ -3,7 +3,6 @@ import { useId } from "react";
 import { cn } from "./utils.ts";
 import { Label } from "./label.tsx";
 import { Input, Textarea } from "./input.tsx";
-import { NativeSelect } from "./select.tsx";
 
 export function Field({
 	label,
@@ -61,22 +60,6 @@ export function FieldTextarea({
 		<Field label={undefined} hint={hint} error={error}>
 			{label && <Label htmlFor={id}>{label}</Label>}
 			<Textarea id={id} className={className} {...props} />
-		</Field>
-	);
-}
-
-export function FieldSelect({
-	label,
-	hint,
-	error,
-	className,
-	...props
-}: ComponentProps<typeof NativeSelect> & { label?: string; hint?: string; error?: string | null }) {
-	const id = useId();
-	return (
-		<Field label={undefined} hint={hint} error={error}>
-			{label && <Label htmlFor={id}>{label}</Label>}
-			<NativeSelect id={id} className={className} {...props} />
 		</Field>
 	);
 }

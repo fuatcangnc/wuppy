@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { UsersPage } from "../src/components/users/UsersPage.tsx";
+import { chooseSelect } from "./utils/select.ts";
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -44,7 +45,7 @@ describe("UsersPage", () => {
 		stub(() => ({ users: [{ id: "1", email: "a@x.test", name: "A", role: "admin" }], total: 1 }));
 		render(<UsersPage />);
 		expect(await screen.findByText("a@x.test")).toBeInTheDocument();
-		expect(screen.getByRole("combobox", { name: "Role for a@x.test" })).toHaveValue("admin");
+		expect(screen.getByRole("combobox", { name: "Role for a@x.test" })).toHaveTextContent("admin");
 	});
 
 	it("creates a user with the chosen role and reloads the list", async () => {
@@ -56,7 +57,7 @@ describe("UsersPage", () => {
 		await user.type(screen.getByLabelText("Name"), "Ed");
 		await user.type(screen.getByLabelText("Email"), "ed@x.test");
 		await user.type(screen.getByLabelText(/Temporary password/), "correct-horse-battery");
-		await user.selectOptions(screen.getByLabelText(/^Role/), "editor");
+		await chooseSelect(user, /^Role/, "editor");
 		await user.click(screen.getAllByRole("button", { name: /^Add user$/ }).at(-1)!);
 		await waitFor(() => expect(calls.some((c) => c.url.endsWith("/admin/create-user"))).toBe(true));
 		const create = calls.find((c) => c.url.endsWith("/admin/create-user"))!;
@@ -72,7 +73,7 @@ describe("UsersPage", () => {
 	it("changes a role through set-role", async () => {
 		const calls = stub(() => ({ users: [{ id: "7", email: "v@x.test", name: "V", role: "viewer" }], total: 1 }));
 		render(<UsersPage />);
-		await userEvent.setup().selectOptions(await screen.findByRole("combobox", { name: "Role for v@x.test" }), "editor");
+		await chooseSelect(userEvent.setup(), "Role for v@x.test", "editor");
 		await waitFor(() => expect(calls.some((c) => c.url.endsWith("/admin/set-role"))).toBe(true));
 		expect(JSON.parse(calls.find((c) => c.url.endsWith("/admin/set-role"))!.init!.body as string)).toEqual({
 			userId: "7",
@@ -93,7 +94,7 @@ describe("UsersPage", () => {
 		const user = userEvent.setup();
 		await user.click(screen.getByRole("button", { name: "Invite user" }));
 		await user.type(screen.getByLabelText("Email"), "new@x.test");
-		await user.selectOptions(screen.getByLabelText("Role"), "editor");
+		await chooseSelect(user, "Role", "editor");
 		await user.click(screen.getByRole("button", { name: "Send invitation" }));
 		await waitFor(() =>
 			expect(calls.some((c) => c.url.endsWith("/api/invitations") && c.init?.method === "POST")).toBe(true),

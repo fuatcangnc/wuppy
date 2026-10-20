@@ -27,8 +27,8 @@ işaretlenir. Kaynaklar:
 | API (Hono) | 🟡 Kısmi | İçerik, medya, Git, data, yorum, dashboard, takvim, arama, redirect, token, import |
 | Auth | 🟡 Kısmi | Better Auth, roller, 2FA politikası, API token, magic link (yeni hesap açmaz, 2FA'ya gönderilmez) + e-posta parola sıfırlama, oturum yönetimi + admin parola/2FA sıfırlama, davet akışı, son admin koruması, site kimliğiyle ilk kurulum, passkey, bağlı hesap OAuth (GitHub/Google/Microsoft), güvenilir istemci IP'si |
 | E-posta | 🟡 Kısmi | Console + Resend, magic-link template, parola sıfırlama ve davet e-postası; production domain/doğrulama sonra |
-| Admin kabuğu | ✅ Çalışıyor | Sidebar grupları, topbar, tema, arama, tüm modül rotaları |
-| İçerik yönetimi | 🟡 Kısmi | Liste/arama/durum filtresi/otomatik slug, editör/SEO/zamanlama, çöp + geri yükleme, toplu publish/delete, Git revizyon paneli; cursor sayfalama, autosave ve çakışma çözümü yok |
+| Admin kabuğu | ✅ Çalışıyor | Sidebar grupları, topbar, tema, arama, shadcn Select, per-page + numaralı sayfalama, tüm modül rotaları |
+| İçerik yönetimi | 🟡 Kısmi | Liste/arama/durum filtresi/otomatik slug, editör/SEO/zamanlama, çöp + geri yükleme, toplu publish/delete, Git revizyon paneli, per-page sayfalama; autosave ve çakışma çözümü yok |
 | Medya | 🟡 Kısmi | Kütüphane, klasör, alt metin, kırpma/odak, kullanım takibi, görsel optimizasyonu; S3 adaptörü, toplu düzenleme ve blurhash yok |
 | Manage modülleri | 🟡 Kısmi | Comments, Menus, Redirects, Widgets, Sections, Taxonomies, Bylines CRUD |
 | Admin modülleri | 🟡 Kısmi | Content Types, Byline Schema, Users+token, Plugins, Import, Settings, Themes |
@@ -43,7 +43,7 @@ işaretlenir. Kaynaklar:
 2. **Dalga 2 (P1):** Comments, Menus, Redirects UI, Categories/Tags, Bylines, Content Types, Plugins UI, Import.
 3. **Dalga 3 (P2):** Widgets, Sections, temalar, görsel düzenleme, çoklu site, AI.
 
-### 0.0 Son güncelleme — 20 Ekim 2026
+### 0.0 Son güncelleme — 21 Ekim 2026
 
 **Bu turda tamamlananlar**
 
@@ -52,6 +52,8 @@ işaretlenir. Kaynaklar:
 - [x] 2FA politikası: parola girişi TOTP ister; magic link yeni hesap açamaz ve 2FA açık hesaplara gönderilmez; 2FA açılınca o hesabın bekleyen magic-link token'ları geçersiz olur; passkey ve bağlı OAuth sağlayıcıları güçlü alternatif olarak ek kod istemez.
 - [x] Medya detay popup'ı shadcn sekmelerine taşındı: Details / Edit image / Used in sekmeleri klavye ile gezilebilir, ziyaret edilen paneller durumunu korur, kullanım listesi yükleniyor durumu gösterir ve eksik boyutlar önizleme görselinden tamamlanır. Tek dosya yüklemesi tamamlanınca detay popup'ı otomatik açılır; çoklu yüklemede kullanıcı grid'de kalır.
 - [x] Upload to Library yenilendi: dosyalar seçilir seçilmez yükleniyor; satır bazında durum, boyut, ilerleme, retry ve kaldırma; footer'da tamamlanma sayacı ve "Retry failed"; Done ile tek başarılı dosyanın detayları açılıyor. E2E fixture artık starter'daki yerel yüklemeleri kopyalamıyor.
+- [x] Admin select'leri Radix tabanlı shadcn Select'e geçirildi; boş değerler sentinel ile korunuyor, portal popup, klavye/ARIA desteği ve mevcut form çağrıları korunuyor.
+- [x] Liste sayfalarına ortak alt bilgi eklendi: "Showing x-y of n", per-page seçimi ve numaralı sayfalama. İçerik, medya, yorumlar, kullanıcılar, çöp, güvenlik günlüğü ve redirects tablolarında çalışıyor.
 
 **Doğrulama:** `pnpm check` → 354 core + 140 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 12/12.
 
@@ -128,6 +130,8 @@ işaretlenir. Kaynaklar:
 - [ ] Üst çubuk: site adı/logo, **View Site**, **Edit/Preview** anahtarı, kullanıcı menüsü
 - [ ] Kullanıcı menüsü: profil, hesap güvenliği, tema, çıkış
 - [x] Aktif rota vurgusu, klavye ile gezinme, mobil açılır menü
+- [x] Tüm select alanları Radix tabanlı shadcn Select; boş değer, klavye, ARIA ve portal popup desteği
+- [x] Ortak liste alt bilgisi: Showing, Per page, sayfa numaraları, ilk/önceki/sonraki/son; ana liste sayfalarında etkin
 - [ ] Sayfa başlığı + eylem düzeni (`PageHeader`: başlık, açıklama, sağ eylemler)
 - [ ] Boş durum, yükleniyor, hata ve yetkisiz durum bileşenleri
 - [x] Bildirim/toast katmanı (`ui` store)

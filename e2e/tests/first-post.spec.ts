@@ -96,16 +96,18 @@ test("owner adds an editor; the editor can edit content but sees no admin-only a
 	await page.getByRole("link", { name: "Users" }).click();
 
 	// The only admin cannot demote itself.
-	await page.getByLabel("Role for owner@example.com").selectOption("viewer");
+	await page.getByLabel("Role for owner@example.com").click();
+	await page.getByRole("option", { name: "viewer" }).click();
 	await expect(page.getByText("Cannot remove, ban or demote the last active admin")).toBeVisible();
-	await expect(page.getByLabel("Role for owner@example.com")).toHaveValue("admin");
+	await expect(page.getByLabel("Role for owner@example.com")).toContainText("admin");
 
 	await page.getByRole("button", { name: "Add user" }).click();
 	const dialog = page.getByRole("dialog");
 	await dialog.getByLabel("Name").fill("Edna Editor");
 	await dialog.getByLabel("Email").fill("edna@example.com");
 	await dialog.getByLabel("Temporary password").fill("another-long-password");
-	await page.locator("#create-user select").selectOption("editor");
+	await dialog.getByLabel("Role").click();
+	await page.getByRole("option", { name: "editor" }).click();
 	await page.getByRole("dialog").getByRole("button", { name: "Add user", exact: true }).click();
 	await expect(page.getByText("edna@example.com")).toBeVisible();
 
@@ -218,7 +220,8 @@ async function mediaJourney(page: Page) {
 	await expect(page.getByText("Saved")).toBeVisible();
 
 	await details.getByRole("tab", { name: "Edit image" }).click();
-	await details.getByLabel("Aspect ratio").selectOption("square");
+	await details.getByLabel("Aspect ratio").click();
+	await page.getByRole("option", { name: "Square (1:1)" }).click();
 	await expect(details.getByText("Output size").locator("..")).toContainText("100 × 100");
 	await details.getByRole("button", { name: "Create cropped copy" }).click();
 	await expect(page.getByText("Cropped copy created")).toBeVisible();

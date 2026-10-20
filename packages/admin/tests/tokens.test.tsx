@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { TOKEN_SCOPES, UsersPage } from "../src/components/users/UsersPage.tsx";
+import { chooseSelect } from "./utils/select.ts";
 
 afterEach(() => {
 	vi.unstubAllGlobals();
@@ -60,8 +61,8 @@ describe("roles matrix and API tokens", () => {
 		const user = userEvent.setup();
 		expect(await screen.findByText("1 permissions")).toBeInTheDocument();
 		await user.type(screen.getByLabelText("Token name"), "deploy");
-		await user.selectOptions(screen.getByLabelText("Access"), "read");
-		await user.selectOptions(screen.getByLabelText("Expires"), "30");
+		await chooseSelect(user, "Access", "Read content only");
+		await chooseSelect(user, "Expires", "In 30 days");
 		await user.click(screen.getByRole("button", { name: "Create token" }));
 		await waitFor(() => expect(posted).toHaveLength(1));
 		const body = posted[0] as { name: string; permissions: string[]; expiresAt: string };

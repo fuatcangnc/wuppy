@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { EntriesPage, listQuery } from "../src/components/content/EntriesPage.tsx";
+import { chooseSelect } from "./utils/select.ts";
 
 const navigate = vi.fn();
 vi.mock("@tanstack/react-router", () => ({
@@ -33,8 +34,8 @@ function server(pages: Record<string, unknown>) {
 	vi.stubGlobal("fetch", async (url: string) => {
 		urls.push(url);
 		if (url.startsWith("/api/content/posts?")) {
-			const cursor = new URL(url, "http://x").searchParams.get("cursor") ?? "";
-			return new Response(JSON.stringify(pages[cursor]));
+			const offset = new URL(url, "http://x").searchParams.get("offset") ?? "0";
+			return new Response(JSON.stringify(pages[offset]));
 		}
 		if (url.includes("/api/content/posts/taken")) return new Response(JSON.stringify({ data: entry("taken") }));
 		if (url.includes("/api/content/posts/"))
@@ -58,53 +59,56 @@ describe("listQuery", () => {
 		const q = new URLSearchParams(
 			listQuery(
 				{ q: " hi ", status: "", sort: "title", author: "ada", lang: "", from: "2026-05-01", to: "2026-05-02" },
-				"c1",
+				2,
+				50,
 			),
 		);
 		expect(Object.fromEntries(q)).toEqual({
 			limit: "50",
+			offset: "50",
 			sort: "title",
 			q: "hi",
 			author: "ada",
 			from: "2026-05-01T00:00:00.000Z",
 			to: "2026-05-03T00:00:00.000Z",
-			cursor: "c1",
 		});
 	});
 });
 
 describe("EntriesPage", () => {
 	it("lists entries with author, language and status, and asks the server to filter", async () => {
-		const urls = server({ "": { data: [entry("en/a", { status: "scheduled" })], total: 1, nextCursor: null } });
+		const urls = server({ "0": { data: [entry("en/a", { status: "scheduled" })], total: 1, nextCursor: null } });
 		render(<EntriesPage />);
 		expect(await screen.findByText("Title en/a")).toBeInTheDocument();
 		expect(screen.getByText("scheduled")).toBeInTheDocument();
 		expect(screen.getByText("ada")).toBeInTheDocument();
 
-		await userEvent.setup().selectOptions(await screen.findByLabelText("Status"), "draft");
+		const user = userEvent.setup();
+		await chooseSelect(user, "Status", "Draft");
 		await waitFor(() => expect(listCalls(urls).some((p) => p.get("status") === "draft")).toBe(true));
 		fireEvent.change(screen.getByLabelText("Search"), { target: { value: "apple" } });
 		await waitFor(() => expect(listCalls(urls).some((p) => p.get("q") === "apple")).toBe(true));
-		await userEvent.setup().selectOptions(screen.getByLabelText("Language"), "tr");
+		await chooseSelect(user, "Language", "tr");
 		await waitFor(() => expect(listCalls(urls).some((p) => p.get("lang") === "tr")).toBe(true));
 	});
 
-	it("loads the next page with the cursor and appends it", async () => {
+	it("pages with offsets and replaces the visible rows", async () => {
 		const urls = server({
-			"": { data: [entry("a")], total: 2, nextCursor: "a" },
-			a: { data: [entry("b")], total: 2, nextCursor: null },
+			"0": { data: [entry("a")], total: 21, nextCursor: "a" },
+			"20": { data: [entry("b")], total: 21, nextCursor: null },
 		});
 		render(<EntriesPage />);
 		await screen.findByText("Title a");
-		await userEvent.setup().click(screen.getByRole("button", { name: /Load more/ }));
+		expect(screen.getByText("Showing 1-20 of 21")).toBeInTheDocument();
+		await userEvent.setup().click(screen.getByRole("button", { name: "Page 2" }));
 		expect(await screen.findByText("Title b")).toBeInTheDocument();
-		expect(screen.getByText("Title a")).toBeInTheDocument();
-		expect(listCalls(urls).at(-1)?.get("cursor")).toBe("a");
-		expect(screen.queryByRole("button", { name: /Load more/ })).toBeNull();
+		expect(screen.queryByText("Title a")).toBeNull();
+		expect(listCalls(urls).at(-1)?.get("offset")).toBe("20");
+		expect(screen.getByText("Showing 21-21 of 21")).toBeInTheDocument();
 	});
 
 	it("refuses to create over a slug that exists, even when it is not on the loaded page", async () => {
-		server({ "": { data: [entry("a")], total: 120, nextCursor: "a" } });
+		server({ "0": { data: [entry("a")], total: 120, nextCursor: "a" } });
 		render(<EntriesPage />);
 		await screen.findByText("Title a");
 		const user = userEvent.setup();
@@ -125,10 +129,10 @@ describe("EntriesPage", () => {
 	});
 
 	it("says when filters match nothing", async () => {
-		server({ "": { data: [], total: 0, nextCursor: null } });
+		server({ "0": { data: [], total: 0, nextCursor: null } });
 		render(<EntriesPage />);
 		expect(await screen.findByText("No posts yet")).toBeInTheDocument();
-		await userEvent.setup().selectOptions(screen.getByLabelText("Status"), "draft");
+		await chooseSelect(userEvent.setup(), "Status", "Draft");
 		expect(await screen.findByText("No matches")).toBeInTheDocument();
 	});
 });

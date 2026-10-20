@@ -5,6 +5,7 @@ import { filterMedia } from "../src/components/media/filter.ts";
 import { MediaPage } from "../src/components/media/MediaPage.tsx";
 import { imagesFrom, uploadWithProgress } from "../src/lib/upload.ts";
 import type { MediaItem } from "../src/stores/content.ts";
+import { chooseSelect } from "./utils/select.ts";
 
 const item = (name: string, over: Partial<MediaItem> = {}): MediaItem => ({
 	url: `/uploads/${name}`,
@@ -222,8 +223,8 @@ describe("MediaPage uploads and bulk actions", () => {
 		setup([]);
 		render(<MediaPage />);
 		const user = userEvent.setup();
-		await screen.findByRole("option", { name: "farm" });
-		await user.selectOptions(screen.getByLabelText("Folder"), "farm");
+		await waitFor(() => expect(screen.getByRole("combobox", { name: "Folder" })).toBeInTheDocument());
+		await chooseSelect(user, "Folder", "farm");
 		await user.click(await screen.findByRole("button", { name: /Upload media/ }));
 		const dialog = await screen.findByRole("dialog", { name: "Upload to Library" });
 		await user.upload(
@@ -243,7 +244,7 @@ describe("MediaPage uploads and bulk actions", () => {
 		await user.click(await screen.findByLabelText("Select a.png"));
 		await user.click(screen.getByLabelText("Select b.png"));
 		expect(screen.getByText("2 selected")).toBeInTheDocument();
-		await user.selectOptions(screen.getByLabelText("Move selected to folder"), "farm");
+		await chooseSelect(user, "Move selected to folder", "farm");
 		await waitFor(() => expect(calls.filter((c) => c.startsWith("PATCH /api/media/meta")).length).toBe(2));
 		await user.click(await screen.findByLabelText("Select a.png"));
 		await user.click(screen.getByLabelText("Select b.png"));
@@ -251,12 +252,16 @@ describe("MediaPage uploads and bulk actions", () => {
 		await waitFor(() => expect(calls.filter((c) => c.startsWith("DELETE /api/media?")).length).toBe(2));
 	});
 
-	it("shows only the first page and reveals more on request", async () => {
+	it("paginates the media grid and keeps the footer controls", async () => {
 		setup(Array.from({ length: 40 }, (_, i) => item(`p${String(i).padStart(2, "0")}.png`)));
 		render(<MediaPage />);
 		await screen.findByLabelText("Open p00.png");
-		expect(screen.queryByLabelText("Open p39.png")).toBeNull();
-		await userEvent.setup().click(screen.getByRole("button", { name: /Show more \(36 of 40\)/ }));
-		expect(await screen.findByLabelText("Open p39.png")).toBeInTheDocument();
+		expect(screen.getByText("Showing 1-20 of 40")).toBeInTheDocument();
+		expect(screen.getByRole("combobox", { name: "Per page" })).toBeInTheDocument();
+		expect(screen.queryByLabelText("Open p20.png")).toBeNull();
+		await userEvent.setup().click(screen.getByRole("button", { name: "Page 2" }));
+		expect(await screen.findByLabelText("Open p20.png")).toBeInTheDocument();
+		expect(screen.queryByLabelText("Open p00.png")).toBeNull();
+		expect(screen.getByText("Showing 21-40 of 40")).toBeInTheDocument();
 	});
 });

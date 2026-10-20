@@ -5,7 +5,7 @@ Astro için dosya tabanlı, taşınabilir ve müşteri dostu CMS.
 - **İçerik = Markdown/MDX dosyaları.** Wuppy'yi kaldırsanız da içeriğiniz okunur kalır.
 - **Her kayıt bir Git commit'i.** Değişiklikleri görün, geri alın; geçmiş silinmez.
 - **Node.js'te çalışır.** Cloudflare gerekmez (opsiyonel adaptör olarak düşünüldü, ADR-001).
-- **`/admin`** altında sade bir yönetim paneli: alan formları, Markdown editörü, medya, çeviri durumu, kullanıcılar ve roller (admin/editor/author/viewer), yedekleme/içe aktarma, iki faktörlü doğrulama, güvenlik günlüğü.
+- **`/admin`** altında sade bir yönetim paneli: alan formları, Markdown editörü, medya, çeviri durumu, kullanıcılar ve roller (admin/editor/author/viewer), yedekleme/içe aktarma, iki faktörlü doğrulama, güvenlik günlüğü; shadcn tabanlı form kontrolleri ve per-page sayfalama.
 
 ## Hızlı başlangıç
 
