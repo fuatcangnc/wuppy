@@ -58,8 +58,8 @@ describe("media upload", () => {
 		expect((await git.history()).at(0)?.message).toMatch(/^media: upload/);
 	});
 
-	it("stores an upload when public/uploads is ignored by Git", async () => {
-		await writeFile(join(root, ".gitignore"), "public/uploads/\n");
+	it("stores an upload when its file and metadata paths are ignored by Git", async () => {
+		await writeFile(join(root, ".gitignore"), "public/uploads/\n.wuppy/\n");
 		const res = await upload(PNG);
 		expect(res.status).toBe(200);
 		const { data } = (await res.json()) as { data: { url: string } };

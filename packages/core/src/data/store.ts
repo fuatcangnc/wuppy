@@ -38,7 +38,9 @@ export class JsonStore {
 		await writeFile(temp, `${JSON.stringify(value, null, 2)}\n`);
 		await rename(temp, path);
 		await this.git.commit([rel], message).catch((e: Error) => {
-			if (!/nothing to commit/i.test(e.message)) throw e;
+			// State can live in an ignored directory (the starter does this inside
+			// the Wuppy repo); persistence still succeeded, only Git history is skipped.
+			if (!/nothing to commit|ignored by one of your \.gitignore|paths are ignored/i.test(e.message)) throw e;
 		});
 	}
 }
