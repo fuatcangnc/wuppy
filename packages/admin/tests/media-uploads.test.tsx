@@ -123,6 +123,7 @@ const setup = (list: MediaItem[]) => {
 		calls.push(`${init.method ?? "GET"} ${url}`);
 		if (url === "/api/media") return new Response(JSON.stringify({ data: list }));
 		if (url === "/api/media/folders") return new Response(JSON.stringify({ data: ["farm"] }));
+		if (url.startsWith("/api/media/usage")) return new Response(JSON.stringify({ data: [] }));
 		return new Response(JSON.stringify({ data: {} }));
 	});
 	return calls;
@@ -158,6 +159,27 @@ describe("MediaPage uploads and bulk actions", () => {
 		document.dispatchEvent(event);
 		await userEvent.setup().click(await screen.findByRole("button", { name: /Upload file/ }));
 		expect(await screen.findByLabelText("Progress of shot.png")).toBeInTheDocument();
+	});
+
+	it("opens the details dialog with tabs after a single upload", async () => {
+		const list: MediaItem[] = [];
+		setup(list);
+		render(<MediaPage />);
+		const user = userEvent.setup();
+		await user.click(await screen.findByRole("button", { name: /Upload media/ }));
+		const upload = await screen.findByRole("dialog", { name: "Upload files" });
+		await user.upload(
+			within(upload).getByLabelText("Choose files to upload"),
+			new File(["x"], "barn.png", { type: "image/png" }),
+		);
+		await user.click(within(upload).getByRole("button", { name: /Upload file/ }));
+		await waitFor(() => expect(FakeXhr.all).toHaveLength(1));
+		list.push(item("barn.png", { title: "Red barn" }));
+		FakeXhr.all[0]!.reply(201, { data: { url: "/uploads/barn.png" } });
+
+		const details = await screen.findByRole("dialog", { name: "Media details" });
+		expect(within(details).getByLabelText("Filename")).toHaveValue("Red barn");
+		expect(within(details).getByRole("tab", { name: "Used in" })).toBeInTheDocument();
 	});
 
 	it("sends the details typed in the upload dialog with each file", async () => {

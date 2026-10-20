@@ -206,8 +206,9 @@ async function mediaJourney(page: Page) {
 	await upload.getByLabel("Caption of barn.png").fill("At dusk");
 	await upload.getByRole("button", { name: /Upload file/ }).click();
 
-	await page.getByRole("button", { name: "Open Red barn" }).click();
+	// A single upload opens its details, so the tabs are immediately visible.
 	const details = page.getByRole("dialog", { name: "Media details" });
+	await expect(details).toBeVisible();
 	await expect(details.getByLabel("Filename")).toHaveValue("Red barn");
 	await expect(details.getByLabel("Alt text")).toHaveValue("A barn");
 	await expect(details.getByText("200 × 100")).toBeVisible();

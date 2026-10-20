@@ -48,9 +48,13 @@ export function MediaPage() {
 	const [dropping, setDropping] = useState(false);
 	const [view, setView] = useState<"grid" | "list">("grid");
 	const [folderDialog, setFolderDialog] = useState(false);
-	const queue = useUploadQueue(folder === "all" || folder === "" ? undefined : folder, () => {
+	const queue = useUploadQueue(folder === "all" || folder === "" ? undefined : folder, (urls) => {
 		void loadMedia();
 		toast("Upload finished");
+		// A single upload is usually the file the user wants to refine, so open
+		// its details (and the tabs) immediately. Bulk uploads stay in the grid.
+		const [url] = urls;
+		if (urls.length === 1 && url) setSelected(url);
 	});
 
 	useEffect(() => void loadMedia(), []);
