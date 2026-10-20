@@ -1,0 +1,51 @@
+---
+import { getEntry, render } from "astro:content";
+import { readData } from "wuppy";
+import Comments from "../../components/Comments.astro";
+import InlineTitle from "../../components/InlineTitle.astro";
+import Base from "../../layouts/Base.astro";
+
+const editable = Astro.url.searchParams.has("wuppy-edit");
+
+const slug = Astro.params.slug ?? "";
+const post = await getEntry("posts", slug);
+if (!post) return new Response("Not found", { status: 404 });
+if (post.data.draft === true && !import.meta.env.DEV) return new Response("Not found", { status: 404 });
+const { Content } = await render(post);
+const bylines = await readData<Array<{ slug: string; name: string; bio: string }>>("bylines", []);
+const author = bylines.find((item) => item.slug === post.data.author);
+const taxonomies = await readData<Array<{ name: string; terms: Array<{ slug: string; name: string }> }>>(
+	"taxonomies",
+	[],
+);
+const categories = taxonomies.find((item) => item.name === "categories")?.terms ?? [];
+const selectedCategories = categories.filter((term) => (post.data.categories ?? []).includes(term.slug));
+const media = await readData<{ meta: Record<string, { alt?: string; focalX?: number; focalY?: number }> }>("media", { meta: {} });
+const coverMeta = post.data.cover ? media.meta[post.data.cover] : undefined;
+---
+<Base
+	title={String(post.data.seoTitle ?? post.data.title)}
+	description={typeof post.data.seoDescription === "string" ? post.data.seoDescription : undefined}
+	noindex={post.data.noindex === true}
+	editHref={`/admin/e/posts/${slug}`}
+>
+	<article class="prose">
+		{post.data.cover && (
+			<img
+				src={post.data.cover}
+				alt={coverMeta?.alt ?? ""}
+				class="mb-4 max-h-96 w-full rounded object-cover"
+				style={`object-position: ${coverMeta?.focalX ?? 50}% ${coverMeta?.focalY ?? 50}%`}
+			/>
+		)}
+		<InlineTitle collection="posts" slug={slug} title={post.data.title} editable={editable} />
+		{author && <p class="text-sm text-black/60">By {author.name}</p>}
+		{selectedCategories.length > 0 && (
+			<ul class="not-prose mt-2 flex flex-wrap gap-2 text-xs">
+				{selectedCategories.map((category) => <li class="rounded-full border border-black/15 px-2 py-0.5">{category.name}</li>)}
+			</ul>
+		)}
+		<Content />
+	</article>
+	<Comments collection="posts" slug={slug} />
+</Base>

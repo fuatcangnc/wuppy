@@ -1,0 +1,16 @@
+---
+import { isPublished } from "wuppy/publishing";
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+
+// Drafts are visible only while running `astro dev` (that is the preview).
+const posts = (await getCollection("posts", ({ data }) => import.meta.env.DEV || isPublished(data))).toSorted(
+	(a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0),
+);
+---
+<Base>
+	<h1>Wuppy Starter</h1>
+	<ul>
+		{posts.map((p) => <li><a href={`/posts/${p.id}`}>{p.data.title}</a>{p.data.draft && " (draft)"}</li>)}
+	</ul>
+</Base>

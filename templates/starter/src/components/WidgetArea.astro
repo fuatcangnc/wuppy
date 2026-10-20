@@ -1,0 +1,29 @@
+---
+import { readData } from "wuppy";
+
+interface Widget {
+	id: string;
+	type: string;
+	title: string;
+	body: string;
+}
+interface WidgetArea {
+	name: string;
+	label: string;
+	widgets: Widget[];
+}
+
+const { name } = Astro.props as { name: string };
+const areas = await readData<WidgetArea[]>("widgets", []);
+const area = areas.find((item) => item.name === name);
+---
+{area && area.widgets.length > 0 && (
+	<aside aria-label={area.label} class="grid gap-4">
+		{area.widgets.map((widget) => (
+			<section class="rounded border border-black/10 p-4">
+				{widget.title && <h2 class="font-semibold">{widget.title}</h2>}
+				{widget.body && <p class="mt-1 whitespace-pre-wrap text-sm">{widget.body}</p>}
+			</section>
+		))}
+	</aside>
+)}

@@ -1,0 +1,9 @@
+node_modules
+dist
+.astro
+.env
+.wuppy/*
+!.wuppy/data/
+!.wuppy/data/**
+!.wuppy/trash/
+!.wuppy/trash/**

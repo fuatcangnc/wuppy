@@ -1,0 +1,16 @@
+{
+	"name": "wuppy-starter",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview"
+	},
+	"dependencies": {
+		"@astrojs/node": "catalog:",
+		"astro": "catalog:",
+		"wuppy": "workspace:*",
+		"zod": "catalog:"
+	}
+}

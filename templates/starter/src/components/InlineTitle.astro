@@ -1,0 +1,55 @@
+---
+interface Props {
+	collection: string;
+	slug: string;
+	title: string;
+	editable: boolean;
+}
+const { collection, slug, title, editable } = Astro.props;
+const endpoint = `/api/content/${collection}/${slug.split("/").map(encodeURIComponent).join("/")}`;
+---
+<h1
+	contenteditable={editable ? "true" : undefined}
+	data-inline-title
+	data-endpoint={endpoint}
+	class={editable ? "rounded outline-2 outline-dashed outline-black/30 px-1" : ""}
+>
+	{title}
+</h1>
+{editable && (
+	<div class="not-prose mt-2 flex items-center gap-3 text-sm">
+		<button type="button" data-inline-save class="rounded bg-black px-3 py-1.5 font-medium text-white">Save title</button>
+		<span data-inline-status role="status" class="text-black/60"></span>
+	</div>
+)}
+
+<script>
+	const title = document.querySelector("[data-inline-title]");
+	const button = document.querySelector("[data-inline-save]");
+	const status = document.querySelector("[data-inline-status]");
+	if (title && button) {
+		button.addEventListener("click", async () => {
+			const endpoint = title.getAttribute("data-endpoint") || "";
+			if (status) status.textContent = "Saving…";
+			try {
+				const current = await fetch(endpoint, { credentials: "same-origin" });
+				if (!current.ok) throw new Error("Sign in as an editor first.");
+				const entry = await current.json();
+				const response = await fetch(endpoint, {
+					method: "PUT",
+					credentials: "same-origin",
+					headers: { "Content-Type": "application/json", "X-Wuppy-Request": "1" },
+					body: JSON.stringify({
+						data: { ...entry.data.data, title: title.textContent?.trim() ?? "" },
+						body: entry.data.body,
+						message: "content: inline title edit",
+					}),
+				});
+				if (!response.ok) throw new Error("Save failed.");
+				if (status) status.textContent = "Saved.";
+			} catch (error) {
+				if (status) status.textContent = error instanceof Error ? error.message : "Save failed.";
+			}
+		});
+	}
+</script>

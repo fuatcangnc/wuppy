@@ -1,0 +1,77 @@
+---
+import { buildSeo, renderHead } from "wuppy/seo";
+import { readData } from "wuppy";
+import WidgetArea from "../components/WidgetArea.astro";
+import config from "../../wuppy.config.mjs";
+
+interface MenuItem {
+	label: string;
+	href: string;
+	children?: MenuItem[];
+}
+const menus = await readData<Array<{ name: string; label: string; location: string; items: MenuItem[] }>>("menus", []);
+const main = menus.find((menu) => menu.location === "header") ?? menus[0];
+const settings = await readData<{
+	siteName?: string;
+	siteUrl?: string;
+	description?: string;
+	seo?: { title?: string; description?: string; image?: string; noindex?: boolean };
+} | null>("settings", null);
+const site = {
+	name: settings?.siteName || config.site.name,
+	url: settings?.siteUrl || config.site.url,
+};
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	noindex?: boolean;
+	editHref?: string;
+}
+const seo = buildSeo({
+	site,
+	path: Astro.url.pathname,
+	title: Astro.props.title ?? settings?.seo?.title,
+	description: Astro.props.description ?? settings?.seo?.description,
+	image: Astro.props.image ?? settings?.seo?.image,
+	noindex: Astro.props.noindex ?? settings?.seo?.noindex,
+});
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<Fragment set:html={renderHead(seo)} />
+	</head>
+	<body>
+		<header class="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
+			<a href="/" class="font-semibold">{site.name}</a>
+			{main && (
+				<nav aria-label={main.label}>
+					<ul class="flex gap-4 text-sm">
+						{main.items.map((item) => (
+							<li><a href={item.href}>{item.label}</a></li>
+						))}
+						<li><a href="/search">Search</a></li>
+						<li><a href="/rss.xml">RSS</a></li>
+					</ul>
+				</nav>
+			)}
+		</header>
+		<main class="mx-auto max-w-3xl px-4 pb-16">
+			<slot />
+		</main>
+		{Astro.props.editHref && (import.meta.env.DEV || Astro.url.searchParams.has("wuppy-edit")) && (
+			<a
+				href={Astro.props.editHref}
+				class="fixed bottom-4 end-4 rounded-full bg-black px-4 py-2 text-sm font-medium text-white shadow-lg"
+			>
+				Edit this page
+			</a>
+		)}
+		<footer class="mx-auto max-w-3xl px-4 pb-16">
+			<WidgetArea name="footer" />
+		</footer>
+	</body>
+</html>

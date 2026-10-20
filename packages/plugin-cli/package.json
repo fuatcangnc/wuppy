@@ -1,0 +1,30 @@
+{
+	"name": "@wuppy/plugin-cli",
+	"version": "0.0.0",
+	"type": "module",
+	"bin": {
+		"wuppy-plugin": "./src/main.ts"
+	},
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"test": "vitest run",
+		"typecheck": "tsc --noEmit",
+		"build": "tsdown"
+	},
+	"dependencies": {
+		"@wuppy/plugin-types": "workspace:*",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@types/node": "catalog:",
+		"tsdown": "catalog:",
+		"typescript": "catalog:",
+		"vitest": "catalog:"
+	},
+	"files": ["dist"],
+	"publishConfig": {
+		"bin": { "wuppy-plugin": "./dist/main.mjs" }
+	}
+}

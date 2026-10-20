@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+
+const posts = await getCollection("posts", ({ data }) => data.draft !== true);
+const items = posts.map((post) => ({
+	title: post.data.title,
+	slug: post.id,
+	body: post.body,
+}));
+---
+<Base title="Search">
+	<h1>Search</h1>
+	<input id="q" type="search" placeholder="Search posts…" class="mt-4 w-full rounded border border-black/20 px-3 py-2" aria-label="Search posts" />
+	<ul id="results" class="mt-4 grid gap-2"></ul>
+	<script define:vars={{ items }}>
+		const input = document.getElementById("q");
+		const results = document.getElementById("results");
+		const render = (list) => {
+			results.innerHTML = "";
+			for (const item of list) {
+				const li = document.createElement("li");
+				const a = document.createElement("a");
+				a.href = `/posts/${item.slug}`;
+				a.textContent = item.title;
+				li.append(a);
+				results.append(li);
+			}
+		};
+		input.addEventListener("input", () => {
+			const q = input.value.trim().toLowerCase();
+			render(q ? items.filter((item) => `${item.title}\n${item.body}`.toLowerCase().includes(q)) : []);
+		});
+	</script>
+</Base>

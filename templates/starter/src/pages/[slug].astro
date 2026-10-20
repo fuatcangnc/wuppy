@@ -1,0 +1,23 @@
+---
+import { getEntry, render } from "astro:content";
+import InlineTitle from "../components/InlineTitle.astro";
+import Base from "../layouts/Base.astro";
+
+const editable = Astro.url.searchParams.has("wuppy-edit");
+
+const slug = Astro.params.slug ?? "";
+const page = await getEntry("pages", slug);
+if (!page) return new Response("Not found", { status: 404 });
+const { Content } = await render(page);
+---
+<Base
+	title={page.data.seoTitle ?? page.data.title}
+	description={page.data.seoDescription}
+	noindex={page.data.noindex === true}
+	editHref={`/admin/e/pages/${slug}`}
+>
+	<article class="prose">
+		<InlineTitle collection="pages" slug={slug} title={page.data.title} editable={editable} />
+		<Content />
+	</article>
+</Base>

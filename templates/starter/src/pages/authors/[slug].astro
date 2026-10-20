@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import { readData } from "wuppy";
+import Base from "../../layouts/Base.astro";
+
+const slug = Astro.params.slug ?? "";
+const bylines = await readData<Array<{ slug: string; name: string; bio: string; avatar: string }>>("bylines", []);
+const byline = bylines.find((item) => item.slug === slug);
+if (!byline) return new Response("Not found", { status: 404 });
+const posts = await getCollection("posts", ({ data }) => data.draft !== true && data.author === slug);
+---
+<Base title={byline.name}>
+	<h1>{byline.name}</h1>
+	{byline.avatar && <img src={byline.avatar} alt="" class="mt-2 size-20 rounded-full object-cover" />}
+	{byline.bio && <p class="mt-2">{byline.bio}</p>}
+	<ul class="mt-4">
+		{posts.map((post) => (
+			<li><a href={`/posts/${post.id}`}>{post.data.title}</a></li>
+		))}
+	</ul>
+</Base>

@@ -1,0 +1,81 @@
+---
+interface Props {
+	collection: string;
+	slug: string;
+}
+const { collection, slug } = Astro.props;
+const endpoint = `/api/public/comments/${collection}/${slug}`;
+---
+<section class="mt-12 border-t border-black/10 pt-6" data-comments data-endpoint={endpoint}>
+	<h2 class="text-xl font-semibold">Comments</h2>
+	<ul data-comment-list class="mt-4 grid gap-4"></ul>
+	<form data-comment-form class="mt-6 grid max-w-lg gap-3">
+		<label class="grid gap-1 text-sm">
+			<span>Name</span>
+			<input name="author" required maxlength="100" class="rounded border border-black/20 px-3 py-2" />
+		</label>
+		<label class="grid gap-1 text-sm">
+			<span>Email (not published)</span>
+			<input name="email" type="email" maxlength="200" class="rounded border border-black/20 px-3 py-2" />
+		</label>
+		<label class="grid gap-1 text-sm">
+			<span>Comment</span>
+			<textarea name="body" required maxlength="5000" rows="4" class="rounded border border-black/20 px-3 py-2"></textarea>
+		</label>
+		<input name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+		<button type="submit" class="w-fit rounded bg-black px-4 py-2 text-sm font-medium text-white">Post comment</button>
+		<p data-comment-status role="status" class="text-sm"></p>
+	</form>
+</section>
+
+<script>
+	const section = document.querySelector("[data-comments]");
+	if (section) {
+		const endpoint = section.getAttribute("data-endpoint") || "";
+		const list = section.querySelector("[data-comment-list]");
+		const form = section.querySelector("[data-comment-form]");
+		const status = section.querySelector("[data-comment-status]");
+
+		const render = (comments) => {
+			if (!list) return;
+			list.innerHTML = "";
+			for (const comment of comments) {
+				const li = document.createElement("li");
+				li.className = "rounded border border-black/10 p-3";
+				const author = document.createElement("p");
+				author.className = "text-sm font-medium";
+				author.textContent = comment.author;
+				const body = document.createElement("p");
+				body.className = "mt-1 whitespace-pre-wrap text-sm";
+				body.textContent = comment.body;
+				li.append(author, body);
+				list.append(li);
+			}
+		};
+
+		const load = async () => {
+			const res = await fetch(endpoint);
+			if (res.ok) render((await res.json()).data ?? []);
+		};
+
+		form?.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			if (!(form instanceof HTMLFormElement)) return;
+			const data = Object.fromEntries(new FormData(form));
+			const res = await fetch(endpoint, {
+				method: "POST",
+				headers: { "Content-Type": "application/json", "X-Wuppy-Request": "1" },
+				body: JSON.stringify(data),
+			});
+			if (res.ok) {
+				form.reset();
+				if (status) status.textContent = "Thanks. Your comment is awaiting moderation.";
+				await load();
+			} else if (status) {
+				status.textContent = "Could not post the comment.";
+			}
+		});
+
+		void load();
+	}
+</script>

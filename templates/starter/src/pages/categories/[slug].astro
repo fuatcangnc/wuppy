@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import { readData } from "wuppy";
+import Base from "../../layouts/Base.astro";
+
+const slug = Astro.params.slug ?? "";
+const taxonomies = await readData<Array<{ name: string; terms: Array<{ slug: string; name: string }> }>>("taxonomies", []);
+const taxonomy = taxonomies.find((item) => item.name === "categories");
+const term = taxonomy?.terms.find((item) => item.slug === slug);
+if (!taxonomy || !term) return new Response("Not found", { status: 404 });
+const posts = await getCollection(
+	"posts",
+	({ data }) => data.draft !== true && (data.categories ?? []).includes(slug),
+);
+---
+<Base title={`Category: ${term.name}`}>
+	<h1>Category: {term.name}</h1>
+	<ul>
+		{posts.map((post) => (
+			<li><a href={`/posts/${post.id}`}>{post.data.title}</a></li>
+		))}
+	</ul>
+</Base>

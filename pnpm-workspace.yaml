@@ -1,0 +1,44 @@
+minimumReleaseAge: 1440
+trustPolicy: no-downgrade
+strictDepBuilds: true
+dangerouslyAllowAllBuilds: false
+blockExoticSubdeps: true
+verifyStoreIntegrity: true
+verifyDepsBeforeRun: error
+trustPolicyExclude:
+  - "undici-types@6.21.0" # provenance -> none (@types/node alt bağımlılığı)
+  - "semver@6.3.1" # provenance -> none (old pinned util via @babel/core; EmDash reviewed the same)
+  - "reselect@5.1.1" # provenance -> none (old pinned util)
+  - "chokidar@4.0.3" # provenance -> none (Astro-pinned)
+packages:
+  - packages/*
+  - packages/plugins/*
+  - templates/*
+  - e2e
+catalog:
+  oxlint: ^1.74.0
+  prettier: ^3.9.5
+  "@tailwindcss/vite": ^4.3.3
+  "@tanstack/react-router": 1.163.2
+  "@testing-library/jest-dom": ^6.6.3
+  "@testing-library/react": ^16.3.0
+  "@testing-library/user-event": ^14.6.1
+  "@types/react": ^19.2.0
+  "@types/react-dom": ^19.2.0
+  "@vitejs/plugin-react": ^5.1.0
+  jsdom: ^26.1.0
+  react: 19.2.4
+  react-dom: 19.2.4
+  tailwindcss: ^4.1.18
+  vite: ^8.3.0
+  astro: ^7.3.2
+  "@astrojs/node": ^11.1.5
+  hono: 4.12.27
+  kysely: ^0.29.0
+  typescript: ^6.0.3
+  vitest: 4.1.10
+  yaml: ^2.8.0
+  "@playwright/test": 1.61.1
+  tsdown: ^0.20.3
+  zod: 4.5.4
+  "@types/node": ^22.16.0

@@ -1,0 +1,7 @@
+dist
+.astro
+node_modules
+pnpm-lock.yaml
+.claude
+e2e/test-results
+*.md
