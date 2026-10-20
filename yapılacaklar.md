@@ -34,7 +34,7 @@ işaretlenir. Kaynaklar:
 | Admin modülleri | 🟡 Kısmi | Content Types, Byline Schema, Users+token, Plugins, Import, Settings, Themes |
 | SEO / i18n / önizleme | 🟡 Kısmi | SEO çekirdek + panel, i18n tablo, dev preview; visual editing yok |
 | Eklenti sistemi | 🟡 Kısmi | WASM sandbox + capability + yüklü/hata UI; SDK/registry/marketplace yok |
-| Test / kabul | 🟡 Kısmi | 13 E2E, modül smoke, 355 core + 140 admin + 37 auth testi; görsel regresyon/a11y yok |
+| Test / kabul | 🟡 Kısmi | 13 E2E, modül smoke, 355 core + 141 admin + 37 auth testi; görsel regresyon/a11y yok |
 | Yayın / operasyon | 🟡 Kısmi | Build + dist smoke; CI, Docker, npm publish, docs sitesi yok |
 
 **Öncelik dalgaları**
@@ -56,8 +56,9 @@ işaretlenir. Kaynaklar:
 - [x] Liste sayfalarına ortak alt bilgi eklendi: "Showing x-y of n", per-page seçimi ve numaralı sayfalama. İçerik, medya, yorumlar, kullanıcılar, çöp, güvenlik günlüğü ve redirects tablolarında çalışıyor.
 - [x] Medya yüklemesi Git tarafından yok sayılan klasörlerde de tamamlanıyor; `public/uploads` veya `.wuppy/data` ignore edilse bile "Nothing to commit"/ignore kaynaklı Git hatası 500 üretmiyor. Starter'daki yerel yüklemeler kaynak deposuna commit edilmez, E2E fixture onları kopyalamaz.
 - [x] Admin icon sprite'ı sürümlendi: `/icons.svg?v=<content-hash>`, `no-cache` + ETag ile sunuluyor; yeni eklenen ikonlar eski immutable cache yüzünden kaybolmuyor.
+- [x] Menus ekranı yenilendi: shadcn Accordion tabanlı kaynak seçimi (Pages/Posts/Categories/Custom Links), native HTML5 drag-and-drop sıralama, alt menü yönetimi, klavye/erişilebilir kontroller, menü oluşturma/silme ve Manage Locations sekmesi.
 
-**Doğrulama:** `pnpm check` → 355 core + 140 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 13/13.
+**Doğrulama:** `pnpm check` → 355 core + 141 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 13/13.
 
 **Sıradaki işler (öncelik sırasıyla)**
 
@@ -290,13 +291,13 @@ işaretlenir. Kaynaklar:
 ### 4.2 Menus (Menüler)
 
 - [x] Menü modeli: ad, konum (header/footer/sidebar), öğeler, dil
-- [x] Menü listesi: oluştur, yeniden adlandır, sil, varsayılan
-- [x] Menü öğeleri görsel düzenleyicide (yeniden sırala, alt menü, düzenle, sil)
-- [x] Sürükle-bırak sıralama ve iç içe alt menü
-- [x] Konum ataması ve şablon tarafında `getMenu(name)` yardımcısı
+- [x] Menü listesi, oluşturma, yeniden adlandırma ve silme; sayfa/post/kategori kaynaklarından seçerek ekleme
+- [x] Menü öğeleri görsel düzenleyicide (açılır satır düzenleme, alt menü, taşıma, silme)
+- [x] Native HTML5 drag-and-drop sıralama; alt menü/top level kontrolleri
+- [x] Native shadcn Select ile konum ataması ve şablon tarafında `getMenu(name)` yardımcısı
 - [x] Çeviri: aynı menünün dil varyantları
 - [x] Bağlantı doğrulama: iç bağlantı, dış URL, `javascript:` reddi
-- [x] Menü testleri: sıralama, iç içe yapı, render, çeviri
+- [x] Menü testleri: sıralama, drag-and-drop, iç içe yapı, menü oluşturma ve kaynak ekleme
 
 ### 4.3 Redirects (Yönlendirmeler)
 
@@ -674,7 +675,7 @@ Not: Mevcut `RESEND_API_KEY` sending-only, ancak henüz domain kısıtı yok. Do
 | Posts | ✅ | Starter koleksiyonu + public rota |
 | Media kütüphanesi | ✅ | Grid, klasör, alt metin, silme |
 | Comments | ✅ | Moderasyon + public form |
-| Menus | ✅ | JSON CRUD + header render |
+| Menus | ✅ | Görsel builder, native drag-and-drop, kaynak seçimi, konum yönetimi + header render |
 | Redirects UI | ✅ | Kural + 404 log |
 | Widgets | ✅ | JSON CRUD |
 | Sections | ✅ | JSON CRUD |

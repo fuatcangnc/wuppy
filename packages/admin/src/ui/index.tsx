@@ -9,6 +9,7 @@ import { Dialog, DialogHeader, DialogTitle } from "../components/ui/dialog.tsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs.tsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Td, Th } from "../components/ui/table.tsx";
 import { Checkbox as ShadCheckbox, Switch as ShadSwitch } from "../components/ui/checkbox.tsx";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion.tsx";
 import { Alert } from "../components/ui/alert.tsx";
 import { Separator, Skeleton, Spinner } from "../components/ui/feedback.tsx";
 import { Field, FieldInput, FieldTextarea } from "../components/ui/field.tsx";
@@ -19,6 +20,10 @@ import { $mode, $radius, $theme, PRESETS, RADII, setMode, setRadius, setTheme } 
 
 export {
 	cn,
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
 	CardContent,
 	CardDescription,
 	CardFooter,

@@ -10,7 +10,7 @@ interface MenuItem {
 	children?: MenuItem[];
 }
 const menus = await readData<Array<{ name: string; label: string; location: string; items: MenuItem[] }>>("menus", []);
-const main = menus.find((menu) => menu.location === "header") ?? menus[0];
+const main = menus.find((menu) => menu.location === "header") ?? null;
 const settings = await readData<{
 	siteName?: string;
 	siteUrl?: string;

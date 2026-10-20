@@ -22,7 +22,11 @@ export const menuSchema = z.object({
 			z.object({
 				label: z.string().min(1),
 				href,
-				children: z.array(z.object({ label: z.string().min(1), href })).default([]),
+				/** Optional source hint for the admin badge (page, post, category, custom…). */
+				kind: z.string().max(40).optional(),
+				children: z
+					.array(z.object({ label: z.string().min(1), href, kind: z.string().max(40).optional() }))
+					.default([]),
 			}),
 		)
 		.default([]),

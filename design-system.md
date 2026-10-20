@@ -298,9 +298,9 @@ Kırılma noktaları Tailwind varsayılanları: `sm 640`, `md 768`, `lg 1024`,
 
 ## 14. Bileşen envanteri
 
-**React (admin, `components/ui/`):** Alert, Badge, Button, Card, Checkbox,
-Dialog, Feedback (Separator/Skeleton/Spinner), Field, Input, Label, Pagination,
-Select (Radix), Switch, Table, Tabs, Textarea, Utils.
+**React (admin, `components/ui/`):** Accordion (Radix), Alert, Badge, Button,
+Card, Checkbox, Dialog, Feedback (Separator/Skeleton/Spinner), Field, Input,
+Label, Pagination, Select (Radix), Switch, Table, Tabs, Textarea, Utils.
 
 **Astro site (`templates/*`):** Bejamas UI bileşenleri (`button`, `card`,
 `input`, `field`, `badge`, `dialog`, `tabs`, `table`, `tooltip`, …).

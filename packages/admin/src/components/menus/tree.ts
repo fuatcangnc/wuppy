@@ -3,6 +3,8 @@
 export interface MenuLink {
 	label: string;
 	href: string;
+	/** Source hint shown as a badge in the editor. */
+	kind?: string;
 }
 export interface MenuItem extends MenuLink {
 	children: MenuLink[];
@@ -26,10 +28,10 @@ function take(items: MenuItem[], path: Path): { rest: MenuItem[]; link: MenuItem
 	return link ? { rest, link } : null;
 }
 
-export const add = (items: MenuItem[], link: MenuLink = { label: "New link", href: "/" }): MenuItem[] => [
-	...clone(items),
-	{ ...link, children: [] },
-];
+export const add = (
+	items: MenuItem[],
+	link: MenuLink = { label: "New link", href: "/", kind: "custom" },
+): MenuItem[] => [...clone(items), { ...link, children: [] }];
 
 export function update(items: MenuItem[], path: Path, patch: Partial<MenuLink>): MenuItem[] {
 	const next = clone(items);
@@ -58,7 +60,11 @@ export function indent(items: MenuItem[], path: Path): MenuItem[] {
 	if (!item || item.children.length > 0) return items;
 	const taken = take(items, path);
 	if (!taken) return items;
-	taken.rest[path[0] - 1]!.children.push({ label: item.label, href: item.href });
+	taken.rest[path[0] - 1]!.children.push({
+		label: item.label,
+		href: item.href,
+		...(item.kind ? { kind: item.kind } : {}),
+	});
 	return taken.rest;
 }
 
@@ -67,7 +73,12 @@ export function outdent(items: MenuItem[], path: Path): MenuItem[] {
 	if (path.length !== 2) return items;
 	const taken = take(items, path);
 	if (!taken) return items;
-	taken.rest.splice(path[0] + 1, 0, { label: taken.link.label, href: taken.link.href, children: [] });
+	taken.rest.splice(path[0] + 1, 0, {
+		label: taken.link.label,
+		href: taken.link.href,
+		...(taken.link.kind ? { kind: taken.link.kind } : {}),
+		children: [],
+	});
 	return taken.rest;
 }
 
@@ -92,11 +103,16 @@ export function relocate(items: MenuItem[], from: Path, to: Path): MenuItem[] {
 		rest.splice(index, 0, {
 			label: taken.link.label,
 			href: taken.link.href,
+			...(taken.link.kind ? { kind: taken.link.kind } : {}),
 			children: (taken.link as MenuItem).children ?? [],
 		});
 	else {
 		const parent = from.length === 1 && from[0] < to[0] ? to[0] - 1 : to[0];
-		rest[parent]?.children.splice(index, 0, { label: taken.link.label, href: taken.link.href });
+		rest[parent]?.children.splice(index, 0, {
+			label: taken.link.label,
+			href: taken.link.href,
+			...(taken.link.kind ? { kind: taken.link.kind } : {}),
+		});
 	}
 	return rest;
 }
