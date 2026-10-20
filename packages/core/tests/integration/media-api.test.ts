@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
@@ -56,6 +56,14 @@ describe("media upload", () => {
 		expect(data.url).toMatch(/^\/uploads\/\d{4}\/\d{2}\/[0-9a-f-]{36}\.png$/);
 		expect(await readFile(join(root, "public", data.url))).toEqual(Buffer.from(PNG));
 		expect((await git.history()).at(0)?.message).toMatch(/^media: upload/);
+	});
+
+	it("stores an upload when public/uploads is ignored by Git", async () => {
+		await writeFile(join(root, ".gitignore"), "public/uploads/\n");
+		const res = await upload(PNG);
+		expect(res.status).toBe(200);
+		const { data } = (await res.json()) as { data: { url: string } };
+		expect(await readFile(join(root, "public", data.url))).toEqual(Buffer.from(PNG));
 	});
 
 	it("derives the type from the bytes, not the claimed name or mime", async () => {

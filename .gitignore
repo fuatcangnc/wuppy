@@ -14,9 +14,6 @@ acceptance/runs
 # Local Wuppy state
 .wuppy/
 
-# Runtime uploads in the starter (E2E copies the site without them)
-templates/starter/public/uploads/
-
 # Local databases
 *.db
 *.db-shm

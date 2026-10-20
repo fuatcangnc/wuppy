@@ -121,6 +121,13 @@ export class MediaService {
 		};
 	}
 
+	/** Ignored upload directories are valid; a missing Git stage must not fail the upload after the bytes are written. */
+	private async commit(rel: string, message: string): Promise<void> {
+		await this.git.commit([`public/uploads/${rel}`], message).catch((e: Error) => {
+			if (!/nothing to commit|ignored by one of your \.gitignore|paths are ignored/i.test(e.message)) throw e;
+		});
+	}
+
 	async upload(bytes: Uint8Array, meta: MediaMeta = {}): Promise<{ url: string; path: string }> {
 		const limits = await this.limits();
 		if (bytes.byteLength > limits.maxBytes) throw new MediaTooLargeError("File too large");
@@ -137,7 +144,7 @@ export class MediaService {
 		const url = `/uploads/${rel}`;
 		const info = await imageInfo(bytes);
 		if (Object.keys(meta).length || info) await this.update(url, { ...meta, ...info });
-		await this.git.commit([`public/uploads/${rel}`], `media: upload ${rel}`);
+		await this.commit(rel, `media: upload ${rel}`);
 		this.emit?.({ type: "media.uploaded", url, at: now.toISOString() });
 		return { url, path: `public/uploads/${rel}` };
 	}
@@ -165,7 +172,7 @@ export class MediaService {
 		await writeFile(path, bytes);
 		const info = await imageInfo(bytes);
 		if (info) await this.update(url, info);
-		await this.git.commit([`public/uploads/${rel}`], `media: replace ${rel}`);
+		await this.commit(rel, `media: replace ${rel}`);
 	}
 
 	/** Renames a folder (and everything below it) in the folder list and on every item. */
@@ -200,9 +207,7 @@ export class MediaService {
 		const rel = this.relOf(url);
 		const path = join(this.root, "public", "uploads", rel);
 		await rm(path, { force: true });
-		await this.git.commit([`public/uploads/${rel}`], `media: delete ${rel}`).catch((e: Error) => {
-			if (!/nothing to commit/i.test(e.message)) throw e;
-		});
+		await this.commit(rel, `media: delete ${rel}`);
 	}
 }
 
