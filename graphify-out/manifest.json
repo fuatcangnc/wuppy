@@ -36,9 +36,9 @@
     "semantic_hash": ""
   },
   "e2e/tests/first-post.spec.ts": {
-    "mtime": 1792530502.9595191,
-    "seen": 1792531374.0480409,
-    "ast_hash": "be919266770ca84df81f9a1c1e402280",
+    "mtime": 1792534545.0337439,
+    "seen": 1792534717.3419154,
+    "ast_hash": "4a8533d4082ab75586dbfb7915fd5aaa",
     "semantic_hash": ""
   },
   "e2e/tests/public-site.spec.ts": {
@@ -204,9 +204,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/media/MediaPage.tsx": {
-    "mtime": 1792530328.11607,
-    "seen": 1792531374.048088,
-    "ast_hash": "18631593ee7379436f5741833357f067",
+    "mtime": 1792534545.0337439,
+    "seen": 1792534717.3420382,
+    "ast_hash": "cab8cbe1d76472f71f9b48ebcbf479f9",
     "semantic_hash": ""
   },
   "packages/admin/src/components/menus/MenusPage.tsx": {
@@ -2106,14 +2106,14 @@
     "semantic_hash": ""
   },
   "yap\u0131lacaklar.md": {
-    "mtime": 1792533795.0264244,
-    "seen": 1792534054.0959477,
-    "ast_hash": "45437640f562cab45bd9d15801c03c5f",
+    "mtime": 1792534558.4608335,
+    "seen": 1792534717.3427987,
+    "ast_hash": "9e860f0ef3a497608074a31b9a854320",
     "semantic_hash": ""
   },
   "packages/admin/public/icons.svg": {
-    "mtime": 1792534009.9151728,
-    "seen": 1792534054.09595,
+    "mtime": 1792534673.44357,
+    "seen": 1792534717.3428001,
     "ast_hash": "501d2ee7d0577f6bb4c08ce192f66227",
     "semantic_hash": ""
   },
@@ -2220,9 +2220,9 @@
     "semantic_hash": ""
   },
   "packages/admin/tests/media-uploads.test.tsx": {
-    "mtime": 1792530513.367543,
-    "seen": 1792531374.048167,
-    "ast_hash": "986a43e536747dd9495b0964fab4f189",
+    "mtime": 1792534545.0337439,
+    "seen": 1792534717.3421793,
+    "ast_hash": "bc9ee8098f769bf03a1ce9b5839f24c1",
     "semantic_hash": ""
   },
   "packages/admin/tests/menus.test.tsx": {
@@ -2504,6 +2504,12 @@
   "templates/starter/public/uploads/2026/10/f4c9782a-b970-4bd4-b15c-5373011d8ff7.png": {
     "mtime": 1792533634.1047673,
     "seen": 1792534054.0959666,
+    "ast_hash": "361c70a46aa53acf60b3f1b2e9325eb6",
+    "semantic_hash": ""
+  },
+  "templates/starter/public/uploads/2026/10/ab3a1f15-4d88-4c10-95de-09b97d352302.png": {
+    "mtime": 1792534499.434433,
+    "seen": 1792534717.342812,
     "ast_hash": "361c70a46aa53acf60b3f1b2e9325eb6",
     "semantic_hash": ""
   }
