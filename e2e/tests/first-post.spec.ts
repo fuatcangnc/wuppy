@@ -197,20 +197,21 @@ async function mediaJourney(page: Page) {
 	]);
 
 	await page.getByRole("button", { name: "Upload media" }).click();
-	const upload = page.getByRole("dialog", { name: "Upload files" });
+	const upload = page.getByRole("dialog", { name: "Upload to Library" });
 	await upload
 		.getByLabel("Choose files to upload")
 		.setInputFiles({ name: "barn.png", mimeType: "image/png", buffer: png });
-	await upload.getByLabel("Filename of barn.png").fill("Red barn");
-	await upload.getByLabel("Alt text of barn.png").fill("A barn");
-	await upload.getByLabel("Caption of barn.png").fill("At dusk");
-	await upload.getByRole("button", { name: /Upload file/ }).click();
+	await expect(upload.getByText("1 of 1 complete")).toBeVisible();
+	await expect(upload.getByText("Uploaded")).toBeVisible();
+	await upload.getByRole("button", { name: "Done" }).click();
 
 	// A single upload opens its details, so the tabs are immediately visible.
 	const details = page.getByRole("dialog", { name: "Media details" });
 	await expect(details).toBeVisible();
-	await expect(details.getByLabel("Filename")).toHaveValue("Red barn");
-	await expect(details.getByLabel("Alt text")).toHaveValue("A barn");
+	await expect(details.getByLabel("Filename")).toHaveValue("barn.png");
+	await details.getByLabel("Filename").fill("Red barn");
+	await details.getByLabel("Alt text").fill("A barn");
+	await details.getByLabel("Caption").fill("At dusk");
 	await expect(details.getByText("200 × 100")).toBeVisible();
 	await details.getByLabel("Alt text").fill("A red barn at dusk");
 	await details.getByRole("button", { name: "Save" }).click();

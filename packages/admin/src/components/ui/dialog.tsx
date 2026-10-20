@@ -18,8 +18,8 @@ export function Dialog({
 	children: ReactNode;
 	onClose: () => void;
 	footer?: ReactNode;
-	/** `wide` is a large dialog with ruled header and footer; its body sets its own padding. */
-	size?: "default" | "wide";
+	/** `medium` and `wide` have a ruled header and footer; their bodies set their own padding. */
+	size?: "default" | "medium" | "wide";
 }) {
 	useEffect(() => {
 		if (!open) return;
@@ -30,7 +30,8 @@ export function Dialog({
 		return () => removeEventListener("keydown", onKey);
 	}, [open, onClose]);
 	if (!open) return null;
-	const wide = size === "wide";
+	const framed = size !== "default";
+	const width = size === "wide" ? "max-w-[min(68rem,94vw)]" : size === "medium" ? "max-w-2xl" : "max-w-lg";
 	return (
 		<div
 			className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4"
@@ -44,11 +45,11 @@ export function Dialog({
 				data-slot="dialog-content"
 				className={cn(
 					"relative grid w-full rounded-xl border border-border bg-popover text-popover-foreground shadow-lg",
-					wide ? "max-h-[92vh] max-w-[min(68rem,94vw)] grid-rows-[auto_1fr_auto]" : "max-w-lg gap-4 p-6",
+					framed ? `${width} max-h-[92vh] grid-rows-[auto_1fr_auto]` : `${width} gap-4 p-6`,
 				)}
 				onMouseDown={(event) => event.stopPropagation()}
 			>
-				<header className={cn("flex items-start justify-between gap-3", wide && "border-b border-border px-8 py-5")}>
+				<header className={cn("flex items-start justify-between gap-3", framed && "border-b border-border px-8 py-5")}>
 					<div className="grid min-w-0 gap-1">
 						<h2 className="text-lg leading-none font-semibold">{title}</h2>
 						{description && <p className="truncate text-sm text-muted-foreground">{description}</p>}
@@ -57,9 +58,11 @@ export function Dialog({
 						×
 					</Button>
 				</header>
-				<div className={cn("overflow-y-auto", wide ? "min-h-0" : "max-h-[70vh]")}>{children}</div>
+				<div className={cn("overflow-y-auto", framed ? "min-h-0" : "max-h-[70vh]")}>{children}</div>
 				{footer && (
-					<footer className={cn("flex justify-end gap-2", wide && "border-t border-border px-8 py-4")}>{footer}</footer>
+					<footer className={cn("flex justify-end gap-2", framed && "border-t border-border px-8 py-4")}>
+						{footer}
+					</footer>
 				)}
 			</div>
 		</div>

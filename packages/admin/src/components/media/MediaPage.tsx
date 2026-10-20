@@ -19,7 +19,6 @@ import type { MediaItem } from "../../stores/content.ts";
 import { filterMedia } from "./filter.ts";
 import { fresh, MediaDetailDialog, sizeLabel, type Usage } from "./MediaDetailDialog.tsx";
 import { UploadDialog } from "./UploadDialog.tsx";
-import { UploadList, useUploadQueue } from "./UploadQueue.tsx";
 
 const PAGE = 36;
 const TYPES = { png: "PNG", jpg: "JPEG", gif: "GIF", webp: "WebP" } as const;
@@ -48,14 +47,6 @@ export function MediaPage() {
 	const [dropping, setDropping] = useState(false);
 	const [view, setView] = useState<"grid" | "list">("grid");
 	const [folderDialog, setFolderDialog] = useState(false);
-	const queue = useUploadQueue(folder === "all" || folder === "" ? undefined : folder, (urls) => {
-		void loadMedia();
-		toast("Upload finished");
-		// A single upload is usually the file the user wants to refine, so open
-		// its details (and the tabs) immediately. Bulk uploads stay in the grid.
-		const [url] = urls;
-		if (urls.length === 1 && url) setSelected(url);
-	});
 
 	useEffect(() => void loadMedia(), []);
 	const current = items.find((m) => m.url === selected) ?? null;
@@ -242,8 +233,6 @@ export function MediaPage() {
 					</Button>
 				</div>
 			</div>
-
-			<UploadList jobs={queue.jobs} cancel={queue.cancel} clear={queue.clear} />
 
 			{picked.length > 0 && (
 				<div
@@ -438,12 +427,17 @@ export function MediaPage() {
 			{pending && (
 				<UploadDialog
 					initial={pending}
-					folders={folders}
-					defaultFolder={folder === "all" ? "" : folder}
-					onClose={() => setPending(null)}
-					onSubmit={(files, metas) => {
+					folder={folder === "all" || folder === "" ? undefined : folder}
+					onClose={() => {
 						setPending(null);
-						void queue.add(files, metas);
+						void loadMedia();
+					}}
+					onDone={(urls) => {
+						setPending(null);
+						void loadMedia().then(() => {
+							const [url] = urls;
+							if (urls.length === 1 && url) setSelected(url);
+						});
 					}}
 				/>
 			)}

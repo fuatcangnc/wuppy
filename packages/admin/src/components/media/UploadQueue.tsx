@@ -24,7 +24,11 @@ export function useUploadQueue(folder: string | undefined, onUploaded: (urls: st
 
 	/** `metas[i]` is stored with `files[i]`; the queue folder is used where it has none. */
 	const add = async (files: File[], metas: UploadMeta[] = []) => {
-		const queued = files.map((file, i) => ({ file, id: next.current++, meta: metas[i] ?? {} }));
+		const queued = files.map((file, i) => ({
+			file,
+			id: next.current++,
+			meta: { title: file.name, ...metas[i] },
+		}));
 		setJobs((all) => [
 			...all,
 			...queued.map(({ file, id, meta }): Job => ({

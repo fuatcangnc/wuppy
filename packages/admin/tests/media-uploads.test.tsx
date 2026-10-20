@@ -130,7 +130,7 @@ const setup = (list: MediaItem[]) => {
 };
 
 describe("MediaPage uploads and bulk actions", () => {
-	it("uploads dropped images one after another with cancel, ignoring non-images", async () => {
+	it("uploads dropped images one after another, skipping non-images", async () => {
 		setup([]);
 		render(<MediaPage />);
 		const page = (await screen.findByText(/drop or paste images/)).closest("div.grid") as HTMLElement;
@@ -138,18 +138,23 @@ describe("MediaPage uploads and bulk actions", () => {
 		const b = new File(["x"], "b.png", { type: "image/png" });
 		const txt = new File(["x"], "n.txt", { type: "text/plain" });
 		fireEvent.drop(page, { dataTransfer: { files: [a, txt, b], items: [] } });
-		await userEvent.setup().click(await screen.findByRole("button", { name: /Upload 2 files/ }));
-		expect(await screen.findByLabelText("Progress of a.png")).toBeInTheDocument();
-		expect(screen.queryByText("n.txt")).toBeNull();
+		const dialog = await screen.findByRole("dialog", { name: "Upload to Library" });
+		expect(await within(dialog).findByText("a.png")).toBeInTheDocument();
+		expect(within(dialog).queryByText("n.txt")).toBeNull();
+		expect(within(dialog).getByLabelText("Progress of a.png")).toBeInTheDocument();
+		expect(within(dialog).getByText("Waiting…")).toBeInTheDocument();
 		expect(FakeXhr.all).toHaveLength(1); // b waits for a
 		FakeXhr.all[0]!.reply(201, { data: { url: "/uploads/a.png" } });
 		await waitFor(() => expect(FakeXhr.all).toHaveLength(2));
-		await userEvent.setup().click(screen.getByLabelText("Cancel b.png"));
-		expect(await screen.findByText("Cancelled")).toBeInTheDocument();
-		expect(screen.getByText("Uploaded")).toBeInTheDocument();
+		await userEvent.setup().click(within(dialog).getByLabelText("Remove b.png"));
+		expect(within(dialog).queryByText("b.png")).toBeNull();
+		expect(await within(dialog).findByText("Uploaded")).toBeInTheDocument();
+		expect(within(dialog).getByText("1 of 1 complete")).toBeInTheDocument();
+		await userEvent.setup().click(within(dialog).getByRole("button", { name: "Done" }));
+		await waitFor(() => expect(screen.queryByRole("dialog", { name: "Upload to Library" })).toBeNull());
 	});
 
-	it("uploads an image pasted anywhere on the page", async () => {
+	it("uploads an image pasted anywhere on the page as soon as it opens", async () => {
 		setup([]);
 		render(<MediaPage />);
 		await screen.findByText(/drop or paste images/);
@@ -157,8 +162,11 @@ describe("MediaPage uploads and bulk actions", () => {
 		const event = new Event("paste") as Event & { clipboardData: unknown };
 		event.clipboardData = { files: [file] };
 		document.dispatchEvent(event);
-		await userEvent.setup().click(await screen.findByRole("button", { name: /Upload file/ }));
-		expect(await screen.findByLabelText("Progress of shot.png")).toBeInTheDocument();
+		const dialog = await screen.findByRole("dialog", { name: "Upload to Library" });
+		expect(await within(dialog).findByLabelText("Progress of shot.png")).toBeInTheDocument();
+		expect(FakeXhr.all).toHaveLength(1);
+		await userEvent.setup().click(within(dialog).getByRole("button", { name: "Close" }));
+		expect(screen.queryByRole("dialog", { name: "Upload to Library" })).toBeNull();
 	});
 
 	it("opens the details dialog with tabs after a single upload", async () => {
@@ -167,44 +175,64 @@ describe("MediaPage uploads and bulk actions", () => {
 		render(<MediaPage />);
 		const user = userEvent.setup();
 		await user.click(await screen.findByRole("button", { name: /Upload media/ }));
-		const upload = await screen.findByRole("dialog", { name: "Upload files" });
+		const upload = await screen.findByRole("dialog", { name: "Upload to Library" });
 		await user.upload(
 			within(upload).getByLabelText("Choose files to upload"),
 			new File(["x"], "barn.png", { type: "image/png" }),
 		);
-		await user.click(within(upload).getByRole("button", { name: /Upload file/ }));
 		await waitFor(() => expect(FakeXhr.all).toHaveLength(1));
 		list.push(item("barn.png", { title: "Red barn" }));
 		FakeXhr.all[0]!.reply(201, { data: { url: "/uploads/barn.png" } });
+		await within(upload).findByText("Uploaded");
+		expect(within(upload).getByText("1 of 1 complete")).toBeInTheDocument();
+		await user.click(within(upload).getByRole("button", { name: "Done" }));
 
 		const details = await screen.findByRole("dialog", { name: "Media details" });
 		expect(within(details).getByLabelText("Filename")).toHaveValue("Red barn");
 		expect(within(details).getByRole("tab", { name: "Used in" })).toBeInTheDocument();
 	});
 
-	it("sends the details typed in the upload dialog with each file", async () => {
+	it("shows a failed upload, retries it and updates the completion count", async () => {
 		setup([]);
 		render(<MediaPage />);
 		const user = userEvent.setup();
 		await user.click(await screen.findByRole("button", { name: /Upload media/ }));
-		const dialog = await screen.findByRole("dialog", { name: "Upload files" });
-		expect(within(dialog).getByRole("button", { name: /Upload$/ })).toBeDisabled();
-		const a = new File(["x"], "barn.png", { type: "image/png" });
-		await user.upload(within(dialog).getByLabelText("Choose files to upload"), a);
-		await user.clear(within(dialog).getByLabelText("Filename of barn.png"));
-		await user.type(within(dialog).getByLabelText("Filename of barn.png"), "Red barn");
-		await user.selectOptions(within(dialog).getByLabelText("Location of barn.png"), "farm");
-		await user.type(within(dialog).getByLabelText("Alt text of barn.png"), "A red barn");
-		await user.type(within(dialog).getByLabelText("Caption of barn.png"), "At dusk");
-		await user.click(within(dialog).getByRole("button", { name: /Upload file/ }));
+		const dialog = await screen.findByRole("dialog", { name: "Upload to Library" });
+		await user.upload(
+			within(dialog).getByLabelText("Choose files to upload"),
+			new File(["x"], "barn.png", { type: "image/png" }),
+		);
+		await waitFor(() => expect(FakeXhr.all).toHaveLength(1));
+		FakeXhr.all[0]!.reply(500, { error: { code: "UPLOAD_FAILED", message: "Server exploded" } });
+
+		expect(await within(dialog).findByText("Upload failed")).toBeInTheDocument();
+		expect(within(dialog).getByText("0 of 1 complete")).toBeInTheDocument();
+		expect(within(dialog).getByRole("button", { name: "Retry failed" })).toBeEnabled();
+		expect(within(dialog).getByRole("button", { name: "Done" })).toBeEnabled();
+		await user.click(within(dialog).getByLabelText("Retry barn.png"));
+		await waitFor(() => expect(FakeXhr.all).toHaveLength(2));
+		FakeXhr.all[1]!.reply(201, { data: { url: "/uploads/barn.png" } });
+
+		expect(await within(dialog).findByText("Uploaded")).toBeInTheDocument();
+		expect(within(dialog).getByText("1 of 1 complete")).toBeInTheDocument();
+		expect(within(dialog).getByRole("button", { name: "Retry failed" })).toBeDisabled();
+	});
+
+	it("uploads into the folder selected in the library", async () => {
+		setup([]);
+		render(<MediaPage />);
+		const user = userEvent.setup();
+		await screen.findByRole("option", { name: "farm" });
+		await user.selectOptions(screen.getByLabelText("Folder"), "farm");
+		await user.click(await screen.findByRole("button", { name: /Upload media/ }));
+		const dialog = await screen.findByRole("dialog", { name: "Upload to Library" });
+		await user.upload(
+			within(dialog).getByLabelText("Choose files to upload"),
+			new File(["x"], "barn.png", { type: "image/png" }),
+		);
 		await waitFor(() => expect(FakeXhr.all).toHaveLength(1));
 		const body = FakeXhr.all[0]!.body!;
-		expect([body.get("title"), body.get("alt"), body.get("caption"), body.get("folder")]).toEqual([
-			"Red barn",
-			"A red barn",
-			"At dusk",
-			"farm",
-		]);
+		expect([body.get("title"), body.get("folder")]).toEqual(["barn.png", "farm"]);
 	});
 
 	it("moves and deletes the selected files, keeping those still in use", async () => {

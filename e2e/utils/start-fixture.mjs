@@ -8,7 +8,11 @@ const src = resolve(import.meta.dirname, "../../templates/starter");
 const dir = mkdtempSync(join(tmpdir(), "wuppy-e2e-"));
 cpSync(src, dir, {
 	recursive: true,
-	filter: (p) => !/(^|\/)(node_modules|\.wuppy|\.git)(\/|$)/.test(p.slice(src.length)),
+	filter: (p) => {
+		const rel = p.slice(src.length);
+		// The empty temp site must not inherit local runtime uploads from the starter.
+		return !/(^|\/)(node_modules|\.wuppy|\.git)(\/|$)/.test(rel) && !/^\/public\/uploads(\/|$)/.test(rel);
+	},
 });
 symlinkSync(join(src, "node_modules"), join(dir, "node_modules"));
 
