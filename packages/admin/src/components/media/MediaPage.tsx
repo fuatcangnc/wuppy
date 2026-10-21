@@ -742,7 +742,7 @@ export function MediaPage() {
 					</div>
 				</aside>
 
-				<div className="grid min-h-[520px] gap-0 overflow-hidden rounded-xl border border-border bg-card min-[1400px]:min-h-0 min-[1400px]:grid-cols-[minmax(0,1fr)_360px]">
+				<div className="grid min-h-[520px] gap-0 overflow-hidden rounded-xl border border-border bg-background min-[1400px]:min-h-0 min-[1400px]:grid-cols-[minmax(0,1fr)_360px]">
 					<section className="flex min-h-0 flex-col border-b border-border min-[1400px]:border-e min-[1400px]:border-b-0">
 						{current ? (
 							<>
