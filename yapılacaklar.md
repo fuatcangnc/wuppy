@@ -47,7 +47,7 @@ işaretlenir. Kaynaklar:
 
 **Bu turda tamamlananlar**
 
-- [x] Başlıktan otomatik slug: yeni içerikte başlık yazılırken güvenli slug üretilir (Türkçe karakter ve aksan normalizasyonu); kullanıcı slug'ı elle düzenlerse otomatik üretim durur; var olan slug `409 SLUG_TAKEN` ile korunur.
+- [x] Başlıktan otomatik slug: yeni içerikte başlık yazılırken `slugify` paketiyle güvenli slug üretilir (Türkçe karakter ve aksan normalizasyonu); kullanıcı slug'ı elle düzenlerse otomatik üretim durur; var olan slug `409 SLUG_TAKEN` ile korunur.
 - [x] Güvenilir istemci IP'si: Astro `clientAddress` iç `x-wuppy-client-ip` başlığına yazılır; `WUPPY_TRUSTED_PROXIES` (IP/CIDR) ile ters proxy zinciri güvenilir sayılır; doğrudan bağlantıda spoof edilebilir `X-Forwarded-For` kullanılmaz. Better Auth'un "client IP belirlenemedi" uyarısı kalktı ve hız sınırı istemci bazlı çalışıyor.
 - [x] 2FA politikası: parola girişi TOTP ister; magic link yeni hesap açamaz ve 2FA açık hesaplara gönderilmez; 2FA açılınca o hesabın bekleyen magic-link token'ları geçersiz olur; passkey ve bağlı OAuth sağlayıcıları güçlü alternatif olarak ek kod istemez.
 - [x] Medya detay popup'ı shadcn sekmelerine taşındı: Details / Edit image / Used in sekmeleri klavye ile gezilebilir, ziyaret edilen paneller durumunu korur, kullanım listesi yükleniyor durumu gösterir ve eksik boyutlar önizleme görselinden tamamlanır. Yükleme sonrası otomatik açılmaz; kullanıcı kütüphanedeki dosyaya tıklayınca açılır.

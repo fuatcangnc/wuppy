@@ -1,6 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { useCallback, useEffect, useState } from "react";
 import { apiData } from "../../lib/api.ts";
+import { slugifyTitle } from "../../lib/slug.ts";
 import { $data, loadData, saveData } from "../../stores/dashboard.ts";
 import { Badge, Button, Card, Dialog, Input, Select, Table, Td, Textarea, Th, toast } from "../../ui/index.tsx";
 
@@ -36,13 +37,6 @@ export function flatten(terms: Term[]): Array<{ term: Term; depth: number }> {
 	walk(undefined, 0);
 	return out;
 }
-
-const slugify = (s: string) =>
-	s
-		.toLowerCase()
-		.normalize("NFKD")
-		.replace(/[^a-z0-9]+/g, "-")
-		.replace(/^-|-$/g, "");
 
 const blank = (): Term => ({ slug: "", name: "", description: "", order: 0, translations: {} });
 
@@ -96,7 +90,7 @@ export function TermManager() {
 		} catch {
 			return toast("Translations must be valid JSON", "error");
 		}
-		const next = { ...editing.term, slug: editing.term.slug || slugify(editing.term.name), translations };
+		const next = { ...editing.term, slug: editing.term.slug || slugifyTitle(editing.term.name), translations };
 		if (!next.parent) delete next.parent;
 		const original = editing.original;
 		if (original && original !== next.slug) {
@@ -202,7 +196,7 @@ export function TermManager() {
 							label="Slug"
 							hint={editing.original ? "Changing it updates every entry that uses the term." : "Defaults to the name."}
 							value={editing.term.slug}
-							placeholder={slugify(editing.term.name)}
+							placeholder={slugifyTitle(editing.term.name)}
 							onChange={(e) => setEditing({ ...editing, term: { ...editing.term, slug: e.target.value } })}
 						/>
 						<Input
