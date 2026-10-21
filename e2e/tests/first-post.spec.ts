@@ -207,28 +207,36 @@ async function mediaJourney(page: Page) {
 	await expect(upload.getByText("Uploaded")).toBeVisible();
 	await upload.getByRole("button", { name: "Done" }).click();
 
-	// Uploading only closes the queue; details open when the user chooses the file.
+	// Uploading only closes the queue; the inline inspector opens when the file is selected.
 	await page.getByRole("button", { name: "Open barn.png" }).click();
-	const details = page.getByRole("dialog", { name: "Media details" });
-	await expect(details).toBeVisible();
-	await expect(details.getByLabel("Filename")).toHaveValue("barn.png");
-	await details.getByLabel("Filename").fill("Red barn");
-	await details.getByLabel("Alt text").fill("A barn");
-	await details.getByLabel("Caption").fill("At dusk");
-	await expect(details.getByText("200 × 100")).toBeVisible();
-	await details.getByLabel("Alt text").fill("A red barn at dusk");
-	await details.getByRole("button", { name: "Save" }).click();
+	const inspector = page.getByTestId("media-inspector");
+	await expect(inspector).toBeVisible();
+	await inspector.getByLabel("Title").fill("Red barn");
+	await inspector.getByLabel("Alt text").fill("A barn");
+	await inspector.getByLabel("Caption").fill("At dusk");
+	await expect(inspector.getByText("200 × 100")).toBeVisible();
+	await inspector.getByLabel("Alt text").fill("A red barn at dusk");
+	await inspector.getByRole("button", { name: "Save" }).click();
 	await expect(page.getByText("Saved")).toBeVisible();
 
-	await details.getByRole("tab", { name: "Edit image" }).click();
-	await details.getByLabel("Aspect ratio").click();
+	await inspector.getByRole("button", { name: "Edit image" }).click();
+	const editor = page.getByRole("dialog", { name: "Media details" });
+	await editor.getByLabel("Aspect ratio").click();
 	await page.getByRole("option", { name: "Square (1:1)" }).click();
-	await expect(details.getByText("Output size").locator("..")).toContainText("100 × 100");
-	await details.getByRole("button", { name: "Create cropped copy" }).click();
+	await expect(editor.getByText("Output size").locator("..")).toContainText("100 × 100");
+	await editor.getByRole("button", { name: "Create cropped copy" }).click();
 	await expect(page.getByText("Cropped copy created")).toBeVisible();
+
+	// The original is still selected by its title; convert it in the browser.
+	await page.getByRole("button", { name: "Open Red barn" }).click();
+	await inspector.getByRole("button", { name: "Convert Webp" }).click();
+	await expect(page.getByText("WebP created")).toBeVisible();
 	await expect
-		.poll(async () => ((await (await page.request.get("/api/media")).json()) as { data: unknown[] }).data.length)
-		.toBe(3); // the image from the first journey, the upload and its cropped copy
+		.poll(async () => {
+			const media = ((await (await page.request.get("/api/media")).json()) as { data: Array<{ name: string }> }).data;
+			return { count: media.length, hasWebp: media.some((item) => item.name.endsWith(".webp")) };
+		})
+		.toEqual({ count: 4, hasWebp: true }); // first journey image, upload, crop and client-side WebP
 }
 
 // Smoke: admin modules render; the owner can reset a colleague's authenticator from Users.

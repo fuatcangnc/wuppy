@@ -190,9 +190,9 @@ describe("MediaPage uploads and bulk actions", () => {
 
 		expect(screen.queryByRole("dialog", { name: "Media details" })).toBeNull();
 		await user.click(await screen.findByRole("button", { name: "Open Red barn" }));
-		const details = await screen.findByRole("dialog", { name: "Media details" });
-		expect(within(details).getByLabelText("Filename")).toHaveValue("Red barn");
-		expect(within(details).getByRole("tab", { name: "Used in" })).toBeInTheDocument();
+		const inspector = await screen.findByTestId("media-inspector");
+		expect(within(inspector).getByLabelText("Title")).toHaveValue("Red barn");
+		expect(within(inspector).getByRole("button", { name: "Convert Webp" })).toBeInTheDocument();
 	});
 
 	it("shows a failed upload, retries it and updates the completion count", async () => {

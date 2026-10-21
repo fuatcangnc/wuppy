@@ -29,7 +29,7 @@ işaretlenir. Kaynaklar:
 | E-posta | 🟡 Kısmi | Console + Resend, magic-link template, parola sıfırlama ve davet e-postası; production domain/doğrulama sonra |
 | Admin kabuğu | ✅ Çalışıyor | Sidebar grupları, topbar, tema, arama, shadcn Select, per-page + numaralı sayfalama, tüm modül rotaları |
 | İçerik yönetimi | 🟡 Kısmi | Liste/arama/durum filtresi/otomatik slug, editör/SEO/zamanlama, çöp + geri yükleme, toplu publish/delete, Git revizyon paneli, per-page sayfalama; autosave ve çakışma çözümü yok |
-| Medya | 🟡 Kısmi | Kütüphane, klasör, alt metin, kırpma/odak, kullanım takibi, görsel optimizasyonu; S3 adaptörü, toplu düzenleme ve blurhash yok |
+| Medya | 🟡 Kısmi | Üç panelli kütüphane, klasör, alt metin, kırpma/odak, kullanım takibi, görsel optimizasyonu, istemci tarafı WebP dönüştürme; S3 adaptörü, toplu düzenleme ve blurhash yok |
 | Manage modülleri | 🟡 Kısmi | Comments, Menus, Redirects, Widgets, Sections, Taxonomies, Bylines CRUD |
 | Admin modülleri | 🟡 Kısmi | Content Types, Byline Schema, Users+token, Plugins, Import, Settings, Themes |
 | SEO / i18n / önizleme | 🟡 Kısmi | SEO çekirdek + panel, i18n tablo, dev preview; visual editing yok |
@@ -58,6 +58,7 @@ işaretlenir. Kaynaklar:
 - [x] Admin icon sprite'ı sürümlendi: `/icons.svg?v=<content-hash>`, `no-cache` + ETag ile sunuluyor; yeni eklenen ikonlar eski immutable cache yüzünden kaybolmuyor.
 - [x] Menus ekranı yenilendi: shadcn Accordion tabanlı kaynak seçimi (Pages/Posts/Categories/Custom Links), native HTML5 drag-and-drop sıralama, alt menü yönetimi, klavye/erişilebilir kontroller, menü oluşturma/silme ve Manage Locations sekmesi. Menü yokken ayrı bir boş sayfa gösterilmez; editör kabuğu ve create linki doğrudan gelir.
 - [x] Dark tema global yüzeyleri standartlaştırıldı: `#09090B` taban, `#101011` kart/panel, `#151517` yükseltilmiş kontrol; dashboard dış kabuğu `rounded-xl`, kartları 10px radius (`rounded-lg`) ile hizalandı.
+- [x] Media Library üç panelli görünüme taşındı: arama/filtre listesi, varyantlı büyük önizleme, inline metadata paneli, dosya URL'si, kullanım listesi ve aksiyonlar. **Convert Webp** istemci tarafında Canvas `toBlob()` ile dönüştürüp yeni WebP dosyası yükler.
 
 **Doğrulama:** `pnpm check` → 355 core + 141 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 13/13.
 
@@ -256,7 +257,7 @@ işaretlenir. Kaynaklar:
 - [x] Görsel alanı yükleme + önizleme
 - [x] Gövdeye görsel ekleme (alt metin sorarak)
 - [x] Medya listesi API'si ve Git commit
-- [x] Medya kütüphanesi: grid, arama, klasör/tür/tarih filtresi, sayfalama, toplu seçim
+- [x] Medya kütüphanesi: üç panelli görünüm, arama, klasör/tür/tarih filtresi, sayfalama, toplu seçim, varyantlı önizleme
 - [x] Klasörler: oluşturma, iç içe (3 seviye), yeniden adlandırma, silme (dosyalar klasörsüz kalır), taşıma
 - [x] Seçici modal: tekli/çoklu seçim, yeni yükleme, arama
 - [ ] (kısmi) Alt metin, caption, başlık ve kredi alanı var; toplu düzenleme yok
@@ -265,6 +266,7 @@ işaretlenir. Kaynaklar:
 - [x] Kullanım takibi: "nerelerde kullanılıyor" + silmeden önce uyarı (409 IN_USE, zorla silme onayı)
 - [x] Medya detay popup'ı: shadcn sekmeleri (Details / Edit image / Used in), klavye gezinmesi, panel durumu koruma ve kullanım yükleniyor durumu; yalnızca kullanıcı dosyaya tıklayınca açılır
 - [x] Görsel optimizasyonu: izinli genişliklerde WebP/AVIF/JPEG/PNG varyantları (`?w=&format=`, diskte önbellekli), LQIP + boyutlar yüklemede kaydedilir (`sharp`, isteğe bağlı bağımlılık); blurhash yok
+- [x] **Convert Webp**: istemci tarafında native Canvas `toBlob("image/webp")` ile dönüştürme; GIF/WebP için devre dışı, dönüşen dosya ayrı medya olarak yüklenir
 - [ ] Karanlık tema görsel varyantı (opsiyonel)
 - [ ] Depolama adaptörü seçimi: local / S3 (R2 opsiyonel adaptörde)
 - [ ] İmzalı yükleme URL'i ve doğrudan S3 yükleme

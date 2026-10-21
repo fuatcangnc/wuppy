@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { MediaPage } from "../src/components/media/MediaPage.tsx";
@@ -101,16 +101,17 @@ describe("MediaPage", () => {
 		await user.click(save);
 		await waitFor(() => expect(calls.some((c) => c.startsWith("PATCH /api/media/meta"))).toBe(true));
 
-		await user.click(screen.getByRole("tab", { name: "Edit image" }));
-		expect(screen.getByTestId("image-cropper")).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Replace original" })).toBeDisabled(); // no area chosen yet
-		await user.click(screen.getByRole("tab", { name: "Focal point" }));
-		fireEvent.load(screen.getByTestId("focal-image")); // jsdom never loads images
-		expect(await screen.findByRole("button", { name: /Focal point\. Use arrow keys/ })).toBeInTheDocument();
-		expect(screen.getByTestId("focal-previews")).toBeInTheDocument();
+		await user.click(screen.getByRole("button", { name: "Edit image" }));
+		const dialog = within(screen.getByRole("dialog", { name: "Media details" }));
+		expect(dialog.getByTestId("image-cropper")).toBeInTheDocument();
+		expect(dialog.getByRole("button", { name: "Replace original" })).toBeDisabled(); // no area chosen yet
+		await user.click(dialog.getByRole("tab", { name: "Focal point" }));
+		fireEvent.load(dialog.getByTestId("focal-image")); // jsdom never loads images
+		expect(await dialog.findByRole("button", { name: /Focal point\. Use arrow keys/ })).toBeInTheDocument();
+		expect(dialog.getByTestId("focal-previews")).toBeInTheDocument();
 
-		await user.click(screen.getByRole("tab", { name: /Used in/ }));
-		expect(screen.getByRole("link", { name: /Hello/ })).toHaveAttribute("href", "/admin/e/posts/hello");
+		await user.click(dialog.getByRole("tab", { name: /Used in/ }));
+		expect(dialog.getByRole("link", { name: /Hello/ })).toHaveAttribute("href", "/admin/e/posts/hello");
 	});
 
 	it("switches details tabs with the keyboard and keeps panels accessible", async () => {
@@ -122,19 +123,22 @@ describe("MediaPage", () => {
 		render(<MediaPage />);
 		const user = userEvent.setup();
 		await user.click(await screen.findByRole("button", { name: "Open 2026/01/a.png" }));
-		const details = screen.getByRole("tab", { name: "Details" });
-		const edit = screen.getByRole("tab", { name: "Edit image" });
-		expect(screen.getByRole("tabpanel", { name: "Details" })).toHaveAttribute("data-state", "active");
-
-		details.focus();
-		await user.keyboard("{ArrowRight}");
+		await user.click(screen.getByRole("button", { name: "Edit image" }));
+		const dialog = within(screen.getByRole("dialog", { name: "Media details" }));
+		const details = dialog.getByRole("tab", { name: "Details" });
+		const edit = dialog.getByRole("tab", { name: "Edit image" });
 		expect(edit).toHaveAttribute("aria-selected", "true");
-		expect(edit).toHaveFocus();
-		expect(screen.getByRole("tabpanel", { name: "Edit image" })).toBeInTheDocument();
-		expect(screen.queryByRole("tabpanel", { name: "Details" })).toBeNull();
+		expect(dialog.getByRole("tabpanel", { name: "Edit image" })).toBeInTheDocument();
+
+		edit.focus();
+		await user.keyboard("{ArrowLeft}");
+		expect(details).toHaveAttribute("aria-selected", "true");
+		expect(details).toHaveFocus();
+		expect(dialog.getByRole("tabpanel", { name: "Details" })).toBeInTheDocument();
+		expect(dialog.queryByRole("tabpanel", { name: "Edit image" })).toBeNull();
 
 		await user.keyboard("{End}");
-		expect(screen.getByRole("tab", { name: "Used in" })).toHaveFocus();
+		expect(dialog.getByRole("tab", { name: "Used in" })).toHaveFocus();
 		await user.keyboard("{Home}");
 		expect(details).toHaveFocus();
 	});

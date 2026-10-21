@@ -73,6 +73,7 @@ export function MediaDetailDialog({
 	folders,
 	usage,
 	usageLoading = false,
+	initialTab = "details",
 	onClose,
 	onSelect,
 }: {
@@ -80,12 +81,13 @@ export function MediaDetailDialog({
 	folders: string[];
 	usage: Usage[];
 	usageLoading?: boolean;
+	initialTab?: Tab;
 	onClose: () => void;
 	/** Called with the URL of a new file (a cropped copy) so the page can open it. */
 	onSelect: (url: string) => void;
 }) {
-	const [tab, setTab] = useState<Tab>("details");
-	const [visited, setVisited] = useState<Set<Tab>>(() => new Set(["details"]));
+	const [tab, setTab] = useState<Tab>(initialTab);
+	const [visited, setVisited] = useState<Set<Tab>>(() => new Set([initialTab]));
 	const selectTab = (next: Tab) => {
 		setTab(next);
 		setVisited((current) => (current.has(next) ? current : new Set(current).add(next)));
