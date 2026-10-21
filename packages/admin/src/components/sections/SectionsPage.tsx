@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { apiData } from "../../lib/api.ts";
-import { ResourcePage } from "../shared/ResourcePage.tsx";
+import { Layers } from "@react-zero-ui/icon-sprite";
+import { ResourceWorkspacePage } from "../shared/ResourceWorkspacePage.tsx";
 
 type Usage = Record<string, Array<{ collection: string; slug: string }>>;
 
@@ -14,11 +15,12 @@ export function SectionsPage() {
 	const where = (slug: unknown) => (usage[String(slug)] ?? []).map((u) => `${u.collection}/${u.slug}`);
 
 	return (
-		<ResourcePage
+		<ResourceWorkspacePage
 			name="sections"
 			title="Sections"
 			description="Reusable content sections. Entries pick them with a `section` field."
 			itemLabel="section"
+			icon={<Layers size="1em" />}
 			template={{ slug: "", title: "", body: "", draft: false, locale: "" }}
 			columns={[
 				{ key: "title", label: "Title" },

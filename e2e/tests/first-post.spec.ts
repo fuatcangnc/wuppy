@@ -33,10 +33,12 @@ test("owner sets up the site, writes a post, edits it and undoes the edit", asyn
 
 	// Collections -> posts -> new entry.
 	await page.getByRole("link", { name: "posts", exact: true }).click();
-	await expect(page.getByRole("link", { name: "Hello world" })).toBeVisible();
-	await page.getByLabel("New entry title").fill("My first post");
-	await expect(page.getByLabel("New entry slug")).toHaveValue("my-first-post");
-	await page.getByRole("button", { name: "Create" }).click();
+	await expect(page.getByRole("button", { name: "Open Hello world", exact: true })).toBeVisible();
+	await page.getByRole("button", { name: "Create post", exact: true }).click();
+	const createPost = page.getByRole("dialog", { name: "New post" });
+	await createPost.getByLabel("Title").fill("My first post");
+	await expect(createPost.getByLabel("Slug")).toHaveValue("my-first-post");
+	await createPost.getByRole("button", { name: "Create" }).click();
 
 	await expect(page.getByLabel("title", { exact: true })).toHaveValue("My first post");
 	const editor = page.getByLabel("Content").last();
@@ -80,10 +82,12 @@ test("owner sets up the site, writes a post, edits it and undoes the edit", asyn
 
 	// Creating another entry with the same slug is refused instead of overwriting it.
 	await page.getByRole("link", { name: "posts", exact: true }).click();
-	await expect(page.getByRole("link", { name: "My first post" })).toBeVisible();
-	await page.getByLabel("New entry title").fill("My first post");
-	await page.getByRole("button", { name: "Create" }).click();
-	await expect(page.getByText("An entry with this slug already exists.")).toBeVisible();
+	await expect(page.getByRole("button", { name: "Open My first post", exact: true })).toBeVisible();
+	await page.getByRole("button", { name: "Create post", exact: true }).click();
+	const duplicatePost = page.getByRole("dialog", { name: "New post" });
+	await duplicatePost.getByLabel("Title").fill("My first post");
+	await duplicatePost.getByRole("button", { name: "Create" }).click();
+	await expect(duplicatePost.getByText("An entry with this slug already exists.")).toBeVisible();
 });
 
 // Journey: "Add a colleague who can write but cannot manage users or see the security log."
@@ -96,6 +100,7 @@ test("owner adds an editor; the editor can edit content but sees no admin-only a
 	await page.getByRole("link", { name: "Users" }).click();
 
 	// The only admin cannot demote itself.
+	await page.getByRole("button", { name: "Open owner@example.com" }).click();
 	await page.getByLabel("Role for owner@example.com").click();
 	await page.getByRole("option", { name: "viewer" }).click();
 	await expect(page.getByText("Cannot remove, ban or demote the last active admin")).toBeVisible();
@@ -322,9 +327,15 @@ test("admin modules render and the owner resets a colleague's two-factor", async
 	await page.getByRole("button", { name: "Switch to split view" }).click();
 	await expect(page.getByRole("button", { name: "Open About", exact: true })).toBeVisible();
 
+	// Posts use the same workspace with the post route and singular labels.
+	await page.goto("/admin/c/posts");
+	await expect(page.getByRole("heading", { name: "Posts", exact: true })).toBeVisible();
+	await page.getByRole("button", { name: /Open Hello Wuppy/ }).click();
+	await expect(page.getByTestId("post-detail")).toBeVisible();
+
 	await page.getByRole("link", { name: "Users" }).click();
-	const row = page.getByRole("row", { name: /edna@example.com/ });
-	await row.getByRole("button", { name: "Manage" }).click();
+	await page.getByRole("button", { name: "Open edna@example.com" }).click();
+	await page.getByRole("button", { name: "Manage", exact: true }).click();
 	const dialog = page.getByRole("dialog");
 	await expect(dialog.getByText("Active sessions")).toBeVisible();
 	await expect(dialog.getByRole("button", { name: "Set password" })).toBeVisible();

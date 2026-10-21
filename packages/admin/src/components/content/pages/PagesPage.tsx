@@ -53,9 +53,7 @@ import { ActionMenu, type ActionMenuItem } from "../../shared/ActionMenu.tsx";
 import { WorkspaceLayout, WorkspacePanel, WorkspaceSidebar } from "../../shared/WorkspaceLayout.tsx";
 import { listQuery, NO_FILTERS, TONES, type ContentListPage, type Filters, type Row } from "../list.ts";
 
-const PAGE_COLLECTION = "pages";
-const PAGE_LABEL = "Page";
-const PAGE_FILTERS: Filters = { ...NO_FILTERS, sort: "title" };
+const CONTENT_FILTERS: Filters = { ...NO_FILTERS, sort: "title" };
 const STATUS_LABEL = { published: "Published", draft: "Draft", scheduled: "Scheduled" } as const;
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100] as const;
 const COLUMN_OPTIONS = [
@@ -101,11 +99,13 @@ const relativeTime = (iso: string) => {
 const absoluteUrl = (path: string) => new URL(path, window.location.origin).href;
 const previewPath = (route: string | undefined, slug: string) => (route ?? "/{slug}").replace("{slug}", slug);
 
-export function PagesPage() {
+export function ContentWorkspacePage({ collection }: { collection: string }) {
 	const collections = useStore($collections);
-	const info = collections.find((collection) => collection.name === PAGE_COLLECTION);
+	const info = collections.find((candidate) => candidate.name === collection);
+	const label = collection.charAt(0).toUpperCase() + collection.slice(1);
+	const singular = label.replace(/s$/, "");
 	const navigate = useNavigate();
-	const [filters, setFilters] = useState<Filters>(PAGE_FILTERS);
+	const [filters, setFilters] = useState<Filters>(CONTENT_FILTERS);
 	const [rows, setRows] = useState<Row[]>([]);
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(1);
@@ -137,7 +137,7 @@ export function PagesPage() {
 			try {
 				const result = await api<ContentListPage>(
 					"GET",
-					`/api/content/${PAGE_COLLECTION}?${listQuery(filters, target, pageSize)}`,
+					`/api/content/${collection}?${listQuery(filters, target, pageSize)}`,
 				);
 				setRows(Array.isArray(result.data) ? result.data : []);
 				setTotal(typeof result.total === "number" ? result.total : 0);
@@ -155,7 +155,7 @@ export function PagesPage() {
 			try {
 				const result = await api<ContentListPage>(
 					"GET",
-					`/api/content/${PAGE_COLLECTION}?limit=1&sort=title${status ? `&status=${status}` : ""}`,
+					`/api/content/${collection}?limit=1&sort=title${status ? `&status=${status}` : ""}`,
 				);
 				return typeof result.total === "number" ? result.total : 0;
 			} catch {
@@ -179,7 +179,7 @@ export function PagesPage() {
 			);
 			const next: Record<string, number> = {};
 			for (const comment of Array.isArray(result) ? result : []) {
-				if (comment.collection !== PAGE_COLLECTION) continue;
+				if (comment.collection !== collection) continue;
 				next[comment.slug] = (comment.pending ?? 0) + (comment.approved ?? 0);
 			}
 			setCommentCounts(next);
@@ -193,7 +193,7 @@ export function PagesPage() {
 		void apiData<Array<{ slug: string; name: string }>>("GET", "/api/data/bylines")
 			.then((value) => setBylines(Array.isArray(value) ? value : []))
 			.catch(() => setBylines([]));
-		void api<{ locales: string[] }>("GET", `/api/i18n/${PAGE_COLLECTION}`)
+		void api<{ locales: string[] }>("GET", `/api/i18n/${collection}`)
 			.then((value) => setLocales(Array.isArray(value.locales) ? value.locales : []))
 			.catch(() => setLocales([]));
 		void loadCounts();
@@ -217,8 +217,10 @@ export function PagesPage() {
 
 	const selected = rows.find((row) => row.slug === selectedSlug) ?? null;
 	const viewUrl = selected ? absoluteUrl(previewPath(info?.route, selected.slug)) : "";
+	const showTree = collection === "pages";
 	const childCounts = useMemo(() => {
 		const next = new Map<string, number>();
+		if (!showTree) return next;
 		for (const row of rows) {
 			const parts = row.slug.split("/");
 			for (let index = 1; index < parts.length; index++) {
@@ -227,7 +229,7 @@ export function PagesPage() {
 			}
 		}
 		return next;
-	}, [rows]);
+	}, [rows, showTree]);
 
 	const reload = useCallback(async () => {
 		await fetchPage(page);
@@ -272,7 +274,7 @@ export function PagesPage() {
 			setCreateError("Enter a title or slug.");
 			return;
 		}
-		const taken = await apiData("GET", `/api/content/${PAGE_COLLECTION}/${slugPath(nextSlug)}`).then(
+		const taken = await apiData("GET", `/api/content/${collection}/${slugPath(nextSlug)}`).then(
 			() => true,
 			() => false,
 		);
@@ -281,13 +283,13 @@ export function PagesPage() {
 			return;
 		}
 		setCreateError(null);
-		newEntry(PAGE_COLLECTION, nextSlug, nextTitle && info?.fields.title ? { title: nextTitle } : {});
+		newEntry(collection, nextSlug, nextTitle && info?.fields.title ? { title: nextTitle } : {});
 		setCreateOpen(false);
-		void navigate({ to: "/e/$collection/$", params: { collection: PAGE_COLLECTION, _splat: nextSlug } });
+		void navigate({ to: "/e/$collection/$", params: { collection, _splat: nextSlug } });
 	};
 
 	const editPage = (pageSlug: string) =>
-		void navigate({ to: "/e/$collection/$", params: { collection: PAGE_COLLECTION, _splat: pageSlug } });
+		void navigate({ to: "/e/$collection/$", params: { collection, _splat: pageSlug } });
 
 	const openPreview = (row: Row) => {
 		const fallback = absoluteUrl(previewPath(info?.route, row.slug));
@@ -299,17 +301,17 @@ export function PagesPage() {
 			if (tab) tab.location.href = url;
 			else window.open(url, "_blank", "noopener");
 		};
-		void api<{ data: { url: string } }>("GET", `/api/preview-link/${PAGE_COLLECTION}/${slugPath(row.slug)}`)
+		void api<{ data: { url: string } }>("GET", `/api/preview-link/${collection}/${slugPath(row.slug)}`)
 			.then((result) => open(result.data?.url ? absoluteUrl(result.data.url) : fallback))
 			.catch(() => open(fallback));
 	};
 
 	const duplicatePage = async (pageSlug: string) => {
 		try {
-			const copy = await duplicateEntry(PAGE_COLLECTION, pageSlug);
+			const copy = await duplicateEntry(collection, pageSlug);
 			await reload();
 			setSelectedSlug(copy);
-			toast("Page duplicated");
+			toast(`${singular} duplicated`);
 		} catch (error) {
 			toast((error as Error).message, "error");
 		}
@@ -318,7 +320,7 @@ export function PagesPage() {
 	const removePage = async (pageSlug: string) => {
 		if (!confirm(`Delete ${pageSlug}? It stays recoverable in the trash.`)) return;
 		try {
-			await deleteEntry(PAGE_COLLECTION, pageSlug);
+			await deleteEntry(collection, pageSlug);
 			if (selectedSlug === pageSlug) setSelectedSlug(null);
 			setPicked((current) => current.filter((value) => value !== pageSlug));
 			await reload();
@@ -330,7 +332,7 @@ export function PagesPage() {
 
 	const toggleDraft = async (row: Row) => {
 		try {
-			await setEntryDraft(PAGE_COLLECTION, row.slug, row.status !== "draft");
+			await setEntryDraft(collection, row.slug, row.status !== "draft");
 			await reload();
 			toast(row.status === "draft" ? "Published" : "Moved to drafts");
 		} catch (error) {
@@ -365,7 +367,7 @@ export function PagesPage() {
 	const bulkSetDraft = async (draft: boolean) => {
 		if (!picked.length) return;
 		try {
-			await Promise.all(picked.map((pageSlug) => setEntryDraft(PAGE_COLLECTION, pageSlug, draft)));
+			await Promise.all(picked.map((pageSlug) => setEntryDraft(collection, pageSlug, draft)));
 			setPicked([]);
 			setBulkOpen(false);
 			await reload();
@@ -375,9 +377,10 @@ export function PagesPage() {
 		}
 	};
 	const bulkDelete = async () => {
-		if (!picked.length || !confirm(`Delete ${picked.length} pages? Git history keeps them recoverable.`)) return;
+		if (!picked.length || !confirm(`Delete ${picked.length} ${collection}? Git history keeps them recoverable.`))
+			return;
 		try {
-			await Promise.all(picked.map((pageSlug) => deleteEntry(PAGE_COLLECTION, pageSlug)));
+			await Promise.all(picked.map((pageSlug) => deleteEntry(collection, pageSlug)));
 			setPicked([]);
 			setBulkOpen(false);
 			setSelectedSlug(null);
@@ -390,11 +393,11 @@ export function PagesPage() {
 	const bulkDuplicate = async () => {
 		if (!picked.length) return;
 		try {
-			await Promise.all(picked.map((pageSlug) => duplicateEntry(PAGE_COLLECTION, pageSlug)));
+			await Promise.all(picked.map((pageSlug) => duplicateEntry(collection, pageSlug)));
 			setPicked([]);
 			setBulkOpen(false);
 			await reload();
-			toast("Pages duplicated");
+			toast(`${label} duplicated`);
 		} catch (error) {
 			toast((error as Error).message, "error");
 		}
@@ -419,7 +422,7 @@ export function PagesPage() {
 		const fallback = absoluteUrl(previewPath(info?.route, selected.slug));
 		setPreviewLoading(true);
 		setPreviewError(null);
-		void api<{ data: { url: string } }>("GET", `/api/preview-link/${PAGE_COLLECTION}/${slugPath(selected.slug)}`)
+		void api<{ data: { url: string } }>("GET", `/api/preview-link/${collection}/${slugPath(selected.slug)}`)
 			.then((result) => {
 				if (cancelled) return;
 				if (!result.data?.url) throw new Error("Preview link unavailable");
@@ -453,7 +456,7 @@ export function PagesPage() {
 	];
 
 	const listRow = (row: Row) => {
-		const depth = row.slug.split("/").length - 1;
+		const depth = showTree ? row.slug.split("/").length - 1 : 0;
 		const children = childCounts.get(row.slug) ?? 0;
 		const status = row.status;
 		return (
@@ -521,18 +524,18 @@ export function PagesPage() {
 		</div>
 	);
 
-	const searchField = (label: string) => (
+	const searchField = (ariaLabel: string) => (
 		<div className="relative">
 			<Search
 				size="1em"
 				className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-sm text-muted-foreground"
 			/>
 			<Input
-				aria-label={label}
+				aria-label={ariaLabel}
 				className="h-12 rounded-none border-transparent bg-transparent pr-4 pl-11 text-sm shadow-none focus-visible:border-transparent focus-visible:ring-0 dark:bg-transparent"
 				value={filters.q}
 				onChange={(event) => setFiltersAndReset({ q: event.target.value })}
-				placeholder="Search pages..."
+				placeholder={`Search ${collection}...`}
 			/>
 		</div>
 	);
@@ -573,13 +576,13 @@ export function PagesPage() {
 		<div className="grid gap-4">
 			<div className="flex flex-wrap items-start justify-between gap-3">
 				<div className="grid gap-0.5">
-					<h1 className="text-xl font-semibold">Pages</h1>
+					<h1 className="text-xl font-semibold">{label}</h1>
 					<p className="text-xs text-muted-foreground">
-						{total} {total === 1 ? "page" : "pages"} · manage your site structure
+						{total} {total === 1 ? singular.toLowerCase() : collection} · manage your {collection}
 					</p>
 				</div>
 				<div className="flex flex-wrap items-center gap-1">
-					<Link to="/t/$collection" params={{ collection: PAGE_COLLECTION }} className="contents">
+					<Link to="/t/$collection" params={{ collection }} className="contents">
 						<Button variant="secondary" size="sm">
 							Translations
 						</Button>
@@ -591,7 +594,7 @@ export function PagesPage() {
 						<Settings size={14} /> Settings
 					</Button>
 					<Button size="sm" onClick={openCreate}>
-						<Plus size={14} /> New Page
+						<Plus size={14} /> New {singular}
 					</Button>
 					<Button
 						variant="ghost"
@@ -605,19 +608,21 @@ export function PagesPage() {
 				</div>
 			</div>
 			{statusTabsView}
-			<div className="-mt-2 max-w-2xl border-b border-border">{searchField("Search pages")}</div>
+			<div className="-mt-2 max-w-2xl border-b border-border">{searchField(`Search ${collection}`)}</div>
 			<ErrorText>{listError}</ErrorText>
 			<Card className="overflow-hidden">
 				{rows.length === 0 ? (
 					<div className="p-4">
 						<EmptyState
-							title={loading ? "Loading…" : filters.q || filters.status ? "No matches" : "No pages yet"}
-							description={filters.q || filters.status ? "Try different filters." : "Create the first page."}
-							action={<Button onClick={openCreate}>+ New page</Button>}
+							title={loading ? "Loading…" : filters.q || filters.status ? "No matches" : `No ${collection} yet`}
+							description={
+								filters.q || filters.status ? "Try different filters." : `Create the first ${singular.toLowerCase()}.`
+							}
+							action={<Button onClick={openCreate}>+ New {singular.toLowerCase()}</Button>}
 						/>
 					</div>
 				) : (
-					<Table data-testid="pages-table">
+					<Table data-testid={`${collection}-table`}>
 						<TableHeader>
 							<TableRow>
 								<TableHead className="w-12">
@@ -637,7 +642,7 @@ export function PagesPage() {
 						</TableHeader>
 						<TableBody>
 							{rows.map((row) => {
-								const depth = row.slug.split("/").length - 1;
+								const depth = showTree ? row.slug.split("/").length - 1 : 0;
 								const children = childCounts.get(row.slug) ?? 0;
 								return (
 									<TableRow key={row.slug} data-state={picked.includes(row.slug) ? "selected" : undefined}>
@@ -658,7 +663,7 @@ export function PagesPage() {
 											<div style={{ paddingInlineStart: depth ? Math.min(depth, 3) * 12 : 0 }}>
 												<Link
 													to="/e/$collection/$"
-													params={{ collection: PAGE_COLLECTION, _splat: row.slug }}
+													params={{ collection, _splat: row.slug }}
 													className="font-medium text-primary hover:underline"
 												>
 													{titleOf(row)}
@@ -747,7 +752,7 @@ export function PagesPage() {
 							<Eye size={14} /> View
 						</Button>
 					</a>
-					<ActionMenu items={actionsFor(selected)} label="Page actions" />
+					<ActionMenu items={actionsFor(selected)} label={`${singular} actions`} />
 				</div>
 			</header>
 			<div className="custom-scrollbar min-h-0 overflow-y-auto">
@@ -826,10 +831,12 @@ export function PagesPage() {
 				<span className="grid size-16 place-items-center rounded-full bg-secondary text-muted-foreground">
 					<FileText size={24} />
 				</span>
-				<p className="font-medium">Page Preview</p>
-				<p className="text-sm text-muted-foreground">Select a page from the list to preview and manage its details.</p>
+				<p className="font-medium">{singular} Preview</p>
+				<p className="text-sm text-muted-foreground">
+					Select a {singular.toLowerCase()} from the list to preview and manage its details.
+				</p>
 				<Button variant="secondary" size="sm" onClick={openCreate}>
-					<Plus size={14} /> New page
+					<Plus size={14} /> New {singular.toLowerCase()}
 				</Button>
 			</div>
 		</div>
@@ -839,9 +846,9 @@ export function PagesPage() {
 		<WorkspaceLayout sidebarWidth={340}>
 			<WorkspaceSidebar>
 				<div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
-					<h1 className="text-base font-semibold">Pages</h1>
+					<h1 className="text-base font-semibold">{label}</h1>
 					<div className="flex items-center gap-1">
-						<Link to="/t/$collection" params={{ collection: PAGE_COLLECTION }} className="contents">
+						<Link to="/t/$collection" params={{ collection }} className="contents">
 							<Button variant="ghost" size="icon-sm" aria-label="Translations" title="Translations">
 								<Languages size="1em" />
 							</Button>
@@ -858,8 +865,8 @@ export function PagesPage() {
 						<Button
 							variant="ghost"
 							size="icon-sm"
-							aria-label="Page settings"
-							title="Page settings"
+							aria-label={`${singular} settings`}
+							title={`${singular} settings`}
 							onClick={() => setSettingsOpen(true)}
 						>
 							<SlidersHorizontal size="1em" />
@@ -869,15 +876,15 @@ export function PagesPage() {
 							size="icon-sm"
 							style={{ borderRadius: "200px" }}
 							className="border-border bg-white text-[#101011] shadow-sm hover:bg-zinc-200!"
-							aria-label="Create page"
-							title="Create page"
+							aria-label={`Create ${singular.toLowerCase()}`}
+							title={`Create ${singular.toLowerCase()}`}
 							onClick={openCreate}
 						>
 							<Plus size="1em" />
 						</Button>
 					</div>
 				</div>
-				<div className="border-b border-border">{searchField("Search pages")}</div>
+				<div className="border-b border-border">{searchField(`Search ${collection}`)}</div>
 				{statusTabsView}
 				<div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2 text-muted-foreground">
 					<span className="text-[10px] font-medium tracking-wider uppercase">
@@ -888,20 +895,25 @@ export function PagesPage() {
 				<div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto p-2">
 					{loading ? (
 						<p role="status" className="px-4 py-8 text-center text-xs text-muted-foreground">
-							Loading pages…
+							Loading {collection}…
 						</p>
 					) : rows.length === 0 ? (
 						<EmptyState
-							title={filters.q || filters.status ? "No matches" : "No pages yet"}
-							description={filters.q || filters.status ? "Try different filters." : "Create the first page."}
-							action={<Button onClick={openCreate}>+ New page</Button>}
+							title={filters.q || filters.status ? "No matches" : `No ${collection} yet`}
+							description={
+								filters.q || filters.status ? "Try different filters." : `Create the first ${singular.toLowerCase()}.`
+							}
+							action={<Button onClick={openCreate}>+ New {singular.toLowerCase()}</Button>}
 						/>
 					) : (
 						<div className="grid gap-1">{rows.map(listRow)}</div>
 					)}
 				</div>
 			</WorkspaceSidebar>
-			<WorkspacePanel className="grid-rows-[auto_minmax(0,1fr)]" data-testid={selected ? "page-detail" : undefined}>
+			<WorkspacePanel
+				className="grid-rows-[auto_minmax(0,1fr)]"
+				data-testid={selected ? `${singular.toLowerCase()}-detail` : undefined}
+			>
 				{detail}
 			</WorkspacePanel>
 		</WorkspaceLayout>
@@ -973,7 +985,7 @@ export function PagesPage() {
 
 			<Dialog
 				open={settingsOpen}
-				title="Page settings"
+				title={`${singular} settings`}
 				description="Filter, sort and choose the columns shown in the table."
 				size="medium"
 				onClose={() => setSettingsOpen(false)}
@@ -1089,7 +1101,7 @@ export function PagesPage() {
 
 			<Dialog
 				open={bulkOpen}
-				title={`Batch edit ${picked.length} ${picked.length === 1 ? "page" : "pages"}`}
+				title={`Batch edit ${picked.length} ${picked.length === 1 ? singular.toLowerCase() : collection}`}
 				onClose={() => setBulkOpen(false)}
 				footer={
 					<Button variant="ghost" onClick={() => setBulkOpen(false)}>
@@ -1098,7 +1110,7 @@ export function PagesPage() {
 				}
 			>
 				<div className="grid gap-3">
-					<p className="text-sm text-muted-foreground">Choose what should happen to the selected pages.</p>
+					<p className="text-sm text-muted-foreground">Choose what should happen to the selected {collection}.</p>
 					<div className="flex flex-wrap gap-2">
 						<Button onClick={() => void bulkSetDraft(false)}>
 							<CircleCheck size={14} /> Publish
@@ -1118,7 +1130,7 @@ export function PagesPage() {
 
 			<Dialog
 				open={createOpen}
-				title={`New ${PAGE_LABEL.toLowerCase()}`}
+				title={`New ${singular.toLowerCase()}`}
 				onClose={() => setCreateOpen(false)}
 				footer={
 					<>
@@ -1133,13 +1145,13 @@ export function PagesPage() {
 			>
 				<Input
 					label="Title"
-					placeholder="My first page"
+					placeholder={`My first ${singular.toLowerCase()}`}
 					value={title}
 					onChange={(event) => changeTitle(event.target.value)}
 				/>
 				<Input
 					label="Slug"
-					placeholder="my-first-page"
+					placeholder={`my-first-${singular.toLowerCase()}`}
 					value={slug}
 					onChange={(event) => changeSlug(event.target.value)}
 					hint="Generated from the title until you edit it. Lowercase letters, numbers, /, ., _ and -"
@@ -1148,4 +1160,12 @@ export function PagesPage() {
 			</Dialog>
 		</div>
 	);
+}
+
+export function PagesPage() {
+	return <ContentWorkspacePage collection="pages" />;
+}
+
+export function PostsPage() {
+	return <ContentWorkspacePage collection="posts" />;
 }

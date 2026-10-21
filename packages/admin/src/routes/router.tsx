@@ -36,7 +36,7 @@ import { LoginPage } from "../components/auth/LoginPage.tsx";
 import { SecurityPage } from "../components/auth/SecurityPage.tsx";
 import { AuditPage } from "../components/content/AuditPage.tsx";
 import { EntriesPage } from "../components/content/EntriesPage.tsx";
-import { PagesPage } from "../components/content/pages/PagesPage.tsx";
+import { ContentWorkspacePage } from "../components/content/pages/PagesPage.tsx";
 import { EditorPage } from "../components/content/EditorPage.tsx";
 import { TranslationsPage } from "../components/content/TranslationsPage.tsx";
 import { TrashPage } from "../components/content/TrashPage.tsx";
@@ -108,7 +108,15 @@ function Shell() {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [pluginLinks, setPluginLinks] = useState<Array<{ id: string; index: number; label: string }>>([]);
 	const fullWidth = useRouterState({
-		select: (state) => state.location.pathname === "/media" || state.location.pathname === "/c/pages",
+		select: (state) =>
+			state.location.pathname === "/media" ||
+			state.location.pathname === "/c/pages" ||
+			state.location.pathname === "/c/posts" ||
+			state.location.pathname === "/redirects" ||
+			state.location.pathname === "/widgets" ||
+			state.location.pathname === "/sections" ||
+			state.location.pathname === "/taxonomies" ||
+			state.location.pathname === "/users",
 	});
 	useEffect(() => {
 		if (session.status !== "authed") return;
@@ -327,7 +335,11 @@ function Shell() {
 
 function CollectionPage() {
 	const { collection } = useParams({ from: "/c/$collection" });
-	return collection === "pages" ? <PagesPage /> : <EntriesPage />;
+	return collection === "pages" || collection === "posts" ? (
+		<ContentWorkspacePage collection={collection} />
+	) : (
+		<EntriesPage />
+	);
 }
 
 const root = createRootRoute({ component: Shell });

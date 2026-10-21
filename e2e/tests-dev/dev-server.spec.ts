@@ -59,6 +59,6 @@ test("owner invites an author and the invitee accepts the emailed link", async (
 
 	await page.reload();
 	await expect(page.getByText("No pending invitations.")).toBeVisible();
-	await expect(page.getByRole("cell", { name: "dev-author@example.com" })).toBeVisible();
+	await expect(page.getByRole("button", { name: "Open dev-author@example.com" })).toBeVisible();
 	await inviteeContext.close();
 });

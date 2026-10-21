@@ -45,7 +45,8 @@ describe("UsersPage", () => {
 		stub(() => ({ users: [{ id: "1", email: "a@x.test", name: "A", role: "admin" }], total: 1 }));
 		render(<UsersPage />);
 		expect(await screen.findByText("a@x.test")).toBeInTheDocument();
-		expect(screen.getByRole("combobox", { name: "Role for a@x.test" })).toHaveTextContent("admin");
+		await userEvent.setup().click(screen.getByRole("button", { name: "Open a@x.test" }));
+		expect(await screen.findByRole("combobox", { name: "Role for a@x.test" })).toHaveTextContent("admin");
 	});
 
 	it("creates a user with the chosen role and reloads the list", async () => {
@@ -73,7 +74,9 @@ describe("UsersPage", () => {
 	it("changes a role through set-role", async () => {
 		const calls = stub(() => ({ users: [{ id: "7", email: "v@x.test", name: "V", role: "viewer" }], total: 1 }));
 		render(<UsersPage />);
-		await chooseSelect(userEvent.setup(), "Role for v@x.test", "editor");
+		const user = userEvent.setup();
+		await user.click(await screen.findByRole("button", { name: "Open v@x.test" }));
+		await chooseSelect(user, "Role for v@x.test", "editor");
 		await waitFor(() => expect(calls.some((c) => c.url.endsWith("/admin/set-role"))).toBe(true));
 		expect(JSON.parse(calls.find((c) => c.url.endsWith("/admin/set-role"))!.init!.body as string)).toEqual({
 			userId: "7",
@@ -144,7 +147,8 @@ describe("UsersPage", () => {
 		}));
 		render(<UsersPage />);
 		await screen.findByText("v@x.test");
-		await userEvent.setup().click(screen.getByRole("button", { name: "Manage" }));
+		await userEvent.setup().click(screen.getByRole("button", { name: "Open v@x.test" }));
+		await userEvent.setup().click(await screen.findByRole("button", { name: "Manage" }));
 
 		expect(await screen.findByText("Active sessions")).toBeInTheDocument();
 		expect(await screen.findByText("Chrome on Linux")).toBeInTheDocument();
@@ -165,7 +169,8 @@ describe("UsersPage", () => {
 		}));
 		render(<UsersPage />);
 		await screen.findByText("v@x.test");
-		await userEvent.setup().click(screen.getByRole("button", { name: "Manage" }));
+		await userEvent.setup().click(screen.getByRole("button", { name: "Open v@x.test" }));
+		await userEvent.setup().click(await screen.findByRole("button", { name: "Manage" }));
 		await screen.findByText("Active sessions");
 
 		await userEvent.setup().type(screen.getByLabelText("New password"), "correct-horse-battery");
@@ -186,7 +191,8 @@ describe("UsersPage", () => {
 		const confirm = vi.spyOn(window, "confirm").mockReturnValue(true);
 		render(<UsersPage />);
 		await screen.findByText("v@x.test");
-		await userEvent.setup().click(screen.getByRole("button", { name: "Manage" }));
+		await userEvent.setup().click(screen.getByRole("button", { name: "Open v@x.test" }));
+		await userEvent.setup().click(await screen.findByRole("button", { name: "Manage" }));
 		await screen.findByText("Active sessions");
 		await userEvent.setup().click(screen.getByRole("button", { name: "Reset 2FA" }));
 		await waitFor(() => expect(calls.some((c) => c.url.endsWith("/reset-two-factor"))).toBe(true));
