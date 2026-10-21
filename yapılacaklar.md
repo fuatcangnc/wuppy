@@ -58,7 +58,7 @@ işaretlenir. Kaynaklar:
 - [x] Admin icon sprite'ı sürümlendi: `/icons.svg?v=<content-hash>`, `no-cache` + ETag ile sunuluyor; yeni eklenen ikonlar eski immutable cache yüzünden kaybolmuyor.
 - [x] Menus ekranı yenilendi: shadcn Accordion tabanlı kaynak seçimi (Pages/Posts/Categories/Custom Links), native HTML5 drag-and-drop sıralama, alt menü yönetimi, klavye/erişilebilir kontroller, menü oluşturma/silme ve Manage Locations sekmesi. Menü yokken ayrı bir boş sayfa gösterilmez; editör kabuğu ve create linki doğrudan gelir.
 - [x] Dark tema global yüzeyleri standartlaştırıldı: `#09090B` taban, `#101011` kart/panel, `#151517` yükseltilmiş kontrol; dashboard dış kabuğu `rounded-xl`, kartları 10px radius (`rounded-lg`) ile hizalandı.
-- [x] Media Library üç panelli görünüme taşındı: arama/filtre listesi, varyantlı büyük önizleme, inline metadata paneli, dosya URL'si, kullanım listesi ve aksiyonlar. **Convert Webp** istemci tarafında Canvas `toBlob()` ile dönüştürüp yeni WebP dosyası yükler.
+- [x] Media Library tam genişlikte üç panelli görünüme taşındı: arama/filtre listesi, varyantlı büyük önizleme, inline metadata paneli, dosya URL'si, kullanım listesi ve aksiyonlar. **Convert Webp** istemci tarafında Canvas `toBlob()` ile dönüştürüp yeni WebP dosyası yükler.
 
 **Doğrulama:** `pnpm check` → 355 core + 141 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 13/13.
 

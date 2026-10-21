@@ -22,7 +22,7 @@ import {
 	UserRound,
 	Webhook,
 } from "@react-zero-ui/icon-sprite";
-import { createRootRoute, createRoute, createRouter, Link, Outlet } from "@tanstack/react-router";
+import { createRootRoute, createRoute, createRouter, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { LoginPage } from "../components/auth/LoginPage.tsx";
 import { SecurityPage } from "../components/auth/SecurityPage.tsx";
@@ -98,6 +98,7 @@ function Shell() {
 	const collections = useStore($collections);
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [pluginLinks, setPluginLinks] = useState<Array<{ id: string; index: number; label: string }>>([]);
+	const fullWidth = useRouterState({ select: (state) => state.location.pathname }) === "/media";
 	useEffect(() => {
 		if (session.status !== "authed") return;
 		void loadCollections();
@@ -303,7 +304,7 @@ function Shell() {
 							</Button>
 						</div>
 					</header>
-					<main className="mx-auto max-w-7xl p-4 lg:p-6">
+					<main className={fullWidth ? "w-full p-2 lg:p-3" : "mx-auto max-w-7xl p-4 lg:p-6"}>
 						<Outlet />
 					</main>
 				</div>

@@ -1,4 +1,6 @@
 import {
+	ChevronLeft,
+	ChevronRight,
 	Copy,
 	ExternalLink,
 	FileImage,
@@ -32,18 +34,7 @@ import {
 	updateMedia,
 	type MediaItem,
 } from "../../stores/content.ts";
-import {
-	Button,
-	Checkbox,
-	DataPagination,
-	Dialog,
-	EmptyState,
-	Input,
-	PageHeader,
-	Select,
-	Textarea,
-	toast,
-} from "../../ui/index.tsx";
+import { Button, Checkbox, Dialog, EmptyState, Input, Select, Textarea, toast } from "../../ui/index.tsx";
 import { filterMedia } from "./filter.ts";
 import { fresh, MediaDetailDialog, sizeLabel, type Usage } from "./MediaDetailDialog.tsx";
 import { UploadDialog } from "./UploadDialog.tsx";
@@ -147,6 +138,11 @@ export function MediaPage() {
 	const visible = useMemo(
 		() => filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize),
 		[filtered, currentPage, pageSize],
+	);
+	const rangeStart = filtered.length === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+	const rangeEnd = Math.min(currentPage * pageSize, filtered.length);
+	const pageButtons = Array.from({ length: pageCount }, (_, index) => index + 1).filter(
+		(number) => pageCount <= 5 || number === 1 || number === pageCount || Math.abs(number - currentPage) <= 1,
 	);
 	useEffect(() => {
 		if (page > pageCount) setPage(pageCount);
@@ -281,7 +277,7 @@ export function MediaPage() {
 
 	return (
 		<div
-			className={`grid gap-4 ${dropping ? "rounded-lg outline-dashed outline-2 outline-primary" : ""}`}
+			className={`grid ${dropping ? "rounded-lg outline-dashed outline-2 outline-primary" : ""}`}
 			onDragOver={(event) => {
 				if ([...event.dataTransfer.items].some((item) => item.kind === "file")) {
 					event.preventDefault();
@@ -296,34 +292,49 @@ export function MediaPage() {
 				if (files.length) setPending(files);
 			}}
 		>
-			<PageHeader
-				title="Media Library"
-				description={`${filtered.length === items.length ? items.length : `${filtered.length} of ${items.length}`} files · drop or paste images anywhere on this page`}
-				actions={
-					<>
-						<Button
-							variant="ghost"
-							onClick={() => {
-								if (!confirm("Delete every image that no entry or setting uses? Git history keeps them.")) return;
-								void deleteUnusedMedia()
-									.then((count) => toast(`Removed ${count} unused ${count === 1 ? "file" : "files"}`))
-									.catch((error: Error) => toast(error.message, "error"));
-							}}
-						>
-							Clean up unused
-						</Button>
-						<Button variant="secondary" onClick={() => setFolderDialog(true)}>
-							<Plus size={14} /> Add new folder
-						</Button>
-						<Button variant="secondary" onClick={() => setPending([])}>
-							<Upload size={14} /> Upload media
-						</Button>
-					</>
-				}
-			/>
-
-			<div className="grid min-h-[620px] overflow-hidden rounded-xl border border-border bg-card lg:h-[calc(100vh-13rem)] lg:grid-cols-[310px_minmax(0,1fr)_390px]">
+			<div className="grid min-h-[620px] overflow-hidden rounded-xl border border-border bg-card lg:h-[calc(100vh-5rem)] lg:grid-cols-[310px_minmax(0,1fr)_390px]">
 				<aside className="flex min-h-0 flex-col border-b border-border lg:border-e lg:border-b-0">
+					<div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
+						<div className="grid gap-0.5">
+							<h1 className="text-base font-semibold">Media Library</h1>
+							<p className="text-[11px] text-muted-foreground">
+								{filtered.length === items.length ? items.length : `${filtered.length} of ${items.length}`} files · drop
+								or paste images anywhere on this page
+							</p>
+						</div>
+						<div className="flex items-center gap-1">
+							<div role="group" aria-label="View" className="flex rounded-lg border border-border p-0.5">
+								<Button
+									variant={view === "grid" ? "secondary" : "ghost"}
+									size="icon-sm"
+									aria-label="Grid view"
+									aria-pressed={view === "grid"}
+									onClick={() => setView("grid")}
+								>
+									<LayoutGrid size={13} />
+								</Button>
+								<Button
+									variant={view === "list" ? "secondary" : "ghost"}
+									size="icon-sm"
+									aria-label="List view"
+									aria-pressed={view === "list"}
+									onClick={() => setView("list")}
+								>
+									<List size={13} />
+								</Button>
+							</div>
+							<Button
+								variant="secondary"
+								size="icon-sm"
+								className="rounded-full bg-foreground text-background hover:bg-foreground/90"
+								aria-label="Upload media"
+								title="Upload media"
+								onClick={() => setPending([])}
+							>
+								<Upload size={15} />
+							</Button>
+						</div>
+					</div>
 					<div className="grid gap-2 border-b border-border p-3">
 						<div className="relative">
 							<Search
@@ -342,7 +353,7 @@ export function MediaPage() {
 							<button
 								type="button"
 								onClick={() => setType("")}
-								className={`rounded-md px-2.5 py-1 text-xs ${type === "" ? "bg-secondary text-foreground" : "text-muted-foreground hover:bg-muted/60"}`}
+								className={`rounded-md px-2.5 py-1 text-xs ${type === "" ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted/60"}`}
 							>
 								All
 							</button>
@@ -351,21 +362,37 @@ export function MediaPage() {
 									key={ext}
 									type="button"
 									onClick={() => setType(ext)}
-									className={`rounded-md px-2.5 py-1 text-xs ${type === ext ? "bg-secondary text-foreground" : "text-muted-foreground hover:bg-muted/60"}`}
+									className={`rounded-md px-2.5 py-1 text-xs ${type === ext ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted/60"}`}
 								>
 									{label}
 								</button>
 							))}
 						</div>
-						<Select aria-label="Folder" value={folder} onChange={(event) => setFolder(event.target.value)}>
-							<option value="all">All folders</option>
-							<option value="">Main library</option>
-							{folders.map((name) => (
-								<option key={name} value={name}>
-									{name}
-								</option>
-							))}
-						</Select>
+						<div className="flex items-center gap-1">
+							<Select
+								aria-label="Folder"
+								className="flex-1"
+								value={folder}
+								onChange={(event) => setFolder(event.target.value)}
+							>
+								<option value="all">All folders</option>
+								<option value="">Main library</option>
+								{folders.map((name) => (
+									<option key={name} value={name}>
+										{name}
+									</option>
+								))}
+							</Select>
+							<Button
+								size="icon-sm"
+								variant="secondary"
+								aria-label="Add new folder"
+								title="Add new folder"
+								onClick={() => setFolderDialog(true)}
+							>
+								<Plus size={14} />
+							</Button>
+						</div>
 						<details className="rounded-md border border-border">
 							<summary className="cursor-pointer px-2 py-1.5 text-xs text-muted-foreground">Date filters</summary>
 							<div className="grid gap-2 border-t border-border p-2">
@@ -474,30 +501,8 @@ export function MediaPage() {
 						) : null}
 					</div>
 
-					<div className="flex items-center justify-between border-b border-border px-3 py-2 text-xs text-muted-foreground">
-						<span>
-							{filtered.length} {filtered.length === 1 ? "item" : "items"}
-						</span>
-						<div role="group" aria-label="View" className="flex rounded-md border border-border p-0.5">
-							<Button
-								variant={view === "grid" ? "secondary" : "ghost"}
-								size="icon-sm"
-								aria-label="Grid view"
-								aria-pressed={view === "grid"}
-								onClick={() => setView("grid")}
-							>
-								<LayoutGrid size={13} />
-							</Button>
-							<Button
-								variant={view === "list" ? "secondary" : "ghost"}
-								size="icon-sm"
-								aria-label="List view"
-								aria-pressed={view === "list"}
-								onClick={() => setView("list")}
-							>
-								<List size={13} />
-							</Button>
-						</div>
+					<div className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
+						{filtered.length} {filtered.length === 1 ? "item" : "items"}
 					</div>
 
 					<div className="min-h-0 flex-1 overflow-y-auto p-2">
@@ -531,6 +536,86 @@ export function MediaPage() {
 							</ul>
 						)}
 					</div>
+					<div className="grid gap-1 border-t border-border px-3 py-2 text-[11px] text-muted-foreground">
+						<div className="flex items-center justify-between gap-2">
+							<span className="tabular-nums">
+								Showing {rangeStart}-{rangeEnd} of {filtered.length}
+							</span>
+							<button
+								type="button"
+								className="hover:text-foreground hover:underline"
+								onClick={() => {
+									if (!confirm("Delete every image that no entry or setting uses? Git history keeps them.")) return;
+									void deleteUnusedMedia()
+										.then((count) => toast(`Removed ${count} unused ${count === 1 ? "file" : "files"}`))
+										.catch((error: Error) => toast(error.message, "error"));
+								}}
+							>
+								Clean up unused
+							</button>
+						</div>
+						<div className="flex items-center justify-between gap-1">
+							<div className="flex items-center gap-0.5" aria-label="Pagination">
+								<Button
+									variant="ghost"
+									size="icon-sm"
+									aria-label="Previous page"
+									disabled={currentPage <= 1}
+									onClick={() => {
+										setPage(currentPage - 1);
+										setPicked([]);
+									}}
+								>
+									<ChevronLeft size={13} />
+								</Button>
+								{pageButtons.map((number) => (
+									<Button
+										key={number}
+										variant={number === currentPage ? "secondary" : "ghost"}
+										size="icon-sm"
+										className="size-7 text-[11px]"
+										aria-label={`Page ${number}`}
+										aria-current={number === currentPage ? "page" : undefined}
+										onClick={() => {
+											setPage(number);
+											setPicked([]);
+										}}
+									>
+										{number}
+									</Button>
+								))}
+								<Button
+									variant="ghost"
+									size="icon-sm"
+									aria-label="Next page"
+									disabled={currentPage >= pageCount}
+									onClick={() => {
+										setPage(currentPage + 1);
+										setPicked([]);
+									}}
+								>
+									<ChevronRight size={13} />
+								</Button>
+							</div>
+							<Select
+								aria-label="Per page"
+								size="sm"
+								className="w-[4.25rem]"
+								value={String(pageSize)}
+								onChange={(event) => {
+									setPageSize(Number(event.target.value));
+									setPage(1);
+									setPicked([]);
+								}}
+							>
+								{[10, 20, 50, 100].map((size) => (
+									<option key={size} value={size}>
+										{size}
+									</option>
+								))}
+							</Select>
+						</div>
+					</div>
 				</aside>
 
 				<section className="flex min-h-0 flex-col border-b border-border lg:border-b-0">
@@ -544,7 +629,7 @@ export function MediaPage() {
 										onClick={() => setVariant(entry.id)}
 										className={`shrink-0 rounded-md px-2.5 py-1.5 text-xs font-medium transition ${
 											variant === entry.id
-												? "bg-secondary text-foreground shadow-sm"
+												? "bg-foreground text-background shadow-sm"
 												: "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
 										}`}
 									>
@@ -747,26 +832,6 @@ export function MediaPage() {
 					)}
 				</aside>
 			</div>
-
-			{filtered.length > 0 && (
-				<div className="rounded-lg border border-border bg-card">
-					<DataPagination
-						page={currentPage}
-						pageCount={pageCount}
-						pageSize={pageSize}
-						total={filtered.length}
-						onPageChange={(nextPage) => {
-							setPage(nextPage);
-							setPicked([]);
-						}}
-						onPageSizeChange={(nextSize) => {
-							setPageSize(nextSize);
-							setPage(1);
-							setPicked([]);
-						}}
-					/>
-				</div>
-			)}
 
 			<Dialog
 				open={folderDialog}
