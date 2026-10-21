@@ -357,8 +357,8 @@ export function MediaPage() {
 				if (files.length) setPending(files);
 			}}
 		>
-			<div className="grid min-h-[620px] overflow-hidden rounded-xl border border-border bg-card min-[1400px]:h-[calc(100vh-5rem)] min-[1400px]:grid-cols-[300px_minmax(0,1fr)_360px]">
-				<aside className="flex min-h-0 flex-col border-b border-border min-[1400px]:border-e min-[1400px]:border-b-0">
+			<div className="grid gap-4 min-[1400px]:h-[calc(100vh-5rem)] min-[1400px]:grid-cols-[300px_minmax(0,1fr)]">
+				<aside className="flex min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-card">
 					<div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
 						<div className="grid gap-0.5">
 							<h1 className="text-base font-semibold">Media Library</h1>
@@ -742,246 +742,248 @@ export function MediaPage() {
 					</div>
 				</aside>
 
-				<section className="flex min-h-0 flex-col border-b border-border min-[1400px]:border-b-0">
-					{current ? (
-						<>
-							<div className="flex items-center gap-1 overflow-x-auto border-b border-border px-3 py-2">
-								{VARIANTS.map((entry) => (
-									<button
-										key={entry.id}
-										type="button"
-										onClick={() => setVariant(entry.id)}
-										className={`shrink-0 rounded-md px-2.5 py-1.5 text-xs font-medium transition ${
-											variant === entry.id
-												? "bg-tab text-foreground shadow-sm"
-												: "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
-										}`}
-									>
-										{entry.label}
-									</button>
-								))}
-							</div>
-							<div className="grid min-h-0 flex-1 place-items-center overflow-auto bg-background p-6">
-								<img
-									src={variantSrc(current, variant)}
-									alt={current.alt ?? ""}
-									data-testid="media-preview"
-									className="max-h-full max-w-full object-contain"
-									onLoad={(event) => {
-										const { naturalWidth: width, naturalHeight: height } = event.currentTarget;
-										if (width > 0 && height > 0) setMeasured({ width, height });
-									}}
-								/>
-							</div>
-							<div className="flex flex-wrap items-center justify-between gap-2 border-t border-border px-4 py-2 text-xs text-muted-foreground">
-								<span>
-									{sizing?.width && sizing?.height ? `${sizing.width} × ${sizing.height}` : "—"} ·{" "}
-									{sizeLabel(current.size)} · {formatOf(current)}
-								</span>
-								<span>Uploaded {new Date(current.modified).toLocaleDateString()}</span>
-							</div>
-						</>
-					) : (
-						<div className="grid flex-1 place-items-center p-6">
-							<div
-								onDragOver={(event) => {
-									event.preventDefault();
-									event.stopPropagation();
-									setDropping(true);
-								}}
-								onDragLeave={(event) => {
-									event.stopPropagation();
-									setDropping(false);
-								}}
-								onDrop={(event) => {
-									event.preventDefault();
-									event.stopPropagation();
-									setDropping(false);
-									const files = imagesFrom(event.dataTransfer);
-									if (files.length) setPending(files);
-								}}
-								className={`mx-auto grid w-full max-w-md justify-items-center gap-3 rounded-2xl border-2 border-dashed px-8 py-12 text-center transition ${
-									dropping ? "border-primary bg-primary/5" : "border-border bg-secondary/25"
-								}`}
-							>
-								<span className="grid size-16 place-items-center rounded-full border border-border bg-background text-muted-foreground">
-									<Upload size={24} />
-								</span>
-								<div className="grid gap-1">
-									<p className="font-medium">Drop images here</p>
-									<p className="text-sm text-muted-foreground">or choose files from your computer</p>
-								</div>
-								<Button variant="secondary" onClick={() => setPending([])}>
-									<Upload size={14} /> Browse files
-								</Button>
-							</div>
-						</div>
-					)}
-				</section>
-
-				<aside className="min-h-0 overflow-y-auto">
-					{current ? (
-						<div data-testid="media-inspector" className="grid gap-5 p-5">
-							<div className="grid gap-3">
-								<Input
-									label="Title"
-									value={draft.title}
-									onChange={(event) => setDraft({ ...draft, title: event.target.value })}
-								/>
-								<Textarea
-									label="Alt text"
-									rows={2}
-									placeholder="Describe the image for screen readers"
-									value={draft.alt}
-									onChange={(event) => setDraft({ ...draft, alt: event.target.value })}
-								/>
-								<Textarea
-									label="Caption"
-									rows={2}
-									placeholder="Add a caption"
-									value={draft.caption}
-									onChange={(event) => setDraft({ ...draft, caption: event.target.value })}
-								/>
-								<Input
-									label="Credit"
-									placeholder="Photographer or source"
-									value={draft.credit}
-									onChange={(event) => setDraft({ ...draft, credit: event.target.value })}
-								/>
-								<Select
-									label="Location"
-									value={draft.folder}
-									onChange={(event) => setDraft({ ...draft, folder: event.target.value })}
-								>
-									<option value="">Main library</option>
-									{folders.map((name) => (
-										<option key={name} value={name}>
-											{name}
-										</option>
+				<div className="grid min-h-[520px] gap-0 overflow-hidden rounded-xl border border-border bg-card min-[1400px]:min-h-0 min-[1400px]:grid-cols-[minmax(0,1fr)_360px]">
+					<section className="flex min-h-0 flex-col border-b border-border min-[1400px]:border-e min-[1400px]:border-b-0">
+						{current ? (
+							<>
+								<div className="flex items-center gap-1 overflow-x-auto border-b border-border px-3 py-2">
+									{VARIANTS.map((entry) => (
+										<button
+											key={entry.id}
+											type="button"
+											onClick={() => setVariant(entry.id)}
+											className={`shrink-0 rounded-md px-2.5 py-1.5 text-xs font-medium transition ${
+												variant === entry.id
+													? "bg-tab text-foreground shadow-sm"
+													: "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+											}`}
+										>
+											{entry.label}
+										</button>
 									))}
-								</Select>
-								<Button onClick={() => void saveDetails()} disabled={!dirty}>
-									Save
-								</Button>
-							</div>
-
-							<div className="grid gap-1.5">
-								<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">File URL</p>
-								<div className="flex items-center gap-1 rounded-md border border-border px-2 py-1">
-									<input
-										readOnly
-										aria-label="File URL"
-										value={new URL(current.url, window.location.origin).href}
-										className="min-w-0 flex-1 truncate bg-transparent py-1 font-mono text-xs outline-none"
+								</div>
+								<div className="grid min-h-0 flex-1 place-items-center overflow-auto bg-background p-6">
+									<img
+										src={variantSrc(current, variant)}
+										alt={current.alt ?? ""}
+										data-testid="media-preview"
+										className="max-h-full max-w-full object-contain"
+										onLoad={(event) => {
+											const { naturalWidth: width, naturalHeight: height } = event.currentTarget;
+											if (width > 0 && height > 0) setMeasured({ width, height });
+										}}
 									/>
-									<Button
-										variant="ghost"
-										size="icon-sm"
-										aria-label="Copy URL"
-										onClick={() =>
-											void navigator.clipboard
-												.writeText(new URL(current.url, window.location.origin).href)
-												.then(() => toast("URL copied"))
-										}
-									>
-										<Copy size={14} />
+								</div>
+								<div className="flex flex-wrap items-center justify-between gap-2 border-t border-border px-4 py-2 text-xs text-muted-foreground">
+									<span>
+										{sizing?.width && sizing?.height ? `${sizing.width} × ${sizing.height}` : "—"} ·{" "}
+										{sizeLabel(current.size)} · {formatOf(current)}
+									</span>
+									<span>Uploaded {new Date(current.modified).toLocaleDateString()}</span>
+								</div>
+							</>
+						) : (
+							<div className="grid flex-1 place-items-center p-6">
+								<div
+									onDragOver={(event) => {
+										event.preventDefault();
+										event.stopPropagation();
+										setDropping(true);
+									}}
+									onDragLeave={(event) => {
+										event.stopPropagation();
+										setDropping(false);
+									}}
+									onDrop={(event) => {
+										event.preventDefault();
+										event.stopPropagation();
+										setDropping(false);
+										const files = imagesFrom(event.dataTransfer);
+										if (files.length) setPending(files);
+									}}
+									className={`mx-auto grid w-full max-w-md justify-items-center gap-3 rounded-2xl border-2 border-dashed px-8 py-12 text-center transition ${
+										dropping ? "border-primary bg-primary/5" : "border-border bg-secondary/25"
+									}`}
+								>
+									<span className="grid size-16 place-items-center rounded-full border border-border bg-background text-muted-foreground">
+										<Upload size={24} />
+									</span>
+									<div className="grid gap-1">
+										<p className="font-medium">Drop images here</p>
+										<p className="text-sm text-muted-foreground">or choose files from your computer</p>
+									</div>
+									<Button variant="secondary" onClick={() => setPending([])}>
+										<Upload size={14} /> Browse files
 									</Button>
 								</div>
 							</div>
+						)}
+					</section>
 
-							<div className="grid gap-2">
-								<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">Actions</p>
-								<Button
-									variant="secondary"
-									className="justify-start"
-									disabled={!canConvert || converting}
-									onClick={() => void convertCurrent()}
-								>
-									<WandSparkles size={14} /> {converting ? "Converting…" : "Convert Webp"}
-								</Button>
-								<Button variant="secondary" className="justify-start" onClick={() => replaceInput.current?.click()}>
-									<Repeat2 size={14} /> Replace image
-								</Button>
-								<input
-									ref={replaceInput}
-									type="file"
-									accept="image/png,image/jpeg,image/gif,image/webp"
-									className="sr-only"
-									tabIndex={-1}
-									aria-label="Replace image file"
-									onChange={(event) => {
-										const file = event.currentTarget.files?.[0];
-										event.currentTarget.value = "";
-										if (file) void replaceCurrent(file);
-									}}
-								/>
-								<Button variant="secondary" className="justify-start" onClick={() => setEditUrl(current.url)}>
-									<Pencil size={14} /> Edit image
-								</Button>
-								<Button variant="destructive" className="justify-start" onClick={() => void removeCurrent()}>
-									<Trash2 size={14} /> Delete
-								</Button>
-							</div>
-
-							<div className="grid gap-2">
-								<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">Details</p>
-								<dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-xs">
-									<dt className="text-muted-foreground">Filename</dt>
-									<dd className="truncate text-end" title={filenameOf(current)}>
-										{filenameOf(current)}
-									</dd>
-									<dt className="text-muted-foreground">Modified</dt>
-									<dd className="text-end">{new Date(current.modified).toLocaleDateString()}</dd>
-									<dt className="text-muted-foreground">File size</dt>
-									<dd className="text-end">{sizeLabel(current.size)}</dd>
-									<dt className="flex items-center gap-1 text-muted-foreground">
-										<Ruler size={12} /> Dimensions
-									</dt>
-									<dd className="text-end">
-										{sizing?.width && sizing?.height ? `${sizing.width} × ${sizing.height}` : "—"}
-									</dd>
-									<dt className="flex items-center gap-1 text-muted-foreground">
-										<HardDrive size={12} /> Format
-									</dt>
-									<dd className="text-end">{formatOf(current)}</dd>
-								</dl>
-							</div>
-
-							<div className="grid gap-2">
-								<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">Used in</p>
-								{usageLoading ? (
-									<p role="status" className="text-xs text-muted-foreground">
-										Checking where this file is used…
-									</p>
-								) : usage.length === 0 ? (
-									<p className="rounded-lg border border-dashed p-3 text-xs text-muted-foreground">
-										Not referenced by any entry.
-									</p>
-								) : (
-									<ul className="grid gap-2">
-										{usage.map((entry) => (
-											<li key={`${entry.collection}:${entry.slug}`}>
-												<a
-													href={`/admin/e/${entry.collection}/${entry.slug}`}
-													className="flex items-center gap-2 rounded-lg border p-2 text-xs hover:bg-muted/60"
-												>
-													<span className="grid size-7 shrink-0 place-items-center rounded-md bg-muted text-muted-foreground">
-														<FileImage size={13} />
-													</span>
-													<span className="min-w-0 flex-1">
-														<span className="block truncate font-medium">{entry.title}</span>
-														<span className="capitalize text-muted-foreground">{entry.collection}</span>
-													</span>
-													<ExternalLink size={13} />
-												</a>
-											</li>
+					<aside className="min-h-0 overflow-y-auto">
+						{current ? (
+							<div data-testid="media-inspector" className="grid gap-5 p-5">
+								<div className="grid gap-3">
+									<Input
+										label="Title"
+										value={draft.title}
+										onChange={(event) => setDraft({ ...draft, title: event.target.value })}
+									/>
+									<Textarea
+										label="Alt text"
+										rows={2}
+										placeholder="Describe the image for screen readers"
+										value={draft.alt}
+										onChange={(event) => setDraft({ ...draft, alt: event.target.value })}
+									/>
+									<Textarea
+										label="Caption"
+										rows={2}
+										placeholder="Add a caption"
+										value={draft.caption}
+										onChange={(event) => setDraft({ ...draft, caption: event.target.value })}
+									/>
+									<Input
+										label="Credit"
+										placeholder="Photographer or source"
+										value={draft.credit}
+										onChange={(event) => setDraft({ ...draft, credit: event.target.value })}
+									/>
+									<Select
+										label="Location"
+										value={draft.folder}
+										onChange={(event) => setDraft({ ...draft, folder: event.target.value })}
+									>
+										<option value="">Main library</option>
+										{folders.map((name) => (
+											<option key={name} value={name}>
+												{name}
+											</option>
 										))}
-									</ul>
-								)}
+									</Select>
+									<Button onClick={() => void saveDetails()} disabled={!dirty}>
+										Save
+									</Button>
+								</div>
+
+								<div className="grid gap-1.5">
+									<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">File URL</p>
+									<div className="flex items-center gap-1 rounded-md border border-border px-2 py-1">
+										<input
+											readOnly
+											aria-label="File URL"
+											value={new URL(current.url, window.location.origin).href}
+											className="min-w-0 flex-1 truncate bg-transparent py-1 font-mono text-xs outline-none"
+										/>
+										<Button
+											variant="ghost"
+											size="icon-sm"
+											aria-label="Copy URL"
+											onClick={() =>
+												void navigator.clipboard
+													.writeText(new URL(current.url, window.location.origin).href)
+													.then(() => toast("URL copied"))
+											}
+										>
+											<Copy size={14} />
+										</Button>
+									</div>
+								</div>
+
+								<div className="grid gap-2">
+									<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">Actions</p>
+									<Button
+										variant="secondary"
+										className="justify-start"
+										disabled={!canConvert || converting}
+										onClick={() => void convertCurrent()}
+									>
+										<WandSparkles size={14} /> {converting ? "Converting…" : "Convert Webp"}
+									</Button>
+									<Button variant="secondary" className="justify-start" onClick={() => replaceInput.current?.click()}>
+										<Repeat2 size={14} /> Replace image
+									</Button>
+									<input
+										ref={replaceInput}
+										type="file"
+										accept="image/png,image/jpeg,image/gif,image/webp"
+										className="sr-only"
+										tabIndex={-1}
+										aria-label="Replace image file"
+										onChange={(event) => {
+											const file = event.currentTarget.files?.[0];
+											event.currentTarget.value = "";
+											if (file) void replaceCurrent(file);
+										}}
+									/>
+									<Button variant="secondary" className="justify-start" onClick={() => setEditUrl(current.url)}>
+										<Pencil size={14} /> Edit image
+									</Button>
+									<Button variant="destructive" className="justify-start" onClick={() => void removeCurrent()}>
+										<Trash2 size={14} /> Delete
+									</Button>
+								</div>
+
+								<div className="grid gap-2">
+									<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">Details</p>
+									<dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-xs">
+										<dt className="text-muted-foreground">Filename</dt>
+										<dd className="truncate text-end" title={filenameOf(current)}>
+											{filenameOf(current)}
+										</dd>
+										<dt className="text-muted-foreground">Modified</dt>
+										<dd className="text-end">{new Date(current.modified).toLocaleDateString()}</dd>
+										<dt className="text-muted-foreground">File size</dt>
+										<dd className="text-end">{sizeLabel(current.size)}</dd>
+										<dt className="flex items-center gap-1 text-muted-foreground">
+											<Ruler size={12} /> Dimensions
+										</dt>
+										<dd className="text-end">
+											{sizing?.width && sizing?.height ? `${sizing.width} × ${sizing.height}` : "—"}
+										</dd>
+										<dt className="flex items-center gap-1 text-muted-foreground">
+											<HardDrive size={12} /> Format
+										</dt>
+										<dd className="text-end">{formatOf(current)}</dd>
+									</dl>
+								</div>
+
+								<div className="grid gap-2">
+									<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">Used in</p>
+									{usageLoading ? (
+										<p role="status" className="text-xs text-muted-foreground">
+											Checking where this file is used…
+										</p>
+									) : usage.length === 0 ? (
+										<p className="rounded-lg border border-dashed p-3 text-xs text-muted-foreground">
+											Not referenced by any entry.
+										</p>
+									) : (
+										<ul className="grid gap-2">
+											{usage.map((entry) => (
+												<li key={`${entry.collection}:${entry.slug}`}>
+													<a
+														href={`/admin/e/${entry.collection}/${entry.slug}`}
+														className="flex items-center gap-2 rounded-lg border p-2 text-xs hover:bg-muted/60"
+													>
+														<span className="grid size-7 shrink-0 place-items-center rounded-md bg-muted text-muted-foreground">
+															<FileImage size={13} />
+														</span>
+														<span className="min-w-0 flex-1">
+															<span className="block truncate font-medium">{entry.title}</span>
+															<span className="capitalize text-muted-foreground">{entry.collection}</span>
+														</span>
+														<ExternalLink size={13} />
+													</a>
+												</li>
+											))}
+										</ul>
+									)}
+								</div>
 							</div>
-						</div>
-					) : null}
-				</aside>
+						) : null}
+					</aside>
+				</div>
 			</div>
 
 			<Dialog
