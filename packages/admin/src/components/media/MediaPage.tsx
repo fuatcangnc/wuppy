@@ -292,8 +292,8 @@ export function MediaPage() {
 				if (files.length) setPending(files);
 			}}
 		>
-			<div className="grid min-h-[620px] overflow-hidden rounded-xl border border-border bg-card lg:h-[calc(100vh-5rem)] lg:grid-cols-[310px_minmax(0,1fr)_390px]">
-				<aside className="flex min-h-0 flex-col border-b border-border lg:border-e lg:border-b-0">
+			<div className="grid min-h-[620px] overflow-hidden rounded-xl border border-border bg-card min-[1400px]:h-[calc(100vh-5rem)] min-[1400px]:grid-cols-[300px_minmax(0,1fr)_360px]">
+				<aside className="flex min-h-0 flex-col border-b border-border min-[1400px]:border-e min-[1400px]:border-b-0">
 					<div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
 						<div className="grid gap-0.5">
 							<h1 className="text-base font-semibold">Media Library</h1>
@@ -617,7 +617,7 @@ export function MediaPage() {
 					</div>
 				</aside>
 
-				<section className="flex min-h-0 flex-col border-b border-border lg:border-b-0">
+				<section className="flex min-h-0 flex-col border-b border-border min-[1400px]:border-b-0">
 					{current ? (
 						<>
 							<div className="flex items-center gap-1 overflow-x-auto border-b border-border px-3 py-2">
@@ -658,15 +658,38 @@ export function MediaPage() {
 						</>
 					) : (
 						<div className="grid flex-1 place-items-center p-6">
-							<button
-								type="button"
-								aria-label="Upload a file"
-								title="Upload a file"
-								onClick={() => setPending([])}
-								className="grid size-20 place-items-center rounded-2xl border border-border bg-secondary text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+							<div
+								onDragOver={(event) => {
+									event.preventDefault();
+									event.stopPropagation();
+									setDropping(true);
+								}}
+								onDragLeave={(event) => {
+									event.stopPropagation();
+									setDropping(false);
+								}}
+								onDrop={(event) => {
+									event.preventDefault();
+									event.stopPropagation();
+									setDropping(false);
+									const files = imagesFrom(event.dataTransfer);
+									if (files.length) setPending(files);
+								}}
+								className={`mx-auto grid w-full max-w-md justify-items-center gap-3 rounded-2xl border-2 border-dashed px-8 py-12 text-center transition ${
+									dropping ? "border-primary bg-primary/5" : "border-border bg-secondary/25"
+								}`}
 							>
-								<Upload size={28} />
-							</button>
+								<span className="grid size-16 place-items-center rounded-full border border-border bg-background text-muted-foreground">
+									<Upload size={24} />
+								</span>
+								<div className="grid gap-1">
+									<p className="font-medium">Drop images here</p>
+									<p className="text-sm text-muted-foreground">or choose files from your computer</p>
+								</div>
+								<Button variant="secondary" onClick={() => setPending([])}>
+									<Upload size={14} /> Browse files
+								</Button>
+							</div>
 						</div>
 					)}
 				</section>
