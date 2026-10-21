@@ -225,6 +225,7 @@ describe("MediaPage uploads and bulk actions", () => {
 		setup([]);
 		render(<MediaPage />);
 		const user = userEvent.setup();
+		await user.click(await screen.findByRole("button", { name: "Show filters" }));
 		await waitFor(() => expect(screen.getByRole("combobox", { name: "Folder" })).toBeInTheDocument());
 		await chooseSelect(user, "Folder", "farm");
 		await user.click(await screen.findByRole("button", { name: /Upload media/ }));

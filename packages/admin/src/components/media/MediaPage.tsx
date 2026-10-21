@@ -14,6 +14,7 @@ import {
 	Repeat2,
 	Ruler,
 	Search,
+	SlidersHorizontal,
 	Trash2,
 	Upload,
 	WandSparkles,
@@ -96,6 +97,7 @@ export function MediaPage() {
 	const [dateRange, setDateRange] = useState<DateRange>("all");
 	const [unusedOnly, setUnusedOnly] = useState(false);
 	const [unusedUrls, setUnusedUrls] = useState<Set<string> | null>(null);
+	const [filtersOpen, setFiltersOpen] = useState(false);
 	const [view, setView] = useState<"grid" | "list">("list");
 	const [page, setPage] = useState(1);
 	const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
@@ -411,7 +413,7 @@ export function MediaPage() {
 								placeholder="Search media…"
 							/>
 						</div>
-						<div className="flex flex-wrap gap-0.5">
+						<div className="flex items-center gap-0.5 overflow-x-auto">
 							{[
 								{ id: "", label: "All" },
 								{ id: "image", label: "Images" },
@@ -421,107 +423,121 @@ export function MediaPage() {
 									key={entry.id}
 									type="button"
 									onClick={() => setType(entry.id)}
-									className={`rounded-md px-2 py-1 text-[11px] ${type === entry.id ? "bg-tab text-foreground" : "text-muted-foreground hover:bg-muted/60"}`}
+									className={`shrink-0 rounded-md px-1.5 py-1 text-[10px] ${type === entry.id ? "bg-tab text-foreground" : "text-muted-foreground hover:bg-muted/60"}`}
 								>
 									{entry.label}
 								</button>
 							))}
-						</div>
-						<div className="flex items-center gap-1">
-							<Select
-								aria-label="Folder"
-								className="flex-1"
-								value={folder}
-								onChange={(event) => setFolder(event.target.value)}
-							>
-								<option value="all">All folders</option>
-								<option value="">Main library</option>
-								{folders.map((name) => (
-									<option key={name} value={name}>
-										{name}
-									</option>
-								))}
-							</Select>
 							<Button
+								variant={filtersOpen ? "secondary" : "ghost"}
 								size="icon-sm"
-								variant="secondary"
-								aria-label="Add new folder"
-								title="Add new folder"
-								onClick={() => setFolderDialog(true)}
+								className="ms-auto shrink-0"
+								aria-label={filtersOpen ? "Hide filters" : "Show filters"}
+								aria-pressed={filtersOpen}
+								title={filtersOpen ? "Hide filters" : "Show filters"}
+								onClick={() => setFiltersOpen((open) => !open)}
 							>
-								<Plus size={14} />
+								<SlidersHorizontal size={14} />
 							</Button>
 						</div>
 
-						<div className="grid gap-1.5">
-							<p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">Sort by</p>
-							<div className="grid grid-cols-2 gap-1">
-								{SORTS.map((entry) => {
-									const icon =
-										entry.id === "date" ? (
-											<Calendar size={13} />
-										) : entry.id === "name" ? (
-											<FileText size={13} />
-										) : entry.id === "size" ? (
-											<HardDrive size={13} />
-										) : (
-											<FileImage size={13} />
-										);
-									return (
-										<Button
-											key={entry.id}
-											variant="secondary"
-											size="sm"
-											className={`justify-start ${sort === entry.id ? "bg-tab text-foreground ring-1 ring-primary/50" : "text-muted-foreground"}`}
-											aria-pressed={sort === entry.id}
-											onClick={() => setSort(entry.id)}
-										>
-											{icon} {entry.label}
-										</Button>
-									);
-								})}
-							</div>
-						</div>
-
-						<div className="grid gap-1.5">
-							<p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">Date range</p>
-							<div className="grid grid-cols-3 gap-1">
-								{RANGES.map((entry) => (
+						{filtersOpen && (
+							<div className="grid gap-2">
+								<div className="flex items-center gap-1">
+									<Select
+										aria-label="Folder"
+										size="sm"
+										className="flex-1 text-xs"
+										value={folder}
+										onChange={(event) => setFolder(event.target.value)}
+									>
+										<option value="all">All folders</option>
+										<option value="">Main library</option>
+										{folders.map((name) => (
+											<option key={name} value={name}>
+												{name}
+											</option>
+										))}
+									</Select>
 									<Button
-										key={entry.id}
+										size="icon-sm"
+										variant="secondary"
+										aria-label="Add new folder"
+										title="Add new folder"
+										onClick={() => setFolderDialog(true)}
+									>
+										<Plus size={14} />
+									</Button>
+								</div>
+
+								<div className="grid gap-1">
+									<p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Sort by</p>
+									<div className="grid grid-cols-2 gap-1">
+										{SORTS.map((entry) => {
+											const icon =
+												entry.id === "date" ? (
+													<Calendar size={12} />
+												) : entry.id === "name" ? (
+													<FileText size={12} />
+												) : entry.id === "size" ? (
+													<HardDrive size={12} />
+												) : (
+													<FileImage size={12} />
+												);
+											return (
+												<Button
+													key={entry.id}
+													variant="secondary"
+													size="sm"
+													className={`justify-start text-[11px] ${sort === entry.id ? "bg-tab text-foreground ring-1 ring-primary/50" : "text-muted-foreground"}`}
+													aria-pressed={sort === entry.id}
+													onClick={() => setSort(entry.id)}
+												>
+													{icon} {entry.label}
+												</Button>
+											);
+										})}
+									</div>
+								</div>
+
+								<div className="grid gap-1">
+									<p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Date range</p>
+									<div className="grid grid-cols-3 gap-1">
+										{RANGES.map((entry) => (
+											<Button
+												key={entry.id}
+												variant="secondary"
+												size="sm"
+												className={`text-[11px] ${dateRange === entry.id ? "bg-tab text-foreground ring-1 ring-primary/50" : "text-muted-foreground"}`}
+												aria-pressed={dateRange === entry.id}
+												onClick={() => setDateRange(entry.id)}
+											>
+												{entry.label}
+											</Button>
+										))}
+									</div>
+								</div>
+
+								<div className="grid gap-1">
+									<p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Tags</p>
+									<p className="text-[11px] text-muted-foreground">No tags available.</p>
+								</div>
+
+								<div className="grid gap-1">
+									<p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Options</p>
+									<Button
 										variant="secondary"
 										size="sm"
-										className={`${dateRange === entry.id ? "bg-tab text-foreground ring-1 ring-primary/50" : "text-muted-foreground"}`}
-										aria-pressed={dateRange === entry.id}
-										onClick={() => setDateRange(entry.id)}
+										className={`justify-start text-[11px] ${unusedOnly ? "bg-tab text-foreground" : "text-muted-foreground"}`}
+										aria-pressed={unusedOnly}
+										onClick={() => setUnusedOnly((value) => !value)}
 									>
-										{entry.label}
+										<FileImage size={12} /> Unused Media Only
 									</Button>
-								))}
-							</div>
-						</div>
+								</div>
 
-						<div className="grid gap-1">
-							<p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">Tags</p>
-							<p className="text-xs text-muted-foreground">No tags available.</p>
-						</div>
-
-						<div className="grid gap-1">
-							<p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">Options</p>
-							<Button
-								variant="secondary"
-								size="sm"
-								className={`justify-start ${unusedOnly ? "bg-tab text-foreground" : "text-muted-foreground"}`}
-								aria-pressed={unusedOnly}
-								onClick={() => setUnusedOnly((value) => !value)}
-							>
-								<FileImage size={13} /> Unused Media Only
-							</Button>
-						</div>
-						{(folder !== "all" && folder !== "") || picked.length > 0 ? (
-							<div className="flex flex-wrap items-center gap-1">
 								{folder !== "all" && folder !== "" && (
-									<>
+									<div className="flex flex-wrap items-center gap-1">
 										<Button
 											variant="ghost"
 											size="sm"
@@ -549,64 +565,64 @@ export function MediaPage() {
 										>
 											Delete folder
 										</Button>
-									</>
-								)}
-								{picked.length > 0 && (
-									<div className="flex flex-wrap items-center gap-1" role="toolbar" aria-label="Bulk actions">
-										<span className="text-xs">{picked.length} selected</span>
-										<Select
-											aria-label="Move selected to folder"
-											value=""
-											onChange={(event) => {
-												const target = event.target.value;
-												if (!target) return;
-												void Promise.all(
-													picked.map((url) => updateMedia(url, { folder: target === "__none" ? "" : target })),
-												).then(() => {
-													setPicked([]);
-													toast("Moved");
-												});
-											}}
-										>
-											<option value="">Move to…</option>
-											<option value="__none">Main library</option>
-											{folders.map((name) => (
-												<option key={name} value={name}>
-													{name}
-												</option>
-											))}
-										</Select>
-										<Button
-											size="sm"
-											variant="destructive"
-											onClick={() => {
-												if (!confirm(`Delete ${picked.length} files? Files that entries still use are kept.`)) return;
-												void (async () => {
-													let kept = 0;
-													for (const url of picked) {
-														try {
-															await deleteMedia(url);
-														} catch (error) {
-															if (error instanceof ApiError && error.code === "IN_USE") kept++;
-															else toast((error as Error).message, "error");
-														}
-													}
-													setPicked([]);
-													toast(kept ? `${kept} in use, kept` : "Deleted");
-												})();
-											}}
-										>
-											Delete
-										</Button>
-										<Button size="sm" variant="ghost" onClick={() => setPicked([])}>
-											Clear
-										</Button>
 									</div>
 								)}
 							</div>
-						) : null}
-					</div>
+						)}
 
+						{picked.length > 0 && (
+							<div className="flex flex-wrap items-center gap-1" role="toolbar" aria-label="Bulk actions">
+								<span className="text-xs">{picked.length} selected</span>
+								<Select
+									aria-label="Move selected to folder"
+									value=""
+									onChange={(event) => {
+										const target = event.target.value;
+										if (!target) return;
+										void Promise.all(
+											picked.map((url) => updateMedia(url, { folder: target === "__none" ? "" : target })),
+										).then(() => {
+											setPicked([]);
+											toast("Moved");
+										});
+									}}
+								>
+									<option value="">Move to…</option>
+									<option value="__none">Main library</option>
+									{folders.map((name) => (
+										<option key={name} value={name}>
+											{name}
+										</option>
+									))}
+								</Select>
+								<Button
+									size="sm"
+									variant="destructive"
+									onClick={() => {
+										if (!confirm(`Delete ${picked.length} files? Files that entries still use are kept.`)) return;
+										void (async () => {
+											let kept = 0;
+											for (const url of picked) {
+												try {
+													await deleteMedia(url);
+												} catch (error) {
+													if (error instanceof ApiError && error.code === "IN_USE") kept++;
+													else toast((error as Error).message, "error");
+												}
+											}
+											setPicked([]);
+											toast(kept ? `${kept} in use, kept` : "Deleted");
+										})();
+									}}
+								>
+									Delete
+								</Button>
+								<Button size="sm" variant="ghost" onClick={() => setPicked([])}>
+									Clear
+								</Button>
+							</div>
+						)}
+					</div>
 					<div className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
 						{filtered.length} {filtered.length === 1 ? "item" : "items"}
 					</div>

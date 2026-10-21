@@ -63,34 +63,34 @@
 
 .dark {
 	color-scheme: dark;
-	/* Three global surfaces: page, panel/card and elevated control. */
-	--background: #09090b;
+	/* Base surface, raised panels and controls. */
+	--background: #101011;
 	--foreground: #fafafa;
-	--card: #101011;
+	--card: #171719;
 	--card-foreground: #fafafa;
-	--popover: #101011;
+	--popover: #171719;
 	--popover-foreground: #fafafa;
 	--primary: #005aeb;
 	--primary-foreground: #f2f8ff;
-	--secondary: #151517;
+	--secondary: #1d1d20;
 	--secondary-foreground: #fafafa;
 	--tab: #2b2b2e;
-	--muted: #151517;
+	--muted: #1d1d20;
 	--muted-foreground: #a1a1aa;
-	--accent: #151517;
+	--accent: #1f1f22;
 	--accent-foreground: #fafafa;
 	--destructive: #ea3c3f;
 	--destructive-foreground: #ffffff;
 	--success: #4ade80;
 	--warning: #fbbf24;
-	--border: rgb(255 255 255 / 0.08);
+	--border: rgb(255 255 255 / 0.1);
 	--input: rgb(255 255 255 / 0.14);
 	--ring: #52525b;
 
-	--sidebar: #09090b;
+	--sidebar: #101011;
 	--sidebar-foreground: #fafafa;
-	--sidebar-accent: #151517;
-	--sidebar-border: rgb(255 255 255 / 0.08);
+	--sidebar-accent: #171719;
+	--sidebar-border: rgb(255 255 255 / 0.1);
 	--sidebar-primary: #005aeb;
 }
 

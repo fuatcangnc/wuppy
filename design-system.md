@@ -28,15 +28,15 @@ Kumo mavisi. Light `oklch(0.5772 0.2324 260)`, dark `oklch(0.5195 0.2324 260)`.
 
 | Token | Light | Dark | Kullanım |
 | --- | --- | --- | --- |
-| `--background` | `#ffffff` | `#09090b` | Sayfa zemini (global taban) |
+| `--background` | `#ffffff` | `#101011` | Ana zemin |
 | `--foreground` | `#0a0a0a` | `#fafafa` | Ana metin |
-| `--card` / `--popover` | `#ffffff` | `#101011` | Kart, dialog, menü (ikinci yüzey) |
+| `--card` / `--popover` | `#ffffff` | `#171719` | Kart, dialog, menü (üst yüzey) |
 | `--card-foreground` | `#0a0a0a` | `#fafafa` | Kart metni |
-| `--muted` | `#f5f5f5` | `#151517` | Sessiz zemin, skeleton, kod bloğu (üçüncü yüzey) |
+| `--muted` | `#f5f5f5` | `#1d1d20` | Sessiz zemin, skeleton, kod bloğu |
 | `--muted-foreground` | `#737373` | `#a1a1aa` | İkincil metin, açıklama |
-| `--accent` | `#f5f5f5` | `#151517` | Hover, aktif menü satırı |
+| `--accent` | `#f5f5f5` | `#1f1f22` | Hover, aktif menü satırı |
 | `--accent-foreground` | `#171717` | `#fafafa` | Accent üzerindeki metin |
-| `--secondary` | `#f4f4f5` | `#151517` | İkincil yüzey |
+| `--secondary` | `#f4f4f5` | `#1d1d20` | İkincil yüzey |
 | `--secondary-foreground` | `#18181b` | `#fafafa` | İkincil metin |
 | `--tab` | `#e4e4e7` | `#2b2b2e` | Aktif tab/segment zemini (global) |
 
@@ -45,7 +45,7 @@ Kumo mavisi. Light `oklch(0.5772 0.2324 260)`, dark `oklch(0.5195 0.2324 260)`.
 | Token | Light | Dark | Kullanım |
 | --- | --- | --- | --- |
 | `--destructive` | `#df2225` | `#ea3c3f` | Silme, hata, yıkıcı eylem |
-| `--border` | `#e5e5e5` | `white / 8%` | Ayraç, kart kenarı |
+| `--border` | `#e5e5e5` | `white / 10%` | Ayraç, kart kenarı |
 | `--input` | `#e5e5e5` | `white / 14%` | Form kenarı |
 | `--ring` | `#a1a1a1` | `#52525b` | Odak halkası |
 
@@ -53,10 +53,10 @@ Kumo mavisi. Light `oklch(0.5772 0.2324 260)`, dark `oklch(0.5195 0.2324 260)`.
 
 | Token | Light | Dark |
 | --- | --- | --- |
-| `--sidebar` | `#fafafa` | `#09090b` |
+| `--sidebar` | `#fafafa` | `#101011` |
 | `--sidebar-foreground` | `#0a0a0a` | `#fafafa` |
-| `--sidebar-accent` | `#f5f5f5` | `#151517` |
-| `--sidebar-border` | `#e5e5e5` | `white / 8%` |
+| `--sidebar-accent` | `#f5f5f5` | `#171719` |
+| `--sidebar-border` | `#e5e5e5` | `white / 10%` |
 | `--sidebar-primary` | `#056dff` | `#005aeb` |
 
 ### Grafikler
