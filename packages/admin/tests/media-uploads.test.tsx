@@ -255,6 +255,20 @@ describe("MediaPage uploads and bulk actions", () => {
 		await waitFor(() => expect(calls.filter((c) => c.startsWith("DELETE /api/media?")).length).toBe(2));
 	});
 
+	it("bulk edits metadata without opening the single-item details dialog", async () => {
+		const calls = setup([item("a.png"), item("b.png")]);
+		render(<MediaPage />);
+		const user = userEvent.setup();
+		await user.click(await screen.findByLabelText("Select a.png"));
+		await user.click(screen.getByLabelText("Select b.png"));
+		await user.click(screen.getByRole("button", { name: "Edit selected" }));
+		expect(screen.queryByRole("dialog", { name: "Media details" })).toBeNull();
+		const dialog = within(screen.getByRole("dialog", { name: "Bulk Edit Media" }));
+		await user.type(dialog.getByLabelText("Alt Text"), "Shared alt");
+		await user.click(dialog.getByRole("button", { name: "Save Changes" }));
+		await waitFor(() => expect(calls.filter((c) => c.startsWith("PATCH /api/media/meta")).length).toBe(2));
+	});
+
 	it("paginates the media grid and keeps the footer controls", async () => {
 		setup(Array.from({ length: 40 }, (_, i) => item(`p${String(i).padStart(2, "0")}.png`)));
 		render(<MediaPage />);

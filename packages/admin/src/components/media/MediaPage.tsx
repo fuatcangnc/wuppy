@@ -113,6 +113,9 @@ export function MediaPage() {
 	const [usage, setUsage] = useState<Usage[]>([]);
 	const [usageLoading, setUsageLoading] = useState(false);
 	const [converting, setConverting] = useState(false);
+	const [bulkOpen, setBulkOpen] = useState(false);
+	const [bulkSaving, setBulkSaving] = useState(false);
+	const [bulk, setBulk] = useState({ title: "", alt: "", caption: "", credit: "" });
 	const [editUrl, setEditUrl] = useState<string | null>(null);
 	const [pending, setPending] = useState<File[] | null>(null);
 	const [dropping, setDropping] = useState(false);
@@ -344,6 +347,37 @@ export function MediaPage() {
 		);
 	};
 
+	const openBulkEdit = () => {
+		setBulk({ title: "", alt: "", caption: "", credit: "" });
+		setBulkOpen(true);
+	};
+
+	const saveBulkEdit = async () => {
+		const patch = Object.fromEntries(
+			Object.entries(bulk)
+				.map(([key, value]): [string, string] => [key, value.trim()])
+				.filter(([, value]) => value.length > 0),
+		) as Partial<MediaItem>;
+		if (Object.keys(patch).length === 0) {
+			setBulkOpen(false);
+			return;
+		}
+		setBulkSaving(true);
+		try {
+			for (const url of picked) {
+				await apiData("PATCH", `/api/media/meta?url=${encodeURIComponent(url)}`, patch);
+			}
+			await loadMedia();
+			toast(`Updated ${picked.length} ${picked.length === 1 ? "item" : "items"}`);
+			setPicked([]);
+			setBulkOpen(false);
+		} catch (error) {
+			toast((error as Error).message, "error");
+		} finally {
+			setBulkSaving(false);
+		}
+	};
+
 	const row = (item: MediaItem) => {
 		const selectedRow = selected === item.url;
 		return (
@@ -356,7 +390,7 @@ export function MediaPage() {
 					<button
 						type="button"
 						aria-label={`Open ${item.title || item.name}`}
-						onClick={() => selectMedia(item.url)}
+						onClick={() => (picked.length > 0 ? togglePicked(item.url) : selectMedia(item.url))}
 						className="flex min-w-0 flex-1 items-center gap-2 text-left"
 					>
 						<img src={fresh(item)} alt="" className="size-10 shrink-0 rounded-md object-cover" loading="lazy" />
@@ -1016,8 +1050,8 @@ export function MediaPage() {
 						size="icon-sm"
 						variant="ghost"
 						aria-label="Edit selected"
-						title="Edit selected"
-						onClick={() => picked[0] && setEditUrl(picked[0])}
+						title="Bulk edit selected"
+						onClick={openBulkEdit}
 					>
 						<Pencil size={14} />
 					</Button>
@@ -1060,6 +1094,56 @@ export function MediaPage() {
 					</Button>
 				</div>
 			)}
+
+			<Dialog
+				open={bulkOpen}
+				title="Bulk Edit Media"
+				description={`Editing ${picked.length} ${picked.length === 1 ? "item" : "items"}. Leave fields empty to keep existing values.`}
+				size="medium"
+				onClose={() => setBulkOpen(false)}
+				footer={
+					<>
+						<Button variant="secondary" onClick={() => setBulkOpen(false)}>
+							Cancel
+						</Button>
+						<Button
+							disabled={bulkSaving || Object.values(bulk).every((value) => !value.trim())}
+							onClick={() => void saveBulkEdit()}
+						>
+							Save Changes
+						</Button>
+					</>
+				}
+			>
+				<div className="grid gap-4 p-6">
+					<Input
+						label="Title"
+						placeholder="Leave empty to keep existing"
+						value={bulk.title}
+						onChange={(event) => setBulk({ ...bulk, title: event.target.value })}
+					/>
+					<Input
+						label="Alt Text"
+						placeholder="Leave empty to keep existing"
+						value={bulk.alt}
+						onChange={(event) => setBulk({ ...bulk, alt: event.target.value })}
+					/>
+					<Textarea
+						label="Caption"
+						rows={3}
+						placeholder="Leave empty to keep existing"
+						value={bulk.caption}
+						onChange={(event) => setBulk({ ...bulk, caption: event.target.value })}
+					/>
+					<Textarea
+						label="Credit"
+						rows={3}
+						placeholder="Leave empty to keep existing"
+						value={bulk.credit}
+						onChange={(event) => setBulk({ ...bulk, credit: event.target.value })}
+					/>
+				</div>
+			</Dialog>
 
 			<Dialog
 				open={folderDialog}

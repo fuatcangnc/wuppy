@@ -34,7 +34,7 @@ işaretlenir. Kaynaklar:
 | Admin modülleri | 🟡 Kısmi | Content Types, Byline Schema, Users+token, Plugins, Import, Settings, Themes |
 | SEO / i18n / önizleme | 🟡 Kısmi | SEO çekirdek + panel, i18n tablo, dev preview; visual editing yok |
 | Eklenti sistemi | 🟡 Kısmi | WASM sandbox + capability + yüklü/hata UI; SDK/registry/marketplace yok |
-| Test / kabul | 🟡 Kısmi | 13 E2E, modül smoke, 355 core + 141 admin + 37 auth testi; görsel regresyon/a11y yok |
+| Test / kabul | 🟡 Kısmi | 13 E2E, modül smoke, 355 core + 142 admin + 37 auth testi; görsel regresyon/a11y yok |
 | Yayın / operasyon | 🟡 Kısmi | Build + dist smoke; CI, Docker, npm publish, docs sitesi yok |
 
 **Öncelik dalgaları**
@@ -58,11 +58,11 @@ işaretlenir. Kaynaklar:
 - [x] Admin icon sprite'ı sürümlendi: `/icons.svg?v=<content-hash>`, `no-cache` + ETag ile sunuluyor; yeni eklenen ikonlar eski immutable cache yüzünden kaybolmuyor.
 - [x] Menus ekranı yenilendi: shadcn Accordion tabanlı kaynak seçimi (Pages/Posts/Categories/Custom Links), native HTML5 drag-and-drop sıralama, alt menü yönetimi, klavye/erişilebilir kontroller, menü oluşturma/silme ve Manage Locations sekmesi. Menü yokken ayrı bir boş sayfa gösterilmez; editör kabuğu ve create linki doğrudan gelir.
 - [x] Dark tema yüzeyleri standartlaştırıldı: `#101011` ana zemin, `#171719` kart/panel ve `#1d1d20` kontroller; iki seviye arasında belirgin renk/kenarlık ayrımı var. Dashboard dış kabuğu `rounded-xl`, kartları 10px radius (`rounded-lg`) ile hizalandı.
-- [x] Media Library tam genişlikte üç panelli görünüme taşındı: arama/filtre listesi, varyantlı büyük önizleme, inline metadata paneli, dosya URL'si, kullanım listesi ve aksiyonlar. **Convert Webp** istemci tarafında Canvas `toBlob()` ile dönüştürüp yeni WebP dosyası yükler. Sol kütüphane (#171719) ile önizleme/detay alanı (#101011) aralarında boşluk olan iki ayrı rounded karttır. Dosya seçilmediğinde sağ panelde metin yerine ortada dropzone gösterilir; dar ekranlarda paneller alt alta, 1400px üzerinde üç sütun kullanılır. Sol panelde beyaz yuvarlak upload butonu, tek ikonlu grid/list geçişi, full-width/search alanı, seçimde alt ortada preview/edit/download/copy/delete/clear toolbar’ı, tür, sıralama (tarih/ad/boyut/tür), tarih aralığı ve “Unused Media Only” filtreleri bulunur; ayrıntılı filtre paneli varsayılan olarak kapalıdır ve WebP’nin sağındaki toggle ile açılır. Aktif tab/segment zemini global olarak `#2B2B2E`.
+- [x] Media Library tam genişlikte üç panelli görünüme taşındı: arama/filtre listesi, varyantlı büyük önizleme, inline metadata paneli, dosya URL'si, kullanım listesi ve aksiyonlar. **Convert Webp** istemci tarafında Canvas `toBlob()` ile dönüştürüp yeni WebP dosyası yükler. Sol kütüphane (#171719) ile önizleme/detay alanı (#101011) aralarında boşluk olan iki ayrı rounded karttır. Dosya seçilmediğinde sağ panelde metin yerine ortada dropzone gösterilir; dar ekranlarda paneller alt alta, 1400px üzerinde üç sütun kullanılır. Sol panelde beyaz yuvarlak upload butonu, tek ikonlu grid/list geçişi, full-width/search alanı, seçimde alt ortada preview/edit/download/copy/delete/clear toolbar’ı ve çoklu seçimde ayrı “Bulk Edit Media” dialog’u, tür, sıralama (tarih/ad/boyut/tür), tarih aralığı ve “Unused Media Only” filtreleri bulunur; ayrıntılı filtre paneli varsayılan olarak kapalıdır ve WebP’nin sağındaki toggle ile açılır. Aktif tab/segment zemini global olarak `#2B2B2E`.
 - [x] Admin fontu Inter yerine sistem stack'ine geçirildi: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif`.
 - [x] Yuvarlatılmış kabuk için sidebar sağ ve topbar alt border'ları kaldırıldı; paneller kendi radius/kenarlıklarıyla ayrışıyor.
 
-**Doğrulama:** `pnpm check` → 355 core + 141 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 13/13.
+**Doğrulama:** `pnpm check` → 355 core + 142 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 13/13.
 
 **Sıradaki işler (öncelik sırasıyla)**
 
