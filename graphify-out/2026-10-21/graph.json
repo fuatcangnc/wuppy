@@ -368,6 +368,19 @@
       "source_location": "L10"
     },
     {
+      "id": "packages_core_src_content_validation_path_unsafepatherror",
+      "label": "UnsafePathError",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 119,
+      "community_name": "plugin-manager.test.ts",
+      "file_type": "code",
+      "norm_label": "unsafepatherror",
+      "source_file": "packages/core/src/content/validation/path.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "packages_core_src_plugins_manager_managerdeps",
       "label": "ManagerDeps",
       "_callable": true,
@@ -745,6 +758,19 @@
       "source_location": "L3"
     },
     {
+      "id": "packages_git_src_adapters_real_git_realgit",
+      "label": "RealGit",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "realgit",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L20"
+    },
+    {
       "id": "packages_core_src_plugins_host_loadedplugin",
       "label": "LoadedPlugin",
       "_callable": true,
@@ -914,6 +940,19 @@
       "source_location": "L54"
     },
     {
+      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent",
+      "label": "FilesystemContent",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "filesystemcontent",
+      "source_file": "packages/core/src/content/adapters/filesystem.ts",
+      "source_location": "L11"
+    },
+    {
       "id": "packages_core_src_content_types_impact_schemaimpact",
       "label": "schemaImpact",
       "_callable": true,
@@ -992,6 +1031,19 @@
       "source_location": "L8"
     },
     {
+      "id": "packages_core_tests_integration_permission_matrix_test_permission",
+      "label": "Permission",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "permission",
+      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
+      "source_location": "L94"
+    },
+    {
       "id": "packages_git_src_adapters_noop_git_noopgit",
       "label": "NoopGit",
       "_callable": true,
@@ -1003,19 +1055,6 @@
       "norm_label": "noopgit",
       "source_file": "packages/git/src/adapters/noop-git.ts",
       "source_location": "L4"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_realgit",
-      "label": "RealGit",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": "realgit",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L20"
     },
     {
       "id": "packages_git_src_types_commit",
@@ -1551,32 +1590,6 @@
       "source_location": "L43"
     },
     {
-      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent",
-      "label": "FilesystemContent",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "filesystemcontent",
-      "source_file": "packages/core/src/content/adapters/filesystem.ts",
-      "source_location": "L11"
-    },
-    {
-      "id": "packages_core_src_content_validation_path_unsafepatherror",
-      "label": "UnsafePathError",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "unsafepatherror",
-      "source_file": "packages/core/src/content/validation/path.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "packages_core_src_transfer_backups_backupinfo",
       "label": "BackupInfo",
       "_callable": true,
@@ -1785,71 +1798,6 @@
       "source_location": "L52"
     },
     {
-      "id": "packages_core_src_api_app_user",
-      "label": "User",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "user",
-      "source_file": "packages/core/src/api/app.ts",
-      "source_location": "L45"
-    },
-    {
-      "id": "packages_core_src_comments_index_comment",
-      "label": "Comment",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "comment",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L7"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentservice",
-      "label": "CommentService",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "commentservice",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L53"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentstatus",
-      "label": "CommentStatus",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "commentstatus",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L5"
-    },
-    {
-      "id": "packages_core_src_comments_index_row",
-      "label": "Row",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "row",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L23"
-    },
-    {
       "id": "packages_core_src_data_store_jsonstore",
       "label": "JsonStore",
       "_callable": true,
@@ -2032,6 +1980,19 @@
       "source_location": "L71"
     },
     {
+      "id": "packages_core_src_redirects_index_redirectrule",
+      "label": "RedirectRule",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "media/index.ts",
+      "file_type": "code",
+      "norm_label": "redirectrule",
+      "source_file": "packages/core/src/redirects/index.ts",
+      "source_location": "L69"
+    },
+    {
       "id": "packages_core_src_redirects_service_notfoundrow",
       "label": "NotFoundRow",
       "_callable": true,
@@ -2056,19 +2017,6 @@
       "norm_label": "redirectservice",
       "source_file": "packages/core/src/redirects/service.ts",
       "source_location": "L11"
-    },
-    {
-      "id": "packages_core_tests_integration_permission_matrix_test_permission",
-      "label": "Permission",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "permission",
-      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
-      "source_location": "L94"
     },
     {
       "id": "packages_admin_src_components_bylines_bylinespage_schemafield",
@@ -2133,7 +2081,7 @@
       "file_type": "code",
       "norm_label": "register",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L381"
+      "source_location": "L382"
     },
     {
       "id": "packages_core_src_api_app_apptype",
@@ -2461,19 +2409,6 @@
       "source_location": "L44"
     },
     {
-      "id": "packages_core_src_audit_index_auditlog",
-      "label": "AuditLog",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "server.ts",
-      "file_type": "code",
-      "norm_label": "auditlog",
-      "source_file": "packages/core/src/audit/index.ts",
-      "source_location": "L7"
-    },
-    {
       "id": "packages_core_src_config_session_sessionpolicy",
       "label": "SessionPolicy",
       "_callable": true,
@@ -2485,6 +2420,19 @@
       "norm_label": "sessionpolicy",
       "source_file": "packages/core/src/config/session.ts",
       "source_location": "L1"
+    },
+    {
+      "id": "packages_core_src_content_autosave_autosave",
+      "label": "Autosave",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "server.ts",
+      "file_type": "code",
+      "norm_label": "autosave",
+      "source_file": "packages/core/src/content/autosave.ts",
+      "source_location": "L5"
     },
     {
       "id": "packages_core_src_content_autosave_autosavestore",
@@ -3007,19 +2955,6 @@
       "source_location": "L7"
     },
     {
-      "id": "packages_core_src_content_autosave_autosave",
-      "label": "Autosave",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "ContentService",
-      "file_type": "code",
-      "norm_label": "autosave",
-      "source_file": "packages/core/src/content/autosave.ts",
-      "source_location": "L5"
-    },
-    {
       "id": "packages_core_src_content_parsers_frontmatter_parseddocument",
       "label": "ParsedDocument",
       "_callable": true,
@@ -3098,6 +3033,84 @@
       "source_location": "L13"
     },
     {
+      "id": "packages_core_src_api_app_user",
+      "label": "User",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "user",
+      "source_file": "packages/core/src/api/app.ts",
+      "source_location": "L45"
+    },
+    {
+      "id": "packages_core_src_audit_index_auditlog",
+      "label": "AuditLog",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "auditlog",
+      "source_file": "packages/core/src/audit/index.ts",
+      "source_location": "L7"
+    },
+    {
+      "id": "packages_core_src_comments_index_comment",
+      "label": "Comment",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "comment",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L7"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice",
+      "label": "CommentService",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "commentservice",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L53"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentstatus",
+      "label": "CommentStatus",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "commentstatus",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "packages_core_src_comments_index_row",
+      "label": "Row",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "row",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L23"
+    },
+    {
       "id": "packages_core_src_config_index_wuppyconfig",
       "label": "WuppyConfig",
       "_callable": true,
@@ -3122,19 +3135,6 @@
       "norm_label": "wuppyuserconfig",
       "source_file": "packages/core/src/config/index.ts",
       "source_location": "L44"
-    },
-    {
-      "id": "packages_core_src_redirects_index_redirectrule",
-      "label": "RedirectRule",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 81,
-      "community_name": "seo/index.ts",
-      "file_type": "code",
-      "norm_label": "redirectrule",
-      "source_file": "packages/core/src/redirects/index.ts",
-      "source_location": "L69"
     },
     {
       "id": "packages_core_src_seo_index_feeditem",
@@ -3394,7 +3394,7 @@
       "file_type": "code",
       "norm_label": "variant",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L60"
+      "source_location": "L51"
     },
     {
       "id": "packages_admin_src_stores_content_collectioninfo",
@@ -4743,16 +4743,16 @@
       "source_location": "L12"
     },
     {
-      "id": "packages_core_src_plugins_loader_filedigest",
-      "label": "fileDigest()",
+      "id": "packages_core_src_content_validation_path_assertsafeslug",
+      "label": "assertSafeSlug()",
       "_callable": true,
       "_origin": "ast",
       "community": 119,
       "community_name": "plugin-manager.test.ts",
       "file_type": "code",
-      "norm_label": "filedigest()",
-      "source_file": "packages/core/src/plugins/loader.ts",
-      "source_location": "L19"
+      "norm_label": "assertsafeslug()",
+      "source_file": "packages/core/src/content/validation/path.ts",
+      "source_location": "L6"
     },
     {
       "id": "packages_core_src_plugins_registry_defaultfetch",
@@ -5451,18 +5451,6 @@
       "source_location": "L103"
     },
     {
-      "id": "packages_plugin_types_src_index_resolvesettings",
-      "label": "resolveSettings()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 13,
-      "community_name": "PluginManager",
-      "file_type": "code",
-      "norm_label": "resolvesettings()",
-      "source_file": "packages/plugin-types/src/index.ts",
-      "source_location": "L94"
-    },
-    {
       "id": "packages_auth_src_config_index_createmigratedauth",
       "label": "createMigratedAuth()",
       "_callable": true,
@@ -5523,6 +5511,186 @@
       "source_location": "L8"
     },
     {
+      "id": "packages_core_tests_integration_media_api_test_app",
+      "label": "app()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "app()",
+      "source_file": "packages/core/tests/integration/media-api.test.ts",
+      "source_location": "L24"
+    },
+    {
+      "id": "packages_core_tests_integration_media_api_test_upload",
+      "label": "upload()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "upload()",
+      "source_file": "packages/core/tests/integration/media-api.test.ts",
+      "source_location": "L35"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_assertrepopath",
+      "label": "assertRepoPath()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "assertrepopath()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L14"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_assertsha",
+      "label": "assertSha()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "assertsha()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_realgit_commit",
+      "label": ".commit()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": ".commit()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L61"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_realgit_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L21"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_realgit_diff",
+      "label": ".diff()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": ".diff()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L87"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_realgit_ensure",
+      "label": ".ensure()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": ".ensure()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L30"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_realgit_git",
+      "label": ".git()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": ".git()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L41"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_realgit_history",
+      "label": ".history()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": ".history()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L70"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_realgit_init",
+      "label": ".init()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": ".init()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L23"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_realgit_open",
+      "label": ".open()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": ".open()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L37"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_realgit_revert",
+      "label": ".revert()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": ".revert()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L101"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_realgit_show",
+      "label": ".show()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": ".show()",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L92"
+    },
+    {
+      "id": "packages_git_tests_integration_git_adapters_real_git_test_write",
+      "label": "write()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "write()",
+      "source_file": "packages/git/tests/integration/git-adapters-real-git.test.ts",
+      "source_location": "L15"
+    },
+    {
       "id": "packages_core_src_plugins_host_loadedplugin_dispatch",
       "label": ".dispatch()",
       "_callable": true,
@@ -5547,6 +5715,42 @@
       "source_location": "L38"
     },
     {
+      "id": "packages_core_src_plugins_loader_filedigest",
+      "label": "fileDigest()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 145,
+      "community_name": "loader.ts",
+      "file_type": "code",
+      "norm_label": "filedigest()",
+      "source_file": "packages/core/src/plugins/loader.ts",
+      "source_location": "L19"
+    },
+    {
+      "id": "packages_core_src_plugins_loader_loadplugins",
+      "label": "loadPlugins()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 145,
+      "community_name": "loader.ts",
+      "file_type": "code",
+      "norm_label": "loadplugins()",
+      "source_file": "packages/core/src/plugins/loader.ts",
+      "source_location": "L86"
+    },
+    {
+      "id": "packages_core_src_plugins_loader_pluginset_dispose",
+      "label": ".dispose()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 145,
+      "community_name": "loader.ts",
+      "file_type": "code",
+      "norm_label": ".dispose()",
+      "source_file": "packages/core/src/plugins/loader.ts",
+      "source_location": "L59"
+    },
+    {
       "id": "packages_core_src_plugins_manager_pluginmanager_constructor",
       "label": ".constructor()",
       "_callable": true,
@@ -5559,28 +5763,40 @@
       "source_location": "L44"
     },
     {
-      "id": "packages_core_tests_integration_server_test_ip",
-      "label": "ip()",
+      "id": "packages_core_src_plugins_manager_pluginmanager_dispose",
+      "label": ".dispose()",
       "_callable": true,
       "_origin": "ast",
       "community": 145,
       "community_name": "loader.ts",
       "file_type": "code",
-      "norm_label": "ip()",
-      "source_file": "packages/core/tests/integration/server.test.ts",
-      "source_location": "L23"
+      "norm_label": ".dispose()",
+      "source_file": "packages/core/src/plugins/manager.ts",
+      "source_location": "L243"
     },
     {
-      "id": "packages_core_tests_integration_server_test_signup",
-      "label": "signUp()",
+      "id": "packages_core_tests_integration_plugin_loader_test_deps",
+      "label": "deps()",
       "_callable": true,
       "_origin": "ast",
       "community": 145,
       "community_name": "loader.ts",
       "file_type": "code",
-      "norm_label": "signup()",
-      "source_file": "packages/core/tests/integration/server.test.ts",
-      "source_location": "L26"
+      "norm_label": "deps()",
+      "source_file": "packages/core/tests/integration/plugin-loader.test.ts",
+      "source_location": "L25"
+    },
+    {
+      "id": "packages_core_tests_integration_plugin_loader_test_install",
+      "label": "install()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 145,
+      "community_name": "loader.ts",
+      "file_type": "code",
+      "norm_label": "install()",
+      "source_file": "packages/core/tests/integration/plugin-loader.test.ts",
+      "source_location": "L19"
     },
     {
       "id": "packages_admin_src_components_menus_menuspage_hreffor",
@@ -5715,6 +5931,126 @@
       "source_location": "L119"
     },
     {
+      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_absolutepath",
+      "label": ".absolutePath()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": ".absolutepath()",
+      "source_file": "packages/core/src/content/adapters/filesystem.ts",
+      "source_location": "L23"
+    },
+    {
+      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "packages/core/src/content/adapters/filesystem.ts",
+      "source_location": "L12"
+    },
+    {
+      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_delete",
+      "label": ".delete()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": ".delete()",
+      "source_file": "packages/core/src/content/adapters/filesystem.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_file",
+      "label": ".file()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": ".file()",
+      "source_file": "packages/core/src/content/adapters/filesystem.ts",
+      "source_location": "L27"
+    },
+    {
+      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_get",
+      "label": ".get()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": ".get()",
+      "source_file": "packages/core/src/content/adapters/filesystem.ts",
+      "source_location": "L31"
+    },
+    {
+      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_list",
+      "label": ".list()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": ".list()",
+      "source_file": "packages/core/src/content/adapters/filesystem.ts",
+      "source_location": "L50"
+    },
+    {
+      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_put",
+      "label": ".put()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": ".put()",
+      "source_file": "packages/core/src/content/adapters/filesystem.ts",
+      "source_location": "L40"
+    },
+    {
+      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_relpath",
+      "label": ".relPath()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": ".relpath()",
+      "source_file": "packages/core/src/content/adapters/filesystem.ts",
+      "source_location": "L18"
+    },
+    {
+      "id": "packages_core_src_content_parsers_frontmatter_parsedocument",
+      "label": "parseDocument()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "parsedocument()",
+      "source_file": "packages/core/src/content/parsers/frontmatter.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "packages_core_src_content_parsers_frontmatter_serializedocument",
+      "label": "serializeDocument()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "serializedocument()",
+      "source_file": "packages/core/src/content/parsers/frontmatter.ts",
+      "source_location": "L21"
+    },
+    {
       "id": "packages_core_src_content_service_contentservice_constructor",
       "label": ".constructor()",
       "_callable": true,
@@ -5785,6 +6121,66 @@
       "norm_label": ".constructor()",
       "source_file": "packages/core/src/media/index.ts",
       "source_location": "L62"
+    },
+    {
+      "id": "packages_core_tests_integration_content_adapters_filesystem_test_posts",
+      "label": "posts()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "posts()",
+      "source_file": "packages/core/tests/integration/content-adapters-filesystem.test.ts",
+      "source_location": "L11"
+    },
+    {
+      "id": "packages_core_tests_integration_permission_matrix_test_call",
+      "label": "call()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "call()",
+      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
+      "source_location": "L40"
+    },
+    {
+      "id": "packages_core_tests_integration_permission_matrix_test_isforbidden",
+      "label": "isForbidden()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "isforbidden()",
+      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
+      "source_location": "L50"
+    },
+    {
+      "id": "packages_core_tests_integration_permission_matrix_test_key",
+      "label": "key()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "key()",
+      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
+      "source_location": "L48"
+    },
+    {
+      "id": "packages_core_tests_integration_permission_matrix_test_routes",
+      "label": "routes()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "routes()",
+      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
+      "source_location": "L46"
     },
     {
       "id": "packages_core_tests_unit_content_types_test_make",
@@ -5869,162 +6265,6 @@
       "norm_label": ".show()",
       "source_file": "packages/git/src/adapters/noop-git.ts",
       "source_location": "L14"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_assertrepopath",
-      "label": "assertRepoPath()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": "assertrepopath()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L14"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_assertsha",
-      "label": "assertSha()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": "assertsha()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L10"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_realgit_commit",
-      "label": ".commit()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": ".commit()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L61"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_realgit_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L21"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_realgit_diff",
-      "label": ".diff()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": ".diff()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L87"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_realgit_ensure",
-      "label": ".ensure()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": ".ensure()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L30"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_realgit_git",
-      "label": ".git()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": ".git()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L41"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_realgit_history",
-      "label": ".history()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": ".history()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L70"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_realgit_init",
-      "label": ".init()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": ".init()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L23"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_realgit_open",
-      "label": ".open()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": ".open()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L37"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_realgit_revert",
-      "label": ".revert()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": ".revert()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L101"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_realgit_show",
-      "label": ".show()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": ".show()",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L92"
-    },
-    {
-      "id": "packages_git_tests_integration_git_adapters_real_git_test_write",
-      "label": "write()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": "write()",
-      "source_file": "packages/git/tests/integration/git-adapters-real-git.test.ts",
-      "source_location": "L15"
     },
     {
       "id": "packages_core_src_content_locks_editlocks_acquire",
@@ -6445,6 +6685,30 @@
       "norm_label": "narrowed()",
       "source_file": "packages/auth/tests/public-types.ts",
       "source_location": "L18"
+    },
+    {
+      "id": "packages_core_tests_integration_server_test_ip",
+      "label": "ip()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 191,
+      "community_name": "server.test.ts",
+      "file_type": "code",
+      "norm_label": "ip()",
+      "source_file": "packages/core/tests/integration/server.test.ts",
+      "source_location": "L23"
+    },
+    {
+      "id": "packages_core_tests_integration_server_test_signup",
+      "label": "signUp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 191,
+      "community_name": "server.test.ts",
+      "file_type": "code",
+      "norm_label": "signup()",
+      "source_file": "packages/core/tests/integration/server.test.ts",
+      "source_location": "L26"
     },
     {
       "id": "packages_admin_src_components_calendar_calendarpage_calendarpage",
@@ -7275,150 +7539,6 @@
       "source_location": "L14"
     },
     {
-      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_absolutepath",
-      "label": ".absolutePath()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": ".absolutepath()",
-      "source_file": "packages/core/src/content/adapters/filesystem.ts",
-      "source_location": "L23"
-    },
-    {
-      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "packages/core/src/content/adapters/filesystem.ts",
-      "source_location": "L12"
-    },
-    {
-      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_delete",
-      "label": ".delete()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": ".delete()",
-      "source_file": "packages/core/src/content/adapters/filesystem.ts",
-      "source_location": "L46"
-    },
-    {
-      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_file",
-      "label": ".file()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": ".file()",
-      "source_file": "packages/core/src/content/adapters/filesystem.ts",
-      "source_location": "L27"
-    },
-    {
-      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_get",
-      "label": ".get()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": ".get()",
-      "source_file": "packages/core/src/content/adapters/filesystem.ts",
-      "source_location": "L31"
-    },
-    {
-      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_list",
-      "label": ".list()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": ".list()",
-      "source_file": "packages/core/src/content/adapters/filesystem.ts",
-      "source_location": "L50"
-    },
-    {
-      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_put",
-      "label": ".put()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": ".put()",
-      "source_file": "packages/core/src/content/adapters/filesystem.ts",
-      "source_location": "L40"
-    },
-    {
-      "id": "packages_core_src_content_adapters_filesystem_filesystemcontent_relpath",
-      "label": ".relPath()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": ".relpath()",
-      "source_file": "packages/core/src/content/adapters/filesystem.ts",
-      "source_location": "L18"
-    },
-    {
-      "id": "packages_core_src_content_parsers_frontmatter_parsedocument",
-      "label": "parseDocument()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "parsedocument()",
-      "source_file": "packages/core/src/content/parsers/frontmatter.ts",
-      "source_location": "L10"
-    },
-    {
-      "id": "packages_core_src_content_parsers_frontmatter_serializedocument",
-      "label": "serializeDocument()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "serializedocument()",
-      "source_file": "packages/core/src/content/parsers/frontmatter.ts",
-      "source_location": "L21"
-    },
-    {
-      "id": "packages_core_src_content_validation_path_assertsafeslug",
-      "label": "assertSafeSlug()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "assertsafeslug()",
-      "source_file": "packages/core/src/content/validation/path.ts",
-      "source_location": "L6"
-    },
-    {
-      "id": "packages_core_tests_integration_content_adapters_filesystem_test_posts",
-      "label": "posts()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "posts()",
-      "source_file": "packages/core/tests/integration/content-adapters-filesystem.test.ts",
-      "source_location": "L11"
-    },
-    {
       "id": "packages_core_src_transfer_backups_backupservice_constructor",
       "label": ".constructor()",
       "_callable": true,
@@ -7947,18 +8067,6 @@
       "source_location": "L12"
     },
     {
-      "id": "packages_core_src_plugins_loader_loadplugins",
-      "label": "loadPlugins()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 294,
-      "community_name": "PluginSet",
-      "file_type": "code",
-      "norm_label": "loadplugins()",
-      "source_file": "packages/core/src/plugins/loader.ts",
-      "source_location": "L86"
-    },
-    {
       "id": "packages_core_src_plugins_loader_pluginset_dispatch",
       "label": ".dispatch()",
       "_callable": true,
@@ -7969,18 +8077,6 @@
       "norm_label": ".dispatch()",
       "source_file": "packages/core/src/plugins/loader.ts",
       "source_location": "L52"
-    },
-    {
-      "id": "packages_core_src_plugins_loader_pluginset_dispose",
-      "label": ".dispose()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 294,
-      "community_name": "PluginSet",
-      "file_type": "code",
-      "norm_label": ".dispose()",
-      "source_file": "packages/core/src/plugins/loader.ts",
-      "source_location": "L59"
     },
     {
       "id": "packages_core_src_plugins_loader_pluginset_request",
@@ -8041,42 +8137,6 @@
       "norm_label": ".dispatch()",
       "source_file": "packages/core/src/plugins/manager.ts",
       "source_location": "L99"
-    },
-    {
-      "id": "packages_core_src_plugins_manager_pluginmanager_dispose",
-      "label": ".dispose()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 294,
-      "community_name": "PluginSet",
-      "file_type": "code",
-      "norm_label": ".dispose()",
-      "source_file": "packages/core/src/plugins/manager.ts",
-      "source_location": "L243"
-    },
-    {
-      "id": "packages_core_tests_integration_plugin_loader_test_deps",
-      "label": "deps()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 294,
-      "community_name": "PluginSet",
-      "file_type": "code",
-      "norm_label": "deps()",
-      "source_file": "packages/core/tests/integration/plugin-loader.test.ts",
-      "source_location": "L25"
-    },
-    {
-      "id": "packages_core_tests_integration_plugin_loader_test_install",
-      "label": "install()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 294,
-      "community_name": "PluginSet",
-      "file_type": "code",
-      "norm_label": "install()",
-      "source_file": "packages/core/tests/integration/plugin-loader.test.ts",
-      "source_location": "L19"
     },
     {
       "id": "packages_core_src_astro_admin_admindist",
@@ -8391,136 +8451,16 @@
       "source_location": "L82"
     },
     {
-      "id": "packages_admin_tests_media_page_test_json",
-      "label": "json()",
+      "id": "packages_plugin_types_src_index_resolvesettings",
+      "label": "resolveSettings()",
       "_callable": true,
       "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
+      "community": 30,
+      "community_name": "plugin-types/src/index.ts",
       "file_type": "code",
-      "norm_label": "json()",
-      "source_file": "packages/admin/tests/media-page.test.tsx",
-      "source_location": "L25"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentservice_bulk",
-      "label": ".bulk()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": ".bulk()",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L210"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentservice_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L54"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentservice_counts",
-      "label": ".counts()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": ".counts()",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L139"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentservice_countsbyentry",
-      "label": ".countsByEntry()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": ".countsbyentry()",
-      "source_file": "packages/core/src/comments/index.ts",
+      "norm_label": "resolvesettings()",
+      "source_file": "packages/plugin-types/src/index.ts",
       "source_location": "L94"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentservice_create",
-      "label": ".create()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": ".create()",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L161"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentservice_delete",
-      "label": ".delete()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": ".delete()",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L216"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentservice_get",
-      "label": ".get()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": ".get()",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L88"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentservice_reply",
-      "label": ".reply()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": ".reply()",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L105"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentservice_setstatus",
-      "label": ".setStatus()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": ".setstatus()",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L203"
-    },
-    {
-      "id": "packages_core_src_comments_index_haship",
-      "label": "hashIp()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "haship()",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L51"
     },
     {
       "id": "packages_core_src_data_store_jsonstore_constructor",
@@ -8775,6 +8715,18 @@
       "source_location": "L215"
     },
     {
+      "id": "packages_core_src_media_optimize_rendervariant",
+      "label": "renderVariant()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "media/index.ts",
+      "file_type": "code",
+      "norm_label": "rendervariant()",
+      "source_file": "packages/core/src/media/optimize.ts",
+      "source_location": "L98"
+    },
+    {
       "id": "packages_core_src_redirects_service_redirectservice_clear404",
       "label": ".clear404()",
       "_callable": true,
@@ -8797,6 +8749,18 @@
       "norm_label": ".constructor()",
       "source_file": "packages/core/src/redirects/service.ts",
       "source_location": "L12"
+    },
+    {
+      "id": "packages_core_src_redirects_service_redirectservice_list",
+      "label": ".list()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "media/index.ts",
+      "file_type": "code",
+      "norm_label": ".list()",
+      "source_file": "packages/core/src/redirects/service.ts",
+      "source_location": "L26"
     },
     {
       "id": "packages_core_src_redirects_service_redirectservice_list404",
@@ -8847,88 +8811,16 @@
       "source_location": "L37"
     },
     {
-      "id": "packages_core_tests_integration_admin_modules_test_app",
-      "label": "app()",
+      "id": "packages_core_src_taxonomies_index_termtree",
+      "label": "termTree()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
       "community_name": "media/index.ts",
       "file_type": "code",
-      "norm_label": "app()",
-      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
-      "source_location": "L51"
-    },
-    {
-      "id": "packages_core_tests_integration_admin_modules_test_move",
-      "label": "move()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "move()",
-      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
-      "source_location": "L172"
-    },
-    {
-      "id": "packages_core_tests_integration_admin_modules_test_send",
-      "label": "send()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "send()",
-      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
-      "source_location": "L220"
-    },
-    {
-      "id": "packages_core_tests_integration_api_app_test_app",
-      "label": "app()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "app()",
-      "source_file": "packages/core/tests/integration/api-app.test.ts",
-      "source_location": "L31"
-    },
-    {
-      "id": "packages_core_tests_integration_api_app_test_create",
-      "label": "create()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "create()",
-      "source_file": "packages/core/tests/integration/api-app.test.ts",
-      "source_location": "L46"
-    },
-    {
-      "id": "packages_core_tests_integration_api_app_test_get",
-      "label": "get()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "get()",
-      "source_file": "packages/core/tests/integration/api-app.test.ts",
-      "source_location": "L314"
-    },
-    {
-      "id": "packages_core_tests_integration_api_app_test_put",
-      "label": "put()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "put()",
-      "source_file": "packages/core/tests/integration/api-app.test.ts",
-      "source_location": "L44"
+      "norm_label": "termtree()",
+      "source_file": "packages/core/src/taxonomies/index.ts",
+      "source_location": "L95"
     },
     {
       "id": "packages_core_tests_integration_api_tokens_test_create",
@@ -8941,66 +8833,6 @@
       "norm_label": "create()",
       "source_file": "packages/core/tests/integration/api-tokens.test.ts",
       "source_location": "L39"
-    },
-    {
-      "id": "packages_core_tests_integration_comments_extra_test_flush",
-      "label": "flush()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "flush()",
-      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
-      "source_location": "L49"
-    },
-    {
-      "id": "packages_core_tests_integration_comments_extra_test_send",
-      "label": "send()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "send()",
-      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
-      "source_location": "L46"
-    },
-    {
-      "id": "packages_core_tests_integration_comments_extra_test_submit",
-      "label": "submit()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "submit()",
-      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
-      "source_location": "L48"
-    },
-    {
-      "id": "packages_core_tests_integration_media_api_test_app",
-      "label": "app()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "app()",
-      "source_file": "packages/core/tests/integration/media-api.test.ts",
-      "source_location": "L24"
-    },
-    {
-      "id": "packages_core_tests_integration_media_api_test_upload",
-      "label": "upload()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "upload()",
-      "source_file": "packages/core/tests/integration/media-api.test.ts",
-      "source_location": "L35"
     },
     {
       "id": "packages_core_tests_integration_media_lifecycle_test_add",
@@ -9063,76 +8895,40 @@
       "source_location": "L48"
     },
     {
-      "id": "packages_core_tests_integration_permission_matrix_test_call",
-      "label": "call()",
+      "id": "packages_core_tests_integration_taxonomies_test_bad",
+      "label": "bad()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
       "community_name": "media/index.ts",
       "file_type": "code",
-      "norm_label": "call()",
-      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
-      "source_location": "L40"
+      "norm_label": "bad()",
+      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
+      "source_location": "L78"
     },
     {
-      "id": "packages_core_tests_integration_permission_matrix_test_isforbidden",
-      "label": "isForbidden()",
+      "id": "packages_core_tests_integration_taxonomies_test_post",
+      "label": "post()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
       "community_name": "media/index.ts",
       "file_type": "code",
-      "norm_label": "isforbidden()",
-      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
-      "source_location": "L50"
+      "norm_label": "post()",
+      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
+      "source_location": "L73"
     },
     {
-      "id": "packages_core_tests_integration_permission_matrix_test_key",
-      "label": "key()",
+      "id": "packages_core_tests_integration_taxonomies_test_tagsof",
+      "label": "tagsOf()",
       "_callable": true,
       "_origin": "ast",
       "community": 4,
       "community_name": "media/index.ts",
       "file_type": "code",
-      "norm_label": "key()",
-      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
-      "source_location": "L48"
-    },
-    {
-      "id": "packages_core_tests_integration_permission_matrix_test_routes",
-      "label": "routes()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "routes()",
-      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
-      "source_location": "L46"
-    },
-    {
-      "id": "packages_core_tests_integration_plugin_manager_test_make",
-      "label": "make()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "make()",
-      "source_file": "packages/core/tests/integration/plugin-manager.test.ts",
-      "source_location": "L40"
-    },
-    {
-      "id": "packages_core_tests_integration_revisions_test_send",
-      "label": "send()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "send()",
-      "source_file": "packages/core/tests/integration/revisions.test.ts",
-      "source_location": "L48"
+      "norm_label": "tagsof()",
+      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
+      "source_location": "L75"
     },
     {
       "id": "packages_core_tests_integration_wordpress_import_test_options",
@@ -9288,7 +9084,7 @@
       "file_type": "code",
       "norm_label": "accountsecurity()",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L342"
+      "source_location": "L343"
     },
     {
       "id": "packages_admin_src_routes_router_group",
@@ -9507,30 +9303,6 @@
       "source_location": "L36"
     },
     {
-      "id": "packages_core_src_comments_index_commentservice_forentry",
-      "label": ".forEntry()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 51,
-      "community_name": "app.ts",
-      "file_type": "code",
-      "norm_label": ".forentry()",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L151"
-    },
-    {
-      "id": "packages_core_src_comments_index_commentservice_list",
-      "label": ".list()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 51,
-      "community_name": "app.ts",
-      "file_type": "code",
-      "norm_label": ".list()",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L76"
-    },
-    {
       "id": "packages_core_src_content_field_diff_difffields",
       "label": "diffFields()",
       "_callable": true,
@@ -9627,18 +9399,6 @@
       "source_location": "L42"
     },
     {
-      "id": "packages_core_src_security_api_tokens_apitokenservice_list",
-      "label": ".list()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 51,
-      "community_name": "app.ts",
-      "file_type": "code",
-      "norm_label": ".list()",
-      "source_file": "packages/core/src/security/api-tokens.ts",
-      "source_location": "L82"
-    },
-    {
       "id": "packages_core_src_taxonomies_index_retagentries",
       "label": "retagEntries()",
       "_callable": true,
@@ -9675,18 +9435,6 @@
       "source_location": "L7"
     },
     {
-      "id": "packages_core_src_taxonomies_index_termtree",
-      "label": "termTree()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 51,
-      "community_name": "app.ts",
-      "file_type": "code",
-      "norm_label": "termtree()",
-      "source_file": "packages/core/src/taxonomies/index.ts",
-      "source_location": "L95"
-    },
-    {
       "id": "packages_core_src_taxonomies_index_valuesof",
       "label": "valuesOf()",
       "_callable": true,
@@ -9699,52 +9447,16 @@
       "source_location": "L16"
     },
     {
-      "id": "packages_core_tests_integration_taxonomies_test_bad",
-      "label": "bad()",
+      "id": "packages_core_tests_integration_revisions_test_send",
+      "label": "send()",
       "_callable": true,
       "_origin": "ast",
       "community": 51,
       "community_name": "app.ts",
       "file_type": "code",
-      "norm_label": "bad()",
-      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
-      "source_location": "L78"
-    },
-    {
-      "id": "packages_core_tests_integration_taxonomies_test_post",
-      "label": "post()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 51,
-      "community_name": "app.ts",
-      "file_type": "code",
-      "norm_label": "post()",
-      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
-      "source_location": "L73"
-    },
-    {
-      "id": "packages_core_tests_integration_taxonomies_test_tagsof",
-      "label": "tagsOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 51,
-      "community_name": "app.ts",
-      "file_type": "code",
-      "norm_label": "tagsof()",
-      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
-      "source_location": "L75"
-    },
-    {
-      "id": "packages_core_tests_unit_list_query_test_row",
-      "label": "row()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 51,
-      "community_name": "app.ts",
-      "file_type": "code",
-      "norm_label": "row()",
-      "source_file": "packages/core/tests/unit/list-query.test.ts",
-      "source_location": "L5"
+      "norm_label": "send()",
+      "source_file": "packages/core/tests/integration/revisions.test.ts",
+      "source_location": "L48"
     },
     {
       "id": "packages_core_tests_unit_list_query_test_slugs",
@@ -10069,30 +9781,6 @@
       "norm_label": ".list()",
       "source_file": "packages/core/src/audit/index.ts",
       "source_location": "L20"
-    },
-    {
-      "id": "packages_core_src_audit_index_auditlog_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "server.ts",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "packages/core/src/audit/index.ts",
-      "source_location": "L8"
-    },
-    {
-      "id": "packages_core_src_audit_index_auditlog_record",
-      "label": ".record()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "server.ts",
-      "file_type": "code",
-      "norm_label": ".record()",
-      "source_file": "packages/core/src/audit/index.ts",
-      "source_location": "L14"
     },
     {
       "id": "packages_core_src_config_env_loaddotenv",
@@ -10935,18 +10623,6 @@
       "source_location": "L68"
     },
     {
-      "id": "packages_core_src_media_optimize_rendervariant",
-      "label": "renderVariant()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 75,
-      "community_name": "posts/[slug].astro",
-      "file_type": "code",
-      "norm_label": "rendervariant()",
-      "source_file": "packages/core/src/media/optimize.ts",
-      "source_location": "L98"
-    },
-    {
       "id": "packages_core_src_site_index_imagesrcset",
       "label": "imageSrcset()",
       "_callable": true,
@@ -11427,6 +11103,342 @@
       "source_location": "L14"
     },
     {
+      "id": "packages_admin_tests_media_page_test_json",
+      "label": "json()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "json()",
+      "source_file": "packages/admin/tests/media-page.test.tsx",
+      "source_location": "L25"
+    },
+    {
+      "id": "packages_core_src_audit_index_auditlog_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "packages/core/src/audit/index.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "packages_core_src_audit_index_auditlog_record",
+      "label": ".record()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".record()",
+      "source_file": "packages/core/src/audit/index.ts",
+      "source_location": "L14"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice_bulk",
+      "label": ".bulk()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".bulk()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L210"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L54"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice_counts",
+      "label": ".counts()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".counts()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L139"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice_countsbyentry",
+      "label": ".countsByEntry()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".countsbyentry()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L94"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice_create",
+      "label": ".create()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".create()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L161"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice_delete",
+      "label": ".delete()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".delete()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L216"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice_forentry",
+      "label": ".forEntry()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".forentry()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L151"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice_get",
+      "label": ".get()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".get()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L88"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice_list",
+      "label": ".list()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".list()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L76"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice_reply",
+      "label": ".reply()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".reply()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L105"
+    },
+    {
+      "id": "packages_core_src_comments_index_commentservice_setstatus",
+      "label": ".setStatus()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".setstatus()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L203"
+    },
+    {
+      "id": "packages_core_src_comments_index_haship",
+      "label": "hashIp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "haship()",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L51"
+    },
+    {
+      "id": "packages_core_src_security_api_tokens_apitokenservice_list",
+      "label": ".list()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": ".list()",
+      "source_file": "packages/core/src/security/api-tokens.ts",
+      "source_location": "L82"
+    },
+    {
+      "id": "packages_core_tests_integration_admin_modules_test_app",
+      "label": "app()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "app()",
+      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
+      "source_location": "L51"
+    },
+    {
+      "id": "packages_core_tests_integration_admin_modules_test_move",
+      "label": "move()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "move()",
+      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
+      "source_location": "L172"
+    },
+    {
+      "id": "packages_core_tests_integration_admin_modules_test_send",
+      "label": "send()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "send()",
+      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
+      "source_location": "L220"
+    },
+    {
+      "id": "packages_core_tests_integration_api_app_test_app",
+      "label": "app()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "app()",
+      "source_file": "packages/core/tests/integration/api-app.test.ts",
+      "source_location": "L31"
+    },
+    {
+      "id": "packages_core_tests_integration_api_app_test_create",
+      "label": "create()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "create()",
+      "source_file": "packages/core/tests/integration/api-app.test.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "packages_core_tests_integration_api_app_test_get",
+      "label": "get()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "get()",
+      "source_file": "packages/core/tests/integration/api-app.test.ts",
+      "source_location": "L314"
+    },
+    {
+      "id": "packages_core_tests_integration_api_app_test_put",
+      "label": "put()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "put()",
+      "source_file": "packages/core/tests/integration/api-app.test.ts",
+      "source_location": "L44"
+    },
+    {
+      "id": "packages_core_tests_integration_comments_extra_test_flush",
+      "label": "flush()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "flush()",
+      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
+      "source_location": "L49"
+    },
+    {
+      "id": "packages_core_tests_integration_comments_extra_test_send",
+      "label": "send()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "send()",
+      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "packages_core_tests_integration_comments_extra_test_submit",
+      "label": "submit()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "submit()",
+      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
+      "source_location": "L48"
+    },
+    {
+      "id": "packages_core_tests_integration_plugin_manager_test_make",
+      "label": "make()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "make()",
+      "source_file": "packages/core/tests/integration/plugin-manager.test.ts",
+      "source_location": "L40"
+    },
+    {
+      "id": "packages_core_tests_unit_list_query_test_row",
+      "label": "row()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "row()",
+      "source_file": "packages/core/tests/unit/list-query.test.ts",
+      "source_location": "L5"
+    },
+    {
       "id": "packages_core_src_astro_redirect_middleware_onrequest",
       "label": "onRequest()",
       "_callable": true,
@@ -11605,18 +11617,6 @@
       "norm_label": "validregex()",
       "source_file": "packages/core/src/redirects/index.ts",
       "source_location": "L14"
-    },
-    {
-      "id": "packages_core_src_redirects_service_redirectservice_list",
-      "label": ".list()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 81,
-      "community_name": "seo/index.ts",
-      "file_type": "code",
-      "norm_label": ".list()",
-      "source_file": "packages/core/src/redirects/service.ts",
-      "source_location": "L26"
     },
     {
       "id": "packages_core_src_seo_index_abs",
@@ -12120,7 +12120,7 @@
       "file_type": "code",
       "norm_label": "draftof()",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L68"
+      "source_location": "L59"
     },
     {
       "id": "packages_admin_src_components_media_mediapage_extof",
@@ -12132,7 +12132,7 @@
       "file_type": "code",
       "norm_label": "extof()",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L67"
+      "source_location": "L58"
     },
     {
       "id": "packages_admin_src_components_media_mediapage_filenameof",
@@ -12144,7 +12144,7 @@
       "file_type": "code",
       "norm_label": "filenameof()",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L62"
+      "source_location": "L53"
     },
     {
       "id": "packages_admin_src_components_media_mediapage_formatof",
@@ -12156,7 +12156,7 @@
       "file_type": "code",
       "norm_label": "formatof()",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L63"
+      "source_location": "L54"
     },
     {
       "id": "packages_admin_src_components_media_mediapage_labelof",
@@ -12168,7 +12168,7 @@
       "file_type": "code",
       "norm_label": "labelof()",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L61"
+      "source_location": "L52"
     },
     {
       "id": "packages_admin_src_components_media_mediapage_mediapage",
@@ -12180,7 +12180,7 @@
       "file_type": "code",
       "norm_label": "mediapage()",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L81"
+      "source_location": "L72"
     },
     {
       "id": "packages_admin_src_components_media_mediapage_variantsrc",
@@ -12192,7 +12192,7 @@
       "file_type": "code",
       "norm_label": "variantsrc()",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L75"
+      "source_location": "L66"
     },
     {
       "id": "packages_admin_src_lib_webp_imagetowebp",
@@ -14270,6 +14270,78 @@
       "norm_label": "types",
       "source_file": "packages/core/package.json",
       "source_location": "L67"
+    },
+    {
+      "id": "claude_skills_hono_skill_1_setup_5622",
+      "label": "1. Setup",
+      "_origin": "ast",
+      "community": 104,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. setup",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L5622"
+    },
+    {
+      "id": "claude_skills_hono_skill_2_hello_world_5654",
+      "label": "2. Hello World",
+      "_origin": "ast",
+      "community": 104,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. hello world",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L5654"
+    },
+    {
+      "id": "claude_skills_hono_skill_3_run_5671",
+      "label": "3. Run",
+      "_origin": "ast",
+      "community": 104,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. run",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L5671"
+    },
+    {
+      "id": "claude_skills_hono_skill_4_deploy_5679",
+      "label": "4. Deploy",
+      "_origin": "ast",
+      "community": 104,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. deploy",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L5679"
+    },
+    {
+      "id": "claude_skills_hono_skill_context_5687",
+      "label": "`Context`",
+      "_origin": "ast",
+      "community": 104,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "`context`",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L5687"
+    },
+    {
+      "id": "claude_skills_hono_skill_netlify",
+      "label": "Netlify",
+      "_origin": "ast",
+      "community": 104,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "netlify",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L5616"
     },
     {
       "id": "claude_skills_hono_skill_1_install_bun",
@@ -16915,6 +16987,17 @@
       "source_location": "L1"
     },
     {
+      "id": "packages_core_src_content_validation_path",
+      "label": "path.ts",
+      "_origin": "ast",
+      "community": 119,
+      "community_name": "plugin-manager.test.ts",
+      "file_type": "code",
+      "norm_label": "path.ts",
+      "source_file": "packages/core/src/content/validation/path.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "packages_core_src_plugins_manager",
       "label": "manager.ts",
       "_origin": "ast",
@@ -17067,6 +17150,17 @@
       "norm_label": "manifest",
       "source_file": "packages/core/tests/integration/plugin-manager.test.ts",
       "source_location": "L21"
+    },
+    {
+      "id": "packages_core_tests_unit_content_validation_path_test",
+      "label": "content-validation-path.test.ts",
+      "_origin": "ast",
+      "community": 119,
+      "community_name": "plugin-manager.test.ts",
+      "file_type": "code",
+      "norm_label": "content-validation-path.test.ts",
+      "source_file": "packages/core/tests/unit/content-validation-path.test.ts",
+      "source_location": "L1"
     },
     {
       "id": "packages_core_tests_unit_ssrf_test",
@@ -20027,64 +20121,92 @@
       "source_location": "L70"
     },
     {
-      "id": "opencode_skills_hono_skill_1_setup_5458",
-      "label": "1. Setup",
+      "id": "packages_core_tests_integration_media_api_test",
+      "label": "media-api.test.ts",
       "_origin": "ast",
       "community": 14,
-      "community_name": "Lambda@Edge",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. setup",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L5458"
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "media-api.test.ts",
+      "source_file": "packages/core/tests/integration/media-api.test.ts",
+      "source_location": "L1"
     },
     {
-      "id": "opencode_skills_hono_skill_2_hello_world_5502",
-      "label": "2. Hello World",
+      "id": "packages_core_tests_integration_media_api_test_editor",
+      "label": "EDITOR",
       "_origin": "ast",
       "community": 14,
-      "community_name": "Lambda@Edge",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. hello world",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L5502"
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "editor",
+      "source_file": "packages/core/tests/integration/media-api.test.ts",
+      "source_location": "L15"
     },
     {
-      "id": "opencode_skills_hono_skill_3_deploy_5517",
-      "label": "3. Deploy",
+      "id": "packages_core_tests_integration_media_api_test_h",
+      "label": "H",
       "_origin": "ast",
       "community": 14,
-      "community_name": "Lambda@Edge",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. deploy",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L5517"
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "h",
+      "source_file": "packages/core/tests/integration/media-api.test.ts",
+      "source_location": "L34"
     },
     {
-      "id": "opencode_skills_hono_skill_callback",
-      "label": "Callback",
+      "id": "packages_core_tests_integration_media_api_test_png",
+      "label": "PNG",
       "_origin": "ast",
       "community": 14,
-      "community_name": "Lambda@Edge",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "callback",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L5582"
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "png",
+      "source_file": "packages/core/tests/integration/media-api.test.ts",
+      "source_location": "L14"
     },
     {
-      "id": "opencode_skills_hono_skill_lambda_edge",
-      "label": "Lambda@Edge",
+      "id": "packages_core_tests_integration_media_api_test_viewer",
+      "label": "VIEWER",
       "_origin": "ast",
       "community": 14,
-      "community_name": "Lambda@Edge",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "lambda@edge",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L5452"
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "viewer",
+      "source_file": "packages/core/tests/integration/media-api.test.ts",
+      "source_location": "L16"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git",
+      "label": "real-git.ts",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "real-git.ts",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "packages_git_src_adapters_real_git_run",
+      "label": "run",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "run",
+      "source_file": "packages/git/src/adapters/real-git.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "packages_git_tests_integration_git_adapters_real_git_test",
+      "label": "git-adapters-real-git.test.ts",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "RealGit",
+      "file_type": "code",
+      "norm_label": "git-adapters-real-git.test.ts",
+      "source_file": "packages/git/tests/integration/git-adapters-real-git.test.ts",
+      "source_location": "L1"
     },
     {
       "id": "claude_skills_software_engineer_idea_refine_refinement_criteria",
@@ -20761,26 +20883,26 @@
       "source_location": "L22"
     },
     {
-      "id": "packages_core_tests_integration_server_test",
-      "label": "server.test.ts",
+      "id": "packages_core_tests_integration_plugin_loader_test",
+      "label": "plugin-loader.test.ts",
       "_origin": "ast",
       "community": 145,
       "community_name": "loader.ts",
       "file_type": "code",
-      "norm_label": "server.test.ts",
-      "source_file": "packages/core/tests/integration/server.test.ts",
+      "norm_label": "plugin-loader.test.ts",
+      "source_file": "packages/core/tests/integration/plugin-loader.test.ts",
       "source_location": "L1"
     },
     {
-      "id": "packages_core_tests_integration_server_test_h",
-      "label": "H",
+      "id": "packages_core_tests_integration_plugin_loader_test_manifest",
+      "label": "manifest",
       "_origin": "ast",
       "community": 145,
       "community_name": "loader.ts",
       "file_type": "code",
-      "norm_label": "h",
-      "source_file": "packages/core/tests/integration/server.test.ts",
-      "source_location": "L24"
+      "norm_label": "manifest",
+      "source_file": "packages/core/tests/integration/plugin-loader.test.ts",
+      "source_location": "L11"
     },
     {
       "id": "claude_emdashcms_wuppy",
@@ -23975,6 +24097,28 @@
       "source_location": "L1"
     },
     {
+      "id": "packages_core_src_content_adapters_filesystem",
+      "label": "filesystem.ts",
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "filesystem.ts",
+      "source_file": "packages/core/src/content/adapters/filesystem.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "packages_core_src_content_parsers_frontmatter",
+      "label": "frontmatter.ts",
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "frontmatter.ts",
+      "source_file": "packages/core/src/content/parsers/frontmatter.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "packages_core_src_content_service",
       "label": "content/service.ts",
       "_origin": "ast",
@@ -24063,6 +24207,17 @@
       "source_location": "L73"
     },
     {
+      "id": "packages_core_tests_integration_content_adapters_filesystem_test",
+      "label": "content-adapters-filesystem.test.ts",
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "content-adapters-filesystem.test.ts",
+      "source_file": "packages/core/tests/integration/content-adapters-filesystem.test.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "packages_core_tests_integration_content_service_test",
       "label": "content-service.test.ts",
       "_origin": "ast",
@@ -24072,6 +24227,39 @@
       "norm_label": "content-service.test.ts",
       "source_file": "packages/core/tests/integration/content-service.test.ts",
       "source_location": "L1"
+    },
+    {
+      "id": "packages_core_tests_integration_permission_matrix_test",
+      "label": "permission-matrix.test.ts",
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "permission-matrix.test.ts",
+      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "packages_core_tests_integration_permission_matrix_test_h",
+      "label": "H",
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "h",
+      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
+      "source_location": "L39"
+    },
+    {
+      "id": "packages_core_tests_integration_permission_matrix_test_open",
+      "label": "OPEN",
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "open",
+      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
+      "source_location": "L17"
     },
     {
       "id": "packages_core_tests_integration_search_test",
@@ -24140,6 +24328,28 @@
       "source_location": "L37"
     },
     {
+      "id": "packages_core_tests_perf_large_collection_test",
+      "label": "large-collection.test.ts",
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "large-collection.test.ts",
+      "source_file": "packages/core/tests/perf/large-collection.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "packages_core_tests_unit_content_parsers_frontmatter_test",
+      "label": "content-parsers-frontmatter.test.ts",
+      "_origin": "ast",
+      "community": 168,
+      "community_name": "vitest",
+      "file_type": "code",
+      "norm_label": "content-parsers-frontmatter.test.ts",
+      "source_file": "packages/core/tests/unit/content-parsers-frontmatter.test.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "packages_core_tests_unit_content_types_test",
       "label": "content-types.test.ts",
       "_origin": "ast",
@@ -24173,28 +24383,6 @@
       "source_location": "L1"
     },
     {
-      "id": "packages_git_src_adapters_real_git",
-      "label": "real-git.ts",
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": "real-git.ts",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_git_src_adapters_real_git_run",
-      "label": "run",
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": "run",
-      "source_file": "packages/git/src/adapters/real-git.ts",
-      "source_location": "L5"
-    },
-    {
       "id": "packages_git_src_index",
       "label": "git/src/index.ts",
       "_origin": "ast",
@@ -24214,17 +24402,6 @@
       "file_type": "code",
       "norm_label": "src/types.ts",
       "source_file": "packages/git/src/types.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_git_tests_integration_git_adapters_real_git_test",
-      "label": "git-adapters-real-git.test.ts",
-      "_origin": "ast",
-      "community": 168,
-      "community_name": "vitest",
-      "file_type": "code",
-      "norm_label": "git-adapters-real-git.test.ts",
-      "source_file": "packages/git/tests/integration/git-adapters-real-git.test.ts",
       "source_location": "L1"
     },
     {
@@ -25163,6 +25340,78 @@
       "norm_label": "supabase edge functions",
       "source_file": ".opencode/skills/hono/SKILL.md",
       "source_location": "L6403"
+    },
+    {
+      "id": "opencode_skills_hono_skill_1_setup_5622",
+      "label": "1. Setup",
+      "_origin": "ast",
+      "community": 177,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. setup",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L5622"
+    },
+    {
+      "id": "opencode_skills_hono_skill_2_hello_world_5654",
+      "label": "2. Hello World",
+      "_origin": "ast",
+      "community": 177,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. hello world",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L5654"
+    },
+    {
+      "id": "opencode_skills_hono_skill_3_run_5671",
+      "label": "3. Run",
+      "_origin": "ast",
+      "community": 177,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. run",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L5671"
+    },
+    {
+      "id": "opencode_skills_hono_skill_4_deploy_5679",
+      "label": "4. Deploy",
+      "_origin": "ast",
+      "community": 177,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. deploy",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L5679"
+    },
+    {
+      "id": "opencode_skills_hono_skill_context_5687",
+      "label": "`Context`",
+      "_origin": "ast",
+      "community": 177,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "`context`",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L5687"
+    },
+    {
+      "id": "opencode_skills_hono_skill_netlify",
+      "label": "Netlify",
+      "_origin": "ast",
+      "community": 177,
+      "community_name": "Netlify",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "netlify",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L5616"
     },
     {
       "id": "packages_create_wuppy_src_cli",
@@ -26960,6 +27209,28 @@
       "source_location": "L502"
     },
     {
+      "id": "packages_core_tests_integration_server_test",
+      "label": "server.test.ts",
+      "_origin": "ast",
+      "community": 191,
+      "community_name": "server.test.ts",
+      "file_type": "code",
+      "norm_label": "server.test.ts",
+      "source_file": "packages/core/tests/integration/server.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "packages_core_tests_integration_server_test_h",
+      "label": "H",
+      "_origin": "ast",
+      "community": 191,
+      "community_name": "server.test.ts",
+      "file_type": "code",
+      "norm_label": "h",
+      "source_file": "packages/core/tests/integration/server.test.ts",
+      "source_location": "L24"
+    },
+    {
       "id": "claude_skills_hono_skill_1_install_the_cli",
       "label": "1. Install the CLI",
       "_origin": "ast",
@@ -27096,66 +27367,6 @@
       "norm_label": "navigate",
       "source_file": "packages/admin/tests/calendar.test.tsx",
       "source_location": "L8"
-    },
-    {
-      "id": "claude_skills_hono_skill_1_setup_5458",
-      "label": "1. Setup",
-      "_origin": "ast",
-      "community": 194,
-      "community_name": "Lambda@Edge",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. setup",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L5458"
-    },
-    {
-      "id": "claude_skills_hono_skill_2_hello_world_5502",
-      "label": "2. Hello World",
-      "_origin": "ast",
-      "community": 194,
-      "community_name": "Lambda@Edge",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. hello world",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L5502"
-    },
-    {
-      "id": "claude_skills_hono_skill_3_deploy_5517",
-      "label": "3. Deploy",
-      "_origin": "ast",
-      "community": 194,
-      "community_name": "Lambda@Edge",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. deploy",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L5517"
-    },
-    {
-      "id": "claude_skills_hono_skill_callback",
-      "label": "Callback",
-      "_origin": "ast",
-      "community": 194,
-      "community_name": "Lambda@Edge",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "callback",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L5582"
-    },
-    {
-      "id": "claude_skills_hono_skill_lambda_edge",
-      "label": "Lambda@Edge",
-      "_origin": "ast",
-      "community": 194,
-      "community_name": "Lambda@Edge",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "lambda@edge",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L5452"
     },
     {
       "id": "claude_skills_hono_skill_1_setup_5723",
@@ -31144,64 +31355,76 @@
       "source_location": "L595"
     },
     {
-      "id": "opencode_skills_hono_skill_hono_7858",
-      "label": "`hono`",
+      "id": "claude_skills_hono_skill_1_install_cli",
+      "label": "1. Install CLI",
       "_origin": "ast",
       "community": 24,
-      "community_name": "Presets",
+      "community_name": "Azure Functions",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "`hono`",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L7858"
+      "norm_label": "1. install cli",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L3160"
     },
     {
-      "id": "opencode_skills_hono_skill_hono_quick",
-      "label": "`hono/quick`",
+      "id": "claude_skills_hono_skill_2_setup",
+      "label": "2. Setup",
       "_origin": "ast",
       "community": 24,
-      "community_name": "Presets",
+      "community_name": "Azure Functions",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "`hono/quick`",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L7874"
+      "norm_label": "2. setup",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L3175"
     },
     {
-      "id": "opencode_skills_hono_skill_hono_tiny",
-      "label": "`hono/tiny`",
+      "id": "claude_skills_hono_skill_3_hello_world",
+      "label": "3. Hello World",
       "_origin": "ast",
       "community": 24,
-      "community_name": "Presets",
+      "community_name": "Azure Functions",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "`hono/tiny`",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L7890"
+      "norm_label": "3. hello world",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L3219"
     },
     {
-      "id": "opencode_skills_hono_skill_presets",
-      "label": "Presets",
+      "id": "claude_skills_hono_skill_4_run",
+      "label": "4. Run",
       "_origin": "ast",
       "community": 24,
-      "community_name": "Presets",
+      "community_name": "Azure Functions",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "presets",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L7849"
+      "norm_label": "4. run",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L3255"
     },
     {
-      "id": "opencode_skills_hono_skill_which_preset_should_i_use",
-      "label": "Which preset should I use?",
+      "id": "claude_skills_hono_skill_5_deploy",
+      "label": "5. Deploy",
       "_origin": "ast",
       "community": 24,
-      "community_name": "Presets",
+      "community_name": "Azure Functions",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "which preset should i use?",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L7904"
+      "norm_label": "5. deploy",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L3279"
+    },
+    {
+      "id": "claude_skills_hono_skill_azure_functions",
+      "label": "Azure Functions",
+      "_origin": "ast",
+      "community": 24,
+      "community_name": "Azure Functions",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "azure functions",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L3152"
     },
     {
       "id": "claude_emdash_teknolojileri_13_test_ve_kalite",
@@ -31238,72 +31461,6 @@
       "norm_label": "test profilleri",
       "source_file": ".claude/EMDASH-TEKNOLOJILERI.md",
       "source_location": "L307"
-    },
-    {
-      "id": "packages_core_src_content_adapters_filesystem",
-      "label": "filesystem.ts",
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "filesystem.ts",
-      "source_file": "packages/core/src/content/adapters/filesystem.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_src_content_parsers_frontmatter",
-      "label": "frontmatter.ts",
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "frontmatter.ts",
-      "source_file": "packages/core/src/content/parsers/frontmatter.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_src_content_validation_path",
-      "label": "path.ts",
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "path.ts",
-      "source_file": "packages/core/src/content/validation/path.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_tests_integration_content_adapters_filesystem_test",
-      "label": "content-adapters-filesystem.test.ts",
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "content-adapters-filesystem.test.ts",
-      "source_file": "packages/core/tests/integration/content-adapters-filesystem.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_tests_unit_content_parsers_frontmatter_test",
-      "label": "content-parsers-frontmatter.test.ts",
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "content-parsers-frontmatter.test.ts",
-      "source_file": "packages/core/tests/unit/content-parsers-frontmatter.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_tests_unit_content_validation_path_test",
-      "label": "content-validation-path.test.ts",
-      "_origin": "ast",
-      "community": 241,
-      "community_name": "FilesystemContent",
-      "file_type": "code",
-      "norm_label": "content-validation-path.test.ts",
-      "source_file": "packages/core/tests/unit/content-validation-path.test.ts",
-      "source_location": "L1"
     },
     {
       "id": "claude_skills_software_engineer_idea_refine_scripts_idea_refine",
@@ -34115,28 +34272,6 @@
       "source_location": "L1"
     },
     {
-      "id": "packages_core_tests_integration_plugin_loader_test",
-      "label": "plugin-loader.test.ts",
-      "_origin": "ast",
-      "community": 294,
-      "community_name": "PluginSet",
-      "file_type": "code",
-      "norm_label": "plugin-loader.test.ts",
-      "source_file": "packages/core/tests/integration/plugin-loader.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_tests_integration_plugin_loader_test_manifest",
-      "label": "manifest",
-      "_origin": "ast",
-      "community": 294,
-      "community_name": "PluginSet",
-      "file_type": "code",
-      "norm_label": "manifest",
-      "source_file": "packages/core/tests/integration/plugin-loader.test.ts",
-      "source_location": "L11"
-    },
-    {
       "id": "claude_skills_hono_skill_1_setup_5164",
       "label": "1. Setup",
       "_origin": "ast",
@@ -34207,138 +34342,6 @@
       "norm_label": "fastly compute",
       "source_file": ".claude/skills/hono/SKILL.md",
       "source_location": "L5158"
-    },
-    {
-      "id": "claude_skills_hono_skill_1_setup_6502",
-      "label": "1. Setup",
-      "_origin": "ast",
-      "community": 296,
-      "community_name": "Vercel",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. setup",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L6502"
-    },
-    {
-      "id": "claude_skills_hono_skill_2_hello_world_6560",
-      "label": "2. Hello World",
-      "_origin": "ast",
-      "community": 296,
-      "community_name": "Vercel",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. hello world",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L6560"
-    },
-    {
-      "id": "claude_skills_hono_skill_3_run_6583",
-      "label": "3. Run",
-      "_origin": "ast",
-      "community": 296,
-      "community_name": "Vercel",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. run",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L6583"
-    },
-    {
-      "id": "claude_skills_hono_skill_4_deploy_6593",
-      "label": "4. Deploy",
-      "_origin": "ast",
-      "community": 296,
-      "community_name": "Vercel",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "4. deploy",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L6593"
-    },
-    {
-      "id": "claude_skills_hono_skill_further_reading",
-      "label": "Further reading",
-      "_origin": "ast",
-      "community": 296,
-      "community_name": "Vercel",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "further reading",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L6601"
-    },
-    {
-      "id": "claude_skills_hono_skill_vercel",
-      "label": "Vercel",
-      "_origin": "ast",
-      "community": 296,
-      "community_name": "Vercel",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "vercel",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L6496"
-    },
-    {
-      "id": "claude_skills_hono_skill_1_setup",
-      "label": "1. Setup",
-      "_origin": "ast",
-      "community": 298,
-      "community_name": "Alibaba Cloud Function Compute",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. setup",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L2809"
-    },
-    {
-      "id": "claude_skills_hono_skill_2_hello_world",
-      "label": "2. Hello World",
-      "_origin": "ast",
-      "community": 298,
-      "community_name": "Alibaba Cloud Function Compute",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. hello world",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L2851"
-    },
-    {
-      "id": "claude_skills_hono_skill_3_setup_serverless_devs",
-      "label": "3. Setup serverless-devs",
-      "_origin": "ast",
-      "community": 298,
-      "community_name": "Alibaba Cloud Function Compute",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. setup serverless-devs",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L2866"
-    },
-    {
-      "id": "claude_skills_hono_skill_4_deploy",
-      "label": "4. Deploy",
-      "_origin": "ast",
-      "community": 298,
-      "community_name": "Alibaba Cloud Function Compute",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "4. deploy",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L2913"
-    },
-    {
-      "id": "claude_skills_hono_skill_alibaba_cloud_function_compute",
-      "label": "Alibaba Cloud Function Compute",
-      "_origin": "ast",
-      "community": 298,
-      "community_name": "Alibaba Cloud Function Compute",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "alibaba cloud function compute",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L2803"
     },
     {
       "id": "oxlintrc",
@@ -36383,7 +36386,7 @@
       "source_location": "L1"
     },
     {
-      "id": "opencode_skills_hono_skill_1_setup_5622",
+      "id": "opencode_skills_hono_skill_1_setup",
       "label": "1. Setup",
       "_origin": "ast",
       "community": 36,
@@ -36392,10 +36395,22 @@
       "node_kind": "heading",
       "norm_label": "1. setup",
       "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L5622"
+      "source_location": "L2809"
     },
     {
-      "id": "opencode_skills_hono_skill_2_hello_world_5654",
+      "id": "opencode_skills_hono_skill_1_setup_5458",
+      "label": "1. Setup",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": ".opencode/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. setup",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L5458"
+    },
+    {
+      "id": "opencode_skills_hono_skill_2_hello_world",
       "label": "2. Hello World",
       "_origin": "ast",
       "community": 36,
@@ -36404,22 +36419,46 @@
       "node_kind": "heading",
       "norm_label": "2. hello world",
       "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L5654"
+      "source_location": "L2851"
     },
     {
-      "id": "opencode_skills_hono_skill_3_run_5671",
-      "label": "3. Run",
+      "id": "opencode_skills_hono_skill_2_hello_world_5502",
+      "label": "2. Hello World",
       "_origin": "ast",
       "community": 36,
       "community_name": ".opencode/skills/hono/SKILL.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "3. run",
+      "norm_label": "2. hello world",
       "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L5671"
+      "source_location": "L5502"
     },
     {
-      "id": "opencode_skills_hono_skill_4_deploy_5679",
+      "id": "opencode_skills_hono_skill_3_deploy_5517",
+      "label": "3. Deploy",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": ".opencode/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. deploy",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L5517"
+    },
+    {
+      "id": "opencode_skills_hono_skill_3_setup_serverless_devs",
+      "label": "3. Setup serverless-devs",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": ".opencode/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. setup serverless-devs",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L2866"
+    },
+    {
+      "id": "opencode_skills_hono_skill_4_deploy",
       "label": "4. Deploy",
       "_origin": "ast",
       "community": 36,
@@ -36428,7 +36467,19 @@
       "node_kind": "heading",
       "norm_label": "4. deploy",
       "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L5679"
+      "source_location": "L2913"
+    },
+    {
+      "id": "opencode_skills_hono_skill_alibaba_cloud_function_compute",
+      "label": "Alibaba Cloud Function Compute",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": ".opencode/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "alibaba cloud function compute",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L2803"
     },
     {
       "id": "opencode_skills_hono_skill_api",
@@ -36443,16 +36494,16 @@
       "source_location": "L7835"
     },
     {
-      "id": "opencode_skills_hono_skill_context_5687",
-      "label": "`Context`",
+      "id": "opencode_skills_hono_skill_callback",
+      "label": "Callback",
       "_origin": "ast",
       "community": 36,
       "community_name": ".opencode/skills/hono/SKILL.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "`context`",
+      "norm_label": "callback",
       "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L5687"
+      "source_location": "L5582"
     },
     {
       "id": "opencode_skills_hono_skill_contributing",
@@ -36503,6 +36554,42 @@
       "source_location": "L529"
     },
     {
+      "id": "opencode_skills_hono_skill_hono_7858",
+      "label": "`hono`",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": ".opencode/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "`hono`",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L7858"
+    },
+    {
+      "id": "opencode_skills_hono_skill_hono_quick",
+      "label": "`hono/quick`",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": ".opencode/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "`hono/quick`",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L7874"
+    },
+    {
+      "id": "opencode_skills_hono_skill_hono_tiny",
+      "label": "`hono/tiny`",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": ".opencode/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "`hono/tiny`",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L7890"
+    },
+    {
       "id": "opencode_skills_hono_skill_is_there_an_official_renovate_config_for_hono",
       "label": "Is there an official Renovate config for Hono?",
       "_origin": "ast",
@@ -36513,6 +36600,18 @@
       "norm_label": "is there an official renovate config for hono?",
       "source_file": ".opencode/skills/hono/SKILL.md",
       "source_location": "L533"
+    },
+    {
+      "id": "opencode_skills_hono_skill_lambda_edge",
+      "label": "Lambda@Edge",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": ".opencode/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "lambda@edge",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L5452"
     },
     {
       "id": "opencode_skills_hono_skill_miscellaneous",
@@ -36527,18 +36626,6 @@
       "source_location": "L1305"
     },
     {
-      "id": "opencode_skills_hono_skill_netlify",
-      "label": "Netlify",
-      "_origin": "ast",
-      "community": 36,
-      "community_name": ".opencode/skills/hono/SKILL.md",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "netlify",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L5616"
-    },
-    {
       "id": "opencode_skills_hono_skill_other_resources",
       "label": "Other Resources",
       "_origin": "ast",
@@ -36549,6 +36636,18 @@
       "norm_label": "other resources",
       "source_file": ".opencode/skills/hono/SKILL.md",
       "source_location": "L1326"
+    },
+    {
+      "id": "opencode_skills_hono_skill_presets",
+      "label": "Presets",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": ".opencode/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "presets",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L7849"
     },
     {
       "id": "opencode_skills_hono_skill_request_and_response",
@@ -36597,6 +36696,18 @@
       "norm_label": "testing",
       "source_file": ".opencode/skills/hono/SKILL.md",
       "source_location": "L2225"
+    },
+    {
+      "id": "opencode_skills_hono_skill_which_preset_should_i_use",
+      "label": "Which preset should I use?",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": ".opencode/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "which preset should i use?",
+      "source_file": ".opencode/skills/hono/SKILL.md",
+      "source_location": "L7904"
     },
     {
       "id": "opencode_skills_software_engineer_api_and_interface_design_skill",
@@ -37511,26 +37622,26 @@
       "source_location": "L73"
     },
     {
-      "id": "promises",
-      "label": "node:fs/promises",
+      "id": "packages_core_src_data_schemas_taxonomyschema",
+      "label": "taxonomySchema",
       "_origin": "ast",
       "community": 4,
       "community_name": "media/index.ts",
-      "confidence": "EXTRACTED",
       "file_type": "code",
-      "norm_label": "node:fs/promises",
-      "source_file": "node:fs/promises"
+      "norm_label": "taxonomyschema",
+      "source_file": "packages/core/src/data/schemas.ts",
+      "source_location": "L79"
     },
     {
-      "id": "packages_core_src_comments_index",
-      "label": "comments/index.ts",
+      "id": "packages_core_src_data_schemas_taxonomytermschema",
+      "label": "taxonomyTermSchema",
       "_origin": "ast",
       "community": 4,
       "community_name": "media/index.ts",
       "file_type": "code",
-      "norm_label": "comments/index.ts",
-      "source_file": "packages/core/src/comments/index.ts",
-      "source_location": "L1"
+      "norm_label": "taxonomytermschema",
+      "source_file": "packages/core/src/data/schemas.ts",
+      "source_location": "L67"
     },
     {
       "id": "packages_core_src_data_store",
@@ -37632,83 +37743,6 @@
       "source_location": "L1"
     },
     {
-      "id": "packages_core_tests_integration_admin_modules_test",
-      "label": "admin-modules.test.ts",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "admin-modules.test.ts",
-      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_tests_integration_admin_modules_test_admin",
-      "label": "ADMIN",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "admin",
-      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
-      "source_location": "L15"
-    },
-    {
-      "id": "packages_core_tests_integration_admin_modules_test_h",
-      "label": "H",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "h",
-      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
-      "source_location": "L50"
-    },
-    {
-      "id": "packages_core_tests_integration_api_app_test",
-      "label": "api-app.test.ts",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "api-app.test.ts",
-      "source_file": "packages/core/tests/integration/api-app.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_tests_integration_api_app_test_all",
-      "label": "ALL",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "all",
-      "source_file": "packages/core/tests/integration/api-app.test.ts",
-      "source_location": "L16"
-    },
-    {
-      "id": "packages_core_tests_integration_api_app_test_h",
-      "label": "H",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "h",
-      "source_file": "packages/core/tests/integration/api-app.test.ts",
-      "source_location": "L43"
-    },
-    {
-      "id": "packages_core_tests_integration_api_app_test_reader",
-      "label": "READER",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "reader",
-      "source_file": "packages/core/tests/integration/api-app.test.ts",
-      "source_location": "L21"
-    },
-    {
       "id": "packages_core_tests_integration_api_tokens_test",
       "label": "api-tokens.test.ts",
       "_origin": "ast",
@@ -37729,94 +37763,6 @@
       "norm_label": "h",
       "source_file": "packages/core/tests/integration/api-tokens.test.ts",
       "source_location": "L15"
-    },
-    {
-      "id": "packages_core_tests_integration_comments_extra_test",
-      "label": "comments-extra.test.ts",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "comments-extra.test.ts",
-      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_tests_integration_comments_extra_test_h",
-      "label": "H",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "h",
-      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
-      "source_location": "L20"
-    },
-    {
-      "id": "packages_core_tests_integration_comments_extra_test_mod",
-      "label": "MOD",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "mod",
-      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
-      "source_location": "L15"
-    },
-    {
-      "id": "packages_core_tests_integration_media_api_test",
-      "label": "media-api.test.ts",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "media-api.test.ts",
-      "source_file": "packages/core/tests/integration/media-api.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_tests_integration_media_api_test_editor",
-      "label": "EDITOR",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "editor",
-      "source_file": "packages/core/tests/integration/media-api.test.ts",
-      "source_location": "L15"
-    },
-    {
-      "id": "packages_core_tests_integration_media_api_test_h",
-      "label": "H",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "h",
-      "source_file": "packages/core/tests/integration/media-api.test.ts",
-      "source_location": "L34"
-    },
-    {
-      "id": "packages_core_tests_integration_media_api_test_png",
-      "label": "PNG",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "png",
-      "source_file": "packages/core/tests/integration/media-api.test.ts",
-      "source_location": "L14"
-    },
-    {
-      "id": "packages_core_tests_integration_media_api_test_viewer",
-      "label": "VIEWER",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "viewer",
-      "source_file": "packages/core/tests/integration/media-api.test.ts",
-      "source_location": "L16"
     },
     {
       "id": "packages_core_tests_integration_media_lifecycle_test",
@@ -37852,70 +37798,37 @@
       "source_location": "L16"
     },
     {
-      "id": "packages_core_tests_integration_permission_matrix_test",
-      "label": "permission-matrix.test.ts",
+      "id": "packages_core_tests_integration_taxonomies_test",
+      "label": "taxonomies.test.ts",
       "_origin": "ast",
       "community": 4,
       "community_name": "media/index.ts",
       "file_type": "code",
-      "norm_label": "permission-matrix.test.ts",
-      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
+      "norm_label": "taxonomies.test.ts",
+      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
       "source_location": "L1"
     },
     {
-      "id": "packages_core_tests_integration_permission_matrix_test_h",
+      "id": "packages_core_tests_integration_taxonomies_test_base",
+      "label": "base",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "media/index.ts",
+      "file_type": "code",
+      "norm_label": "base",
+      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
+      "source_location": "L77"
+    },
+    {
+      "id": "packages_core_tests_integration_taxonomies_test_h",
       "label": "H",
       "_origin": "ast",
       "community": 4,
       "community_name": "media/index.ts",
       "file_type": "code",
       "norm_label": "h",
-      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
-      "source_location": "L39"
-    },
-    {
-      "id": "packages_core_tests_integration_permission_matrix_test_open",
-      "label": "OPEN",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "open",
-      "source_file": "packages/core/tests/integration/permission-matrix.test.ts",
+      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
       "source_location": "L17"
-    },
-    {
-      "id": "packages_core_tests_integration_revisions_test",
-      "label": "revisions.test.ts",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "revisions.test.ts",
-      "source_file": "packages/core/tests/integration/revisions.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_tests_integration_revisions_test_h",
-      "label": "H",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "h",
-      "source_file": "packages/core/tests/integration/revisions.test.ts",
-      "source_location": "L19"
-    },
-    {
-      "id": "packages_core_tests_integration_revisions_test_user",
-      "label": "USER",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "user",
-      "source_file": "packages/core/tests/integration/revisions.test.ts",
-      "source_location": "L18"
     },
     {
       "id": "packages_core_tests_integration_wordpress_import_test",
@@ -37949,17 +37862,6 @@
       "norm_label": "png",
       "source_file": "packages/core/tests/integration/wordpress-import.test.ts",
       "source_location": "L19"
-    },
-    {
-      "id": "packages_core_tests_perf_large_collection_test",
-      "label": "large-collection.test.ts",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "media/index.ts",
-      "file_type": "code",
-      "norm_label": "large-collection.test.ts",
-      "source_file": "packages/core/tests/perf/large-collection.test.ts",
-      "source_location": "L1"
     },
     {
       "id": "packages_core_tests_unit_media_detect_test",
@@ -41066,7 +40968,7 @@
       "file_type": "code",
       "norm_label": "audit",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L340"
+      "source_location": "L341"
     },
     {
       "id": "packages_admin_src_routes_router_bylines",
@@ -41077,7 +40979,7 @@
       "file_type": "code",
       "norm_label": "bylines",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L330"
+      "source_location": "L331"
     },
     {
       "id": "packages_admin_src_routes_router_bylineschema",
@@ -41088,7 +40990,7 @@
       "file_type": "code",
       "norm_label": "bylineschema",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L331"
+      "source_location": "L332"
     },
     {
       "id": "packages_admin_src_routes_router_calendar",
@@ -41099,7 +41001,7 @@
       "file_type": "code",
       "norm_label": "calendar",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L318"
+      "source_location": "L319"
     },
     {
       "id": "packages_admin_src_routes_router_comments",
@@ -41110,7 +41012,7 @@
       "file_type": "code",
       "norm_label": "comments",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L324"
+      "source_location": "L325"
     },
     {
       "id": "packages_admin_src_routes_router_contenttypes",
@@ -41121,7 +41023,7 @@
       "file_type": "code",
       "norm_label": "contenttypes",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L332"
+      "source_location": "L333"
     },
     {
       "id": "packages_admin_src_routes_router_editor",
@@ -41132,7 +41034,7 @@
       "file_type": "code",
       "norm_label": "editor",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L322"
+      "source_location": "L323"
     },
     {
       "id": "packages_admin_src_routes_router_entries",
@@ -41143,7 +41045,7 @@
       "file_type": "code",
       "norm_label": "entries",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L319"
+      "source_location": "L320"
     },
     {
       "id": "packages_admin_src_routes_router_importpage",
@@ -41154,7 +41056,7 @@
       "file_type": "code",
       "norm_label": "importpage",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L336"
+      "source_location": "L337"
     },
     {
       "id": "packages_admin_src_routes_router_index",
@@ -41165,7 +41067,7 @@
       "file_type": "code",
       "norm_label": "index",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L317"
+      "source_location": "L318"
     },
     {
       "id": "packages_admin_src_routes_router_media",
@@ -41176,7 +41078,7 @@
       "file_type": "code",
       "norm_label": "media",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L323"
+      "source_location": "L324"
     },
     {
       "id": "packages_admin_src_routes_router_menus",
@@ -41187,7 +41089,7 @@
       "file_type": "code",
       "norm_label": "menus",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L325"
+      "source_location": "L326"
     },
     {
       "id": "packages_admin_src_routes_router_pluginpage",
@@ -41198,7 +41100,7 @@
       "file_type": "code",
       "norm_label": "pluginpage",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L334"
+      "source_location": "L335"
     },
     {
       "id": "packages_admin_src_routes_router_plugins",
@@ -41209,7 +41111,7 @@
       "file_type": "code",
       "norm_label": "plugins",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L335"
+      "source_location": "L336"
     },
     {
       "id": "packages_admin_src_routes_router_redirects",
@@ -41220,7 +41122,7 @@
       "file_type": "code",
       "norm_label": "redirects",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L326"
+      "source_location": "L327"
     },
     {
       "id": "packages_admin_src_routes_router_root",
@@ -41231,7 +41133,7 @@
       "file_type": "code",
       "norm_label": "root",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L316"
+      "source_location": "L317"
     },
     {
       "id": "packages_admin_src_routes_router_router",
@@ -41242,7 +41144,7 @@
       "file_type": "code",
       "norm_label": "router",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L348"
+      "source_location": "L349"
     },
     {
       "id": "packages_admin_src_routes_router_sections",
@@ -41253,7 +41155,7 @@
       "file_type": "code",
       "norm_label": "sections",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L328"
+      "source_location": "L329"
     },
     {
       "id": "packages_admin_src_routes_router_security",
@@ -41264,7 +41166,7 @@
       "file_type": "code",
       "norm_label": "security",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L346"
+      "source_location": "L347"
     },
     {
       "id": "packages_admin_src_routes_router_settings",
@@ -41275,7 +41177,7 @@
       "file_type": "code",
       "norm_label": "settings",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L338"
+      "source_location": "L339"
     },
     {
       "id": "packages_admin_src_routes_router_tanstack_react_router",
@@ -41286,7 +41188,7 @@
       "file_type": "code",
       "norm_label": "@tanstack/react-router",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L380"
+      "source_location": "L381"
     },
     {
       "id": "packages_admin_src_routes_router_taxonomies",
@@ -41297,7 +41199,7 @@
       "file_type": "code",
       "norm_label": "taxonomies",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L329"
+      "source_location": "L330"
     },
     {
       "id": "packages_admin_src_routes_router_themes",
@@ -41308,7 +41210,7 @@
       "file_type": "code",
       "norm_label": "themes",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L339"
+      "source_location": "L340"
     },
     {
       "id": "packages_admin_src_routes_router_transfer",
@@ -41319,7 +41221,7 @@
       "file_type": "code",
       "norm_label": "transfer",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L341"
+      "source_location": "L342"
     },
     {
       "id": "packages_admin_src_routes_router_translations",
@@ -41330,7 +41232,7 @@
       "file_type": "code",
       "norm_label": "translations",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L320"
+      "source_location": "L321"
     },
     {
       "id": "packages_admin_src_routes_router_trash",
@@ -41341,7 +41243,7 @@
       "file_type": "code",
       "norm_label": "trash",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L321"
+      "source_location": "L322"
     },
     {
       "id": "packages_admin_src_routes_router_users",
@@ -41352,7 +41254,7 @@
       "file_type": "code",
       "norm_label": "users",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L333"
+      "source_location": "L334"
     },
     {
       "id": "packages_admin_src_routes_router_webhooks",
@@ -41363,7 +41265,7 @@
       "file_type": "code",
       "norm_label": "webhooks",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L337"
+      "source_location": "L338"
     },
     {
       "id": "packages_admin_src_routes_router_widgets",
@@ -41374,7 +41276,7 @@
       "file_type": "code",
       "norm_label": "widgets",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L327"
+      "source_location": "L328"
     },
     {
       "id": "opencode_skills_software_engineer_frontend_ui_engineering_skill",
@@ -41889,17 +41791,6 @@
       "source_location": "L1"
     },
     {
-      "id": "packages_core_src_data_schemas_taxonomyschema",
-      "label": "taxonomySchema",
-      "_origin": "ast",
-      "community": 51,
-      "community_name": "app.ts",
-      "file_type": "code",
-      "norm_label": "taxonomyschema",
-      "source_file": "packages/core/src/data/schemas.ts",
-      "source_location": "L79"
-    },
-    {
       "id": "packages_core_src_publishing_index",
       "label": "publishing/index.ts",
       "_origin": "ast",
@@ -41922,37 +41813,37 @@
       "source_location": "L1"
     },
     {
-      "id": "packages_core_tests_integration_taxonomies_test",
-      "label": "taxonomies.test.ts",
+      "id": "packages_core_tests_integration_revisions_test",
+      "label": "revisions.test.ts",
       "_origin": "ast",
       "community": 51,
       "community_name": "app.ts",
       "file_type": "code",
-      "norm_label": "taxonomies.test.ts",
-      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
+      "norm_label": "revisions.test.ts",
+      "source_file": "packages/core/tests/integration/revisions.test.ts",
       "source_location": "L1"
     },
     {
-      "id": "packages_core_tests_integration_taxonomies_test_base",
-      "label": "base",
-      "_origin": "ast",
-      "community": 51,
-      "community_name": "app.ts",
-      "file_type": "code",
-      "norm_label": "base",
-      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
-      "source_location": "L77"
-    },
-    {
-      "id": "packages_core_tests_integration_taxonomies_test_h",
+      "id": "packages_core_tests_integration_revisions_test_h",
       "label": "H",
       "_origin": "ast",
       "community": 51,
       "community_name": "app.ts",
       "file_type": "code",
       "norm_label": "h",
-      "source_file": "packages/core/tests/integration/taxonomies.test.ts",
-      "source_location": "L17"
+      "source_file": "packages/core/tests/integration/revisions.test.ts",
+      "source_location": "L19"
+    },
+    {
+      "id": "packages_core_tests_integration_revisions_test_user",
+      "label": "USER",
+      "_origin": "ast",
+      "community": 51,
+      "community_name": "app.ts",
+      "file_type": "code",
+      "norm_label": "user",
+      "source_file": "packages/core/tests/integration/revisions.test.ts",
+      "source_location": "L18"
     },
     {
       "id": "packages_core_tests_unit_list_query_test",
@@ -42011,19 +41902,7 @@
       "source_location": "L1"
     },
     {
-      "id": "claude_skills_hono_skill_1_install_cli",
-      "label": "1. Install CLI",
-      "_origin": "ast",
-      "community": 52,
-      "community_name": ".claude/skills/hono/SKILL.md",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. install cli",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L3160"
-    },
-    {
-      "id": "claude_skills_hono_skill_1_setup_5622",
+      "id": "claude_skills_hono_skill_1_setup",
       "label": "1. Setup",
       "_origin": "ast",
       "community": 52,
@@ -42032,10 +41911,34 @@
       "node_kind": "heading",
       "norm_label": "1. setup",
       "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L5622"
+      "source_location": "L2809"
     },
     {
-      "id": "claude_skills_hono_skill_2_hello_world_5654",
+      "id": "claude_skills_hono_skill_1_setup_5458",
+      "label": "1. Setup",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": ".claude/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. setup",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L5458"
+    },
+    {
+      "id": "claude_skills_hono_skill_1_setup_6502",
+      "label": "1. Setup",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": ".claude/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. setup",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L6502"
+    },
+    {
+      "id": "claude_skills_hono_skill_2_hello_world",
       "label": "2. Hello World",
       "_origin": "ast",
       "community": 52,
@@ -42044,34 +41947,46 @@
       "node_kind": "heading",
       "norm_label": "2. hello world",
       "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L5654"
+      "source_location": "L2851"
     },
     {
-      "id": "claude_skills_hono_skill_2_setup",
-      "label": "2. Setup",
+      "id": "claude_skills_hono_skill_2_hello_world_5502",
+      "label": "2. Hello World",
       "_origin": "ast",
       "community": 52,
       "community_name": ".claude/skills/hono/SKILL.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "2. setup",
+      "norm_label": "2. hello world",
       "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L3175"
+      "source_location": "L5502"
     },
     {
-      "id": "claude_skills_hono_skill_3_hello_world",
-      "label": "3. Hello World",
+      "id": "claude_skills_hono_skill_2_hello_world_6560",
+      "label": "2. Hello World",
       "_origin": "ast",
       "community": 52,
       "community_name": ".claude/skills/hono/SKILL.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "3. hello world",
+      "norm_label": "2. hello world",
       "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L3219"
+      "source_location": "L6560"
     },
     {
-      "id": "claude_skills_hono_skill_3_run_5671",
+      "id": "claude_skills_hono_skill_3_deploy_5517",
+      "label": "3. Deploy",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": ".claude/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. deploy",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L5517"
+    },
+    {
+      "id": "claude_skills_hono_skill_3_run_6583",
       "label": "3. Run",
       "_origin": "ast",
       "community": 52,
@@ -42080,10 +41995,22 @@
       "node_kind": "heading",
       "norm_label": "3. run",
       "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L5671"
+      "source_location": "L6583"
     },
     {
-      "id": "claude_skills_hono_skill_4_deploy_5679",
+      "id": "claude_skills_hono_skill_3_setup_serverless_devs",
+      "label": "3. Setup serverless-devs",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": ".claude/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. setup serverless-devs",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L2866"
+    },
+    {
+      "id": "claude_skills_hono_skill_4_deploy",
       "label": "4. Deploy",
       "_origin": "ast",
       "community": 52,
@@ -42092,31 +42019,31 @@
       "node_kind": "heading",
       "norm_label": "4. deploy",
       "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L5679"
+      "source_location": "L2913"
     },
     {
-      "id": "claude_skills_hono_skill_4_run",
-      "label": "4. Run",
+      "id": "claude_skills_hono_skill_4_deploy_6593",
+      "label": "4. Deploy",
       "_origin": "ast",
       "community": 52,
       "community_name": ".claude/skills/hono/SKILL.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "4. run",
+      "norm_label": "4. deploy",
       "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L3255"
+      "source_location": "L6593"
     },
     {
-      "id": "claude_skills_hono_skill_5_deploy",
-      "label": "5. Deploy",
+      "id": "claude_skills_hono_skill_alibaba_cloud_function_compute",
+      "label": "Alibaba Cloud Function Compute",
       "_origin": "ast",
       "community": 52,
       "community_name": ".claude/skills/hono/SKILL.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "5. deploy",
+      "norm_label": "alibaba cloud function compute",
       "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L3279"
+      "source_location": "L2803"
     },
     {
       "id": "claude_skills_hono_skill_api",
@@ -42131,28 +42058,16 @@
       "source_location": "L7835"
     },
     {
-      "id": "claude_skills_hono_skill_azure_functions",
-      "label": "Azure Functions",
+      "id": "claude_skills_hono_skill_callback",
+      "label": "Callback",
       "_origin": "ast",
       "community": 52,
       "community_name": ".claude/skills/hono/SKILL.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "azure functions",
+      "norm_label": "callback",
       "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L3152"
-    },
-    {
-      "id": "claude_skills_hono_skill_context_5687",
-      "label": "`Context`",
-      "_origin": "ast",
-      "community": 52,
-      "community_name": ".claude/skills/hono/SKILL.md",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "`context`",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L5687"
+      "source_location": "L5582"
     },
     {
       "id": "claude_skills_hono_skill_contributing",
@@ -42203,6 +42118,18 @@
       "source_location": "L529"
     },
     {
+      "id": "claude_skills_hono_skill_further_reading",
+      "label": "Further reading",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": ".claude/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "further reading",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L6601"
+    },
+    {
       "id": "claude_skills_hono_skill_is_there_an_official_renovate_config_for_hono",
       "label": "Is there an official Renovate config for Hono?",
       "_origin": "ast",
@@ -42215,6 +42142,18 @@
       "source_location": "L533"
     },
     {
+      "id": "claude_skills_hono_skill_lambda_edge",
+      "label": "Lambda@Edge",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": ".claude/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "lambda@edge",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L5452"
+    },
+    {
       "id": "claude_skills_hono_skill_miscellaneous",
       "label": "Miscellaneous",
       "_origin": "ast",
@@ -42225,18 +42164,6 @@
       "norm_label": "miscellaneous",
       "source_file": ".claude/skills/hono/SKILL.md",
       "source_location": "L1305"
-    },
-    {
-      "id": "claude_skills_hono_skill_netlify",
-      "label": "Netlify",
-      "_origin": "ast",
-      "community": 52,
-      "community_name": ".claude/skills/hono/SKILL.md",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "netlify",
-      "source_file": ".claude/skills/hono/SKILL.md",
-      "source_location": "L5616"
     },
     {
       "id": "claude_skills_hono_skill_other_resources",
@@ -42297,6 +42224,18 @@
       "norm_label": "testing",
       "source_file": ".claude/skills/hono/SKILL.md",
       "source_location": "L2225"
+    },
+    {
+      "id": "claude_skills_hono_skill_vercel",
+      "label": "Vercel",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": ".claude/skills/hono/SKILL.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "vercel",
+      "source_file": ".claude/skills/hono/SKILL.md",
+      "source_location": "L6496"
     },
     {
       "id": "claude_skills_software_engineer_context_engineering_skill",
@@ -44091,17 +44030,6 @@
       "source_location": "L1"
     },
     {
-      "id": "packages_core_src_audit_index",
-      "label": "audit/index.ts",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "server.ts",
-      "file_type": "code",
-      "norm_label": "audit/index.ts",
-      "source_file": "packages/core/src/audit/index.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "packages_core_src_config_env",
       "label": "env.ts",
       "_origin": "ast",
@@ -44143,6 +44071,17 @@
       "file_type": "code",
       "norm_label": "config/session.ts",
       "source_file": "packages/core/src/config/session.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "packages_core_src_content_autosave",
+      "label": "autosave.ts",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "server.ts",
+      "file_type": "code",
+      "norm_label": "autosave.ts",
+      "source_file": "packages/core/src/content/autosave.ts",
       "source_location": "L1"
     },
     {
@@ -44220,17 +44159,6 @@
       "file_type": "code",
       "norm_label": "server.ts",
       "source_file": "packages/core/src/server.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "packages_core_tests_integration_audit_test",
-      "label": "audit.test.ts",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "server.ts",
-      "file_type": "code",
-      "norm_label": "audit.test.ts",
-      "source_file": "packages/core/tests/integration/audit.test.ts",
       "source_location": "L1"
     },
     {
@@ -48664,17 +48592,6 @@
       "source_location": "L12"
     },
     {
-      "id": "packages_core_src_content_autosave",
-      "label": "autosave.ts",
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "ContentService",
-      "file_type": "code",
-      "norm_label": "autosave.ts",
-      "source_file": "packages/core/src/content/autosave.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "packages_core_src_mdx_index",
       "label": "mdx/index.ts",
       "_origin": "ast",
@@ -48958,64 +48875,158 @@
       "source_location": "L7167"
     },
     {
-      "id": "opencode_skills_hono_skill_1_setup",
-      "label": "1. Setup",
+      "id": "promises",
+      "label": "node:fs/promises",
       "_origin": "ast",
       "community": 8,
-      "community_name": "Alibaba Cloud Function Compute",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. setup",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L2809"
+      "community_name": "CommentService",
+      "confidence": "EXTRACTED",
+      "file_type": "code",
+      "norm_label": "node:fs/promises",
+      "source_file": "node:fs/promises"
     },
     {
-      "id": "opencode_skills_hono_skill_2_hello_world",
-      "label": "2. Hello World",
+      "id": "packages_core_src_audit_index",
+      "label": "audit/index.ts",
       "_origin": "ast",
       "community": 8,
-      "community_name": "Alibaba Cloud Function Compute",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. hello world",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L2851"
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "audit/index.ts",
+      "source_file": "packages/core/src/audit/index.ts",
+      "source_location": "L1"
     },
     {
-      "id": "opencode_skills_hono_skill_3_setup_serverless_devs",
-      "label": "3. Setup serverless-devs",
+      "id": "packages_core_src_comments_index",
+      "label": "comments/index.ts",
       "_origin": "ast",
       "community": 8,
-      "community_name": "Alibaba Cloud Function Compute",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. setup serverless-devs",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L2866"
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "comments/index.ts",
+      "source_file": "packages/core/src/comments/index.ts",
+      "source_location": "L1"
     },
     {
-      "id": "opencode_skills_hono_skill_4_deploy",
-      "label": "4. Deploy",
+      "id": "packages_core_tests_integration_admin_modules_test",
+      "label": "admin-modules.test.ts",
       "_origin": "ast",
       "community": 8,
-      "community_name": "Alibaba Cloud Function Compute",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "4. deploy",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L2913"
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "admin-modules.test.ts",
+      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
+      "source_location": "L1"
     },
     {
-      "id": "opencode_skills_hono_skill_alibaba_cloud_function_compute",
-      "label": "Alibaba Cloud Function Compute",
+      "id": "packages_core_tests_integration_admin_modules_test_admin",
+      "label": "ADMIN",
       "_origin": "ast",
       "community": 8,
-      "community_name": "Alibaba Cloud Function Compute",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "alibaba cloud function compute",
-      "source_file": ".opencode/skills/hono/SKILL.md",
-      "source_location": "L2803"
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "admin",
+      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
+      "source_location": "L15"
+    },
+    {
+      "id": "packages_core_tests_integration_admin_modules_test_h",
+      "label": "H",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "h",
+      "source_file": "packages/core/tests/integration/admin-modules.test.ts",
+      "source_location": "L50"
+    },
+    {
+      "id": "packages_core_tests_integration_api_app_test",
+      "label": "api-app.test.ts",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "api-app.test.ts",
+      "source_file": "packages/core/tests/integration/api-app.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "packages_core_tests_integration_api_app_test_all",
+      "label": "ALL",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "all",
+      "source_file": "packages/core/tests/integration/api-app.test.ts",
+      "source_location": "L16"
+    },
+    {
+      "id": "packages_core_tests_integration_api_app_test_h",
+      "label": "H",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "h",
+      "source_file": "packages/core/tests/integration/api-app.test.ts",
+      "source_location": "L43"
+    },
+    {
+      "id": "packages_core_tests_integration_api_app_test_reader",
+      "label": "READER",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "reader",
+      "source_file": "packages/core/tests/integration/api-app.test.ts",
+      "source_location": "L21"
+    },
+    {
+      "id": "packages_core_tests_integration_audit_test",
+      "label": "audit.test.ts",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "audit.test.ts",
+      "source_file": "packages/core/tests/integration/audit.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "packages_core_tests_integration_comments_extra_test",
+      "label": "comments-extra.test.ts",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "comments-extra.test.ts",
+      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "packages_core_tests_integration_comments_extra_test_h",
+      "label": "H",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "h",
+      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
+      "source_location": "L20"
+    },
+    {
+      "id": "packages_core_tests_integration_comments_extra_test_mod",
+      "label": "MOD",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "CommentService",
+      "file_type": "code",
+      "norm_label": "mod",
+      "source_file": "packages/core/tests/integration/comments-extra.test.ts",
+      "source_location": "L15"
     },
     {
       "id": "claude_skills_software_engineer_planning_and_task_breakdown_skill",
@@ -51198,17 +51209,6 @@
       "source_location": "L140"
     },
     {
-      "id": "packages_core_src_data_schemas_taxonomytermschema",
-      "label": "taxonomyTermSchema",
-      "_origin": "ast",
-      "community": 89,
-      "community_name": "core/src/index.ts",
-      "file_type": "code",
-      "norm_label": "taxonomytermschema",
-      "source_file": "packages/core/src/data/schemas.ts",
-      "source_location": "L67"
-    },
-    {
       "id": "packages_core_src_data_schemas_themeschema",
       "label": "themeSchema",
       "_origin": "ast",
@@ -51382,7 +51382,7 @@
       "file_type": "code",
       "norm_label": "types",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L52"
+      "source_location": "L43"
     },
     {
       "id": "packages_admin_src_components_media_mediapage_variants",
@@ -51393,7 +51393,7 @@
       "file_type": "code",
       "norm_label": "variants",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L53"
+      "source_location": "L44"
     },
     {
       "id": "packages_admin_src_lib_webp",
@@ -54616,19 +54616,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L69",
-      "weight": 1.0
-    },
-    {
-      "source": "packages_admin_src_components_media_mediapage_mediapage",
-      "target": "packages_admin_src_stores_content_loadmedia",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L107",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -54640,7 +54628,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L142",
+      "source_location": "L133",
       "weight": 1.0
     },
     {
@@ -54652,7 +54640,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L162",
+      "source_location": "L158",
       "weight": 1.0
     },
     {
@@ -54664,7 +54652,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L174",
+      "source_location": "L170",
       "weight": 1.0
     },
     {
@@ -54676,7 +54664,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L186",
+      "source_location": "L182",
       "weight": 1.0
     },
     {
@@ -54688,7 +54676,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L187",
+      "source_location": "L183",
       "weight": 1.0
     },
     {
@@ -54700,7 +54688,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L197",
+      "source_location": "L193",
       "weight": 1.0
     },
     {
@@ -54712,7 +54700,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L216",
+      "source_location": "L212",
       "weight": 1.0
     },
     {
@@ -54724,7 +54712,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L228",
+      "source_location": "L224",
       "weight": 1.0
     },
     {
@@ -54736,7 +54724,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L228",
+      "source_location": "L224",
       "weight": 1.0
     },
     {
@@ -54748,7 +54736,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L229",
+      "source_location": "L225",
       "weight": 1.0
     },
     {
@@ -54760,7 +54748,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L271",
+      "source_location": "L267",
       "weight": 1.0
     },
     {
@@ -54772,19 +54760,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L273",
-      "weight": 1.0
-    },
-    {
-      "source": "packages_admin_src_components_media_mediapage_mediapage",
-      "target": "packages_admin_src_stores_content_deleteunusedmedia",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L308",
+      "source_location": "L269",
       "weight": 1.0
     },
     {
@@ -54796,7 +54772,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L398",
+      "source_location": "L425",
       "weight": 1.0
     },
     {
@@ -54808,7 +54784,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L412",
+      "source_location": "L439",
+      "weight": 1.0
+    },
+    {
+      "source": "packages_admin_src_components_media_mediapage_mediapage",
+      "target": "packages_admin_src_stores_content_deleteunusedmedia",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "packages/admin/src/components/media/MediaPage.tsx",
+      "source_location": "L549",
       "weight": 1.0
     },
     {
@@ -54820,7 +54808,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L557",
+      "source_location": "L642",
       "weight": 1.0
     },
     {
@@ -54832,7 +54820,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L570",
+      "source_location": "L655",
       "weight": 1.0
     },
     {
@@ -54844,7 +54832,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L690",
+      "source_location": "L775",
       "weight": 1.0
     },
     {
@@ -54856,7 +54844,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L783",
+      "source_location": "L848",
       "weight": 1.0
     },
     {
@@ -54868,7 +54856,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L94",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "packages_admin_src_components_media_mediapage_mediapage",
+      "target": "packages_admin_src_stores_content_loadmedia",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "packages/admin/src/components/media/MediaPage.tsx",
+      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -54880,7 +54880,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L76",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -56188,7 +56188,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L103",
+      "source_location": "L104",
       "weight": 1.0
     },
     {
@@ -56200,7 +56200,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L136",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -56212,7 +56212,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L301",
+      "source_location": "L302",
       "weight": 1.0
     },
     {
@@ -68093,7 +68093,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L19",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -68105,7 +68105,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L19",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -68117,7 +68117,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L20",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -68129,7 +68129,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L21",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -68141,7 +68141,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L21",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -68153,7 +68153,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -68165,7 +68165,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -68177,7 +68177,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -68189,7 +68189,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -68201,7 +68201,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -68213,7 +68213,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -68225,7 +68225,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -68237,7 +68237,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -68249,7 +68249,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -68261,7 +68261,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -68273,7 +68273,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -68285,19 +68285,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L35",
-      "weight": 1.0
-    },
-    {
-      "source": "packages_admin_src_components_media_mediapage",
-      "target": "packages_admin_src_components_ui_pagination_datapagination",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -68309,7 +68297,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -68321,7 +68309,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -68333,7 +68321,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -68345,7 +68333,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -68357,19 +68345,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L35",
-      "weight": 1.0
-    },
-    {
-      "source": "packages_admin_src_components_media_mediapage",
-      "target": "packages_admin_src_ui_index_pageheader",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -68381,7 +68357,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -68393,7 +68369,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -68405,7 +68381,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L47",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -68417,7 +68393,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L48",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -68429,7 +68405,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L48",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -68441,7 +68417,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L48",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -68453,7 +68429,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L48",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -68465,7 +68441,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L49",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -81490,7 +81466,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L19",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -81502,7 +81478,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L20",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -81514,7 +81490,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L21",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -81526,7 +81502,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -81538,7 +81514,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -81550,7 +81526,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L47",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -81562,7 +81538,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L48",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -81574,7 +81550,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L49",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -118270,7 +118246,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L52",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -118281,7 +118257,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L53",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -118292,7 +118268,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L60",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -118303,7 +118279,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L61",
+      "source_location": "L52",
       "weight": 1.0
     },
     {
@@ -118314,7 +118290,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L62",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
@@ -118325,7 +118301,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L63",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -118336,7 +118312,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L67",
+      "source_location": "L58",
       "weight": 1.0
     },
     {
@@ -118347,7 +118323,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L68",
+      "source_location": "L59",
       "weight": 1.0
     },
     {
@@ -118358,7 +118334,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L75",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -118369,7 +118345,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/media/MediaPage.tsx",
-      "source_location": "L81",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -120415,7 +120391,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L316",
+      "source_location": "L317",
       "weight": 1.0
     },
     {
@@ -120426,7 +120402,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L317",
+      "source_location": "L318",
       "weight": 1.0
     },
     {
@@ -120437,7 +120413,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L318",
+      "source_location": "L319",
       "weight": 1.0
     },
     {
@@ -120448,7 +120424,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L319",
+      "source_location": "L320",
       "weight": 1.0
     },
     {
@@ -120459,7 +120435,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L320",
+      "source_location": "L321",
       "weight": 1.0
     },
     {
@@ -120470,7 +120446,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L321",
+      "source_location": "L322",
       "weight": 1.0
     },
     {
@@ -120481,7 +120457,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L322",
+      "source_location": "L323",
       "weight": 1.0
     },
     {
@@ -120492,7 +120468,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L323",
+      "source_location": "L324",
       "weight": 1.0
     },
     {
@@ -120503,7 +120479,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L324",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -120514,7 +120490,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L325",
+      "source_location": "L326",
       "weight": 1.0
     },
     {
@@ -120525,7 +120501,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L326",
+      "source_location": "L327",
       "weight": 1.0
     },
     {
@@ -120536,7 +120512,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L327",
+      "source_location": "L328",
       "weight": 1.0
     },
     {
@@ -120547,7 +120523,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L328",
+      "source_location": "L329",
       "weight": 1.0
     },
     {
@@ -120558,7 +120534,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L329",
+      "source_location": "L330",
       "weight": 1.0
     },
     {
@@ -120569,7 +120545,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L330",
+      "source_location": "L331",
       "weight": 1.0
     },
     {
@@ -120580,7 +120556,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L331",
+      "source_location": "L332",
       "weight": 1.0
     },
     {
@@ -120591,7 +120567,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L332",
+      "source_location": "L333",
       "weight": 1.0
     },
     {
@@ -120602,7 +120578,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L333",
+      "source_location": "L334",
       "weight": 1.0
     },
     {
@@ -120613,7 +120589,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L334",
+      "source_location": "L335",
       "weight": 1.0
     },
     {
@@ -120624,7 +120600,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L335",
+      "source_location": "L336",
       "weight": 1.0
     },
     {
@@ -120635,7 +120611,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L336",
+      "source_location": "L337",
       "weight": 1.0
     },
     {
@@ -120646,7 +120622,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L337",
+      "source_location": "L338",
       "weight": 1.0
     },
     {
@@ -120657,7 +120633,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L338",
+      "source_location": "L339",
       "weight": 1.0
     },
     {
@@ -120668,7 +120644,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L339",
+      "source_location": "L340",
       "weight": 1.0
     },
     {
@@ -120679,7 +120655,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L340",
+      "source_location": "L341",
       "weight": 1.0
     },
     {
@@ -120690,7 +120666,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L341",
+      "source_location": "L342",
       "weight": 1.0
     },
     {
@@ -120701,7 +120677,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L346",
+      "source_location": "L347",
       "weight": 1.0
     },
     {
@@ -120712,7 +120688,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L348",
+      "source_location": "L349",
       "weight": 1.0
     },
     {
@@ -120723,7 +120699,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L380",
+      "source_location": "L381",
       "weight": 1.0
     },
     {
@@ -120734,7 +120710,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L381",
+      "source_location": "L382",
       "weight": 1.0
     },
     {
@@ -135764,7 +135740,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L316",
+      "source_location": "L317",
       "weight": 1.0
     },
     {
@@ -135776,7 +135752,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L317",
+      "source_location": "L318",
       "weight": 1.0
     },
     {
@@ -135788,7 +135764,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L318",
+      "source_location": "L319",
       "weight": 1.0
     },
     {
@@ -135800,7 +135776,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L319",
+      "source_location": "L320",
       "weight": 1.0
     },
     {
@@ -135812,7 +135788,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L320",
+      "source_location": "L321",
       "weight": 1.0
     },
     {
@@ -135824,7 +135800,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L321",
+      "source_location": "L322",
       "weight": 1.0
     },
     {
@@ -135836,7 +135812,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L322",
+      "source_location": "L323",
       "weight": 1.0
     },
     {
@@ -135848,7 +135824,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L323",
+      "source_location": "L324",
       "weight": 1.0
     },
     {
@@ -135860,7 +135836,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L324",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -135872,7 +135848,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L325",
+      "source_location": "L326",
       "weight": 1.0
     },
     {
@@ -135884,7 +135860,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L326",
+      "source_location": "L327",
       "weight": 1.0
     },
     {
@@ -135896,7 +135872,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L327",
+      "source_location": "L328",
       "weight": 1.0
     },
     {
@@ -135908,7 +135884,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L328",
+      "source_location": "L329",
       "weight": 1.0
     },
     {
@@ -135920,7 +135896,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L329",
+      "source_location": "L330",
       "weight": 1.0
     },
     {
@@ -135932,7 +135908,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L330",
+      "source_location": "L331",
       "weight": 1.0
     },
     {
@@ -135944,7 +135920,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L331",
+      "source_location": "L332",
       "weight": 1.0
     },
     {
@@ -135956,7 +135932,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L332",
+      "source_location": "L333",
       "weight": 1.0
     },
     {
@@ -135968,7 +135944,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L333",
+      "source_location": "L334",
       "weight": 1.0
     },
     {
@@ -135980,7 +135956,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L334",
+      "source_location": "L335",
       "weight": 1.0
     },
     {
@@ -135992,7 +135968,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L335",
+      "source_location": "L336",
       "weight": 1.0
     },
     {
@@ -136004,7 +135980,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L336",
+      "source_location": "L337",
       "weight": 1.0
     },
     {
@@ -136016,7 +135992,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L337",
+      "source_location": "L338",
       "weight": 1.0
     },
     {
@@ -136028,7 +136004,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L338",
+      "source_location": "L339",
       "weight": 1.0
     },
     {
@@ -136040,7 +136016,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L339",
+      "source_location": "L340",
       "weight": 1.0
     },
     {
@@ -136052,7 +136028,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L340",
+      "source_location": "L341",
       "weight": 1.0
     },
     {
@@ -136064,7 +136040,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L341",
+      "source_location": "L342",
       "weight": 1.0
     },
     {
@@ -136076,7 +136052,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L346",
+      "source_location": "L347",
       "weight": 1.0
     },
     {
@@ -136129,5 +136105,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "c7f0c82606e2c9b7b63c79dd20feb7cd981bf395"
+  "built_at_commit": "6528e7e76b1fff2fc053bdad3ac5a7d1eab046c9"
 }
