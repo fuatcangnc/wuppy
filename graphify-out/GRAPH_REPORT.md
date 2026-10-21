@@ -1,16 +1,16 @@
 # Graph Report - wuppy  (2026-10-21)
 
 ## Corpus Check
-- 405 files · ~333,122 words
+- 404 files · ~333,154 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4483 nodes · 7242 edges · 298 communities (256 shown, 22 thin omitted)
+- 4482 nodes · 7242 edges · 297 communities (256 shown, 22 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 86 edges (avg confidence: 0.83)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c14b0199`
+- Built from commit: `eb53a524`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -321,7 +321,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (298 total, 22 thin omitted)
+## Communities (297 total, 22 thin omitted)
 
 ### Community 0 - "index.tsx"
 Cohesion: 0.06
@@ -1349,7 +1349,7 @@ Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, Bindings, Fastly Compute
 
 ## Knowledge Gaps
 - **2474 isolated node(s):** `$schema`, `changelog`, `commit`, `access`, `baseBranch` (+2469 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2739 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2738 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **22 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
@@ -1358,9 +1358,9 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `vitest` connect `vitest` to `EditorPage.tsx`, `FilesystemContent`, `**/.astro/**`, `job.ts`, `oauth.ts`, `PluginsPage.tsx`, `ContentTypesPage.tsx`, `media/index.ts`, `auth/src/index.ts`, `taxonomies.test.ts`, `lib/api.ts`, `MenusPage.tsx`, `MediaPicker.tsx`, `host.ts`, `MarkdownEditor.tsx`, `media-page.test.tsx`, `content-types/index.ts`, `loader.ts`, `cli.ts`, `app.ts`, `routes/api.ts`, `auth/src/config/index.ts`, `api-app.test.ts`, `server.ts`, `media-lifecycle.test.ts`, `CalendarPage.tsx`, `AuditLog`, `EntriesPage.tsx`, `Button`, `two-factor.test.ts`, `site/index.ts`, `ContentService`, `redirects/index.ts`, `ssrf.ts`, `core/src/index.ts`, `MenuItemsEditor.tsx`, `sanitize.ts`, `plugin-types/src/index.ts`, `core/src/config/index.ts`, `rules`, `seo/index.ts`, `passkey.ts`, `createServer`, `page-cache.test.ts`, `config/session.ts`, `EditorToolbar.tsx`, `apiData`?**
   _High betweenness centrality (0.094) - this node is a cross-community bridge._
 - **Why does `ContentService` connect `ContentService` to `job.ts`, `seo/index.ts`, `content-types/index.ts`, `taxonomies.test.ts`, `vitest`, `search/index.ts`, `app.ts`, `createServer`, `core/src/index.ts`, `api-app.test.ts`, `server.ts`, `media-lifecycle.test.ts`?**
-  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `apiData()` connect `apiData` to `CalendarPage.tsx`, `EditorPage.tsx`, `EntriesPage.tsx`, `router.tsx`, `ContentTypesPage.tsx`, `Button`, `MediaPage.tsx`, `PluginsPage.tsx`, `lib/api.ts`, `MenusPage.tsx`, `EditorToolbar.tsx`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **Are the 7 inferred relationships involving `createApp()` (e.g. with `csrf()` and `hardenHeaders()`) actually correct?**
   _`createApp()` has 7 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `changelog`, `commit` to the rest of the system?**
