@@ -246,7 +246,7 @@ function Shell() {
 		<div className="min-h-screen bg-background text-foreground">
 			<div className="flex min-h-screen">
 				<aside
-					className={`${mobileOpen ? "block" : "hidden"} w-64 shrink-0 border-e border-sidebar-border bg-sidebar p-3 text-sidebar-foreground lg:block`}
+					className={`${mobileOpen ? "block" : "hidden"} w-64 shrink-0 bg-sidebar p-3 text-sidebar-foreground lg:block`}
 				>
 					<div className="mb-4 flex items-center gap-2 px-2">
 						<span className="grid size-8 place-items-center rounded-ui bg-primary text-sm font-bold text-primary-foreground">
@@ -265,7 +265,7 @@ function Shell() {
 				</aside>
 
 				<div className="min-w-0 flex-1">
-					<header className="flex items-center justify-between gap-3 border-b border-border bg-background px-4 py-2">
+					<header className="flex items-center justify-between gap-3 bg-background px-4 py-2">
 						<div className="flex items-center gap-2">
 							<Button
 								variant="ghost"
