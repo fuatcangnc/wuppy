@@ -28,9 +28,9 @@ Kumo mavisi. Light `oklch(0.5772 0.2324 260)`, dark `oklch(0.5195 0.2324 260)`.
 
 | Token | Light | Dark | Kullanım |
 | --- | --- | --- | --- |
-| `--background` | `#ffffff` | `#101011` | Ana zemin |
+| `--background` | `#ffffff` | `#09090b` | Ana zemin |
 | `--foreground` | `#0a0a0a` | `#fafafa` | Ana metin |
-| `--card` | `#ffffff` | `#101011` | Kart/panel yüzeyi; ana zeminle aynı, kenarlıkla ayrışır |
+| `--card` | `#ffffff` | `#101011` | Kart/panel yüzeyi; ana zeminden bir ton açık |
 | `--popover` | `#ffffff` | `#171719` | Dialog, menü ve yüzen katmanlar |
 | `--card-foreground` | `#0a0a0a` | `#fafafa` | Kart metni |
 | `--muted` | `#f5f5f5` | `#1d1d20` | Sessiz zemin, skeleton, kod bloğu |
@@ -54,7 +54,7 @@ Kumo mavisi. Light `oklch(0.5772 0.2324 260)`, dark `oklch(0.5195 0.2324 260)`.
 
 | Token | Light | Dark |
 | --- | --- | --- |
-| `--sidebar` | `#fafafa` | `#101011` |
+| `--sidebar` | `transparent` | `transparent` |
 | `--sidebar-foreground` | `#0a0a0a` | `#fafafa` |
 | `--sidebar-accent` | `#f5f5f5` | `#171719` |
 | `--sidebar-border` | `#e5e5e5` | `white / 10%` |

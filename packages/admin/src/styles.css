@@ -30,7 +30,7 @@
 	--input: #e5e5e5;
 	--ring: #a1a1a1;
 
-	--sidebar: #fafafa;
+	--sidebar: transparent;
 	--sidebar-foreground: #0a0a0a;
 	--sidebar-accent: #f5f5f5;
 	--sidebar-border: #e5e5e5;
@@ -67,7 +67,7 @@
 .dark {
 	color-scheme: dark;
 	/* Base surface, raised panels and controls. */
-	--background: #101011;
+	--background: #09090b;
 	--foreground: #fafafa;
 	--card: #101011;
 	--card-foreground: #fafafa;
@@ -90,7 +90,7 @@
 	--input: rgb(255 255 255 / 0.14);
 	--ring: #52525b;
 
-	--sidebar: #101011;
+	--sidebar: transparent;
 	--sidebar-foreground: #fafafa;
 	--sidebar-accent: #171719;
 	--sidebar-border: rgb(255 255 255 / 0.1);
