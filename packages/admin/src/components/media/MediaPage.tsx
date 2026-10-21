@@ -455,7 +455,7 @@ export function MediaPage() {
 							</Button>
 							<Button
 								variant="secondary"
-								size="icon"
+								size="icon-sm"
 								style={{ borderRadius: "200px" }}
 								className="border-border bg-white text-[#101011] shadow-sm hover:bg-zinc-200!"
 								aria-label="Upload media"
