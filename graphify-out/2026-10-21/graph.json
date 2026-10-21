@@ -33307,7 +33307,7 @@
       "node_kind": "heading",
       "norm_label": "10. ikonlar",
       "source_file": "design-system.md",
-      "source_location": "L240"
+      "source_location": "L241"
     },
     {
       "id": "design_system_11_yerle\u015fim_ve_bo\u015fluk",
@@ -33319,7 +33319,7 @@
       "node_kind": "heading",
       "norm_label": "11. yerlesim ve bosluk",
       "source_file": "design-system.md",
-      "source_location": "L260"
+      "source_location": "L261"
     },
     {
       "id": "design_system_12_koyu_tema",
@@ -33331,7 +33331,7 @@
       "node_kind": "heading",
       "norm_label": "12. koyu tema",
       "source_file": "design-system.md",
-      "source_location": "L277"
+      "source_location": "L278"
     },
     {
       "id": "design_system_13_eri\u015filebilirlik_ve_etkile\u015fim",
@@ -33343,7 +33343,7 @@
       "node_kind": "heading",
       "norm_label": "13. erisilebilirlik ve etkilesim",
       "source_file": "design-system.md",
-      "source_location": "L288"
+      "source_location": "L289"
     },
     {
       "id": "design_system_14_bile\u015fen_envanteri",
@@ -33355,7 +33355,7 @@
       "node_kind": "heading",
       "norm_label": "14. bilesen envanteri",
       "source_file": "design-system.md",
-      "source_location": "L304"
+      "source_location": "L305"
     },
     {
       "id": "design_system_15_h\u0131zl\u0131_referans",
@@ -33367,7 +33367,7 @@
       "node_kind": "heading",
       "norm_label": "15. h\u0131zl\u0131 referans",
       "source_file": "design-system.md",
-      "source_location": "L322"
+      "source_location": "L323"
     },
     {
       "id": "design_system_1_renk_token_lar\u0131",
@@ -33391,7 +33391,7 @@
       "node_kind": "heading",
       "norm_label": "2. tipografi",
       "source_file": "design-system.md",
-      "source_location": "L69"
+      "source_location": "L70"
     },
     {
       "id": "design_system_3_yar\u0131\u00e7ap_radius",
@@ -33403,7 +33403,7 @@
       "node_kind": "heading",
       "norm_label": "3. yar\u0131cap (radius)",
       "source_file": "design-system.md",
-      "source_location": "L88"
+      "source_location": "L89"
     },
     {
       "id": "design_system_4_button",
@@ -33415,7 +33415,7 @@
       "node_kind": "heading",
       "norm_label": "4. button",
       "source_file": "design-system.md",
-      "source_location": "L109"
+      "source_location": "L110"
     },
     {
       "id": "design_system_5_input_textarea",
@@ -33427,7 +33427,7 @@
       "node_kind": "heading",
       "norm_label": "5. input / textarea",
       "source_file": "design-system.md",
-      "source_location": "L150"
+      "source_location": "L151"
     },
     {
       "id": "design_system_6_badge",
@@ -33439,7 +33439,7 @@
       "node_kind": "heading",
       "norm_label": "6. badge",
       "source_file": "design-system.md",
-      "source_location": "L180"
+      "source_location": "L181"
     },
     {
       "id": "design_system_7_tabs",
@@ -33451,7 +33451,7 @@
       "node_kind": "heading",
       "norm_label": "7. tabs",
       "source_file": "design-system.md",
-      "source_location": "L197"
+      "source_location": "L198"
     },
     {
       "id": "design_system_8_dialog",
@@ -33463,7 +33463,7 @@
       "node_kind": "heading",
       "norm_label": "8. dialog",
       "source_file": "design-system.md",
-      "source_location": "L212"
+      "source_location": "L213"
     },
     {
       "id": "design_system_9_di\u011fer_primitifler",
@@ -33475,7 +33475,7 @@
       "node_kind": "heading",
       "norm_label": "9. diger primitifler",
       "source_file": "design-system.md",
-      "source_location": "L226"
+      "source_location": "L227"
     },
     {
       "id": "design_system_boyutlar",
@@ -33487,7 +33487,7 @@
       "node_kind": "heading",
       "norm_label": "boyutlar",
       "source_file": "design-system.md",
-      "source_location": "L128"
+      "source_location": "L129"
     },
     {
       "id": "design_system_durum_ve_\u00e7izgiler",
@@ -33499,7 +33499,7 @@
       "node_kind": "heading",
       "norm_label": "durum ve cizgiler",
       "source_file": "design-system.md",
-      "source_location": "L43"
+      "source_location": "L44"
     },
     {
       "id": "design_system_form_kurallar\u0131",
@@ -33511,7 +33511,7 @@
       "node_kind": "heading",
       "norm_label": "form kurallar\u0131",
       "source_file": "design-system.md",
-      "source_location": "L172"
+      "source_location": "L173"
     },
     {
       "id": "design_system_grafikler",
@@ -33523,7 +33523,7 @@
       "node_kind": "heading",
       "norm_label": "grafikler",
       "source_file": "design-system.md",
-      "source_location": "L62"
+      "source_location": "L63"
     },
     {
       "id": "design_system_input_components_ui_input_tsx",
@@ -33535,7 +33535,7 @@
       "node_kind": "heading",
       "norm_label": "input (`components/ui/input.tsx`)",
       "source_file": "design-system.md",
-      "source_location": "L152"
+      "source_location": "L153"
     },
     {
       "id": "design_system_marka",
@@ -33559,7 +33559,7 @@
       "node_kind": "heading",
       "norm_label": "sidebar",
       "source_file": "design-system.md",
-      "source_location": "L52"
+      "source_location": "L53"
     },
     {
       "id": "design_system_textarea_components_ui_input_tsx",
@@ -33571,7 +33571,7 @@
       "node_kind": "heading",
       "norm_label": "textarea (`components/ui/input.tsx`)",
       "source_file": "design-system.md",
-      "source_location": "L165"
+      "source_location": "L166"
     },
     {
       "id": "design_system_varyantlar",
@@ -33583,7 +33583,7 @@
       "node_kind": "heading",
       "norm_label": "varyantlar",
       "source_file": "design-system.md",
-      "source_location": "L113"
+      "source_location": "L114"
     },
     {
       "id": "design_system_wuppy_design_system",
@@ -33619,7 +33619,7 @@
       "node_kind": "heading",
       "norm_label": "ornek",
       "source_file": "design-system.md",
-      "source_location": "L139"
+      "source_location": "L140"
     },
     {
       "id": "packages_admin_package_scripts",
@@ -103598,7 +103598,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -103609,7 +103609,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L52",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
@@ -103620,7 +103620,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L62",
+      "source_location": "L63",
       "weight": 1.0
     },
     {
@@ -103631,7 +103631,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L113",
+      "source_location": "L114",
       "weight": 1.0
     },
     {
@@ -103642,7 +103642,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L128",
+      "source_location": "L129",
       "weight": 1.0
     },
     {
@@ -103653,7 +103653,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L139",
+      "source_location": "L140",
       "weight": 1.0
     },
     {
@@ -103664,7 +103664,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L152",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -103675,7 +103675,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L165",
+      "source_location": "L166",
       "weight": 1.0
     },
     {
@@ -103686,7 +103686,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L172",
+      "source_location": "L173",
       "weight": 1.0
     },
     {
@@ -103697,7 +103697,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L109",
+      "source_location": "L110",
       "weight": 1.0
     },
     {
@@ -103708,7 +103708,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L150",
+      "source_location": "L151",
       "weight": 1.0
     },
     {
@@ -103730,7 +103730,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L180",
+      "source_location": "L181",
       "weight": 1.0
     },
     {
@@ -103741,7 +103741,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L197",
+      "source_location": "L198",
       "weight": 1.0
     },
     {
@@ -103752,7 +103752,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L212",
+      "source_location": "L213",
       "weight": 1.0
     },
     {
@@ -103763,7 +103763,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L226",
+      "source_location": "L227",
       "weight": 1.0
     },
     {
@@ -103774,7 +103774,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L240",
+      "source_location": "L241",
       "weight": 1.0
     },
     {
@@ -103785,7 +103785,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L260",
+      "source_location": "L261",
       "weight": 1.0
     },
     {
@@ -103796,7 +103796,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L277",
+      "source_location": "L278",
       "weight": 1.0
     },
     {
@@ -103807,7 +103807,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L288",
+      "source_location": "L289",
       "weight": 1.0
     },
     {
@@ -103818,7 +103818,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L304",
+      "source_location": "L305",
       "weight": 1.0
     },
     {
@@ -103829,7 +103829,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L322",
+      "source_location": "L323",
       "weight": 1.0
     },
     {
@@ -103840,7 +103840,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L69",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -103851,7 +103851,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system.md",
-      "source_location": "L88",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -136164,5 +136164,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bc0c61911d360550c98db9937f6333652b841149"
+  "built_at_commit": "e2646ff2df9ca6e1afbe4e83692bf57eaaade8f2"
 }
