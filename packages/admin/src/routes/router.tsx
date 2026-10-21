@@ -116,7 +116,12 @@ function Shell() {
 			state.location.pathname === "/widgets" ||
 			state.location.pathname === "/sections" ||
 			state.location.pathname === "/taxonomies" ||
-			state.location.pathname === "/users",
+			state.location.pathname === "/users" ||
+			state.location.pathname === "/bylines" ||
+			state.location.pathname === "/content-types" ||
+			state.location.pathname === "/webhooks" ||
+			state.location.pathname === "/settings" ||
+			state.location.pathname === "/security",
 	});
 	useEffect(() => {
 		if (session.status !== "authed") return;

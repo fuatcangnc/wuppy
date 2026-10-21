@@ -279,8 +279,8 @@ Yeni ikon: doğrudan paketten import et; elle SVG/emoji yazma.
 ### Çalışma alanı (Media, Pages, Posts ve yönetim listeleri)
 
 `WorkspaceLayout` (`components/shared/WorkspaceLayout.tsx`) Media, Pages, Posts,
-Redirects, Widgets, Sections, Categories & tags ve Users ekranlarının ortak iki
-panelli kabuğudur:
+Redirects, Widgets, Sections, Categories & tags, Bylines, Content Types, Webhooks,
+Settings, Users ve Account security ekranlarının ortak iki panelli kabuğudur:
 
 - `WorkspaceSidebar`: solda `bg-card`, `rounded-xl`, dikey scroll; Media 300px,
   diğer çalışma alanları 340px. 1400px altında paneller alt alta yığılır.
@@ -291,6 +291,9 @@ panelli kabuğudur:
   taşır.
 - Redirects ve Users kendi detay panellerini `WorkspacePanel` içinde kullanır;
   mevcut import/export, davet, token ve rol yönetimi kartları korunur.
+- Settings ve Account security sol panelde bölüm listesi, sağ panelde tüm bölüm
+  formlarını kaydırılabilir bir yüzeyde gösterir; bölüm seçimi hedef forma
+  kaydırır. Bylines ve Content Types sağ panelde inline editör kullanır.
 - Sayfa yüksekliği 1400px üzerinde `calc(100vh - 5rem)`; için `min-h-0` ve
   `.custom-scrollbar` kullanılır.
 - Pages ve Posts aynı state ile `split` ve `table` görünümü arasında geçer;

@@ -27,11 +27,11 @@ işaretlenir. Kaynaklar:
 | API (Hono) | 🟡 Kısmi | İçerik, medya, Git, data, yorum, dashboard, takvim, arama, redirect, token, import |
 | Auth | 🟡 Kısmi | Better Auth, roller, 2FA politikası, API token, magic link (yeni hesap açmaz, 2FA'ya gönderilmez) + e-posta parola sıfırlama, oturum yönetimi + admin parola/2FA sıfırlama, davet akışı, son admin koruması, site kimliğiyle ilk kurulum, passkey, bağlı hesap OAuth (GitHub/Google/Microsoft), güvenilir istemci IP'si |
 | E-posta | 🟡 Kısmi | Console + Resend, magic-link template, parola sıfırlama ve davet e-postası; production domain/doğrulama sonra |
-| Admin kabuğu | ✅ Çalışıyor | Sidebar grupları, topbar, tema, arama, shadcn Select, per-page + numaralı sayfalama; Media/Pages/Posts/Redirects/Widgets/Sections/Categories/Users iki panelli çalışma alanında |
+| Admin kabuğu | ✅ Çalışıyor | Sidebar grupları, topbar, tema, arama, shadcn Select, per-page + numaralı sayfalama; Media/Pages/Posts/Redirects/Widgets/Sections/Categories/Bylines/Content Types/Webhooks/Settings/Users iki panelli çalışma alanında |
 | İçerik yönetimi | 🟡 Kısmi | Pages için iki panelli liste + önizleme/detay ve tablo görünümü, arama/durum filtresi/otomatik slug, editör/SEO/zamanlama, çöp + geri yükleme, toplu publish/delete, Git revizyon paneli, per-page sayfalama; autosave ve çakışma çözümü yok |
 | Medya | 🟡 Kısmi | Üç panelli kütüphane, klasör, alt metin, kırpma/odak, kullanım takibi, sayfa bazlı filtre, toplu düzenleme, görsel optimizasyonu, istemci tarafı WebP dönüştürme; S3 adaptörü ve blurhash yok |
-| Manage modülleri | 🟡 Kısmi | Comments, Menus, Redirects, Widgets, Sections, Taxonomies, Bylines CRUD |
-| Admin modülleri | 🟡 Kısmi | Content Types, Byline Schema, Users+token, Plugins, Import, Settings, Themes |
+| Manage modülleri | 🟡 Kısmi | Comments, Menus, Redirects, Widgets, Sections, Taxonomies, Bylines CRUD; Bylines ve Sections iki panelli çalışma alanında |
+| Admin modülleri | 🟡 Kısmi | Content Types, Byline Schema, Users+token, Plugins, Import, Settings, Themes; Content Types/Webhooks/Settings/Account security iki panelli çalışma alanında |
 | SEO / i18n / önizleme | 🟡 Kısmi | SEO çekirdek + panel, i18n tablo, dev preview; visual editing yok |
 | Eklenti sistemi | 🟡 Kısmi | WASM sandbox + capability + yüklü/hata UI; SDK/registry/marketplace yok |
 | Test / kabul | 🟡 Kısmi | 13 E2E, modül smoke, 356 core + 152 admin + 37 auth testi; görsel regresyon/a11y yok |
@@ -202,6 +202,8 @@ işaretlenir. Kaynaklar:
 - [x] Genel içerik listesi, oluştur/sil
 - [x] Pages ve Posts: Media ile ortak iki panelli `WorkspaceLayout`; arama, durum sekmeleri, sayfalama, split/table geçişi, tablo ayarları, imzalı iframe önizleme ve toplu işlemler
 - [x] Redirects, Widgets, Sections, Categories & tags ve Users: Media benzeri sol liste + sağ detay/editor düzeni; mevcut CRUD, import/export ve güvenlik akışları korunuyor
+- [x] Bylines, Content Types ve Webhooks: solda arama + kayıt listesi, sağda inline editör; byline schema uyarıları, field/impact araçları ve webhook secret/event alanları korunuyor.
+- [x] Settings ve Account security: solda bölüm navigasyonu, sağda bölüm formları; kaydetme, e-posta testi, 2FA, passkey, bağlı hesap ve oturum işlemleri korunuyor.
 - [x] Şemaya göre alan formu (`string|text|date|image|boolean|number|list`)
 - [x] Starter'da **Pages** ve **Posts** koleksiyonları varsayılan gelsin
 - [x] Liste: sunucu taraflı arama, durum/yazar/dil/tarih filtresi ve sıralama

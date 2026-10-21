@@ -2,15 +2,7 @@ import { FileText, Plus, Search, Trash2 } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { $data, $dataErrors, loadData, saveData } from "../../stores/dashboard.ts";
-import {
-	Button,
-	Checkbox,
-	EmptyState,
-	ErrorText,
-	Input,
-	Textarea,
-	toast,
-} from "../../ui/index.tsx";
+import { Button, Checkbox, EmptyState, ErrorText, Input, Textarea, toast } from "../../ui/index.tsx";
 import { WorkspaceLayout, WorkspacePanel, WorkspaceSidebar } from "../shared/WorkspaceLayout.tsx";
 
 export interface ResourceField {
@@ -33,6 +25,7 @@ export interface ResourceWorkspacePageProps<T extends Record<string, unknown>> {
 	deleteNote?: (item: T) => string | undefined;
 	extraColumn?: { label: string; value: (item: T) => string };
 	icon?: ReactNode;
+	notice?: ReactNode;
 }
 
 function readField(item: Record<string, unknown>, key: string): unknown {
@@ -64,6 +57,7 @@ export function ResourceWorkspacePage<T extends Record<string, unknown>>({
 	deleteNote,
 	extraColumn,
 	icon,
+	notice,
 }: ResourceWorkspacePageProps<T>) {
 	const stored = useStore($data)[name] as T[] | undefined;
 	const error = useStore($dataErrors)[name];
@@ -82,12 +76,8 @@ export function ResourceWorkspacePage<T extends Record<string, unknown>>({
 	}, [stored]);
 
 	const dirty =
-		editing !== null &&
-		(creating || selected === null || JSON.stringify(editing) !== JSON.stringify(items[selected]));
-	const titleFor = (item: T) =>
-		format?.(item) ||
-		textOf(readField(item, columns[0]?.key ?? "")) ||
-		`New ${itemLabel}`;
+		editing !== null && (creating || selected === null || JSON.stringify(editing) !== JSON.stringify(items[selected]));
+	const titleFor = (item: T) => format?.(item) || textOf(readField(item, columns[0]?.key ?? "")) || `New ${itemLabel}`;
 	const editingTitle = editing ? titleFor(editing) : title;
 	const filtered = useMemo(
 		() =>
@@ -166,6 +156,7 @@ export function ResourceWorkspacePage<T extends Record<string, unknown>>({
 					<Plus size="1em" />
 				</Button>
 			</div>
+			{notice && <div className="border-b border-border p-3">{notice}</div>}
 			<div className="border-b border-border">
 				<div className="relative">
 					<Search
@@ -185,7 +176,11 @@ export function ResourceWorkspacePage<T extends Record<string, unknown>>({
 				<span>
 					{filtered.length} {filtered.length === 1 ? "item" : "items"}
 				</span>
-				{selected !== null && <span>{selected + 1} / {items.length}</span>}
+				{selected !== null && (
+					<span>
+						{selected + 1} / {items.length}
+					</span>
+				)}
 			</div>
 			<div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto p-2">
 				{filtered.length === 0 ? (
@@ -215,9 +210,7 @@ export function ResourceWorkspacePage<T extends Record<string, unknown>>({
 								<span className="min-w-0 flex-1">
 									<span className="block truncate text-sm font-medium text-foreground">{titleFor(item)}</span>
 									<span className="mt-0.5 flex items-center gap-1 text-[11px] text-muted-foreground">
-										<span className="truncate">
-											{textOf(readField(item, columns[1]?.key ?? "")) || itemLabel}
-										</span>
+										<span className="truncate">{textOf(readField(item, columns[1]?.key ?? "")) || itemLabel}</span>
 										{extraColumn && (
 											<>
 												<span aria-hidden="true">·</span>
@@ -335,9 +328,7 @@ export function ResourceWorkspacePage<T extends Record<string, unknown>>({
 					{icon ?? <FileText size={24} />}
 				</span>
 				<p className="font-medium">{title}</p>
-				<p className="text-sm text-muted-foreground">
-					Select a {itemLabel} from the list to edit it.
-				</p>
+				<p className="text-sm text-muted-foreground">Select a {itemLabel} from the list to edit it.</p>
 				<Button variant="secondary" size="sm" onClick={startNew}>
 					<Plus size={14} /> New {itemLabel}
 				</Button>

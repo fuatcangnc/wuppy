@@ -41,7 +41,7 @@ describe("ContentTypesPage", () => {
 		const confirm = vi.spyOn(window, "confirm").mockReturnValue(true);
 		render(<ContentTypesPage />);
 		const user = userEvent.setup();
-		await user.click(await screen.findByRole("button", { name: "Edit" }));
+		await user.click(await screen.findByRole("button", { name: "Open posts" }));
 		await user.click(screen.getByRole("button", { name: "+ Add field" }));
 		await chooseSelect(user, "Type of field1", "number");
 		await user.click(screen.getAllByLabelText("Required")[1]!);

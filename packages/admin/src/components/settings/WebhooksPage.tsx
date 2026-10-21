@@ -1,12 +1,14 @@
-import { ResourcePage } from "../shared/ResourcePage.tsx";
+import { Webhook } from "@react-zero-ui/icon-sprite";
+import { ResourceWorkspacePage } from "../shared/ResourceWorkspacePage.tsx";
 
 export function WebhooksPage() {
 	return (
-		<ResourcePage
+		<ResourceWorkspacePage
 			name="webhooks"
 			title="Webhooks"
 			description="Signed POST requests when content or media changes."
 			itemLabel="webhook"
+			icon={<Webhook size="1em" />}
 			template={{ url: "https://example.com/hook", secret: "", events: [] }}
 			columns={[
 				{ key: "url", label: "URL" },
