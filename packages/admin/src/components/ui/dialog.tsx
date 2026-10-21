@@ -58,7 +58,7 @@ export function Dialog({
 						×
 					</Button>
 				</header>
-				<div className={cn("overflow-y-auto", framed ? "min-h-0" : "max-h-[70vh]")}>{children}</div>
+				<div className={cn("custom-scrollbar overflow-y-auto", framed ? "min-h-0" : "max-h-[70vh]")}>{children}</div>
 				{footer && (
 					<footer className={cn("flex justify-end gap-2", framed && "border-t border-border px-8 py-4")}>
 						{footer}

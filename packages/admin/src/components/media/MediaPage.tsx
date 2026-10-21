@@ -538,7 +538,7 @@ export function MediaPage() {
 								</div>
 
 								<div className="grid gap-1">
-									<p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Sort by</p>
+									<p className="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">Sort by</p>
 									<div className="grid grid-cols-2 gap-1">
 										{SORTS.map((entry) => {
 											const icon =
@@ -568,7 +568,7 @@ export function MediaPage() {
 								</div>
 
 								<div className="grid gap-1">
-									<p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Date range</p>
+									<p className="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">Date range</p>
 									<div className="grid grid-cols-3 gap-1">
 										{RANGES.map((entry) => (
 											<Button
@@ -586,12 +586,12 @@ export function MediaPage() {
 								</div>
 
 								<div className="grid gap-1">
-									<p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Tags</p>
+									<p className="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">Tags</p>
 									<p className="text-[11px] text-muted-foreground">No tags available.</p>
 								</div>
 
 								<div className="grid gap-1">
-									<p className="text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">Options</p>
+									<p className="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">Options</p>
 									<Button
 										variant="secondary"
 										size="sm"
@@ -641,7 +641,7 @@ export function MediaPage() {
 						{filtered.length} {filtered.length === 1 ? "item" : "items"}
 					</div>
 
-					<div className="min-h-0 flex-1 overflow-y-auto p-2">
+					<div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto p-2">
 						{filtered.length === 0 ? (
 							<EmptyState title="No media yet" description="Upload an image or change the filters." />
 						) : view === "list" ? (
@@ -832,7 +832,7 @@ export function MediaPage() {
 						)}
 					</section>
 
-					<aside className="min-h-0 overflow-y-auto">
+					<aside className="custom-scrollbar min-h-0 overflow-y-auto">
 						{current ? (
 							<div data-testid="media-inspector" className="grid gap-5 p-5">
 								<div className="grid gap-3">
@@ -879,7 +879,7 @@ export function MediaPage() {
 								</div>
 
 								<div className="grid gap-1.5">
-									<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">File URL</p>
+									<p className="text-[10px] font-medium tracking-wider text-zinc-400 uppercase">File URL</p>
 									<div className="flex items-center gap-1 rounded-md border border-border px-2 py-1">
 										<input
 											readOnly
@@ -903,7 +903,7 @@ export function MediaPage() {
 								</div>
 
 								<div className="grid gap-2">
-									<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">Actions</p>
+									<p className="text-[10px] font-medium tracking-wider text-zinc-400 uppercase">Actions</p>
 									<Button
 										variant="secondary"
 										className="justify-start"
@@ -937,7 +937,7 @@ export function MediaPage() {
 								</div>
 
 								<div className="grid gap-2">
-									<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">Details</p>
+									<p className="text-[10px] font-medium tracking-wider text-zinc-400 uppercase">Details</p>
 									<dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-xs">
 										<dt className="text-muted-foreground">Filename</dt>
 										<dd className="truncate text-end" title={filenameOf(current)}>
@@ -961,7 +961,7 @@ export function MediaPage() {
 								</div>
 
 								<div className="grid gap-2">
-									<p className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">Used in</p>
+									<p className="text-[10px] font-medium tracking-wider text-zinc-400 uppercase">Used in</p>
 									{usageLoading ? (
 										<p role="status" className="text-xs text-muted-foreground">
 											Checking where this file is used…

@@ -87,7 +87,7 @@ function NavLink({
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
 	return (
 		<div className="grid gap-0.5">
-			<p className="px-2.5 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{title}</p>
+			<p className="px-2.5 pb-1 pt-3 text-[10px] font-semibold uppercase tracking-wide text-zinc-400">{title}</p>
 			{children}
 		</div>
 	);

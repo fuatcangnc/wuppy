@@ -74,8 +74,9 @@ Kumo mavisi. Light `oklch(0.5772 0.2324 260)`, dark `oklch(0.5195 0.2324 260)`.
 | Mono | `JetBrains Mono Variable` (`--font-mono`) |
 | Heading | `--font-heading` = sans |
 | Gövde (admin) | `text-sm` (14px), `leading-relaxed` |
+| Form etiketi | `text-[10px] font-medium text-zinc-400` |
 | Küçük etiket | `text-xs` (12px), `text-muted-foreground` |
-| Mikro | `text-[10px]` / `text-[11px]` — yalnız rozet/ipucu |
+| Mikro | `text-[10px]` / `text-[11px]` — form etiketi, rozet/ipucu |
 | Başlık | `text-lg font-semibold`, `tracking-tight` |
 | Ağırlıklar | `font-medium` (etiket), `font-semibold` (başlık) |
 
@@ -230,7 +231,8 @@ Kaynak: `components/ui/dialog.tsx`.
 | `Skeleton` | `bg-muted animate-pulse rounded-md`; `SkeletonRows`/`SkeletonGrid` |
 | `Alert` | `rounded-xl border-border bg-card`; `destructive` varyantı |
 | `Avatar` | `rounded-full`; fallback `bg-primary/15 text-primary` |
-| `Label` | `text-sm font-medium`; form alanıyla `htmlFor` |
+| `Label` | `text-[10px] font-medium text-zinc-400`; form alanıyla `htmlFor` |
+| Scrollbar | İnce, yuvarlak thumb; light `#a1a1aa4d`, dark `#52525b66`, track şeffaf |
 | `Spinner` | Yükleme göstergesi; buton içinde `size-4` |
 
 ---
@@ -279,6 +281,7 @@ Kırılma noktaları Tailwind varsayılanları: `sm 640`, `md 768`, `lg 1024`,
 - Native scrollbar `color-scheme` ile temaya uyar; Select Radix portalında tema token'larını kullanır.
 - Dark’ta `border`/`input` yarı saydam beyazdır (`white / 10%`, `white / 15%`).
 - Sidebar metni beyaz (`--sidebar-foreground`), sidebar ikonları beyazın %40’ı (`opacity-40`) kullanır.
+- Scrollbar rengi `--scrollbar-thumb` token’ından gelir; `html` ve tüm scroll alanları `scrollbar-width: thin` kullanır. `.custom-scrollbar` ayrıca `scrollbar-gutter: stable` ve `overflow: hidden auto` uygular.
 
 ---
 

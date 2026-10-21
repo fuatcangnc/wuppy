@@ -59,6 +59,9 @@
 	--button-danger-grad-top-hover: #f45a5a;
 	--button-danger-ring: rgb(223 34 37 / 0.35);
 	--button-danger-gloss: rgb(255 255 255 / 0.2);
+
+	/* Keep native scrollbars consistent with the surface palette. */
+	--scrollbar-thumb: #a1a1aa4d;
 }
 
 .dark {
@@ -92,6 +95,8 @@
 	--sidebar-accent: #171719;
 	--sidebar-border: rgb(255 255 255 / 0.1);
 	--sidebar-primary: #005aeb;
+
+	--scrollbar-thumb: #52525b66;
 }
 
 @theme inline {
@@ -160,6 +165,32 @@
 		background: var(--background);
 		color: var(--foreground);
 		font-family: var(--font-sans);
+	}
+	html {
+		scrollbar-gutter: stable;
+		scrollbar-width: thin;
+		scrollbar-color: var(--scrollbar-thumb) transparent;
+	}
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: var(--scrollbar-thumb) transparent;
+	}
+	*::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+	}
+	*::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	*::-webkit-scrollbar-thumb {
+		border-radius: 9999px;
+		background: var(--scrollbar-thumb);
+	}
+	.custom-scrollbar {
+		scrollbar-gutter: stable;
+		scrollbar-width: thin;
+		scrollbar-color: var(--scrollbar-thumb) transparent;
+		overflow: hidden auto;
 	}
 	code,
 	pre,
