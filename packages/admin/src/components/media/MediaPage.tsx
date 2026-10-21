@@ -400,18 +400,20 @@ export function MediaPage() {
 						</div>
 					</div>
 					<div className="grid gap-2 border-b border-border p-3">
-						<div className="relative">
-							<Search
-								size={14}
-								className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
-							/>
-							<Input
-								aria-label="Search"
-								className="pl-9"
-								value={query}
-								onChange={(event) => setQuery(event.target.value)}
-								placeholder="Search media…"
-							/>
+						<div className="-mx-3 -mt-3 border-b border-border">
+							<div className="relative">
+								<Search
+									size={15}
+									className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-muted-foreground"
+								/>
+								<Input
+									aria-label="Search"
+									className="h-12 rounded-none border-transparent bg-transparent pl-11 pr-4 text-sm shadow-none focus-visible:border-transparent focus-visible:ring-0 dark:bg-transparent"
+									value={query}
+									onChange={(event) => setQuery(event.target.value)}
+									placeholder="Search media..."
+								/>
+							</div>
 						</div>
 						<div className="flex items-center gap-0.5 overflow-x-auto">
 							{[
