@@ -368,34 +368,25 @@ export function MediaPage() {
 							</p>
 						</div>
 						<div className="flex items-center gap-1">
-							<div role="group" aria-label="View" className="flex rounded-lg border border-border p-0.5">
-								<Button
-									variant={view === "grid" ? "secondary" : "ghost"}
-									size="icon-sm"
-									aria-label="Grid view"
-									aria-pressed={view === "grid"}
-									onClick={() => setView("grid")}
-								>
-									<LayoutGrid size={13} />
-								</Button>
-								<Button
-									variant={view === "list" ? "secondary" : "ghost"}
-									size="icon-sm"
-									aria-label="List view"
-									aria-pressed={view === "list"}
-									onClick={() => setView("list")}
-								>
-									<List size={13} />
-								</Button>
-							</div>
 							<Button
 								variant="secondary"
 								size="icon-sm"
+								aria-label={view === "list" ? "Switch to grid view" : "Switch to list view"}
+								title={view === "list" ? "Switch to grid view" : "Switch to list view"}
+								aria-pressed={view === "grid"}
+								onClick={() => setView(view === "list" ? "grid" : "list")}
+							>
+								{view === "list" ? <List size={14} /> : <LayoutGrid size={14} />}
+							</Button>
+							<Button
+								variant="secondary"
+								size="icon"
+								className="rounded-full border-border bg-white text-[#101011] shadow-sm hover:bg-white/90"
 								aria-label="Upload media"
 								title="Upload media"
 								onClick={() => setPending([])}
 							>
-								<Upload size={15} />
+								<Upload size={16} />
 							</Button>
 						</div>
 					</div>
@@ -805,7 +796,7 @@ export function MediaPage() {
 										dropping ? "border-primary bg-primary/5" : "border-border bg-secondary/25"
 									}`}
 								>
-									<span className="grid size-16 place-items-center rounded-full border border-border bg-background text-muted-foreground">
+									<span className="grid size-16 place-items-center rounded-full border border-border bg-white text-[#101011] shadow-sm">
 										<Upload size={24} />
 									</span>
 									<div className="grid gap-1">
