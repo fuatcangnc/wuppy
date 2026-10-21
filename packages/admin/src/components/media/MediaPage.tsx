@@ -326,7 +326,6 @@ export function MediaPage() {
 							<Button
 								variant="secondary"
 								size="icon-sm"
-								className="rounded-full bg-foreground text-background hover:bg-foreground/90"
 								aria-label="Upload media"
 								title="Upload media"
 								onClick={() => setPending([])}
@@ -659,7 +658,15 @@ export function MediaPage() {
 						</>
 					) : (
 						<div className="grid flex-1 place-items-center p-6">
-							<EmptyState title="Select a file" description="Choose an image from the library to inspect it." />
+							<button
+								type="button"
+								aria-label="Upload a file"
+								title="Upload a file"
+								onClick={() => setPending([])}
+								className="grid size-20 place-items-center rounded-2xl border border-border bg-secondary text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+							>
+								<Upload size={28} />
+							</button>
 						</div>
 					)}
 				</section>
@@ -825,11 +832,7 @@ export function MediaPage() {
 								)}
 							</div>
 						</div>
-					) : (
-						<div className="p-5">
-							<EmptyState title="No file selected" description="Select a file to edit its details." />
-						</div>
-					)}
+					) : null}
 				</aside>
 			</div>
 

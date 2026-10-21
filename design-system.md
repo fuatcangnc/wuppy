@@ -69,7 +69,7 @@ Kumo mavisi. Light `oklch(0.5772 0.2324 260)`, dark `oklch(0.5195 0.2324 260)`.
 
 | Alan | Değer |
 | --- | --- |
-| Sans | `Inter Variable` (`--font-sans`) |
+| Sans | Sistem font stack’i (`-apple-system`, Segoe UI, Roboto, Ubuntu…) (`--font-sans`) |
 | Mono | `JetBrains Mono Variable` (`--font-mono`) |
 | Heading | `--font-heading` = sans |
 | Gövde (admin) | `text-sm` (14px), `leading-relaxed` |
