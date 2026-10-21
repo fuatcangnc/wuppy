@@ -443,24 +443,26 @@ export function MediaPage() {
 						</div>
 						<div className="flex items-center gap-1">
 							<Button
-								variant="secondary"
+								variant="ghost"
 								size="icon-sm"
+								className="rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground"
 								aria-label={view === "list" ? "Switch to grid view" : "Switch to list view"}
 								title={view === "list" ? "Switch to grid view" : "Switch to list view"}
 								aria-pressed={view === "grid"}
 								onClick={() => setView(view === "list" ? "grid" : "list")}
 							>
-								{view === "list" ? <List size={14} /> : <LayoutGrid size={14} />}
+								{view === "list" ? <List size="1em" /> : <LayoutGrid size="1em" />}
 							</Button>
 							<Button
 								variant="secondary"
 								size="icon"
-								className="rounded-full border-border bg-white text-[#101011] shadow-sm hover:bg-white/90"
+								style={{ borderRadius: "200px" }}
+								className="border-border bg-white text-[#101011] shadow-sm hover:bg-zinc-200!"
 								aria-label="Upload media"
 								title="Upload media"
 								onClick={() => setPending([])}
 							>
-								<Upload size={16} />
+								<Upload size="1em" />
 							</Button>
 						</div>
 					</div>
