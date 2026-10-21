@@ -3,6 +3,9 @@ import {
 	ArrowRightLeft,
 	Blocks,
 	CalendarDays,
+	Check,
+	ChevronsUpDown,
+	Computer,
 	DatabaseBackup,
 	ExternalLink,
 	FileText,
@@ -15,6 +18,7 @@ import {
 	Newspaper,
 	Palette,
 	Puzzle,
+	Search,
 	Settings,
 	ShieldCheck,
 	Tags,
@@ -64,7 +68,7 @@ import { GlobalSearch } from "../components/shared/GlobalSearch.tsx";
 import { apiData } from "../lib/api.ts";
 import { $collections, loadCollections } from "../stores/content.ts";
 import { $session, loadSession, signOut } from "../stores/session.ts";
-import { ThemeSwitcher, Button, GhostButton, Spinner, ToastHost } from "../ui/index.tsx";
+import { ThemeSwitcher, Button, GhostButton, Input, Spinner, ToastHost } from "../ui/index.tsx";
 
 function NavLink({
 	to,
@@ -98,6 +102,50 @@ function Group({ title, children }: { title: string; children: React.ReactNode }
 		<div className="grid gap-0.5">
 			<p className="px-2.5 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-zinc-400">{title}</p>
 			{children}
+		</div>
+	);
+}
+
+function SiteSwitcher() {
+	return (
+		<div className="mb-3 grid gap-2">
+			<div className="flex h-10 items-center gap-2 rounded-lg border border-border bg-card px-3 text-sm">
+				<Computer size="1em" className="shrink-0 text-muted-foreground" />
+				<span className="font-medium">Local</span>
+				<ChevronsUpDown size="1em" className="ms-auto shrink-0 text-muted-foreground" />
+			</div>
+			<div className="overflow-hidden rounded-lg border border-border bg-card">
+				<div className="border-b border-border p-2">
+					<div className="relative">
+						<Search
+							size="1em"
+							className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
+						/>
+						<Input
+							aria-label="Search sites"
+							readOnly
+							placeholder="Search sites..."
+							className="h-8 bg-transparent pl-9 text-sm shadow-none"
+						/>
+					</div>
+				</div>
+				<div className="grid gap-0">
+					<div className="flex items-center gap-2 border-b border-border px-3 py-2 text-sm">
+						<Computer size="1em" className="shrink-0 text-muted-foreground" />
+						<span className="font-medium">Local</span>
+						<Check size="1em" className="ms-auto shrink-0 text-primary" />
+					</div>
+					<div className="flex items-center gap-2 px-3 py-2.5">
+						<span className="grid size-6 shrink-0 place-items-center rounded-full bg-secondary text-[10px] font-semibold text-foreground">
+							W
+						</span>
+						<span className="min-w-0">
+							<span className="block truncate text-sm font-medium">uixpress.instawp.xyz</span>
+							<span className="block truncate text-[11px] text-muted-foreground">https://uixpress.instawp.xyz/</span>
+						</span>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }
@@ -281,6 +329,7 @@ function Shell() {
 							<p className="text-xs text-muted-foreground">Content studio</p>
 						</div>
 					</div>
+					<SiteSwitcher />
 					<nav className="grid gap-1">{nav}</nav>
 					<div className="mt-6 border-t border-border px-2 pt-3 text-xs text-muted-foreground">
 						<p>Wuppy 0.0.0</p>
