@@ -97,7 +97,6 @@ export function MenusPage() {
 	const [activeIndex, setActiveIndex] = useState(-1);
 	const [picker, setPicker] = useState("");
 	const [view, setView] = useState<"edit" | "locations">("edit");
-	const [loading, setLoading] = useState(true);
 	const [dirty, setDirty] = useState(false);
 	const [sourceGroups, setSourceGroups] = useState<SourceGroup[]>([]);
 	const [sourceLoading, setSourceLoading] = useState(true);
@@ -112,9 +111,7 @@ export function MenusPage() {
 	const [form, setForm] = useState({ label: "", name: "", location: "header", locale: "" });
 
 	useEffect(() => {
-		void loadData<Menu[]>("menus")
-			.catch(() => undefined)
-			.finally(() => setLoading(false));
+		void loadData<Menu[]>("menus").catch(() => undefined);
 	}, []);
 
 	useEffect(() => {
@@ -341,19 +338,7 @@ export function MenusPage() {
 				]}
 			/>
 
-			{loading && menus.length === 0 ? (
-				<Spinner />
-			) : menus.length === 0 ? (
-				<EmptyState
-					title="No menus yet"
-					description="Create a menu, add links and assign it to a theme location."
-					action={
-						<Button onClick={openCreate}>
-							<Plus size={14} /> Create a menu
-						</Button>
-					}
-				/>
-			) : view === "locations" ? (
+			{view === "locations" ? (
 				<Card>
 					<div className="border-b border-border px-5 py-4">
 						<h2 className="font-semibold">Manage locations</h2>
@@ -401,9 +386,11 @@ export function MenusPage() {
 						<Select
 							aria-label="Select menu"
 							className="w-full sm:w-64"
+							placeholder="Select…"
 							value={picker}
 							onChange={(event) => setPicker(event.target.value)}
 						>
+							{menus.length === 0 && <option value="">No menus yet</option>}
 							{menus.map((menu, index) => (
 								<option key={`${menu.name}:${index}`} value={index}>
 									{menu.label} ({menu.name}
@@ -411,7 +398,11 @@ export function MenusPage() {
 								</option>
 							))}
 						</Select>
-						<Button variant="secondary" onClick={() => switchMenu(Number(picker))}>
+						<Button
+							variant="secondary"
+							disabled={menus.length === 0 || picker === ""}
+							onClick={() => switchMenu(Number(picker))}
+						>
 							Select
 						</Button>
 						<span className="text-muted-foreground">
@@ -465,7 +456,7 @@ export function MenusPage() {
 																	value={custom.href}
 																	onChange={(event) => setCustom({ ...custom, href: event.target.value })}
 																/>
-																<Button size="sm" variant="secondary" onClick={addCustom}>
+																<Button size="sm" variant="secondary" disabled={!active} onClick={addCustom}>
 																	<Plus size={14} /> Add to menu
 																</Button>
 																{customError && <p className="text-xs text-destructive">{customError}</p>}
@@ -500,7 +491,7 @@ export function MenusPage() {
 																	size="sm"
 																	variant="secondary"
 																	className="mt-3 w-full"
-																	disabled={selected === 0}
+																	disabled={!active || selected === 0}
 																	onClick={() => addGroup(group)}
 																>
 																	<Plus size={14} /> Add to menu{selected > 0 ? ` (${selected})` : ""}
@@ -568,7 +559,15 @@ export function MenusPage() {
 									</div>
 								</div>
 							) : (
-								<EmptyState title="Select a menu" description="Choose a menu above or create a new one." />
+								<EmptyState
+									title="No menu selected"
+									description="Choose a menu above or create one to start adding links."
+									action={
+										<Button onClick={openCreate}>
+											<Plus size={14} /> Create a menu
+										</Button>
+									}
+								/>
 							)}
 						</section>
 					</div>
