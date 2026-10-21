@@ -210,9 +210,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/menus/MenusPage.tsx": {
-    "mtime": 1792537964.494521,
-    "seen": 1792539897.1271884,
-    "ast_hash": "12bc0eee41eb891d976d0f2c8e8b6224",
+    "mtime": 1792540776.1519623,
+    "seen": 1792540917.5923173,
+    "ast_hash": "a1d2cd17a2a9d0e240eefa6c2a6e0d99",
     "semantic_hash": ""
   },
   "packages/admin/src/components/plugins/PluginPage.tsx": {
@@ -2106,14 +2106,14 @@
     "semantic_hash": ""
   },
   "yap\u0131lacaklar.md": {
-    "mtime": 1792540545.379193,
-    "seen": 1792540560.5078638,
-    "ast_hash": "a5f79f234b664aac147859a2102b9ec3",
+    "mtime": 1792540800.0739508,
+    "seen": 1792540917.5930357,
+    "ast_hash": "582a04bc375ba9a3be1568bad31780d5",
     "semantic_hash": ""
   },
   "packages/admin/public/icons.svg": {
-    "mtime": 1792540509.2442532,
-    "seen": 1792540560.5078647,
+    "mtime": 1792540869.1779284,
+    "seen": 1792540917.5930378,
     "ast_hash": "7882ea5c5b3cbc16716bf782762c0716",
     "semantic_hash": ""
   },
