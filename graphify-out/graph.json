@@ -2484,7 +2484,7 @@
       "file_type": "code",
       "norm_label": "register",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L464"
+      "source_location": "L474"
     },
     {
       "id": "packages_admin_src_stores_session_session",
@@ -10077,7 +10077,7 @@
       "file_type": "code",
       "norm_label": "accountsecurity()",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L425"
+      "source_location": "L435"
     },
     {
       "id": "packages_admin_src_routes_router_collectionpage",
@@ -10089,7 +10089,7 @@
       "file_type": "code",
       "norm_label": "collectionpage()",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L390"
+      "source_location": "L400"
     },
     {
       "id": "packages_admin_src_routes_router_group",
@@ -10125,7 +10125,7 @@
       "file_type": "code",
       "norm_label": "shell()",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L153"
+      "source_location": "L163"
     },
     {
       "id": "packages_admin_src_routes_router_siteswitcher",
@@ -42201,7 +42201,7 @@
       "file_type": "code",
       "norm_label": "audit",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L423"
+      "source_location": "L433"
     },
     {
       "id": "packages_admin_src_routes_router_bylines",
@@ -42212,7 +42212,7 @@
       "file_type": "code",
       "norm_label": "bylines",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L413"
+      "source_location": "L423"
     },
     {
       "id": "packages_admin_src_routes_router_bylineschema",
@@ -42223,7 +42223,7 @@
       "file_type": "code",
       "norm_label": "bylineschema",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L414"
+      "source_location": "L424"
     },
     {
       "id": "packages_admin_src_routes_router_calendar",
@@ -42234,7 +42234,7 @@
       "file_type": "code",
       "norm_label": "calendar",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L401"
+      "source_location": "L411"
     },
     {
       "id": "packages_admin_src_routes_router_comments",
@@ -42245,7 +42245,7 @@
       "file_type": "code",
       "norm_label": "comments",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L407"
+      "source_location": "L417"
     },
     {
       "id": "packages_admin_src_routes_router_contenttypes",
@@ -42256,7 +42256,7 @@
       "file_type": "code",
       "norm_label": "contenttypes",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L415"
+      "source_location": "L425"
     },
     {
       "id": "packages_admin_src_routes_router_editor",
@@ -42267,7 +42267,7 @@
       "file_type": "code",
       "norm_label": "editor",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L405"
+      "source_location": "L415"
     },
     {
       "id": "packages_admin_src_routes_router_entries",
@@ -42278,7 +42278,7 @@
       "file_type": "code",
       "norm_label": "entries",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L402"
+      "source_location": "L412"
     },
     {
       "id": "packages_admin_src_routes_router_importpage",
@@ -42289,7 +42289,7 @@
       "file_type": "code",
       "norm_label": "importpage",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L419"
+      "source_location": "L429"
     },
     {
       "id": "packages_admin_src_routes_router_index",
@@ -42300,7 +42300,7 @@
       "file_type": "code",
       "norm_label": "index",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L400"
+      "source_location": "L410"
     },
     {
       "id": "packages_admin_src_routes_router_media",
@@ -42311,7 +42311,7 @@
       "file_type": "code",
       "norm_label": "media",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L406"
+      "source_location": "L416"
     },
     {
       "id": "packages_admin_src_routes_router_menus",
@@ -42322,7 +42322,7 @@
       "file_type": "code",
       "norm_label": "menus",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L408"
+      "source_location": "L418"
     },
     {
       "id": "packages_admin_src_routes_router_pluginpage",
@@ -42333,7 +42333,7 @@
       "file_type": "code",
       "norm_label": "pluginpage",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L417"
+      "source_location": "L427"
     },
     {
       "id": "packages_admin_src_routes_router_plugins",
@@ -42344,7 +42344,7 @@
       "file_type": "code",
       "norm_label": "plugins",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L418"
+      "source_location": "L428"
     },
     {
       "id": "packages_admin_src_routes_router_redirects",
@@ -42355,7 +42355,7 @@
       "file_type": "code",
       "norm_label": "redirects",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L409"
+      "source_location": "L419"
     },
     {
       "id": "packages_admin_src_routes_router_root",
@@ -42366,7 +42366,7 @@
       "file_type": "code",
       "norm_label": "root",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L399"
+      "source_location": "L409"
     },
     {
       "id": "packages_admin_src_routes_router_router",
@@ -42377,7 +42377,7 @@
       "file_type": "code",
       "norm_label": "router",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L431"
+      "source_location": "L441"
     },
     {
       "id": "packages_admin_src_routes_router_sections",
@@ -42388,7 +42388,7 @@
       "file_type": "code",
       "norm_label": "sections",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L411"
+      "source_location": "L421"
     },
     {
       "id": "packages_admin_src_routes_router_security",
@@ -42399,7 +42399,7 @@
       "file_type": "code",
       "norm_label": "security",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L429"
+      "source_location": "L439"
     },
     {
       "id": "packages_admin_src_routes_router_settings",
@@ -42410,7 +42410,7 @@
       "file_type": "code",
       "norm_label": "settings",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L421"
+      "source_location": "L431"
     },
     {
       "id": "packages_admin_src_routes_router_tanstack_react_router",
@@ -42421,7 +42421,7 @@
       "file_type": "code",
       "norm_label": "@tanstack/react-router",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L463"
+      "source_location": "L473"
     },
     {
       "id": "packages_admin_src_routes_router_taxonomies",
@@ -42432,7 +42432,7 @@
       "file_type": "code",
       "norm_label": "taxonomies",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L412"
+      "source_location": "L422"
     },
     {
       "id": "packages_admin_src_routes_router_themes",
@@ -42443,7 +42443,7 @@
       "file_type": "code",
       "norm_label": "themes",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L422"
+      "source_location": "L432"
     },
     {
       "id": "packages_admin_src_routes_router_transfer",
@@ -42454,7 +42454,7 @@
       "file_type": "code",
       "norm_label": "transfer",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L424"
+      "source_location": "L434"
     },
     {
       "id": "packages_admin_src_routes_router_translations",
@@ -42465,7 +42465,7 @@
       "file_type": "code",
       "norm_label": "translations",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L403"
+      "source_location": "L413"
     },
     {
       "id": "packages_admin_src_routes_router_trash",
@@ -42476,7 +42476,7 @@
       "file_type": "code",
       "norm_label": "trash",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L404"
+      "source_location": "L414"
     },
     {
       "id": "packages_admin_src_routes_router_users",
@@ -42487,7 +42487,7 @@
       "file_type": "code",
       "norm_label": "users",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L416"
+      "source_location": "L426"
     },
     {
       "id": "packages_admin_src_routes_router_webhooks",
@@ -42498,7 +42498,7 @@
       "file_type": "code",
       "norm_label": "webhooks",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L420"
+      "source_location": "L430"
     },
     {
       "id": "packages_admin_src_routes_router_widgets",
@@ -42509,7 +42509,7 @@
       "file_type": "code",
       "norm_label": "widgets",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L410"
+      "source_location": "L420"
     },
     {
       "id": "packages_admin_src_stores_session",
@@ -57522,7 +57522,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L176",
+      "source_location": "L186",
       "weight": 1.0
     },
     {
@@ -57534,7 +57534,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L209",
+      "source_location": "L219",
       "weight": 1.0
     },
     {
@@ -57546,7 +57546,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L375",
+      "source_location": "L385",
       "weight": 1.0
     },
     {
@@ -123522,7 +123522,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L399",
+      "source_location": "L409",
       "weight": 1.0
     },
     {
@@ -123533,7 +123533,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L400",
+      "source_location": "L410",
       "weight": 1.0
     },
     {
@@ -123544,7 +123544,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L401",
+      "source_location": "L411",
       "weight": 1.0
     },
     {
@@ -123555,7 +123555,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L402",
+      "source_location": "L412",
       "weight": 1.0
     },
     {
@@ -123566,7 +123566,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L403",
+      "source_location": "L413",
       "weight": 1.0
     },
     {
@@ -123577,7 +123577,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L404",
+      "source_location": "L414",
       "weight": 1.0
     },
     {
@@ -123588,7 +123588,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L405",
+      "source_location": "L415",
       "weight": 1.0
     },
     {
@@ -123599,7 +123599,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L406",
+      "source_location": "L416",
       "weight": 1.0
     },
     {
@@ -123610,7 +123610,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L407",
+      "source_location": "L417",
       "weight": 1.0
     },
     {
@@ -123621,7 +123621,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L408",
+      "source_location": "L418",
       "weight": 1.0
     },
     {
@@ -123632,7 +123632,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L409",
+      "source_location": "L419",
       "weight": 1.0
     },
     {
@@ -123643,7 +123643,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L410",
+      "source_location": "L420",
       "weight": 1.0
     },
     {
@@ -123654,7 +123654,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L411",
+      "source_location": "L421",
       "weight": 1.0
     },
     {
@@ -123665,7 +123665,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L412",
+      "source_location": "L422",
       "weight": 1.0
     },
     {
@@ -123676,7 +123676,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L413",
+      "source_location": "L423",
       "weight": 1.0
     },
     {
@@ -123687,7 +123687,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L414",
+      "source_location": "L424",
       "weight": 1.0
     },
     {
@@ -123698,7 +123698,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L415",
+      "source_location": "L425",
       "weight": 1.0
     },
     {
@@ -123709,7 +123709,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L416",
+      "source_location": "L426",
       "weight": 1.0
     },
     {
@@ -123720,7 +123720,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L417",
+      "source_location": "L427",
       "weight": 1.0
     },
     {
@@ -123731,7 +123731,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L418",
+      "source_location": "L428",
       "weight": 1.0
     },
     {
@@ -123742,7 +123742,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L419",
+      "source_location": "L429",
       "weight": 1.0
     },
     {
@@ -123753,7 +123753,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L420",
+      "source_location": "L430",
       "weight": 1.0
     },
     {
@@ -123764,7 +123764,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L421",
+      "source_location": "L431",
       "weight": 1.0
     },
     {
@@ -123775,7 +123775,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L422",
+      "source_location": "L432",
       "weight": 1.0
     },
     {
@@ -123786,7 +123786,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L423",
+      "source_location": "L433",
       "weight": 1.0
     },
     {
@@ -123797,7 +123797,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L424",
+      "source_location": "L434",
       "weight": 1.0
     },
     {
@@ -123808,7 +123808,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L429",
+      "source_location": "L439",
       "weight": 1.0
     },
     {
@@ -123819,7 +123819,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L431",
+      "source_location": "L441",
       "weight": 1.0
     },
     {
@@ -123830,7 +123830,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L463",
+      "source_location": "L473",
       "weight": 1.0
     },
     {
@@ -123841,7 +123841,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L464",
+      "source_location": "L474",
       "weight": 1.0
     },
     {
@@ -139168,7 +139168,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L399",
+      "source_location": "L409",
       "weight": 1.0
     },
     {
@@ -139180,7 +139180,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L400",
+      "source_location": "L410",
       "weight": 1.0
     },
     {
@@ -139192,7 +139192,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L401",
+      "source_location": "L411",
       "weight": 1.0
     },
     {
@@ -139204,7 +139204,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L402",
+      "source_location": "L412",
       "weight": 1.0
     },
     {
@@ -139216,7 +139216,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L403",
+      "source_location": "L413",
       "weight": 1.0
     },
     {
@@ -139228,7 +139228,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L404",
+      "source_location": "L414",
       "weight": 1.0
     },
     {
@@ -139240,7 +139240,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L405",
+      "source_location": "L415",
       "weight": 1.0
     },
     {
@@ -139252,7 +139252,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L406",
+      "source_location": "L416",
       "weight": 1.0
     },
     {
@@ -139264,7 +139264,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L407",
+      "source_location": "L417",
       "weight": 1.0
     },
     {
@@ -139276,7 +139276,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L408",
+      "source_location": "L418",
       "weight": 1.0
     },
     {
@@ -139288,7 +139288,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L409",
+      "source_location": "L419",
       "weight": 1.0
     },
     {
@@ -139300,7 +139300,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L410",
+      "source_location": "L420",
       "weight": 1.0
     },
     {
@@ -139312,7 +139312,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L411",
+      "source_location": "L421",
       "weight": 1.0
     },
     {
@@ -139324,7 +139324,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L412",
+      "source_location": "L422",
       "weight": 1.0
     },
     {
@@ -139336,7 +139336,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L413",
+      "source_location": "L423",
       "weight": 1.0
     },
     {
@@ -139348,7 +139348,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L414",
+      "source_location": "L424",
       "weight": 1.0
     },
     {
@@ -139360,7 +139360,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L415",
+      "source_location": "L425",
       "weight": 1.0
     },
     {
@@ -139372,7 +139372,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L416",
+      "source_location": "L426",
       "weight": 1.0
     },
     {
@@ -139384,7 +139384,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L417",
+      "source_location": "L427",
       "weight": 1.0
     },
     {
@@ -139396,7 +139396,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L418",
+      "source_location": "L428",
       "weight": 1.0
     },
     {
@@ -139408,7 +139408,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L419",
+      "source_location": "L429",
       "weight": 1.0
     },
     {
@@ -139420,7 +139420,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L420",
+      "source_location": "L430",
       "weight": 1.0
     },
     {
@@ -139432,7 +139432,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L421",
+      "source_location": "L431",
       "weight": 1.0
     },
     {
@@ -139444,7 +139444,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L422",
+      "source_location": "L432",
       "weight": 1.0
     },
     {
@@ -139456,7 +139456,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L423",
+      "source_location": "L433",
       "weight": 1.0
     },
     {
@@ -139468,7 +139468,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L424",
+      "source_location": "L434",
       "weight": 1.0
     },
     {
@@ -139480,7 +139480,7 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "packages/admin/src/routes/router.tsx",
-      "source_location": "L429",
+      "source_location": "L439",
       "weight": 1.0
     },
     {
@@ -139533,5 +139533,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "db2b91a1b006e1dd6499cdd26fe675a0ad26e92d"
+  "built_at_commit": "f624961407ae5542254ca006ca6dff8fe2e78ea4"
 }
