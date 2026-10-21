@@ -512,7 +512,7 @@ export function MenusPage() {
 							{active ? (
 								<div className="overflow-hidden rounded-2xl border border-border bg-card">
 									<div className="flex flex-wrap items-center gap-3 border-b border-border p-5">
-										<label htmlFor="menu-name" className="text-sm text-muted-foreground">
+										<label htmlFor="menu-name" className="text-xs font-medium tracking-wide text-zinc-400 uppercase">
 											Name
 										</label>
 										<Input

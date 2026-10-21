@@ -219,8 +219,8 @@ export function RedirectsPage() {
 							Download JSON
 						</a>
 					</div>
-					<label className="grid gap-1 text-sm">
-						Paste CSV
+					<label className="grid gap-1">
+						<span className="text-xs font-medium tracking-wide text-zinc-400 uppercase">Paste CSV</span>
 						<textarea
 							className="min-h-24 rounded-ui border border-border bg-transparent p-2 font-mono text-xs"
 							value={importText}

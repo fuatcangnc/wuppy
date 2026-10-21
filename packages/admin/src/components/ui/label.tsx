@@ -6,7 +6,7 @@ export function Label({ className, ...props }: LabelHTMLAttributes<HTMLLabelElem
 		<label
 			data-slot="label"
 			className={cn(
-				"flex items-center gap-2 text-[10px] leading-none font-medium text-zinc-400 select-none",
+				"flex items-center gap-2 text-xs leading-none font-medium tracking-wide text-zinc-400 uppercase select-none",
 				className,
 			)}
 			{...props}

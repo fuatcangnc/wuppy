@@ -74,9 +74,9 @@ Kumo mavisi. Light `oklch(0.5772 0.2324 260)`, dark `oklch(0.5195 0.2324 260)`.
 | Mono | `JetBrains Mono Variable` (`--font-mono`) |
 | Heading | `--font-heading` = sans |
 | Gövde (admin) | `text-sm` (14px), `leading-relaxed` |
-| Form etiketi | `text-[10px] font-medium text-zinc-400` |
+| Form etiketi | `text-xs font-medium tracking-wide text-zinc-400 uppercase` |
 | Küçük etiket | `text-xs` (12px), `text-muted-foreground` |
-| Mikro | `text-[10px]` / `text-[11px]` — form etiketi, rozet/ipucu |
+| Mikro | `text-[10px]` / `text-[11px]` — rozet/ipucu |
 | Başlık | `text-lg font-semibold`, `tracking-tight` |
 | Ağırlıklar | `font-medium` (etiket), `font-semibold` (başlık) |
 
@@ -152,7 +152,7 @@ Degrade token’ları: `--button-primary-grad-top/bottom`,
 ### Input (`components/ui/input.tsx`)
 
 - Yükseklik: `default` 36px, `sm` 32px, `lg` 40px.
-- `rounded-lg`, `border-input`, `bg-transparent` (dark: `bg-input/30`).
+- `rounded-lg`, `border-input`, `bg-transparent` (light ve dark aynı).
 - Odak: `focus-visible:border-ring` + `ring-3` (`ring-ring/50`).
 - Hata: `aria-invalid` → `border-destructive` + `ring-destructive/20`.
 - Placeholder `muted-foreground`; metin `text-sm` (mobilde `text-base`).
@@ -231,7 +231,7 @@ Kaynak: `components/ui/dialog.tsx`.
 | `Skeleton` | `bg-muted animate-pulse rounded-md`; `SkeletonRows`/`SkeletonGrid` |
 | `Alert` | `rounded-xl border-border bg-card`; `destructive` varyantı |
 | `Avatar` | `rounded-full`; fallback `bg-primary/15 text-primary` |
-| `Label` | `text-[10px] font-medium text-zinc-400`; form alanıyla `htmlFor` |
+| `Label` | `text-xs font-medium tracking-wide text-zinc-400 uppercase`; form alanıyla `htmlFor` |
 | Scrollbar | İnce, yuvarlak thumb; light `#a1a1aa4d`, dark `#52525b66`, track şeffaf |
 | `Spinner` | Yükleme göstergesi; buton içinde `size-4` |
 
