@@ -147,6 +147,9 @@
 	--font-mono: var(--font-mono-stack);
 	--font-heading: var(--font-sans-stack);
 
+	/* Microcopy and form labels scale with their surrounding text, not the root. */
+	--text-xs: 0.6em;
+
 	/* Compatibility aliases for older screens; all resolve to the same tokens. */
 	--color-bg: var(--background);
 	--color-fg: var(--foreground);

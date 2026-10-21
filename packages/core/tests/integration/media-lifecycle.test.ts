@@ -94,6 +94,18 @@ describe("usage and orphans", () => {
 		expect((await send({ folder: "../etc" })).status).toBe(422);
 	});
 
+	it("returns the media used by one entry so the library can filter by page", async () => {
+		const used = await add("#f00");
+		await add("#0f0");
+		await service.put("posts", "about", { data: { title: "About", cover: used }, body: `<img src="${used}">` });
+
+		const res = await call("GET", "/api/media/usage/entry?collection=posts&slug=about");
+		expect(res.status).toBe(200);
+		expect(((await res.json()) as { data: { urls: string[] } }).data.urls).toEqual([used]);
+		expect((await call("GET", "/api/media/usage/entry?collection=posts")).status).toBe(422);
+		expect((await call("GET", "/api/media/usage/entry?collection=posts&slug=missing")).status).toBe(404);
+	});
+
 	it("an image referenced from a site data file (e.g. a byline avatar) is not an orphan", async () => {
 		const avatar = await add("#00f");
 		await call("PUT", "/api/data/bylines", { data: [{ slug: "ada", name: "Ada", avatar }] });

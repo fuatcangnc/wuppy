@@ -75,14 +75,18 @@ Kumo mavisi. Light `oklch(0.5772 0.2324 260)`, dark `oklch(0.5195 0.2324 260)`.
 | Mono | `JetBrains Mono Variable` (`--font-mono`) |
 | Heading | `--font-heading` = sans |
 | Gövde (admin) | `text-sm` (14px), `leading-relaxed` |
-| Form etiketi | `text-xs font-medium tracking-wide text-zinc-400 uppercase` |
-| Küçük etiket | `text-xs` (12px), `text-muted-foreground` |
+| Form etiketi | `text-xs` (`--text-xs: 0.6em`) `font-medium tracking-wide text-zinc-400 uppercase` |
+| Küçük etiket | `text-xs` (`0.6em`, üst metin boyutuna göre), `text-muted-foreground` |
+| Input placeholder | `text-sm` (14px), `text-muted-foreground` |
 | Mikro | `text-[10px]` / `text-[11px]` — rozet/ipucu |
 | Başlık | `text-lg font-semibold`, `tracking-tight` |
 | Ağırlıklar | `font-medium` (etiket), `font-semibold` (başlık) |
 
-Fontlar `@fontsource-variable/inter` ve
-`@fontsource-variable/jetbrains-mono` ile `main.tsx` içinde yüklenir.
+`--text-xs: 0.6em` olarak tanımlıdır; bu yüzden `text-xs` kök font boyutuna
+değil, bulunduğu metnin boyutuna göre ölçeklenir (16px tabanda ≈9.6px).
+
+Fontlar sistem sans stack'i ve `@fontsource-variable/jetbrains-mono` ile
+`main.tsx` içinde yüklenir.
 
 ---
 
@@ -156,7 +160,8 @@ Degrade token’ları: `--button-primary-grad-top/bottom`,
 - `rounded-lg`, `border-input`, `bg-transparent` (light ve dark aynı).
 - Odak: `focus-visible:border-ring` + `ring-3` (`ring-ring/50`).
 - Hata: `aria-invalid` → `border-destructive` + `ring-destructive/20`.
-- Placeholder `muted-foreground`; metin `text-sm` (mobilde `text-base`).
+- Placeholder `text-sm` + `muted-foreground`; metin `text-sm` (mobilde `text-base`).
+- Input içindeki arama/eylem ikonları `1em` kullanır; metin boyutuyla birlikte ölçeklenir.
 
 ```tsx
 <Input placeholder="ornek@site.com" aria-label="E-posta" />
@@ -244,6 +249,7 @@ Kaynak: `components/ui/dialog.tsx`.
 - Geliştirmede inline SVG, production’da tek sprite: `/icons.svg`
 - `prebuild: zero-icons` yalnız kullanılan ikonları paketler.
 - Varsayılan boyut `size-4` (16px); buton içinde `size-3.5`/`size-4`.
+- Input içi ve metinle hizalanan ikonlar `1em` kullanır.
 - Renk daima `currentColor`; ikona ayrı renk verilmez.
 - Dekoratif ikon `aria-hidden`; anlam taşıyan ikon `aria-label` alır.
 

@@ -39,6 +39,7 @@ import {
 	replaceMedia,
 	saveMediaFolders,
 	updateMedia,
+	type EntrySummary,
 	type MediaItem,
 } from "../../stores/content.ts";
 import { Button, Checkbox, Dialog, EmptyState, Input, Select, Textarea, toast } from "../../ui/index.tsx";
@@ -101,6 +102,9 @@ export function MediaPage() {
 	const [dateRange, setDateRange] = useState<DateRange>("all");
 	const [unusedOnly, setUnusedOnly] = useState(false);
 	const [unusedUrls, setUnusedUrls] = useState<Set<string> | null>(null);
+	const [pageFilter, setPageFilter] = useState("all");
+	const [pageOptions, setPageOptions] = useState<Array<{ slug: string; title: string }>>([]);
+	const [pageUrls, setPageUrls] = useState<Set<string> | null>(null);
 	const [filtersOpen, setFiltersOpen] = useState(false);
 	const [view, setView] = useState<"grid" | "list">("list");
 	const [page, setPage] = useState(1);
@@ -124,6 +128,25 @@ export function MediaPage() {
 	const replaceInput = useRef<HTMLInputElement>(null);
 
 	useEffect(() => void loadMedia(), []);
+	useEffect(() => {
+		let cancelled = false;
+		void apiData<EntrySummary[]>("GET", "/api/content/pages?limit=200&sort=title")
+			.then((rows) => {
+				if (cancelled) return;
+				setPageOptions(
+					(Array.isArray(rows) ? rows : []).map((entry) => ({
+						slug: entry.slug,
+						title: typeof entry.data.title === "string" && entry.data.title ? entry.data.title : entry.slug,
+					})),
+				);
+			})
+			.catch(() => {
+				if (!cancelled) setPageOptions([]);
+			});
+		return () => {
+			cancelled = true;
+		};
+	}, []);
 	const current = items.find((item) => item.url === selected) ?? null;
 	const editCurrent = items.find((item) => item.url === editUrl) ?? null;
 
@@ -179,6 +202,31 @@ export function MediaPage() {
 		};
 	}, [unusedOnly]);
 
+	useEffect(() => {
+		if (pageFilter === "all") {
+			setPageUrls(null);
+			return;
+		}
+		let cancelled = false;
+		setPageUrls(null);
+		void apiData<{ urls: string[] }>(
+			"GET",
+			`/api/media/usage/entry?collection=pages&slug=${encodeURIComponent(pageFilter)}`,
+		)
+			.then((result) => {
+				if (!cancelled) setPageUrls(new Set(Array.isArray(result.urls) ? result.urls : []));
+			})
+			.catch((error: Error) => {
+				if (!cancelled) {
+					setPageUrls(new Set());
+					toast(error.message, "error");
+				}
+			});
+		return () => {
+			cancelled = true;
+		};
+	}, [pageFilter]);
+
 	const rangeFrom = useMemo(() => {
 		if (dateRange === "all") return "";
 		const date = new Date();
@@ -197,14 +245,21 @@ export function MediaPage() {
 			from: rangeFrom,
 			to: "",
 		});
-		const visibleList = unusedOnly ? (unusedUrls ? list.filter((item) => unusedUrls.has(item.url)) : []) : list;
+		const pageScoped = pageFilter === "all" ? list : pageUrls ? list.filter((item) => pageUrls.has(item.url)) : [];
+		const visibleList = unusedOnly
+			? unusedUrls
+				? pageScoped.filter((item) => unusedUrls.has(item.url))
+				: []
+			: pageScoped;
 		return visibleList.toSorted((a, b) => {
 			if (sort === "name") return labelOf(a).localeCompare(labelOf(b));
 			if (sort === "size") return b.size - a.size;
 			if (sort === "type") return extOf(a).localeCompare(extOf(b)) || labelOf(a).localeCompare(labelOf(b));
 			return b.modified.localeCompare(a.modified);
 		});
-	}, [items, folder, query, type, rangeFrom, unusedOnly, unusedUrls, sort]);
+	}, [items, folder, query, type, rangeFrom, unusedOnly, unusedUrls, sort, pageFilter, pageUrls]);
+	const pageLoading = pageFilter !== "all" && pageUrls === null;
+	const pageTitle = pageOptions.find((entry) => entry.slug === pageFilter)?.title;
 	const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
 	const currentPage = Math.min(page, pageCount);
 	const visible = useMemo(
@@ -222,7 +277,7 @@ export function MediaPage() {
 	useEffect(() => {
 		setPage(1);
 		setPicked([]);
-	}, [folder, query, type, sort, dateRange, unusedOnly, pageSize]);
+	}, [folder, query, type, sort, dateRange, unusedOnly, pageSize, pageFilter]);
 
 	// Pasting an image anywhere on the page uploads it.
 	useEffect(() => {
@@ -470,8 +525,8 @@ export function MediaPage() {
 						<div className="-mx-3 -mt-3 border-b border-border">
 							<div className="relative">
 								<Search
-									size={15}
-									className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-muted-foreground"
+									size="1em"
+									className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-sm text-muted-foreground"
 								/>
 								<Input
 									aria-label="Search"
@@ -538,6 +593,21 @@ export function MediaPage() {
 										<Plus size={14} />
 									</Button>
 								</div>
+
+								<Select
+									label="Page"
+									size="sm"
+									className="text-xs"
+									value={pageFilter}
+									onChange={(event) => setPageFilter(event.target.value)}
+								>
+									<option value="all">All pages</option>
+									{pageOptions.map((entry) => (
+										<option key={entry.slug} value={entry.slug}>
+											{entry.title}
+										</option>
+									))}
+								</Select>
 
 								<div className="grid gap-1">
 									<p className="text-xs font-semibold tracking-wider text-zinc-400 uppercase">Sort by</p>
@@ -640,11 +710,15 @@ export function MediaPage() {
 						)}
 					</div>
 					<div className="border-b border-border px-3 py-2 text-xs text-muted-foreground">
-						{filtered.length} {filtered.length === 1 ? "item" : "items"}
+						{pageLoading ? "Loading page media…" : `${filtered.length} ${filtered.length === 1 ? "item" : "items"}`}
 					</div>
 
 					<div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto p-2">
-						{filtered.length === 0 ? (
+						{pageLoading ? (
+							<p role="status" className="px-4 py-8 text-center text-xs text-muted-foreground">
+								Loading media used by {pageTitle ?? "this page"}…
+							</p>
+						) : filtered.length === 0 ? (
 							<EmptyState title="No media yet" description="Upload an image or change the filters." />
 						) : view === "list" ? (
 							<ul className="grid gap-1">{visible.map(row)}</ul>

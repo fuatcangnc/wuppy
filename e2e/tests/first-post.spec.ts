@@ -237,6 +237,33 @@ async function mediaJourney(page: Page) {
 			return { count: media.length, hasWebp: media.some((item) => item.name.endsWith(".webp")) };
 		})
 		.toEqual({ count: 4, hasWebp: true }); // first journey image, upload, crop and client-side WebP
+
+	// Link only the original image to the About page, then filter the library by that page.
+	const library = (
+		(await (await page.request.get("/api/media")).json()) as {
+			data: Array<{ name: string; url: string; title?: string; width?: number; height?: number }>;
+		}
+	).data;
+	const barn = library.find((item) => item.title === "Red barn" && item.width === 200 && item.height === 100);
+	if (!barn) throw new Error("the original barn image is missing from the media library");
+	const about = (await (await page.request.get("/api/content/pages/about")).json()) as {
+		data: { data: Record<string, unknown> };
+	};
+	await page.request.put("/api/content/pages/about", {
+		headers: { "X-Wuppy-Request": "1" },
+		data: { data: about.data.data, body: `<img src="${barn.url}" alt="Barn">`, message: "link media to about" },
+	});
+
+	await page.keyboard.press("Escape"); // close the cropped-copy dialog
+	await page.getByRole("button", { name: "Show filters" }).click();
+	await page.getByRole("combobox", { name: "Page", exact: true }).click();
+	await page.getByRole("option", { name: "About" }).click();
+	await expect(page.getByText("1 item", { exact: true })).toBeVisible();
+	await expect(page.getByRole("button", { name: "Open Red barn", exact: true })).toBeVisible();
+
+	await page.getByRole("combobox", { name: "Page", exact: true }).click();
+	await page.getByRole("option", { name: "All pages" }).click();
+	await expect(page.getByText("4 items", { exact: true })).toBeVisible();
 }
 
 // Smoke: admin modules render; the owner can reset a colleague's authenticator from Users.

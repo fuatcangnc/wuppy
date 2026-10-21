@@ -238,6 +238,11 @@ export function createApp({
 	};
 	const mediaUsage = async (url: string) =>
 		(await entryTexts()).filter((e) => e.text.includes(url)).map(({ text: _text, ...rest }) => rest);
+	const mediaUrlsForEntry = async (collection: string, slug: string) => {
+		const entry = (await entryTexts()).find((item) => item.collection === collection && item.slug === slug);
+		if (!entry) return null;
+		return (await media.list()).filter((item) => entry.text.includes(item.url)).map((item) => item.url);
+	};
 	const orphans = async () => {
 		const texts = (await entryTexts()).map((e) => e.text);
 		for (const name of dataNames) texts.push(JSON.stringify(await json.read(name, null)));
@@ -920,6 +925,14 @@ export function createApp({
 			const url = c.req.query("url");
 			if (!url) throw new ApiError(422, "VALIDATION_ERROR", "Missing url");
 			return c.json({ data: await mediaUsage(url) });
+		})
+		.get("/api/media/usage/entry", need("content:read"), async (c) => {
+			const collection = c.req.query("collection");
+			const slug = c.req.query("slug");
+			if (!collection || !slug) throw new ApiError(422, "VALIDATION_ERROR", "Missing collection or slug");
+			const urls = await mediaUrlsForEntry(collection, slug);
+			if (!urls) throw new ApiError(404, "NOT_FOUND", "Entry not found");
+			return c.json({ data: { urls } });
 		})
 		.get("/api/media/orphans", need("content:read"), async (c) => c.json({ data: await orphans() }))
 		.delete("/api/media/orphans", need("media:delete"), async (c) => {

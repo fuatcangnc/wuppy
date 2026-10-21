@@ -124,6 +124,7 @@ const setup = (list: MediaItem[]) => {
 		calls.push(`${init.method ?? "GET"} ${url}`);
 		if (url === "/api/media") return new Response(JSON.stringify({ data: list }));
 		if (url === "/api/media/folders") return new Response(JSON.stringify({ data: ["farm"] }));
+		if (url.startsWith("/api/content/pages")) return new Response(JSON.stringify({ data: [] }));
 		if (url.startsWith("/api/media/usage")) return new Response(JSON.stringify({ data: [] }));
 		return new Response(JSON.stringify({ data: {} }));
 	});
@@ -267,6 +268,38 @@ describe("MediaPage uploads and bulk actions", () => {
 		await user.type(dialog.getByLabelText("Alt Text"), "Shared alt");
 		await user.click(dialog.getByRole("button", { name: "Save Changes" }));
 		await waitFor(() => expect(calls.filter((c) => c.startsWith("PATCH /api/media/meta")).length).toBe(2));
+	});
+
+	it("filters the library by the page that uses an image", async () => {
+		const list = [item("a.png"), item("b.png")];
+		FakeXhr.all = [];
+		const calls: string[] = [];
+		vi.stubGlobal("fetch", async (url: string, init: RequestInit = {}) => {
+			calls.push(`${init.method ?? "GET"} ${url}`);
+			if (url === "/api/media") return new Response(JSON.stringify({ data: list }));
+			if (url === "/api/media/folders") return new Response(JSON.stringify({ data: [] }));
+			if (url.startsWith("/api/content/pages")) {
+				return new Response(
+					JSON.stringify({ data: [{ slug: "about", data: { title: "About" }, body: "", modified: "" }] }),
+				);
+			}
+			if (url.startsWith("/api/media/usage/entry")) {
+				return new Response(JSON.stringify({ data: { urls: [list[0]!.url] } }));
+			}
+			return new Response(JSON.stringify({ data: {} }));
+		});
+		render(<MediaPage />);
+		const user = userEvent.setup();
+		await user.click(await screen.findByRole("button", { name: "Show filters" }));
+		await chooseSelect(user, "Page", "About");
+		await waitFor(() => {
+			expect(screen.getByLabelText("Open a.png")).toBeInTheDocument();
+			expect(screen.queryByLabelText("Open b.png")).toBeNull();
+		});
+		expect(calls).toContain("GET /api/media/usage/entry?collection=pages&slug=about");
+
+		await chooseSelect(user, "Page", "All pages");
+		expect(await screen.findByLabelText("Open b.png")).toBeInTheDocument();
 	});
 
 	it("paginates the media grid and keeps the footer controls", async () => {
