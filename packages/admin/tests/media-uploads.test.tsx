@@ -246,8 +246,8 @@ describe("MediaPage uploads and bulk actions", () => {
 		const user = userEvent.setup();
 		await user.click(await screen.findByLabelText("Select a.png"));
 		await user.click(screen.getByLabelText("Select b.png"));
-		expect(screen.getByText("2 selected")).toBeInTheDocument();
-		await chooseSelect(user, "Move selected to folder", "farm");
+		expect(screen.getByText("2 items selected")).toBeInTheDocument();
+		await user.selectOptions(screen.getByLabelText("Move selected to folder"), "farm");
 		await waitFor(() => expect(calls.filter((c) => c.startsWith("PATCH /api/media/meta")).length).toBe(2));
 		await user.click(await screen.findByLabelText("Select a.png"));
 		await user.click(screen.getByLabelText("Select b.png"));

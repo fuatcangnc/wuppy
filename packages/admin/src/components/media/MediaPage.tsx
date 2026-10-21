@@ -3,9 +3,12 @@ import {
 	ChevronLeft,
 	ChevronRight,
 	Copy,
+	Download,
 	ExternalLink,
+	Eye,
 	FileImage,
 	FileText,
+	Folder,
 	HardDrive,
 	LayoutGrid,
 	List,
@@ -18,6 +21,7 @@ import {
 	Trash2,
 	Upload,
 	WandSparkles,
+	X,
 } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -306,6 +310,40 @@ export function MediaPage() {
 	const togglePicked = (url: string) =>
 		setPicked((all) => (all.includes(url) ? all.filter((entry) => entry !== url) : [...all, url]));
 
+	const deletePicked = async () => {
+		if (!confirm(`Delete ${picked.length} files? Files that entries still use are kept.`)) return;
+		let kept = 0;
+		for (const url of picked) {
+			try {
+				await deleteMedia(url);
+			} catch (error) {
+				if (error instanceof ApiError && error.code === "IN_USE") kept++;
+				else toast((error as Error).message, "error");
+			}
+		}
+		setPicked([]);
+		toast(kept ? `${kept} in use, kept` : "Deleted");
+	};
+
+	const downloadPicked = () => {
+		for (const url of picked) {
+			const anchor = document.createElement("a");
+			anchor.href = url;
+			anchor.download = url.split("/").pop() || "image";
+			document.body.append(anchor);
+			anchor.click();
+			anchor.remove();
+		}
+	};
+
+	const copyPicked = () => {
+		const urls = picked.map((url) => new URL(url, window.location.origin).href).join("\n");
+		void navigator.clipboard.writeText(urls).then(
+			() => toast(picked.length === 1 ? "URL copied" : "URLs copied"),
+			(error: Error) => toast(error.message, "error"),
+		);
+	};
+
 	const row = (item: MediaItem) => {
 		const selectedRow = selected === item.url;
 		return (
@@ -315,12 +353,6 @@ export function MediaPage() {
 						selectedRow ? "border-primary/50 bg-secondary" : "border-transparent hover:bg-muted/50"
 					}`}
 				>
-					<Checkbox
-						aria-label={`Select ${item.name}`}
-						checked={picked.includes(item.url)}
-						onChange={() => togglePicked(item.url)}
-						className="opacity-0 group-hover:opacity-100 focus:opacity-100"
-					/>
 					<button
 						type="button"
 						aria-label={`Open ${item.title || item.name}`}
@@ -329,12 +361,20 @@ export function MediaPage() {
 					>
 						<img src={fresh(item)} alt="" className="size-10 shrink-0 rounded-md object-cover" loading="lazy" />
 						<span className="grid min-w-0 flex-1 gap-0.5">
-							<span className="truncate text-sm font-medium">{labelOf(item)}</span>
-							<span className="truncate text-xs text-muted-foreground">
+							<span className="truncate text-xs font-medium">{labelOf(item)}</span>
+							<span className="truncate text-[10px] text-muted-foreground">
 								{sizeLabel(item.size)} · {new Date(item.modified).toLocaleDateString()}
 							</span>
 						</span>
 					</button>
+					<Checkbox
+						aria-label={`Select ${item.name}`}
+						checked={picked.includes(item.url)}
+						onChange={() => togglePicked(item.url)}
+						className={`transition ${
+							picked.includes(item.url) ? "opacity-100" : "opacity-0 group-hover:opacity-100 focus:opacity-100"
+						}`}
+					/>
 				</div>
 			</li>
 		);
@@ -560,59 +600,6 @@ export function MediaPage() {
 										</Button>
 									</div>
 								)}
-							</div>
-						)}
-
-						{picked.length > 0 && (
-							<div className="flex flex-wrap items-center gap-1" role="toolbar" aria-label="Bulk actions">
-								<span className="text-xs">{picked.length} selected</span>
-								<Select
-									aria-label="Move selected to folder"
-									value=""
-									onChange={(event) => {
-										const target = event.target.value;
-										if (!target) return;
-										void Promise.all(
-											picked.map((url) => updateMedia(url, { folder: target === "__none" ? "" : target })),
-										).then(() => {
-											setPicked([]);
-											toast("Moved");
-										});
-									}}
-								>
-									<option value="">Move to…</option>
-									<option value="__none">Main library</option>
-									{folders.map((name) => (
-										<option key={name} value={name}>
-											{name}
-										</option>
-									))}
-								</Select>
-								<Button
-									size="sm"
-									variant="destructive"
-									onClick={() => {
-										if (!confirm(`Delete ${picked.length} files? Files that entries still use are kept.`)) return;
-										void (async () => {
-											let kept = 0;
-											for (const url of picked) {
-												try {
-													await deleteMedia(url);
-												} catch (error) {
-													if (error instanceof ApiError && error.code === "IN_USE") kept++;
-													else toast((error as Error).message, "error");
-												}
-											}
-											setPicked([]);
-											toast(kept ? `${kept} in use, kept` : "Deleted");
-										})();
-									}}
-								>
-									Delete
-								</Button>
-								<Button size="sm" variant="ghost" onClick={() => setPicked([])}>
-									Clear
-								</Button>
 							</div>
 						)}
 					</div>
@@ -976,6 +963,103 @@ export function MediaPage() {
 					</aside>
 				</div>
 			</div>
+
+			{picked.length > 0 && (
+				<div
+					role="toolbar"
+					aria-label="Bulk actions"
+					className="fixed bottom-5 left-1/2 z-40 flex max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center gap-1 overflow-x-auto rounded-xl border border-border bg-card p-2 shadow-xl"
+				>
+					<span className="shrink-0 px-2 text-xs text-muted-foreground">
+						{picked.length} {picked.length === 1 ? "item" : "items"} selected
+					</span>
+					<span className="mx-1 h-5 w-px shrink-0 bg-border" />
+					<label
+						className="relative inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+						title="Move selected to folder"
+					>
+						<Folder size={14} />
+						<select
+							aria-label="Move selected to folder"
+							value=""
+							className="absolute inset-0 cursor-pointer opacity-0"
+							onChange={(event) => {
+								const target = event.target.value;
+								if (!target) return;
+								void Promise.all(
+									picked.map((url) => updateMedia(url, { folder: target === "__none" ? "" : target })),
+								).then(() => {
+									setPicked([]);
+									toast("Moved");
+								});
+							}}
+						>
+							<option value="">Move to…</option>
+							<option value="__none">Main library</option>
+							{folders.map((name) => (
+								<option key={name} value={name}>
+									{name}
+								</option>
+							))}
+						</select>
+					</label>
+					<Button
+						size="icon-sm"
+						variant="ghost"
+						aria-label="Preview selected"
+						title="Preview selected"
+						onClick={() => picked[0] && selectMedia(picked[0])}
+					>
+						<Eye size={14} />
+					</Button>
+					<Button
+						size="icon-sm"
+						variant="ghost"
+						aria-label="Edit selected"
+						title="Edit selected"
+						onClick={() => picked[0] && setEditUrl(picked[0])}
+					>
+						<Pencil size={14} />
+					</Button>
+					<Button
+						size="icon-sm"
+						variant="ghost"
+						aria-label="Download selected"
+						title="Download selected"
+						onClick={downloadPicked}
+					>
+						<Download size={14} />
+					</Button>
+					<Button
+						size="icon-sm"
+						variant="ghost"
+						aria-label="Copy selected URLs"
+						title="Copy selected URLs"
+						onClick={copyPicked}
+					>
+						<Copy size={14} />
+					</Button>
+					<Button
+						size="icon-sm"
+						variant="ghost"
+						className="text-destructive"
+						aria-label="Delete"
+						title="Delete selected"
+						onClick={() => void deletePicked()}
+					>
+						<Trash2 size={14} />
+					</Button>
+					<Button
+						size="icon-sm"
+						variant="ghost"
+						aria-label="Clear selection"
+						title="Clear selection"
+						onClick={() => setPicked([])}
+					>
+						<X size={14} />
+					</Button>
+				</div>
+			)}
 
 			<Dialog
 				open={folderDialog}

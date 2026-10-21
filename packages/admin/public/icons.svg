@@ -52,10 +52,17 @@
   <path d="M3 5v14a9 3 0 0 0 6.47 2.88"/>
   <path d="M12 12v4h4"/>
   <path d="M13 20a5 5 0 0 0 9-3 4.5 4.5 0 0 0-4.5-4.5c-1.33 0-2.54.54-3.41 1.41L12 16"/>
+</symbol><symbol id="download" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M12 15V3"/>
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <path d="m7 10 5 5 5-5"/>
 </symbol><symbol id="external-link" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
   <path d="M15 3h6v6"/>
   <path d="M10 14 21 3"/>
   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+</symbol><symbol id="eye" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+  <circle cx="12" cy="12" r="3"/>
 </symbol><symbol id="file-image" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
   <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
   <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
@@ -67,6 +74,8 @@
   <path d="M10 9H8"/>
   <path d="M16 13H8"/>
   <path d="M16 17H8"/>
+</symbol><symbol id="folder" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
+  <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
 </symbol><symbol id="grip-vertical" viewBox="0 0 24 24" fill="inherit" stroke="inherit" stroke-width="inherit" stroke-linecap="inherit" stroke-linejoin="inherit">
   <circle cx="9" cy="12" r="1"/>
   <circle cx="9" cy="5" r="1"/>
