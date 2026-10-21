@@ -1,9 +1,11 @@
 import {
+	Calendar,
 	ChevronLeft,
 	ChevronRight,
 	Copy,
 	ExternalLink,
 	FileImage,
+	FileText,
 	HardDrive,
 	LayoutGrid,
 	List,
@@ -41,6 +43,21 @@ import { UploadDialog } from "./UploadDialog.tsx";
 
 const DEFAULT_PAGE_SIZE = 20;
 const TYPES = { png: "PNG", jpg: "JPEG", gif: "GIF", webp: "WebP" } as const;
+const SORTS = [
+	{ id: "date", label: "Date" },
+	{ id: "name", label: "Name" },
+	{ id: "size", label: "Size" },
+	{ id: "type", label: "Type" },
+] as const;
+type Sort = (typeof SORTS)[number]["id"];
+const RANGES = [
+	{ id: "all", label: "All" },
+	{ id: "today", label: "Today" },
+	{ id: "week", label: "Week" },
+	{ id: "month", label: "Month" },
+	{ id: "year", label: "Year" },
+] as const;
+type DateRange = (typeof RANGES)[number]["id"];
 const VARIANTS = [
 	{ id: "full", label: "Full", query: "" },
 	{ id: "thumbnail", label: "Thumbnail", query: "w=320" },
@@ -75,8 +92,10 @@ export function MediaPage() {
 	const [folder, setFolder] = useState("all");
 	const [query, setQuery] = useState("");
 	const [type, setType] = useState("");
-	const [from, setFrom] = useState("");
-	const [to, setTo] = useState("");
+	const [sort, setSort] = useState<Sort>("date");
+	const [dateRange, setDateRange] = useState<DateRange>("all");
+	const [unusedOnly, setUnusedOnly] = useState(false);
+	const [unusedUrls, setUnusedUrls] = useState<Set<string> | null>(null);
 	const [view, setView] = useState<"grid" | "list">("list");
 	const [page, setPage] = useState(1);
 	const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
@@ -129,10 +148,54 @@ export function MediaPage() {
 		};
 	}, [current?.url]);
 
-	const filtered = useMemo(
-		() => filterMedia(items, { folder, query, type, from, to }),
-		[items, folder, query, type, from, to],
-	);
+	useEffect(() => {
+		if (!unusedOnly) {
+			setUnusedUrls(null);
+			return;
+		}
+		let cancelled = false;
+		setUnusedUrls(null);
+		void apiData<MediaItem[]>("GET", "/api/media/orphans")
+			.then((list) => {
+				if (!cancelled) setUnusedUrls(new Set(list.map((item) => item.url)));
+			})
+			.catch((error: Error) => {
+				if (!cancelled) {
+					toast(error.message, "error");
+					setUnusedOnly(false);
+				}
+			});
+		return () => {
+			cancelled = true;
+		};
+	}, [unusedOnly]);
+
+	const rangeFrom = useMemo(() => {
+		if (dateRange === "all") return "";
+		const date = new Date();
+		date.setHours(0, 0, 0, 0);
+		if (dateRange === "week") date.setDate(date.getDate() - 6);
+		else if (dateRange === "month") date.setMonth(date.getMonth() - 1);
+		else if (dateRange === "year") date.setFullYear(date.getFullYear() - 1);
+		return date.toISOString().slice(0, 10);
+	}, [dateRange]);
+
+	const filtered = useMemo(() => {
+		const list = filterMedia(items, {
+			folder,
+			query,
+			type: type === "image" ? "" : type,
+			from: rangeFrom,
+			to: "",
+		});
+		const visibleList = unusedOnly ? (unusedUrls ? list.filter((item) => unusedUrls.has(item.url)) : []) : list;
+		return visibleList.toSorted((a, b) => {
+			if (sort === "name") return labelOf(a).localeCompare(labelOf(b));
+			if (sort === "size") return b.size - a.size;
+			if (sort === "type") return extOf(a).localeCompare(extOf(b)) || labelOf(a).localeCompare(labelOf(b));
+			return b.modified.localeCompare(a.modified);
+		});
+	}, [items, folder, query, type, rangeFrom, unusedOnly, unusedUrls, sort]);
 	const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
 	const currentPage = Math.min(page, pageCount);
 	const visible = useMemo(
@@ -150,7 +213,7 @@ export function MediaPage() {
 	useEffect(() => {
 		setPage(1);
 		setPicked([]);
-	}, [folder, query, type, from, to, pageSize]);
+	}, [folder, query, type, sort, dateRange, unusedOnly, pageSize]);
 
 	// Pasting an image anywhere on the page uploads it.
 	useEffect(() => {
@@ -348,22 +411,19 @@ export function MediaPage() {
 								placeholder="Search media…"
 							/>
 						</div>
-						<div className="flex flex-wrap gap-1">
-							<button
-								type="button"
-								onClick={() => setType("")}
-								className={`rounded-md px-2.5 py-1 text-xs ${type === "" ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted/60"}`}
-							>
-								All
-							</button>
-							{Object.entries(TYPES).map(([ext, label]) => (
+						<div className="flex flex-wrap gap-0.5">
+							{[
+								{ id: "", label: "All" },
+								{ id: "image", label: "Images" },
+								...Object.entries(TYPES).map(([id, label]) => ({ id, label })),
+							].map((entry) => (
 								<button
-									key={ext}
+									key={entry.id}
 									type="button"
-									onClick={() => setType(ext)}
-									className={`rounded-md px-2.5 py-1 text-xs ${type === ext ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted/60"}`}
+									onClick={() => setType(entry.id)}
+									className={`rounded-md px-2 py-1 text-[11px] ${type === entry.id ? "bg-tab text-foreground" : "text-muted-foreground hover:bg-muted/60"}`}
 								>
-									{label}
+									{entry.label}
 								</button>
 							))}
 						</div>
@@ -392,25 +452,72 @@ export function MediaPage() {
 								<Plus size={14} />
 							</Button>
 						</div>
-						<details className="rounded-md border border-border">
-							<summary className="cursor-pointer px-2 py-1.5 text-xs text-muted-foreground">Date filters</summary>
-							<div className="grid gap-2 border-t border-border p-2">
-								<Input
-									aria-label="Modified from"
-									title="Modified from"
-									type="date"
-									value={from}
-									onChange={(event) => setFrom(event.target.value)}
-								/>
-								<Input
-									aria-label="Modified to"
-									title="Modified to"
-									type="date"
-									value={to}
-									onChange={(event) => setTo(event.target.value)}
-								/>
+
+						<div className="grid gap-1.5">
+							<p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">Sort by</p>
+							<div className="grid grid-cols-2 gap-1">
+								{SORTS.map((entry) => {
+									const icon =
+										entry.id === "date" ? (
+											<Calendar size={13} />
+										) : entry.id === "name" ? (
+											<FileText size={13} />
+										) : entry.id === "size" ? (
+											<HardDrive size={13} />
+										) : (
+											<FileImage size={13} />
+										);
+									return (
+										<Button
+											key={entry.id}
+											variant="secondary"
+											size="sm"
+											className={`justify-start ${sort === entry.id ? "bg-tab text-foreground ring-1 ring-primary/50" : "text-muted-foreground"}`}
+											aria-pressed={sort === entry.id}
+											onClick={() => setSort(entry.id)}
+										>
+											{icon} {entry.label}
+										</Button>
+									);
+								})}
 							</div>
-						</details>
+						</div>
+
+						<div className="grid gap-1.5">
+							<p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">Date range</p>
+							<div className="grid grid-cols-3 gap-1">
+								{RANGES.map((entry) => (
+									<Button
+										key={entry.id}
+										variant="secondary"
+										size="sm"
+										className={`${dateRange === entry.id ? "bg-tab text-foreground ring-1 ring-primary/50" : "text-muted-foreground"}`}
+										aria-pressed={dateRange === entry.id}
+										onClick={() => setDateRange(entry.id)}
+									>
+										{entry.label}
+									</Button>
+								))}
+							</div>
+						</div>
+
+						<div className="grid gap-1">
+							<p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">Tags</p>
+							<p className="text-xs text-muted-foreground">No tags available.</p>
+						</div>
+
+						<div className="grid gap-1">
+							<p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">Options</p>
+							<Button
+								variant="secondary"
+								size="sm"
+								className={`justify-start ${unusedOnly ? "bg-tab text-foreground" : "text-muted-foreground"}`}
+								aria-pressed={unusedOnly}
+								onClick={() => setUnusedOnly((value) => !value)}
+							>
+								<FileImage size={13} /> Unused Media Only
+							</Button>
+						</div>
 						{(folder !== "all" && folder !== "") || picked.length > 0 ? (
 							<div className="flex flex-wrap items-center gap-1">
 								{folder !== "all" && folder !== "" && (
@@ -628,7 +735,7 @@ export function MediaPage() {
 										onClick={() => setVariant(entry.id)}
 										className={`shrink-0 rounded-md px-2.5 py-1.5 text-xs font-medium transition ${
 											variant === entry.id
-												? "bg-foreground text-background shadow-sm"
+												? "bg-tab text-foreground shadow-sm"
 												: "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
 										}`}
 									>
