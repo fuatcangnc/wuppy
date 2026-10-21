@@ -307,6 +307,21 @@ test("admin modules render and the owner resets a colleague's two-factor", async
 	await mediaJourney(page);
 	await page.keyboard.press("Escape"); // the cropped copy opened in its own dialog
 
+	// Pages use the same two-pane workspace as Media; the table is an alternate view.
+	await page.goto("/admin/c/pages");
+	await expect(page.getByRole("heading", { name: "Pages", exact: true })).toBeVisible();
+	await page.getByRole("button", { name: "Open About", exact: true }).click();
+	await expect(page.getByTestId("page-detail")).toBeVisible();
+	await expect(page.getByRole("heading", { name: "About", exact: true })).toBeVisible();
+	await expect(page.getByTitle("Preview of About")).toBeVisible();
+	await expect(page.getByRole("link", { name: /\/about$/ })).toBeVisible();
+	await page.getByRole("button", { name: "Switch to table view" }).click();
+	await expect(page.getByTestId("pages-table")).toBeVisible();
+	await expect(page.getByRole("columnheader", { name: "Status" })).toBeVisible();
+	await expect(page.getByRole("link", { name: "About", exact: true })).toBeVisible();
+	await page.getByRole("button", { name: "Switch to split view" }).click();
+	await expect(page.getByRole("button", { name: "Open About", exact: true })).toBeVisible();
+
 	await page.getByRole("link", { name: "Users" }).click();
 	const row = page.getByRole("row", { name: /edna@example.com/ });
 	await row.getByRole("button", { name: "Manage" }).click();

@@ -22,12 +22,21 @@ import {
 	UserRound,
 	Webhook,
 } from "@react-zero-ui/icon-sprite";
-import { createRootRoute, createRoute, createRouter, Link, Outlet, useRouterState } from "@tanstack/react-router";
+import {
+	createRootRoute,
+	createRoute,
+	createRouter,
+	Link,
+	Outlet,
+	useParams,
+	useRouterState,
+} from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { LoginPage } from "../components/auth/LoginPage.tsx";
 import { SecurityPage } from "../components/auth/SecurityPage.tsx";
 import { AuditPage } from "../components/content/AuditPage.tsx";
 import { EntriesPage } from "../components/content/EntriesPage.tsx";
+import { PagesPage } from "../components/content/pages/PagesPage.tsx";
 import { EditorPage } from "../components/content/EditorPage.tsx";
 import { TranslationsPage } from "../components/content/TranslationsPage.tsx";
 import { TrashPage } from "../components/content/TrashPage.tsx";
@@ -98,7 +107,9 @@ function Shell() {
 	const collections = useStore($collections);
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [pluginLinks, setPluginLinks] = useState<Array<{ id: string; index: number; label: string }>>([]);
-	const fullWidth = useRouterState({ select: (state) => state.location.pathname }) === "/media";
+	const fullWidth = useRouterState({
+		select: (state) => state.location.pathname === "/media" || state.location.pathname === "/c/pages",
+	});
 	useEffect(() => {
 		if (session.status !== "authed") return;
 		void loadCollections();
@@ -314,10 +325,15 @@ function Shell() {
 	);
 }
 
+function CollectionPage() {
+	const { collection } = useParams({ from: "/c/$collection" });
+	return collection === "pages" ? <PagesPage /> : <EntriesPage />;
+}
+
 const root = createRootRoute({ component: Shell });
 const index = createRoute({ getParentRoute: () => root, path: "/", component: DashboardPage });
 const calendar = createRoute({ getParentRoute: () => root, path: "/calendar", component: CalendarPage });
-const entries = createRoute({ getParentRoute: () => root, path: "/c/$collection", component: EntriesPage });
+const entries = createRoute({ getParentRoute: () => root, path: "/c/$collection", component: CollectionPage });
 const translations = createRoute({ getParentRoute: () => root, path: "/t/$collection", component: TranslationsPage });
 const trash = createRoute({ getParentRoute: () => root, path: "/trash", component: TrashPage });
 const editor = createRoute({ getParentRoute: () => root, path: "/e/$collection/$", component: EditorPage });

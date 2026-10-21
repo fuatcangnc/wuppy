@@ -43,6 +43,7 @@ import {
 	type MediaItem,
 } from "../../stores/content.ts";
 import { Button, Checkbox, Dialog, EmptyState, Input, Select, Textarea, toast } from "../../ui/index.tsx";
+import { WorkspaceLayout, WorkspacePanel, WorkspaceSidebar } from "../shared/WorkspaceLayout.tsx";
 import { filterMedia } from "./filter.ts";
 import { fresh, MediaDetailDialog, sizeLabel, type Usage } from "./MediaDetailDialog.tsx";
 import { UploadDialog } from "./UploadDialog.tsx";
@@ -486,8 +487,8 @@ export function MediaPage() {
 				if (files.length) setPending(files);
 			}}
 		>
-			<div className="grid gap-4 min-[1400px]:h-[calc(100vh-5rem)] min-[1400px]:grid-cols-[300px_minmax(0,1fr)]">
-				<aside className="flex min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-card">
+			<WorkspaceLayout sidebarWidth={300}>
+				<WorkspaceSidebar>
 					<div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
 						<div className="grid gap-0.5">
 							<h1 className="text-base font-semibold">Media Library</h1>
@@ -828,9 +829,9 @@ export function MediaPage() {
 							</Select>
 						</div>
 					</div>
-				</aside>
+				</WorkspaceSidebar>
 
-				<div className="grid min-h-[520px] gap-0 overflow-hidden rounded-xl border border-border bg-background min-[1400px]:min-h-0 min-[1400px]:grid-cols-[minmax(0,1fr)_360px]">
+				<WorkspacePanel className="min-[1400px]:grid-cols-[minmax(0,1fr)_360px]">
 					<section className="flex min-h-0 flex-col border-b border-border min-[1400px]:border-e min-[1400px]:border-b-0">
 						{current ? (
 							<>
@@ -1071,8 +1072,8 @@ export function MediaPage() {
 							</div>
 						) : null}
 					</aside>
-				</div>
-			</div>
+				</WorkspacePanel>
+			</WorkspaceLayout>
 
 			{picked.length > 0 && (
 				<div

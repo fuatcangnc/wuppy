@@ -276,6 +276,22 @@ Yeni ikon: doğrudan paketten import et; elle SVG/emoji yazma.
 | Widget çekmecesi | 340–760px, varsayılan 460px |
 | Canvas | 12–16px boşluk, `rounded-xl` pencere |
 
+### Çalışma alanı (Media + Pages)
+
+`WorkspaceLayout` (`components/shared/WorkspaceLayout.tsx`) Media ve Pages
+ekranlarının ortak iki panelli kabuğudur:
+
+- `WorkspaceSidebar`: solda `bg-card`, `rounded-xl`, dikey scroll; Media 300px,
+  Pages 340px. 1400px altında paneller alt alta yığılır.
+- `WorkspacePanel`: sağdaki detay yüzeyi; Media'da önizleme + 360px inspector,
+  Pages'te başlık/meta + imzalı iframe önizleme.
+- Sayfa yüksekliği 1400px üzerinde `calc(100vh - 5rem)`; için `min-h-0` ve
+  `.custom-scrollbar` kullanılır.
+- Pages ekranı aynı state ile `split` ve `table` görünümü arasında geçer; tablo
+  görünümünde ayarlar dialog'u tarih, per-page, sıralama, yazar/dil ve kolon
+  seçimlerini yönetir.
+- Satır ve detay aksiyonları `ActionMenu` ile aynı erişilebilir menüyü kullanır.
+
 Kırılma noktaları Tailwind varsayılanları: `sm 640`, `md 768`, `lg 1024`,
 `xl 1280`, `2xl 1536`.
 

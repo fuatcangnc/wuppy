@@ -10,7 +10,6 @@ import {
 	duplicateEntry,
 	loadCollections,
 	setEntryDraft,
-	type EntrySummary,
 } from "../../stores/content.ts";
 import { slugifyTitle } from "../../lib/slug.ts";
 import { newEntry } from "../../stores/editor.ts";
@@ -33,39 +32,17 @@ import {
 	TableHeader,
 	TableRow,
 } from "../../ui/index.tsx";
+import {
+	DEFAULT_PAGE_SIZE,
+	listQuery,
+	NO_FILTERS,
+	TONES,
+	type ContentListPage,
+	type Filters,
+	type Row,
+} from "./list.ts";
 
-const TONES = { published: "success", draft: "warning", scheduled: "accent" } as const;
-const DEFAULT_PAGE_SIZE = 20;
-
-type Row = EntrySummary & { status: keyof typeof TONES };
-interface Page {
-	data: Row[];
-	total: number;
-	nextCursor: string | null;
-}
-interface Filters {
-	q: string;
-	status: string;
-	sort: string;
-	author: string;
-	lang: string;
-	from: string;
-	to: string;
-}
-const NO_FILTERS: Filters = { q: "", status: "", sort: "-modified", author: "", lang: "", from: "", to: "" };
-
-/** Query string for the list API: only filters that are set, dates widened to whole days. */
-export function listQuery(f: Filters, page = 1, pageSize = DEFAULT_PAGE_SIZE): string {
-	const params = new URLSearchParams({
-		limit: String(pageSize),
-		offset: String((Math.max(page, 1) - 1) * pageSize),
-		sort: f.sort,
-	});
-	for (const key of ["q", "status", "author", "lang"] as const) if (f[key].trim()) params.set(key, f[key].trim());
-	if (f.from) params.set("from", `${f.from}T00:00:00.000Z`);
-	if (f.to) params.set("to", `${new Date(new Date(`${f.to}T00:00:00.000Z`).getTime() + 86_400_000).toISOString()}`);
-	return params.toString();
-}
+export { listQuery } from "./list.ts";
 
 export function EntriesPage() {
 	const { collection } = useParams({ from: "/c/$collection" });
@@ -94,7 +71,10 @@ export function EntriesPage() {
 		async (target: number) => {
 			setLoading(true);
 			try {
-				const result = await api<Page>("GET", `/api/content/${collection}?${listQuery(filters, target, pageSize)}`);
+				const result = await api<ContentListPage>(
+					"GET",
+					`/api/content/${collection}?${listQuery(filters, target, pageSize)}`,
+				);
 				setRows(result.data);
 				setTotal(result.total);
 				setListError(null);
