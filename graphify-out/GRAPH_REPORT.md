@@ -1,38 +1,38 @@
 # Graph Report - wuppy  (2026-10-21)
 
 ## Corpus Check
-- 409 files · ~340,149 words
+- 409 files · ~340,118 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4517 nodes · 7368 edges · 301 communities (260 shown, 22 thin omitted)
+- 4517 nodes · 7370 edges · 297 communities (252 shown, 26 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 86 edges (avg confidence: 0.83)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f2829140`
+- Built from commit: `d16ae4d5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - index.tsx
 - EditorPage.tsx
-- vitest
+- FilesystemContent
 - astro/admin.ts
-- revisions.test.ts
+- Base.astro
 - router.tsx
-- toast
-- ResourcePage.tsx
+- lib/api.ts
+- ContentTypesPage.tsx
 - media/index.ts
 - MediaPage.tsx
-- backups.test.ts
+- theme.ts
 - auth/src/index.ts
-- taxonomies.test.ts
+- bylines.test.ts
 - PluginManager
-- git/src/index.ts
+- vitest
 - Security and Hardening
 - Security and Hardening
-- lib/api.ts
+- LoginPage.tsx
 - RPC
 - Code Review and Quality
 - Test-Driven Development
@@ -87,7 +87,7 @@
 - Debugging and Error Recovery
 - Documentation and ADRs
 - Key Best Practices
-- ContentTypesPage.tsx
+- FieldsForm.tsx
 - git/package.json
 - dependencies
 - posts/[slug].astro
@@ -104,7 +104,7 @@
 - Interview Me
 - ReOrder: Keep Your Regulars Ordering Direct
 - Interview Me
-- core/src/index.ts
+- helpers.ts
 - job.ts
 - starter/package.json
 - Wuppy — Proje Klasör Yapısı
@@ -160,7 +160,7 @@
 - Refinement & Evaluation Criteria
 - admin/package.json
 - core/package.json
-- PluginSet
+- EditLocks
 - EmDash CMS Rakibi — Ürün Planı
 - App - Hono
 - EmDash CMS Rakibi — Ürün Planı
@@ -206,7 +206,7 @@
 - JsonStore
 - Wuppy
 - 7. API ve platform
-- core/src/config/index.ts
+- core/src/index.ts
 - Google Cloud Run
 - CalendarPage.tsx
 - AuditLog
@@ -219,7 +219,7 @@
 - Azure Functions
 - Google Cloud Run
 - two-factor.test.ts
-- Select
+- AutosaveStore
 - site/index.ts
 - Next.js
 - search/index.ts
@@ -228,7 +228,7 @@
 - ADR-003 — UI: Astro'da Bejamas UI, React admin'de shadcn/ui
 - ADR-004 — İstemci durumu: Nanostores
 - ADR-005 — Editör: Tiptap yerine Lexical
-- webhooks/index.ts
+- ssrf.ts
 - Service Worker
 - first-post.spec.ts
 - ADR-002 — Kimlik doğrulama: Better Auth
@@ -240,7 +240,7 @@
 - Service Worker
 - optimize.ts
 - scripts
-- zod
+- rules
 - 1. Admin kabuğu, dashboard ve bilgi mimarisi
 - 2. İçerik yönetimi
 - 6. SEO, i18n, önizleme
@@ -256,16 +256,16 @@
 - 0. Durum özeti
 - 10. Test, güvenlik ve kalite
 - 13. Test ve kalite
-- rules
+- Lambda@Edge
 - .claude/skills/software-engineer/idea-refine/scripts/idea-refine.sh
 - playwright.config.ts
 - dev-server.spec.ts
-- media-lifecycle.test.ts
+- @lexical/markdown
 - Vercel
 - nanostores
 - server.ts
 - page-cache.test.ts
-- Alibaba Cloud Function Compute
+- react
 - .opencode/skills/software-engineer/idea-refine/scripts/idea-refine.sh
 - @lexical/history
 - EditorToolbar.tsx
@@ -284,19 +284,15 @@
 - .changeset/README.md
 - @lexical/react
 - @nanostores/react
-- @radix-ui/react-accordion
+- slugify
 - react-image-crop
-- **/.astro/**
+- integration.ts
 - Tencent CloudBase
-- MarkdownEditor.tsx
-- Netlify
 - media-page.test.tsx
 - Netlify
 - pages-page.test.tsx
 - Presets
-- manager.ts
 - Lambda@Edge
-- @better-auth/passkey
 
 ## God Nodes (most connected - your core abstractions)
 1. `vitest` - 84 edges
@@ -313,79 +309,79 @@
 ## Surprising Connections (you probably didn't know these)
 - `AddTerm()` --calls--> `toast`  [EXTRACTED]
   packages/admin/src/components/content/FieldsForm.tsx → packages/admin/src/ui/index.tsx
-- `SeoPreview` --indirect_call--> `title()`  [INFERRED]
-  packages/admin/src/components/content/SeoPreview.tsx → packages/core/src/api/list.ts
-- `GET()` --calls--> `serveUpload()`  [EXTRACTED]
-  packages/core/src/astro/routes/uploads.ts → packages/core/src/media/index.ts
+- `app()` --indirect_call--> `json()`  [INFERRED]
+  packages/core/tests/integration/api-app.test.ts → packages/admin/tests/media-page.test.tsx
 - `LoginPage()` --calls--> `apiData()`  [EXTRACTED]
   packages/admin/src/components/auth/LoginPage.tsx → packages/admin/src/lib/api.ts
 - `LoginPage()` --calls--> `toast`  [EXTRACTED]
   packages/admin/src/components/auth/LoginPage.tsx → packages/admin/src/ui/index.tsx
+- `SecurityPage()` --calls--> `toast`  [EXTRACTED]
+  packages/admin/src/components/auth/SecurityPage.tsx → packages/admin/src/ui/index.tsx
 
 ## Import Cycles
 - None detected.
 
-## Communities (301 total, 22 thin omitted)
+## Communities (297 total, 26 thin omitted)
 
 ### Community 0 - "index.tsx"
-Cohesion: 0.05
-Nodes (69): AuditEvent, Props, TranslationTable(), Accordion, AccordionContent(), AccordionItem(), AccordionTrigger(), Alert() (+61 more)
+Cohesion: 0.06
+Nodes (57): ActionMenu(), ActionMenuItem, MenuPosition, Alert(), tones, Badge(), variants, Button() (+49 more)
 
 ### Community 1 - "EditorPage.tsx"
-Cohesion: 0.06
-Nodes (62): changedFields(), EditorPage(), languageOf(), toLocalInput(), DESCRIPTION_MAX, SeoPreview, SeoPreviewInput, SiteSeo (+54 more)
+Cohesion: 0.05
+Nodes (69): changedFields(), EditorPage(), languageOf(), toLocalInput(), DESCRIPTION_MAX, SeoPreview, SeoPreviewInput, SiteSeo (+61 more)
 
-### Community 2 - "vitest"
-Cohesion: 0.11
-Nodes (13): FilesystemContent, parseDocument(), serializeDocument(), ContentExistsError, assertSafeSlug(), UnsafePathError, DANGEROUS_HTML, findDisallowed() (+5 more)
+### Community 2 - "FilesystemContent"
+Cohesion: 0.20
+Nodes (6): FilesystemContent, parseDocument(), serializeDocument(), assertSafeSlug(), UnsafePathError, posts()
 
 ### Community 3 - "astro/admin.ts"
 Cohesion: 0.20
 Nodes (10): adminDist(), findAdminDist(), notFound(), serveAdmin(), TYPES, dist, GET(), prerender (+2 more)
 
-### Community 4 - "revisions.test.ts"
-Cohesion: 0.09
-Nodes (23): etagOf(), Listed, ListQuery, queryEntries(), statusOf(), title(), diffFields(), FieldChange (+15 more)
+### Community 4 - "Base.astro"
+Cohesion: 0.17
+Nodes (6): getMenu(), readData(), prerender, taxonomy, term, items
 
 ### Community 5 - "router.tsx"
-Cohesion: 0.04
-Nodes (40): BylineSchemaPage(), AuditPage(), TranslationsPage(), SectionsPage(), Usage, ThemesPage(), WebhooksPage(), GlobalSearch() (+32 more)
+Cohesion: 0.05
+Nodes (44): BylineSchemaPage(), BylinesPage(), SchemaField, PluginPage(), SectionsPage(), Usage, ThemesPage(), WebhooksPage() (+36 more)
 
-### Community 6 - "toast"
-Cohesion: 0.09
-Nodes (39): ImportPage(), JobState, WordpressImport(), PluginPage(), capabilityLines(), Listing, Manifest, PluginRow (+31 more)
+### Community 6 - "lib/api.ts"
+Cohesion: 0.10
+Nodes (38): Enrollment, LinkedAccount, PasskeyInfo, ImportPage(), JobState, WordpressImport(), capabilityLines(), Listing (+30 more)
 
-### Community 7 - "ResourcePage.tsx"
-Cohesion: 0.07
-Nodes (39): BylinesPage(), SchemaField, DashboardPage(), relative(), statusTone, EmailKind, EMPTY, IMAGE_TYPES (+31 more)
+### Community 7 - "ContentTypesPage.tsx"
+Cohesion: 0.05
+Nodes (44): blankType(), compactField(), ContentType, ContentTypesPage(), FIELD_TYPES, FieldDef, Impact, optsOf() (+36 more)
 
 ### Community 8 - "media/index.ts"
-Cohesion: 0.15
-Nodes (10): ascii(), detectImage(), EMPTY, MediaData, MediaItem, MediaMeta, MediaService, MediaTooLargeError (+2 more)
+Cohesion: 0.10
+Nodes (18): ascii(), detectImage(), EMPTY, MAX_UPLOAD_BYTES, MediaData, MediaItem, MediaMeta, MediaService (+10 more)
 
 ### Community 9 - "MediaPage.tsx"
 Cohesion: 0.12
-Nodes (33): fresh(), MediaDetailDialog(), DateRange, draftOf(), extOf(), filenameOf(), formatOf(), labelOf() (+25 more)
+Nodes (32): fresh(), DateRange, draftOf(), extOf(), filenameOf(), formatOf(), labelOf(), MediaPage() (+24 more)
 
-### Community 10 - "backups.test.ts"
+### Community 10 - "theme.ts"
 Cohesion: 0.19
-Nodes (10): BackupInfo, Bundle, bundleSchema, exportContent(), importContent(), ImportResult, ADMIN, collection (+2 more)
+Nodes (14): router, applyTheme(), cycleTheme(), initTheme(), Mode, PRESETS, RADII, $radius (+6 more)
 
 ### Community 11 - "auth/src/index.ts"
 Cohesion: 0.18
-Nodes (22): userFromRequest(), acceptInvitation(), createInvitation(), findInvitationByToken(), findValidInvitation(), hashInvitationToken(), Invitation, INVITATION_TTL_MS (+14 more)
+Nodes (23): userFromRequest(), acceptInvitation(), createInvitation(), ensureInvitationTable(), findInvitationByToken(), findValidInvitation(), hashInvitationToken(), Invitation (+15 more)
 
-### Community 12 - "taxonomies.test.ts"
-Cohesion: 0.18
-Nodes (10): Taxonomy, retagEntries(), TermCount, termCounts(), termFields(), TermNode, termTree(), valuesOf() (+2 more)
+### Community 12 - "bylines.test.ts"
+Cohesion: 0.17
+Nodes (7): BylineIssue, Credit, validateBylines(), BylineField, bylineFieldSchema, bylineSchema, H
 
 ### Community 13 - "PluginManager"
-Cohesion: 0.25
-Nodes (3): PluginStatus, PluginManager, Manifest
+Cohesion: 0.12
+Nodes (9): PluginEntry, PluginSet, PluginStatus, EMPTY, ManagerDeps, PluginManager, PluginNotFoundError, State (+1 more)
 
-### Community 14 - "git/src/index.ts"
-Cohesion: 0.09
-Nodes (9): WebhookEvent, event, NoopGit, assertRepoPath(), assertSha(), RealGit, run, Commit (+1 more)
+### Community 14 - "vitest"
+Cohesion: 0.07
+Nodes (25): collectionSchema, DANGEROUS_HTML, findDisallowed(), stripCode(), BackupInfo, Bundle, bundleSchema, exportContent() (+17 more)
 
 ### Community 15 - "Security and Hardening"
 Cohesion: 0.06
@@ -395,9 +391,9 @@ Nodes (30): Always Do (No Exceptions), Ask First (Requires Human Approval), Brok
 Cohesion: 0.06
 Nodes (30): Always Do (No Exceptions), Ask First (Requires Human Approval), Broken Access Control, Broken Authentication, Common Rationalizations, Cross-Site Scripting (XSS), Data Privacy & Compliance, File Upload Safety (+22 more)
 
-### Community 17 - "lib/api.ts"
-Cohesion: 0.14
-Nodes (25): LoginPage(), oauthErrorMessage(), Enrollment, LinkedAccount, PasskeyInfo, secretFromUri(), SecurityPage(), TranslatePanel() (+17 more)
+### Community 17 - "LoginPage.tsx"
+Cohesion: 0.18
+Nodes (20): LoginPage(), oauthErrorMessage(), secretFromUri(), SecurityPage(), api(), authClient, socialProviderLabel(), socialProviderLabels (+12 more)
 
 ### Community 18 - "RPC"
 Cohesion: 0.07
@@ -532,12 +528,12 @@ Cohesion: 0.08
 Nodes (23): Accessibility (WCAG 2.1 AA), ARIA Labels, Avoid the AI Aesthetic, Color, Common Rationalizations, Component Architecture, Component Patterns, Design System Adherence (+15 more)
 
 ### Community 51 - "app.ts"
-Cohesion: 0.08
-Nodes (36): acceptInvitationSchema, allowComment(), commentAttempts, commentStatus, createApp(), createDocumentSchema, csrf(), documentSchema (+28 more)
+Cohesion: 0.06
+Nodes (50): acceptInvitationSchema, allowComment(), AppType, commentAttempts, commentStatus, createApp(), createDocumentSchema, csrf() (+42 more)
 
 ### Community 52 - ".claude/skills/hono/SKILL.md"
-Cohesion: 0.09
-Nodes (22): 1. Setup, 2. Hello World, 3. Deploy, API, Callback, Contributing, Env, Examples (+14 more)
+Cohesion: 0.07
+Nodes (28): 1. Setup, 1. Setup, 2. Hello World, 2. Hello World, 3. Run, 3. Setup serverless-devs, 4. Deploy, 4. Deploy (+20 more)
 
 ### Community 53 - "Context Engineering"
 Cohesion: 0.09
@@ -549,7 +545,7 @@ Nodes (22): Common Rationalizations, Contract-First Slicing, Implementation Rule
 
 ### Community 55 - "dependencies"
 Cohesion: 0.08
-Nodes (25): @fontsource-variable/jetbrains-mono, lexical, @lexical/code, @lexical/link, @lexical/markdown, @lexical/rich-text, @lexical/selection, dependencies (+17 more)
+Nodes (25): @fontsource-variable/jetbrains-mono, lexical, @lexical/code, @lexical/link, @lexical/rich-text, @lexical/selection, dependencies, better-auth (+17 more)
 
 ### Community 56 - "EmDash — Kullanılan Teknolojiler Envanteri"
 Cohesion: 0.09
@@ -564,16 +560,16 @@ Cohesion: 0.09
 Nodes (22): Common Rationalizations, Contract-First Slicing, Implementation Rules, Increment Checklist, Incremental Implementation, Overview, Red Flags, Risk-First Slicing (+14 more)
 
 ### Community 59 - "UploadDialog.tsx"
-Cohesion: 0.20
-Nodes (13): sizeLabel(), ALLOWED, Entry, previewOf(), UploadDialog(), UploadState, Job, ApiError (+5 more)
+Cohesion: 0.18
+Nodes (14): sizeLabel(), ALLOWED, Entry, previewOf(), UploadDialog(), UploadState, Job, UploadList() (+6 more)
 
 ### Community 60 - "auth/src/config/index.ts"
 Cohesion: 0.14
-Nodes (15): countUsers(), createAuth(), createMigratedAuth(), deleteMagicLinksForEmail(), migrateAuth(), needsSetup(), SOCIAL_PROVIDER_IDS, SocialProviderConfig (+7 more)
+Nodes (15): AuthOptions, countUsers(), createAuth(), createMigratedAuth(), deleteMagicLinksForEmail(), migrateAuth(), needsSetup(), SOCIAL_PROVIDER_IDS (+7 more)
 
 ### Community 61 - "templates.ts"
-Cohesion: 0.17
-Nodes (11): settingsSchema, WuppySettings, createEmailSender(), EmailMessage, EmailSender, DEFAULT_TEMPLATES, EMAIL_KINDS, EMAIL_VARIABLES (+3 more)
+Cohesion: 0.21
+Nodes (9): WuppySettings, createEmailSender(), EmailMessage, DEFAULT_TEMPLATES, EMAIL_KINDS, EMAIL_VARIABLES, EmailKind, esc() (+1 more)
 
 ### Community 62 - "HonoRequest"
 Cohesion: 0.09
@@ -615,9 +611,9 @@ Nodes (21): ADR Lifecycle, ADR Template, API Documentation, Architecture Decisio
 Cohesion: 0.09
 Nodes (21): 10. Performance Optimization, 1. Input Validation, 2. Router Organization, 3. Middleware Implementation, 4. Error Handling, 5. Data Transformers, 6. React Query Integration, 7. Context Creation (+13 more)
 
-### Community 72 - "ContentTypesPage.tsx"
+### Community 72 - "FieldsForm.tsx"
 Cohesion: 0.07
-Nodes (30): AddTerm(), Byline, EntryRef, FieldsForm(), kindOf(), Props, Section, Taxonomy (+22 more)
+Nodes (24): AddTerm(), Byline, EntryRef, FieldsForm(), kindOf(), Props, Section, Taxonomy (+16 more)
 
 ### Community 73 - "git/package.json"
 Cohesion: 0.09
@@ -628,8 +624,8 @@ Cohesion: 0.10
 Nodes (21): hono, nodemailer, dependencies, hono, nodemailer, quickjs-emscripten, resend, @wuppy/admin (+13 more)
 
 ### Community 75 - "posts/[slug].astro"
-Cohesion: 0.09
-Nodes (16): prerender, taxonomy, term, { items, page, pages, prev, next }, posts, author, editable, minutes (+8 more)
+Cohesion: 0.13
+Nodes (10): author, editable, minutes, more, post, prerender, previewing, selectedCategories (+2 more)
 
 ### Community 76 - "EmDash — Kullanılan Teknolojiler Envanteri"
 Cohesion: 0.10
@@ -640,8 +636,8 @@ Cohesion: 0.10
 Nodes (19): compilerOptions, declaration, declarationMap, jsx, lib, noEmit, types, verbatimModuleSyntax (+11 more)
 
 ### Community 78 - "ContentService"
-Cohesion: 0.15
-Nodes (7): AppOptions, ContentEntry, Autosave, AutosaveStore, ParsedDocument, ContentService, DisallowedContentError
+Cohesion: 0.13
+Nodes (6): ContentEntry, Autosave, ParsedDocument, ContentExistsError, ContentService, DisallowedContentError
 
 ### Community 79 - "Context"
 Cohesion: 0.11
@@ -683,13 +679,13 @@ Nodes (17): Example 1: Vague Early-Stage Concept (Full 3-Phase Session), Example
 Cohesion: 0.11
 Nodes (17): Common Rationalizations, Example, Interaction with Other Skills, Interview Me, Loading Constraints, Output, Overview, Red Flags (+9 more)
 
-### Community 89 - "core/src/index.ts"
-Cohesion: 0.08
-Nodes (39): AppType, CSRF_HEADER, BylineIssue, Credit, creditsOf(), Comment, CommentStatus, DashboardData (+31 more)
+### Community 89 - "helpers.ts"
+Cohesion: 0.23
+Nodes (12): creditsOf(), getByline(), getCredits(), getSection(), getSections(), getTaxonomy(), getWidgetArea(), localized() (+4 more)
 
 ### Community 90 - "job.ts"
-Cohesion: 0.09
-Nodes (32): dataSchemas, Menu, taxonomyTermSchema, Analysis, Before, escapeRe(), hostOf(), ImportJobs (+24 more)
+Cohesion: 0.10
+Nodes (28): Analysis, Before, escapeRe(), hostOf(), ImportJobs, ImportOptions, JobState, termSlug() (+20 more)
 
 ### Community 91 - "starter/package.json"
 Cohesion: 0.12
@@ -708,8 +704,8 @@ Cohesion: 0.12
 Nodes (17): 10. `acceptance/`, 11. `docs/`, 12. `.github/`, `.changeset/`, `scripts/` ve diğerleri, 13. İsimlendirme ve dosya koyma kuralları, 14. Teknoloji kararları (özet), 15. Sonraki adım, 1. Genel ağaç, 2. Kök dizinler (+9 more)
 
 ### Community 95 - "cli/index.ts"
-Cohesion: 0.20
-Nodes (12): CliResult, doctor(), exists(), run(), compareVersions(), git, Migration, MIGRATIONS (+4 more)
+Cohesion: 0.15
+Nodes (16): CliResult, doctor(), exists(), run(), compareVersions(), git, Migration, MIGRATIONS (+8 more)
 
 ### Community 96 - "create-wuppy/package.json"
 Cohesion: 0.08
@@ -744,8 +740,8 @@ Cohesion: 0.15
 Nodes (16): import, types, exports, ./astro, ./package.json, ./publishing, ./seo, ./site (+8 more)
 
 ### Community 104 - "seo/index.ts"
-Cohesion: 0.11
-Nodes (27): GET(), prerender, GET(), prerender, readData(), articleJsonLd(), breadcrumbJsonLd(), buildRss() (+19 more)
+Cohesion: 0.09
+Nodes (32): GET(), prerender, GET(), prerender, GET(), prerender, serveUpload(), isPublished() (+24 more)
 
 ### Community 105 - "Bun"
 Cohesion: 0.13
@@ -804,12 +800,12 @@ Cohesion: 0.13
 Nodes (14): 1. Surface Assumptions, 2. Manage Confusion Actively, 3. Push Back When Warranted, 4. Enforce Simplicity, 5. Maintain Scope Discipline, 6. Verify, Don't Assume, Core Operating Behaviors, Failure Modes to Avoid (+6 more)
 
 ### Community 119 - "registry.ts"
-Cohesion: 0.15
-Nodes (14): fileDigest(), ManagerDeps, bundleSchema, defaultFetch(), Fetcher, indexSchema, RegistryClient, RegistryConfig (+6 more)
+Cohesion: 0.19
+Nodes (10): bundleSchema, Fetcher, indexSchema, RegistryClient, RegistryConfig, registryConfigSchema, RegistryEntry, RegistryListing (+2 more)
 
 ### Community 120 - "MediaDetailDialog.tsx"
 Cohesion: 0.12
-Nodes (23): clamp(), Focal, FocalPointEditor(), FocalPreviews(), MOVES, position(), ImageCropper(), initialCrop() (+15 more)
+Nodes (24): clamp(), Focal, FocalPointEditor(), FocalPreviews(), MOVES, position(), ImageCropper(), initialCrop() (+16 more)
 
 ### Community 121 - "Node.js"
 Cohesion: 0.14
@@ -907,10 +903,6 @@ Nodes (7): exports, ./dist/*, files, dist, name, type, version
 Cohesion: 0.17
 Nodes (11): bin, wuppy, files, dist, sharp, name, optionalDependencies, sharp (+3 more)
 
-### Community 145 - "PluginSet"
-Cohesion: 0.14
-Nodes (3): loadPlugins(), PluginSet, manifest
-
 ### Community 146 - "EmDash CMS Rakibi — Ürün Planı"
 Cohesion: 0.18
 Nodes (10): EmDash CMS Rakibi — Ürün Planı, Konumlandırma, MVP başarı ölçütleri, P0 — İlk sürüm, P1 — Fark yaratacak özellikler, P2 — Sonraki aşama, Teknik yaklaşım, Yapmaman gerekenler (+2 more)
@@ -932,8 +924,8 @@ Cohesion: 0.18
 Nodes (11): devDependencies, tsdown, @types/node, @types/nodemailer, typescript, vitest, tsdown, @types/node (+3 more)
 
 ### Community 151 - "MenusPage.tsx"
-Cohesion: 0.19
-Nodes (13): hrefFor(), linksOf(), LOCATION_LABEL, LOCATIONS, Menu, MenuItem, MenuLink, MenusPage() (+5 more)
+Cohesion: 0.14
+Nodes (18): hrefFor(), linksOf(), LOCATION_LABEL, LOCATIONS, Menu, MenuItem, MenuLink, MenusPage() (+10 more)
 
 ### Community 152 - "git/tsconfig.json"
 Cohesion: 0.18
@@ -956,8 +948,8 @@ Cohesion: 0.20
 Nodes (10): Adapter, Getting Started, Hello World, Next step, Request and Response, Return HTML, Return JSON, Return raw Response (+2 more)
 
 ### Community 157 - "MediaPicker.tsx"
-Cohesion: 0.29
-Nodes (6): filterMedia(), MediaPicker(), UploadList(), useUploadQueue(), MediaItem, Listener
+Cohesion: 0.33
+Nodes (5): filterMedia(), MediaPicker(), useUploadQueue(), MediaItem, Listener
 
 ### Community 158 - "Client Components"
 Cohesion: 0.22
@@ -1000,12 +992,12 @@ Cohesion: 0.22
 Nodes (8): Analogous Inspiration, Constraint-Based Ideation, First Principles Thinking, How Might We (HMW), Ideation Frameworks Reference, Jobs to Be Done (JTBD), Pre-mortem, SCAMPER
 
 ### Community 168 - "content-types/index.ts"
-Cohesion: 0.10
-Nodes (23): validateBylines(), generateTypes(), obj(), pascal(), tsType(), schemaImpact, BASE, Collection (+15 more)
+Cohesion: 0.09
+Nodes (25): schemaImpact, BASE, Collection, dataSchema(), FIELD_TYPES, FieldKind, FieldOptions, fieldOptionsSchema (+17 more)
 
 ### Community 169 - "loader.ts"
-Cohesion: 0.22
-Nodes (7): LoadedPlugin, HOOK_FOR, LoadOptions, Running, H, ip(), signUp()
+Cohesion: 0.20
+Nodes (8): LoadedPlugin, capabilityHash(), fileDigest(), HOOK_FOR, LoadOptions, loadPlugins(), Running, manifest
 
 ### Community 170 - "Wuppy — Yapılacaklar"
 Cohesion: 0.22
@@ -1076,8 +1068,8 @@ Cohesion: 0.33
 Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Bootstrap, 5. Deploy, Tencent CloudBase
 
 ### Community 188 - "JsonStore"
-Cohesion: 0.05
-Nodes (45): json(), User, CommentService, hashIp(), Row, JsonStore, ImportDeps, RedirectInput (+37 more)
+Cohesion: 0.04
+Nodes (51): json(), AppOptions, User, Comment, CommentService, CommentStatus, hashIp(), Row (+43 more)
 
 ### Community 189 - "Wuppy"
 Cohesion: 0.29
@@ -1087,9 +1079,9 @@ Nodes (6): Güvenlik özeti, Hızlı başlangıç, Komutlar, Mimari, Wuppy, Yap�
 Cohesion: 0.29
 Nodes (7): 7.1 API, 7.2 Arama, 7.3 Önbellek ve performans, 7.4.1 Resend production domain — **sonra yapılacak**, 7.4 E-posta ve bildirim, 7.5 MCP ve AI (P2), 7. API ve platform
 
-### Community 191 - "core/src/config/index.ts"
-Cohesion: 0.10
-Nodes (26): RFC-4180, onRequest(), storedRedirects(), GET(), prerender, configSchema, defineConfig(), FILES (+18 more)
+### Community 191 - "core/src/index.ts"
+Cohesion: 0.07
+Nodes (50): RFC-4180, onRequest(), storedRedirects(), GET(), prerender, configSchema, defineConfig(), FILES (+42 more)
 
 ### Community 192 - "Google Cloud Run"
 Cohesion: 0.33
@@ -1109,7 +1101,7 @@ Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, Next.js, Pages Router
 
 ### Community 197 - "PagesPage.tsx"
 Cohesion: 0.08
-Nodes (41): EntriesPage(), ContentListPage, ContentStatus, DEFAULT_PAGE_SIZE, Filters, listQuery(), NO_FILTERS, Row (+33 more)
+Nodes (47): AuditEvent, AuditPage(), EntriesPage(), ContentListPage, ContentStatus, DEFAULT_PAGE_SIZE, Filters, listQuery() (+39 more)
 
 ### Community 198 - "Throwing HTTPExceptions"
 Cohesion: 0.33
@@ -1135,20 +1127,16 @@ Nodes (6): 1. Install the CLI, 2. Project setup, 3. Hello World, 4. Deploy, Chan
 Cohesion: 0.48
 Nodes (5): cookies(), jar(), ownerWithTotp(), secretOf(), withCookie()
 
-### Community 204 - "Select"
-Cohesion: 0.23
-Nodes (11): denormalize(), normalize(), OptionProps, optionsOf(), Select(), SelectGroup, SelectLabel, SelectOption (+3 more)
-
 ### Community 205 - "site/index.ts"
-Cohesion: 0.25
-Nodes (11): hreflangAlternates(), LocaleLink, localeSwitcher(), resolveLocale(), splitLocale(), TranslationRow, translationStatus(), Page (+3 more)
+Cohesion: 0.19
+Nodes (12): hreflangAlternates(), LocaleLink, localeSwitcher(), resolveLocale(), splitLocale(), TranslationRow, Page, paginate() (+4 more)
 
 ### Community 206 - "Next.js"
 Cohesion: 0.33
 Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, Next.js, Pages Router
 
 ### Community 207 - "search/index.ts"
-Cohesion: 0.27
+Cohesion: 0.29
 Nodes (5): esc(), marked(), SearchHit, SearchIndex, SearchOptions
 
 ### Community 208 - "Throwing HTTPExceptions"
@@ -1171,9 +1159,9 @@ Nodes (5): ADR-004 — İstemci durumu: Nanostores, Bağlam, Karar, Kurallar, So
 Cohesion: 0.40
 Nodes (5): ADR-005 — Editör: Tiptap yerine Lexical, Bağlam, Karar, Kurallar, Sonuçlar
 
-### Community 213 - "webhooks/index.ts"
-Cohesion: 0.23
-Nodes (8): assertPublicUrl(), isPrivateAddress(), Resolver, UnsafeUrlError, limitedFetch(), EVENT_TYPES, WebhookConfig, webhooksSchema
+### Community 213 - "ssrf.ts"
+Cohesion: 0.29
+Nodes (7): defaultFetch(), assertPublicUrl(), fetchPublic(), isPrivateAddress(), Resolver, UnsafeUrlError, limitedFetch()
 
 ### Community 214 - "Service Worker"
 Cohesion: 0.40
@@ -1219,9 +1207,9 @@ Nodes (15): ASPECT_RATIOS, AspectRatio, clamp(), cropBox(), Format, FORMATS, ima
 Cohesion: 0.40
 Nodes (5): scripts, build, smoke:dist, test, typecheck
 
-### Community 225 - "zod"
-Cohesion: 0.14
-Nodes (14): ignoreDependencies, entry, ignoreDependencies, ignoreDependencies, workspaces, packages/admin, packages/auth, packages/core (+6 more)
+### Community 225 - "rules"
+Cohesion: 0.09
+Nodes (21): ignoreDependencies, ignoreDependencies, entry, ignoreDependencies, rules, duplicates, exports, nsExports (+13 more)
 
 ### Community 226 - "1. Admin kabuğu, dashboard ve bilgi mimarisi"
 Cohesion: 0.40
@@ -1283,13 +1271,9 @@ Nodes (4): 10.1 Test, 10.2 Güvenlik, 10.3 Kalite, 10. Test, güvenlik ve kalite
 Cohesion: 0.67
 Nodes (3): 13. Test ve kalite, Lint / format / analiz, Test profilleri
 
-### Community 241 - "rules"
-Cohesion: 0.22
-Nodes (8): ignoreDependencies, rules, duplicates, exports, nsExports, nsTypes, types, $schema
-
-### Community 245 - "media-lifecycle.test.ts"
-Cohesion: 0.31
-Nodes (7): serveUpload(), add(), H, OWNER, png(), send(), upload()
+### Community 241 - "Lambda@Edge"
+Cohesion: 0.40
+Nodes (5): 1. Setup, 2. Hello World, 3. Deploy, Callback, Lambda@Edge
 
 ### Community 246 - "Vercel"
 Cohesion: 0.33
@@ -1297,19 +1281,15 @@ Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, Further reading, Vercel
 
 ### Community 248 - "server.ts"
 Cohesion: 0.11
-Nodes (13): AuthOptions, loadDotEnv(), LOOPBACK, resolvePasskeyOptions(), numberFromEnv(), resolveSessionPolicy(), SessionPolicy, UnknownDataFileError (+5 more)
+Nodes (14): loadDotEnv(), LOOPBACK, resolvePasskeyOptions(), numberFromEnv(), resolveSessionPolicy(), SessionPolicy, ApiToken, ApiTokenService (+6 more)
 
 ### Community 249 - "page-cache.test.ts"
 Cohesion: 0.23
 Nodes (5): contentVersion(), createPageCacheMiddleware(), Entry, onRequest, PageCache
 
-### Community 250 - "Alibaba Cloud Function Compute"
-Cohesion: 0.40
-Nodes (5): 1. Setup, 2. Hello World, 3. Setup serverless-devs, 4. Deploy, Alibaba Cloud Function Compute
-
 ### Community 253 - "EditorToolbar.tsx"
-Cohesion: 0.45
-Nodes (8): button(), EditorToolbar(), setBlock(), clean(), componentSnippet(), imageSnippet(), insertSnippet(), tableSnippet()
+Cohesion: 0.24
+Nodes (12): button(), EditorToolbar(), setBlock(), MarkdownEditor(), clean(), componentSnippet(), imageSnippet(), insertSnippet() (+4 more)
 
 ### Community 256 - "config.json"
 Cohesion: 0.20
@@ -1331,21 +1311,9 @@ Nodes (3): out, root, withoutTypes
 Cohesion: 0.50
 Nodes (4): ADR-010 — Çeviri grubu slug kuralıdır; açık `translationOf` alanı yok, Bağlam, Karar, Sonuçlar
 
-### Community 290 - "**/.astro/**"
-Cohesion: 0.32
-Nodes (5): entry(), wuppy(), GET(), prerender, **/.astro/**
-
 ### Community 291 - "Tencent CloudBase"
 Cohesion: 0.33
 Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Bootstrap, 5. Deploy, Tencent CloudBase
-
-### Community 292 - "MarkdownEditor.tsx"
-Cohesion: 0.43
-Nodes (4): MarkdownEditor(), NODES, roundTrip(), TRANSFORM
-
-### Community 293 - "Netlify"
-Cohesion: 0.33
-Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, `Context`, Netlify
 
 ### Community 295 - "Netlify"
 Cohesion: 0.33
@@ -1359,10 +1327,6 @@ Nodes (4): navigate, page(), pages, server()
 Cohesion: 0.40
 Nodes (5): `hono`, `hono/quick`, `hono/tiny`, Presets, Which preset should I use?
 
-### Community 298 - "manager.ts"
-Cohesion: 0.33
-Nodes (4): PluginEntry, EMPTY, PluginNotFoundError, State
-
 ### Community 299 - "Lambda@Edge"
 Cohesion: 0.40
 Nodes (5): 1. Setup, 2. Hello World, 3. Deploy, Callback, Lambda@Edge
@@ -1370,14 +1334,14 @@ Nodes (5): 1. Setup, 2. Hello World, 3. Deploy, Callback, Lambda@Edge
 ## Knowledge Gaps
 - **2480 isolated node(s):** `$schema`, `changelog`, `commit`, `access`, `baseBranch` (+2475 more)
   These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2746 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **22 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `vitest` connect `vitest` to `index.tsx`, `EditorPage.tsx`, `astro/admin.ts`, `revisions.test.ts`, `oauth.ts`, `toast`, `ResourcePage.tsx`, `media/index.ts`, `backups.test.ts`, `auth/src/index.ts`, `taxonomies.test.ts`, `git/src/index.ts`, `lib/api.ts`, `PluginSet`, `MediaPicker.tsx`, `plugin-types/src/index.ts`, `MarkdownEditor.tsx`, `media-page.test.tsx`, `pages-page.test.tsx`, `content-types/index.ts`, `loader.ts`, `cli.ts`, `app.ts`, `routes/api.ts`, `auth/src/config/index.ts`, `JsonStore`, `templates.ts`, `core/src/config/index.ts`, `CalendarPage.tsx`, `AuditLog`, `PagesPage.tsx`, `ContentTypesPage.tsx`, `two-factor.test.ts`, `site/index.ts`, `search/index.ts`, `webhooks/index.ts`, `core/src/index.ts`, `MenuItemsEditor.tsx`, `sanitize.ts`, `plugin-cli/src/index.ts`, `cli/index.ts`, `optimize.ts`, `seo/index.ts`, `rules`, `media-lifecycle.test.ts`, `server.ts`, `page-cache.test.ts`, `EditorToolbar.tsx`, `apiData`?**
-  _High betweenness centrality (0.092) - this node is a cross-community bridge._
-- **Why does `ContentService` connect `ContentService` to `vitest`, `revisions.test.ts`, `seo/index.ts`, `content-types/index.ts`, `backups.test.ts`, `taxonomies.test.ts`, `git/src/index.ts`, `search/index.ts`, `BackupService`, `app.ts`, `media-lifecycle.test.ts`, `server.ts`, `core/src/index.ts`, `job.ts`, `JsonStore`?**
+- **Why does `vitest` connect `vitest` to `EditorPage.tsx`, `FilesystemContent`, `astro/admin.ts`, `oauth.ts`, `lib/api.ts`, `ContentTypesPage.tsx`, `media/index.ts`, `auth/src/index.ts`, `bylines.test.ts`, `LoginPage.tsx`, `EditLocks`, `MediaPicker.tsx`, `plugin-types/src/index.ts`, `media-page.test.tsx`, `pages-page.test.tsx`, `loader.ts`, `content-types/index.ts`, `cli.ts`, `app.ts`, `routes/api.ts`, `auth/src/config/index.ts`, `JsonStore`, `templates.ts`, `core/src/index.ts`, `CalendarPage.tsx`, `AuditLog`, `PagesPage.tsx`, `FieldsForm.tsx`, `two-factor.test.ts`, `site/index.ts`, `ssrf.ts`, `helpers.ts`, `MenuItemsEditor.tsx`, `sanitize.ts`, `plugin-cli/src/index.ts`, `cli/index.ts`, `optimize.ts`, `rules`, `seo/index.ts`, `server.ts`, `page-cache.test.ts`, `EditorToolbar.tsx`, `apiData`?**
+  _High betweenness centrality (0.091) - this node is a cross-community bridge._
+- **Why does `ContentService` connect `ContentService` to `seo/index.ts`, `content-types/index.ts`, `media/index.ts`, `bylines.test.ts`, `vitest`, `search/index.ts`, `BackupService`, `app.ts`, `server.ts`, `job.ts`, `JsonStore`, `core/src/index.ts`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `FakeXhr` connect `FakeXhr` to `MediaPicker.tsx`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
@@ -1386,6 +1350,6 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `$schema`, `changelog`, `commit` to the rest of the system?**
   _2480 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `index.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.053763440860215055 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06280701754385964 - nodes in this community are weakly interconnected._
 - **Should `EditorPage.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.06315789473684211 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.052507836990595615 - nodes in this community are weakly interconnected._

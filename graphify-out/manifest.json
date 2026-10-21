@@ -66,9 +66,9 @@
     "semantic_hash": ""
   },
   "packages/admin/package.json": {
-    "mtime": 1792543618.9341536,
-    "seen": 1792544010.2493494,
-    "ast_hash": "b98b4361a7d1be20a61e73e4350bd57c",
+    "mtime": 1792578860.9165719,
+    "seen": 1792579140.6390786,
+    "ast_hash": "872cb80993c0a1c5a39b989797a17855",
     "semantic_hash": ""
   },
   "packages/admin/src/components/auth/LoginPage.tsx": {
@@ -282,9 +282,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/taxonomies/TermManager.tsx": {
-    "mtime": 1792527773.2465565,
-    "seen": 1792528743.5707452,
-    "ast_hash": "6080df4fac48c924203eeece516187bd",
+    "mtime": 1792578969.2157376,
+    "seen": 1792579140.639168,
+    "ast_hash": "0060ccde90013f7faba6488d89ca75a3",
     "semantic_hash": ""
   },
   "packages/admin/src/components/ui/alert.tsx": {
@@ -420,9 +420,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/lib/slug.ts": {
-    "mtime": 1792514174.9733727,
-    "seen": 1792522351.1192627,
-    "ast_hash": "f6802721f4225d400d00ac6da9b2ebba",
+    "mtime": 1792578919.0962348,
+    "seen": 1792579140.6392035,
+    "ast_hash": "9549c19b76325271f9352f9f04db29f5",
     "semantic_hash": ""
   },
   "packages/admin/src/main.tsx": {
@@ -2106,14 +2106,14 @@
     "semantic_hash": ""
   },
   "yap\u0131lacaklar.md": {
-    "mtime": 1792577846.6151986,
-    "seen": 1792578535.6510904,
-    "ast_hash": "0d1b20727021f9f1d813c294aacfadea",
+    "mtime": 1792579000.3515863,
+    "seen": 1792579140.6396174,
+    "ast_hash": "3fea1f24b54c4d5b53c2212813a09a17",
     "semantic_hash": ""
   },
   "packages/admin/public/icons.svg": {
-    "mtime": 1792578515.2203655,
-    "seen": 1792578535.6510925,
+    "mtime": 1792579086.171722,
+    "seen": 1792579140.6396186,
     "ast_hash": "d1e7d49ab2832b700033989f53d977f9",
     "semantic_hash": ""
   },
@@ -2466,9 +2466,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/shared/ActionMenu.tsx": {
-    "mtime": 1792578397.5460062,
-    "seen": 1792578535.6505408,
-    "ast_hash": "14ba72261262263fb4644c46cde88d64",
+    "mtime": 1792578593.4705262,
+    "seen": 1792579140.6391604,
+    "ast_hash": "8dbe8a8289825238b5e20ca2df6a9a29",
     "semantic_hash": ""
   },
   "packages/admin/src/components/shared/WorkspaceLayout.tsx": {
