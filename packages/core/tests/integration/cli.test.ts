@@ -131,3 +131,81 @@ describe("wuppy upgrade", () => {
 		}
 	});
 });
+
+async function project() {
+	const files: Record<string, string> = {
+		"package.json": JSON.stringify({ name: "acme-site", dependencies: { astro: "^5" } }),
+		"astro.config.mjs": `import { defineConfig } from "astro/config";\nimport sitemap from "@astrojs/sitemap";\n\nexport default defineConfig({\n\tsite: "https://acme.test",\n\tintegrations: [sitemap()],\n});\n`,
+		"src/content.config.ts": `import { defineCollection } from "astro:content";\nimport { glob, file } from "astro/loaders";\nconst posts = defineCollection({\n\tloader: glob({ pattern: "**/*.md", base: "./src/content/posts" }),\n});\nconst couriers = defineCollection({\n\tloader: glob({ pattern: "**/*.json", base: "./src/data/couriers" }),\n});\nexport const collections = { posts, couriers };\n`,
+		"src/content/posts/a.md":
+			"---\ntitle: A\npubDate: 2024-01-02\ndraft: false\ntags: [x, y]\nheroImage: /a.png\n---\nHi\n",
+		"src/content/posts/b.md": "---\ntitle: B\npubDate: 2024-02-03\ndraft: true\n---\nYo\n",
+		"src/data/couriers/c.json": "{}",
+		"src/pages/blog/[...slug].astro": `---\nimport { getCollection } from "astro:content";\nconst posts = await getCollection("posts");\n---\n`,
+		"public/robots.txt": "User-agent: *\n",
+	};
+	for (const [name, text] of Object.entries(files)) {
+		await mkdir(join(root, name, ".."), { recursive: true });
+		await writeFile(join(root, name), text);
+	}
+}
+
+describe("wuppy init", () => {
+	it("wraps an existing Astro project: config from its collections, integration, deps, gitignore, secret", async () => {
+		await project();
+		const out = await run(["init"], root);
+		expect(out.stderr).toBe("");
+		expect(out.code).toBe(0);
+		const config = (await import(join(root, "wuppy.config.mjs"))).default;
+		expect(config.site).toEqual({ url: "https://acme.test", name: "acme-site" });
+		expect(config.collections).toEqual([
+			{
+				name: "posts",
+				dir: "src/content/posts",
+				format: "mdx",
+				route: "/blog/{slug}",
+				fields: {
+					title: { type: "string", multiple: false, required: true },
+					pubDate: { type: "date", multiple: false, required: true },
+					draft: { type: "boolean", multiple: false, required: true },
+					tags: "list",
+					heroImage: "image",
+				},
+			},
+		]);
+		expect(out.stdout).toMatch(/skipped couriers/);
+		const astro = await readFile(join(root, "astro.config.mjs"), "utf8");
+		expect(astro).toContain('import wuppy from "wuppy/astro";');
+		expect(astro).toContain("integrations: [wuppy({ robots: false }), mdx(), sitemap()]");
+		expect(astro).toContain('import mdx from "@astrojs/mdx";');
+		// Existing .md files stay; the glob now loads the .mdx entries Wuppy writes. Data globs are untouched.
+		const content = await readFile(join(root, "src/content.config.ts"), "utf8");
+		expect(content).toContain('pattern: "**/*.{md,mdx}"');
+		expect(content).toContain('pattern: "**/*.json"');
+		expect(astro).toContain('adapter: node({ mode: "standalone" })');
+		const pkg = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
+		expect(pkg.dependencies).toMatchObject({
+			astro: "^5",
+			wuppy: "latest",
+			"@astrojs/node": expect.any(String),
+			"@astrojs/mdx": expect.any(String),
+		});
+		expect(await readFile(join(root, ".gitignore"), "utf8")).toContain("!.wuppy/data/");
+		expect(await readFile(join(root, ".env"), "utf8")).toMatch(/^WUPPY_SECRET=\S{40,}$/m);
+		// The written config is accepted by Wuppy itself.
+		const { loadConfig } = await import("../../src/config/index.ts");
+		expect((await loadConfig(root)).collections[0]?.route).toBe("/blog/{slug}");
+	});
+
+	it("refuses outside an Astro project and does not overwrite an existing config", async () => {
+		expect((await run(["init"], root)).stderr).toMatch(/astro\.config/);
+		await project();
+		await writeFile(join(root, "wuppy.config.mjs"), "export default {}");
+		expect((await run(["init"], root)).stderr).toMatch(/--force/);
+	});
+
+	it("import refuses option-like arguments", async () => {
+		expect((await run(["import", "--upload-pack=x", "dir"], root)).code).toBe(1);
+		expect((await run(["import", "url"], root)).stderr).toMatch(/usage/i);
+	});
+});

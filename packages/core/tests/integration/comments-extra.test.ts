@@ -100,7 +100,13 @@ describe("moderation", () => {
 
 	it("pages through the list and reports per-entry counts", async () => {
 		for (let i = 0; i < 5; i++)
-			comments.create({ collection: "posts", slug: i < 3 ? "a" : "b", author: `u${i}`, body: "x", moderated: i !== 0 });
+			comments.create({
+				collection: "posts",
+				slug: i < 3 ? "a" : "b",
+				author: `u${i}`,
+				body: "x",
+				status: i !== 0 ? "pending" : "approved",
+			});
 		const first = await (await send("GET", "/api/comments?limit=2")).json();
 		const second = await (await send("GET", "/api/comments?limit=2&offset=2")).json();
 		const ids = [...first.data, ...second.data].map((c: { id: string }) => c.id);

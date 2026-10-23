@@ -49,6 +49,16 @@ export class ContentService {
 		private readonly options: {
 			components?: string[];
 			emit?: (event: WebhookEvent) => void;
+			/** Plugins' before-hooks: may refuse a save (throw) or change the entry. */
+			beforeSave?: (event: {
+				collection: string;
+				slug: string;
+				isNew: boolean;
+				data: Record<string, unknown>;
+				body: string;
+			}) => Promise<ParsedDocument>;
+			/** May refuse moving an entry to the trash (throw). */
+			beforeDelete?: (event: { collection: string; slug: string }) => Promise<void>;
 			/** How long a listing may be reused when files change outside Wuppy (git pull, editor). Default 2 s; 0 turns the cache off. */
 			listCacheMs?: number;
 		} = {},
@@ -117,10 +127,32 @@ export class ContentService {
 		return this.store(collection).get(slug);
 	}
 
+	/**
+	 * Plugins' before-hooks first, then the MDX rules: whatever a plugin changes is checked like anything an editor
+	 * writes. A plugin cannot publish or unpublish: `draft` stays what the editor (and their permission) said.
+	 */
+	private async checked(
+		collection: string,
+		slug: string,
+		doc: ParsedDocument,
+		isNew: boolean,
+	): Promise<ParsedDocument> {
+		const s = this.store(collection);
+		if (this.options.beforeSave) {
+			const out = await this.options.beforeSave({ collection, slug, isNew, data: doc.data, body: doc.body });
+			const data = { ...out.data };
+			if ("draft" in doc.data) data.draft = doc.data.draft;
+			else delete data.draft;
+			doc = { data, body: out.body };
+		}
+		const found = await findDisallowed(doc.body, this.options.components ?? [], s.formatOf(slug));
+		if (found.length > 0) throw new DisallowedContentError(found);
+		return doc;
+	}
+
 	async create(collection: string, slug: string, doc: ParsedDocument, message?: string): Promise<void> {
 		const s = this.store(collection);
-		const found = findDisallowed(doc.body, this.options.components ?? []);
-		if (found.length > 0) throw new DisallowedContentError(found);
+		doc = await this.checked(collection, slug, doc, true);
 		doc = { ...doc, data: this.schemas.get(collection)!.parse(doc.data) };
 		await this.serial(async () => {
 			if (await s.get(slug)) throw new ContentExistsError(collection, slug);
@@ -134,8 +166,8 @@ export class ContentService {
 
 	async put(collection: string, slug: string, doc: ParsedDocument, message?: string): Promise<void> {
 		const s = this.store(collection);
-		const found = findDisallowed(doc.body, this.options.components ?? []);
-		if (found.length > 0) throw new DisallowedContentError(found);
+		const isNew = this.options.beforeSave ? !(await s.get(slug)) : false;
+		doc = await this.checked(collection, slug, doc, isNew);
 		doc = { ...doc, data: this.schemas.get(collection)!.parse(doc.data) };
 		await this.serial(async () => {
 			await s.put(slug, doc);
@@ -155,13 +187,15 @@ export class ContentService {
 		const s = this.store(collection);
 		const entry = await s.get(slug);
 		if (!entry) return;
+		await this.options.beforeDelete?.({ collection, slug });
 		const rel = this.trashRel(collection, slug);
 		const path = join(this.root, rel);
 		await this.serial(async () => {
 			await mkdir(dirname(path), { recursive: true });
 			await writeFile(path, JSON.stringify({ ...entry, collection, deletedAt: new Date().toISOString() }, null, 2));
+			const file = s.relPath(slug);
 			await s.delete(slug);
-			await this.git.commit([s.relPath(slug), rel], `content: trash ${collection}/${slug}`);
+			await this.git.commit([file, rel], `content: trash ${collection}/${slug}`);
 		});
 		this.emit("content.deleted", { collection, slug });
 	}
@@ -202,8 +236,10 @@ export class ContentService {
 		const path = join(this.root, rel);
 		try {
 			const parsed = JSON.parse(await readFile(path, "utf8")) as ParsedDocument & { deletedAt: string };
+			// A restored entry is checked like a new one; its old schema is kept, so it is not parsed again.
+			const doc = await this.checked(collection, slug, { data: parsed.data, body: parsed.body }, true);
 			await this.serial(async () => {
-				await s.put(slug, { data: parsed.data, body: parsed.body });
+				await s.put(slug, doc);
 				await rm(path, { force: true });
 				await this.git.commit([s.relPath(slug), rel], `content: restore ${collection}/${slug}`);
 			});

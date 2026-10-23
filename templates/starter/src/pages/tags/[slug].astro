@@ -1,5 +1,7 @@
 ---
 import { getCollection } from "astro:content";
+import PageHero from "../../components/PageHero.astro";
+import PostCard from "../../components/PostCard.astro";
 import Base from "../../layouts/Base.astro";
 
 const slug = Astro.params.slug ?? "";
@@ -7,10 +9,14 @@ const posts = await getCollection("posts", ({ data }) => data.draft !== true && 
 if (posts.length === 0) return Astro.rewrite("/404");
 ---
 <Base title={`Tag: ${slug}`}>
-	<h1>Tag: {slug}</h1>
-	<ul>
-		{posts.map((post) => (
-			<li><a href={`/posts/${post.id}`}>{post.data.title}</a></li>
-		))}
-	</ul>
+	<PageHero title={`#${slug}`} kicker="Tag" crumbs={[{ label: "Tags" }, { label: slug }]} />
+	<section class="section section--soft">
+		<div class="shell">
+			<ul class="cards">
+				{posts.map((post) => (
+					<li><PostCard href={`/posts/${post.id}`} title={post.data.title} date={post.data.date} cover={post.data.cover} /></li>
+				))}
+			</ul>
+		</div>
+	</section>
 </Base>

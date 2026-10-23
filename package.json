@@ -19,7 +19,8 @@
 		"version-packages": "changeset version",
 		"release": "pnpm build && changeset publish",
 		"verify:pack": "node scripts/verify-pack.mjs",
-		"knip": "knip --no-progress"
+		"knip": "knip --no-progress",
+		"seed:sites": "node scripts/seed-sites.mjs"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^3.0.3",

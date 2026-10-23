@@ -60,6 +60,11 @@ test("owner sets up the site, writes a post, edits it and undoes the edit", asyn
 	await expect(editor).not.toContainText("OOPS");
 	await expect(page.getByText(/^Revert/)).toBeVisible();
 
+	// Live content: the built site serves the saved text at once, no rebuild.
+	const live = await page.request.get("/posts/my-first-post");
+	expect(live.status()).toBe(200);
+	expect(await live.text()).toContain("Hello from the editor");
+
 	// Insert an image into the body: uploaded, stored under /uploads, referenced as Markdown.
 	const png = Buffer.from(
 		"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
@@ -333,7 +338,15 @@ test("admin modules render and the owner resets a colleague's two-factor", async
 	await page.getByRole("button", { name: /Open Hello Wuppy/ }).click();
 	await expect(page.getByTestId("post-detail")).toBeVisible();
 
-	await page.getByRole("link", { name: "Users" }).click();
+	// The studio entry points share Instatic's top bar.
+	await page.goto("/admin/ai");
+	await expect(page.getByRole("heading", { name: "AI", exact: true })).toBeVisible();
+	await expect(page.getByRole("heading", { name: "Connect Anthropic" })).toBeVisible();
+	await page.goto("/admin/site");
+	await expect(page.getByRole("tree", { name: "Layers" })).toBeVisible();
+	await expect(page).toHaveURL(/\/admin\/v\/pages\//);
+
+	await page.goto("/admin/users");
 	await page.getByRole("button", { name: "Open edna@example.com" }).click();
 	await page.getByRole("button", { name: "Manage", exact: true }).click();
 	const dialog = page.getByRole("dialog");
@@ -441,6 +454,88 @@ test("unsaved work is recovered, a concurrent edit is caught, and publish/unpubl
 	// A shareable preview link is minted for the entry.
 	await page.getByRole("button", { name: "Preview link" }).click();
 	await expect(page.getByText("Anyone with this link can see this entry")).toBeVisible();
+
+	await context.close();
+});
+
+test("the visual editor adds blocks, edits text in place and saves them to the live page", async ({ browser }) => {
+	const context = await browser.newContext({
+		baseURL: "http://127.0.0.1:4444",
+		extraHTTPHeaders: { "x-forwarded-for": "198.51.100.78" },
+	});
+	const page = await context.newPage();
+	page.on("dialog", (d) => void d.accept());
+	await page.goto("/admin/");
+	await page.getByLabel("Email").fill("owner@example.com");
+	await page.getByLabel("Password").fill("correct-horse-battery");
+	await page.getByRole("button", { name: "Sign in", exact: true }).click();
+	await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+
+	await page.goto("/admin/c/posts");
+	await page.getByRole("button", { name: "Open Hello world", exact: true }).click();
+	await page.getByRole("button", { name: "Edit with Visual" }).click();
+	await expect(page.getByRole("tree", { name: "Layers" })).toBeVisible();
+	await expect(page.getByText(/Site styles:/)).toHaveCount(0);
+
+	// The existing Markdown stays one block; a heading is added through the inserter and edited on the canvas.
+	await page.getByRole("button", { name: "Add (A)" }).click();
+	const inserter = page.getByRole("dialog", { name: "Add to canvas" });
+	await inserter.getByRole("button", { name: /^Heading/ }).click();
+	const canvas = page.frameLocator('iframe[title="Page canvas"]');
+	const heading = canvas.locator("h2", { hasText: "Heading" });
+	await heading.dblclick();
+	await page.keyboard.press("ControlOrMeta+a");
+	await page.keyboard.type("Made *visually*");
+	await page.keyboard.press("Enter");
+	await expect(canvas.locator("h2")).toHaveText("Made *visually*");
+	await page.getByLabel("color", { exact: true }).fill("#c2410c");
+	await page.getByRole("button", { name: "Publish", exact: true }).click();
+	await expect(page.getByText("All changes saved")).toBeVisible();
+
+	const saved = await (await page.request.get("/api/content/posts/hello-world")).json();
+	expect(saved.data.body).toContain('<h2 data-ve="heading" style="color: #c2410c">Made &#42;visually&#42;</h2>');
+	const live = await (await page.request.get("/posts/hello-world")).text();
+	expect(live).toMatch(/<h2[^>]*>Made \*visually\*<\/h2>/);
+
+	// Undo works across the canvas; the classic editor shows the same body.
+	await page.getByRole("button", { name: "Undo (Ctrl+Z)" }).click();
+	await expect(page.getByText("Unsaved changes")).toBeVisible();
+	await page.getByRole("button", { name: "Classic editor" }).click();
+	await expect(page.getByLabel("Content", { exact: true }).last()).toBeVisible();
+
+	await context.close();
+});
+
+test("the code view edits page source and saves it through the same Git-backed content API", async ({ browser }) => {
+	const context = await browser.newContext({
+		baseURL: "http://127.0.0.1:4444",
+		extraHTTPHeaders: { "x-forwarded-for": "198.51.100.79" },
+	});
+	const page = await context.newPage();
+	await page.goto("/admin/");
+	await page.getByLabel("Email").fill("owner@example.com");
+	await page.getByLabel("Password").fill("correct-horse-battery");
+	await page.getByRole("button", { name: "Sign in", exact: true }).click();
+	await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+
+	await page.goto("/admin/v/posts/hello-world");
+	await expect(page.getByRole("tree", { name: "Layers" })).toBeVisible();
+	await page.getByRole("button", { name: "Code view" }).click();
+	await expect(page.getByTestId("code-workspace")).toBeVisible();
+
+	const editor = page.getByRole("textbox", { name: "Code editor" });
+	const before = await editor.inputValue();
+	const marker = "Code view marker";
+	await editor.fill(`${before}\n<p class="text-red-500">${marker}</p>`);
+	await editor.press("ControlOrMeta+s");
+	await expect(page.getByTestId("code-save-status")).toHaveText("Saved");
+
+	const saved = await (await page.request.get("/api/content/posts/hello-world")).json();
+	expect(saved.data.body).toContain(marker);
+	expect(saved.data.body).toContain('class="text-red-500"');
+	await page.getByRole("button", { name: "Back to design view" }).click();
+	await expect(page.getByTestId("code-workspace")).toHaveCount(0);
+	await expect(page.getByRole("tree", { name: "Layers" })).toBeVisible();
 
 	await context.close();
 });

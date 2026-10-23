@@ -6,6 +6,7 @@ export default {
 		{
 			name: "posts",
 			dir: "content/posts",
+			format: "mdx",
 			route: "/posts/{slug}",
 			fields: {
 				title: "string",
@@ -25,6 +26,7 @@ export default {
 		{
 			name: "pages",
 			dir: "content/pages",
+			format: "mdx",
 			route: "/{slug}",
 			fields: {
 				title: "string",

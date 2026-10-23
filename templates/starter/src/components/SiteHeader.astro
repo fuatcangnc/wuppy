@@ -1,0 +1,112 @@
+---
+import { Button } from "@/ui/button";
+import {
+	NavigationMenu,
+	NavigationMenuContent,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	NavigationMenuTrigger,
+	navigationMenuTriggerStyle,
+} from "@/ui/navigation-menu";
+import Brand from "./Brand.astro";
+
+interface MenuItem {
+	label: string;
+	href: string;
+	children?: MenuItem[];
+}
+interface Props {
+	name: string;
+	tagline?: string;
+	logo?: string;
+	menu: { label: string; items: MenuItem[] } | null;
+}
+const { name, tagline, logo, menu } = Astro.props;
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== "/" && path.startsWith(`${href}/`));
+const active = "!border-primary !text-primary";
+const searchIcon = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
+const iconButton = "grid size-10 place-items-center border border-border text-ink transition hover:border-primary hover:text-primary group-data-[sticky=true]/header:border-white/20 group-data-[sticky=true]/header:text-white";
+---
+<header id="site-header" class="group/header sticky top-0 z-50 bg-white transition-all duration-300 data-[sticky=true]:bg-transparent">
+	<div class="bg-navy text-xs text-white/75 group-data-[sticky=true]/header:hidden">
+		<div class="shell flex min-h-10 items-center justify-between gap-4">
+			<p class="m-0 truncate">{tagline || name}</p>
+			<ul class="m-0 flex list-none gap-5 p-0">
+				<li><a href="/search" class="hover:text-primary">Search</a></li>
+				<li><a href="/rss.xml" class="hover:text-primary">RSS</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="py-2.5 transition-all duration-300">
+		<div class="shell relative flex min-h-[4.5rem] items-center gap-4 border border-border bg-white px-5 shadow-[0_8px_25px_rgba(0,0,0,0.06)] transition-all duration-300 group-data-[sticky=true]/header:border-white/10 group-data-[sticky=true]/header:bg-navy/95 group-data-[sticky=true]/header:shadow-2xl group-data-[sticky=true]/header:backdrop-blur-md">
+			<Brand name={name} logo={logo} />
+			{menu && (
+				<NavigationMenu class="ms-auto hidden lg:flex" aria-label={menu.label} openOnFocus>
+					<NavigationMenuList class="gap-1">
+						{menu.items.map((item) => (
+							<NavigationMenuItem value={item.href}>
+								{item.children && item.children.length > 0 ? (
+									<>
+										<NavigationMenuTrigger class={isActive(item.href) ? active : ""}><span>{item.label}</span></NavigationMenuTrigger>
+										<NavigationMenuContent class="w-72 border border-border bg-white shadow-2xl">
+											<div class="grid gap-1 p-2">
+												<NavigationMenuLink href={item.href} class="block px-3 py-2 text-xs font-bold text-primary hover:bg-primary hover:!text-white">{item.label}</NavigationMenuLink>
+												{item.children.map((child) => (
+													<NavigationMenuLink href={child.href} class="block px-3 py-2 text-xs font-bold text-ink hover:bg-primary hover:!text-white">{child.label}</NavigationMenuLink>
+												))}
+											</div>
+										</NavigationMenuContent>
+									</>
+								) : (
+									<NavigationMenuLink
+										href={item.href}
+										aria-current={isActive(item.href) ? "page" : undefined}
+										class={navigationMenuTriggerStyle({ class: isActive(item.href) ? active : "" })}
+									>
+										<span>{item.label}</span>
+									</NavigationMenuLink>
+								)}
+							</NavigationMenuItem>
+						))}
+					</NavigationMenuList>
+				</NavigationMenu>
+			)}
+			<div class:list={["flex items-center gap-2", menu ? "ms-auto lg:ms-0" : "ms-auto"]}>
+				<a href="/search" class={iconButton} aria-label="Search"><Fragment set:html={searchIcon} /></a>
+				<Button as="a" href="/rss.xml" class="hidden h-10 px-4 text-xs font-bold uppercase tracking-wider hover:bg-ink sm:inline-flex">Subscribe</Button>
+				{menu && (
+					<details class="group/mobile lg:hidden">
+						<summary aria-label="Menu" class:list={[iconButton, "cursor-pointer list-none [&::-webkit-details-marker]:hidden"]}>
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path class="group-open/mobile:hidden" d="M4 7h16M4 12h16M4 17h16"/><path class="hidden group-open/mobile:block" d="M6 6l12 12M18 6 6 18"/></svg>
+						</summary>
+						<nav aria-label={menu.label} class="absolute inset-x-0 top-full z-50 mt-2 border border-border bg-white p-4 text-ink shadow-2xl">
+							<ul class="m-0 flex list-none flex-col p-0">
+								{menu.items.map((item) => (
+									<li class="border-b border-border/60 last:border-0">
+										<a href={item.href} class="block py-3 text-sm font-bold hover:text-primary">{item.label}</a>
+										{item.children && item.children.length > 0 && (
+											<ul class="m-0 list-none pb-2 ps-3">
+												{item.children.map((child) => <li><a href={child.href} class="block px-2 py-2 text-xs font-semibold hover:bg-primary hover:text-white">{child.label}</a></li>)}
+											</ul>
+										)}
+									</li>
+								))}
+							</ul>
+						</nav>
+					</details>
+				)}
+			</div>
+		</div>
+	</div>
+</header>
+<script>
+	const header = document.getElementById("site-header");
+	if (header) {
+		const onScroll = () =>
+			window.scrollY > 120 ? header.setAttribute("data-sticky", "true") : header.removeAttribute("data-sticky");
+		addEventListener("scroll", onScroll, { passive: true });
+		onScroll();
+	}
+</script>

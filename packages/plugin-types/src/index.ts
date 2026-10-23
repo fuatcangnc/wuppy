@@ -1,8 +1,22 @@
 import { createHash } from "node:crypto";
 import { z } from "zod";
 
-export const HOOKS = ["onContentUpdated", "onContentDeleted", "onMediaUploaded"] as const;
+/** After-the-fact events (WordPress actions): run side by side, change nothing, failures are only logged. */
+export const ACTIONS = ["onContentUpdated", "onContentDeleted", "onMediaUploaded", "onCommentCreated"] as const;
+/**
+ * Before-the-fact checks (WordPress filters): run one plugin at a time, in config order, before the change is made.
+ * They may refuse it, and some may change it. A plugin that fails or times out refuses it too (fail closed).
+ */
+export const FILTERS = [
+	"beforeContentSave",
+	"beforeContentDelete",
+	"beforeMediaUpload",
+	"beforeCommentCreate",
+] as const;
+export const HOOKS = [...ACTIONS, ...FILTERS] as const;
 export type HookName = (typeof HOOKS)[number];
+export type FilterName = (typeof FILTERS)[number];
+export const isFilter = (hook: string): hook is FilterName => (FILTERS as readonly string[]).includes(hook);
 
 const host = z.string().regex(/^(?!-)[a-z0-9-]+(\.[a-z0-9-]+)+$/i, "Exact hostname only (no wildcard, scheme or port)");
 
@@ -119,11 +133,15 @@ const canonical = (value: unknown): string =>
  * they are empty, so a plugin approved before they existed keeps its hash; a plugin that now uses them gets a new one.
  */
 export function capabilityHash(manifest: unknown): string {
-	const { content, network, secrets, email } = manifestSchema.parse(manifest).capabilities;
+	const parsed = manifestSchema.parse(manifest);
+	const { content, network, secrets, email } = parsed.capabilities;
 	const caps: Record<string, unknown> = { content: { read: content.read }, network };
 	if (content.write.length) (caps.content as Record<string, unknown>).write = content.write;
 	if (secrets.length) caps.secrets = secrets;
 	if (email) caps.email = true;
+	// A before-hook can block or change other people's work, so adding one needs a new approval.
+	const filters = parsed.hooks.filter(isFilter).toSorted();
+	if (filters.length) caps.filters = filters;
 	return createHash("sha256").update(canonical(caps)).digest("hex");
 }
 

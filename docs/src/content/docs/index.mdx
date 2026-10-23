@@ -1,0 +1,31 @@
+---
+title: Wuppy
+description: A file-based, Git-backed CMS for Astro that you can run anywhere Node.js runs.
+template: splash
+hero:
+  tagline: Content as Markdown files, every save a Git commit, and an admin panel your clients can use.
+  actions:
+    - text: Get started
+      link: /getting-started/
+      icon: right-arrow
+    - text: Managed sites and AI
+      link: /sites/managed-sites/
+      variant: minimal
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+<CardGrid stagger>
+	<Card title="Your content stays yours" icon="document">
+		Pages and posts are Markdown/MDX files with frontmatter. Remove Wuppy and they are still readable.
+	</Card>
+	<Card title="Every save is a commit" icon="seti:git">
+		See what changed, compare versions and restore any of them. History is never pruned.
+	</Card>
+	<Card title="One hub for many sites" icon="puzzle">
+		Connect your clients' Wuppy sites to one hub and manage them all from one admin.
+	</Card>
+	<Card title="AI that works for the agency" icon="rocket">
+		An assistant, scheduled health and security checks, monthly client reports, MCP and an OpenAI-compatible API.
+	</Card>
+</CardGrid>

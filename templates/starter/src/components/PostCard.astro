@@ -1,0 +1,22 @@
+---
+interface Props {
+	href: string;
+	title: string;
+	index?: number;
+	date?: Date;
+	cover?: string;
+	draft?: boolean;
+	headingLevel?: 2 | 3;
+}
+const { href, title, index, date, cover, draft, headingLevel = 2 } = Astro.props;
+const Heading = `h${headingLevel}` as "h2" | "h3";
+---
+<article class="card">
+	{cover && <img src={cover} alt="" loading="lazy" />}
+	<div class="card-body">
+		{index !== undefined && <span class="card-number" aria-hidden="true">{String(index).padStart(2, "0")}</span>}
+		<Heading><a href={href}>{title}</a>{draft && <span class="badge">draft</span>}</Heading>
+		{date && <p class="meta" style="margin:0"><time datetime={date.toISOString()}>{date.toLocaleDateString("en", { dateStyle: "medium" })}</time></p>}
+		<span class="more" aria-hidden="true">Read more →</span>
+	</div>
+</article>

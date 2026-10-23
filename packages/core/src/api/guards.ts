@@ -1,21 +1,22 @@
-import type { MiddlewareHandler } from "hono";
+import type { Context, MiddlewareHandler } from "hono";
 import { ApiError } from "./errors.ts";
 
 const SAFE = new Set(["GET", "HEAD", "OPTIONS"]);
 
 /**
- * Per-user fixed window on write requests. In-memory: one process, resets on restart.
+ * Per-user (or per `keyOf`) fixed window on write requests. In-memory: one process, resets on restart.
  * shortcut: not shared across instances, move to the database when running more than one.
  */
 export function writeRateLimit(
 	max = 120,
 	windowMs = 60_000,
+	keyOf: (c: Context<{ Variables: { user: { id: string } } }>) => string = (c) => c.get("user").id,
 ): MiddlewareHandler<{ Variables: { user: { id: string } } }> {
 	const hits = new Map<string, { count: number; reset: number }>();
 	return async (c, next) => {
 		if (SAFE.has(c.req.method)) return next();
 		const now = Date.now();
-		const id = c.get("user").id;
+		const id = keyOf(c);
 		const hit = hits.get(id);
 		if (!hit || hit.reset <= now) hits.set(id, { count: 1, reset: now + windowMs });
 		else if (++hit.count > max) throw new ApiError(429, "RATE_LIMITED", "Too many requests");

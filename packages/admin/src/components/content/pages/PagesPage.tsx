@@ -19,6 +19,7 @@ import {
 	Table as TableIcon,
 	Trash2,
 	UserRound,
+	WandSparkles,
 	X,
 } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
@@ -744,6 +745,13 @@ export function ContentWorkspacePage({ collection }: { collection: string }) {
 					</div>
 				</div>
 				<div className="flex items-center gap-1">
+					<Button
+						variant="secondary"
+						size="sm"
+						onClick={() => void navigate({ to: "/v/$collection/$", params: { collection, _splat: selected.slug } })}
+					>
+						<WandSparkles size={14} /> Edit with Visual
+					</Button>
 					<Button variant="secondary" size="sm" onClick={() => editPage(selected.slug)}>
 						<Pencil size={14} /> Edit
 					</Button>

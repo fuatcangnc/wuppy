@@ -14,7 +14,26 @@ import { MediaService } from "../../src/media/index.ts";
 import { RedirectService } from "../../src/redirects/service.ts";
 
 /** Routes any signed-in user may call on purpose (no permission needed). */
-const OPEN = new Set(["POST /api/invitations/accept", "GET /api/openapi.json"]);
+const OPEN = new Set([
+	"POST /api/invitations/accept",
+	"GET /api/openapi.json",
+	// Managed sites: gated by site membership (or a hub token), not by a permission on this site.
+	"GET /api/hub/whoami",
+	"GET /api/sites",
+	"POST /api/sites/:id/check",
+	"GET /api/sites/:id/me",
+	// The assistant and MCP: every tool call is its own API request, checked like any other.
+	"GET /api/ai/config",
+	"POST /api/ai/chat",
+	"GET /api/mcp",
+	"POST /api/mcp",
+	"GET /api/ai/chats",
+	"GET /api/ai/chats/:id",
+	"DELETE /api/ai/chats/:id",
+	"GET /api/v1/models",
+	"POST /api/v1/chat/completions",
+	"GET /api/sites/:id/report",
+]);
 
 let root: string;
 let user: User;
@@ -51,9 +70,11 @@ const isForbidden = async (method: string, path: string) => (await call(method, 
 
 describe("permission matrix", () => {
 	it("every protected route is guarded by a permission, and a user with none is refused everywhere", async () => {
-		user = { id: "nobody", permissions: [] };
 		const open = [];
-		for (const r of routes()) if (!(await isForbidden(r.method, r.path))) open.push(key(r));
+		for (const r of routes()) {
+			user = { id: `nobody-${n++}`, permissions: [] };
+			if (!(await isForbidden(r.method, r.path))) open.push(key(r));
+		}
 		expect(new Set(open.filter((k) => !OPEN.has(k)))).toEqual(new Set());
 	});
 

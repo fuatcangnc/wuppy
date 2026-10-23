@@ -165,7 +165,7 @@ export class CommentService {
 		email?: string;
 		body: string;
 		ip?: string;
-		moderated: boolean;
+		status: "approved" | "pending" | "spam";
 	}): Comment {
 		const now = new Date().toISOString();
 		const comment: Comment = {
@@ -175,7 +175,7 @@ export class CommentService {
 			author: input.author.slice(0, 100),
 			email: input.email?.slice(0, 200) ?? null,
 			body: input.body.slice(0, 5000),
-			status: input.moderated ? "pending" : "approved",
+			status: input.status,
 			parentId: null,
 			staff: false,
 			createdAt: now,

@@ -3,10 +3,8 @@ import {
 	ArrowRightLeft,
 	Blocks,
 	CalendarDays,
-	Check,
-	ChevronsUpDown,
-	Computer,
 	DatabaseBackup,
+	Globe,
 	ExternalLink,
 	FileText,
 	Image as ImageIcon,
@@ -15,12 +13,13 @@ import {
 	LogOut,
 	Menu as MenuIcon,
 	MessageSquare,
+	Monitor,
 	Newspaper,
 	Palette,
 	Puzzle,
-	Search,
 	Settings,
 	ShieldCheck,
+	Sparkles,
 	Tags,
 	Upload,
 	UserRound,
@@ -36,12 +35,16 @@ import {
 	useRouterState,
 } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
+import { AssistantPage } from "../components/assistant/AssistantPage.tsx";
 import { LoginPage } from "../components/auth/LoginPage.tsx";
 import { SecurityPage } from "../components/auth/SecurityPage.tsx";
 import { AuditPage } from "../components/content/AuditPage.tsx";
 import { EntriesPage } from "../components/content/EntriesPage.tsx";
 import { ContentWorkspacePage } from "../components/content/pages/PagesPage.tsx";
 import { EditorPage } from "../components/content/EditorPage.tsx";
+import { VisualEditorPage } from "../components/visual-editor/VisualEditorPage.tsx";
+import { SitePage } from "../components/visual-editor/SitePage.tsx";
+import { AiPage } from "../components/ai/AiPage.tsx";
 import { TranslationsPage } from "../components/content/TranslationsPage.tsx";
 import { TrashPage } from "../components/content/TrashPage.tsx";
 import { TransferPage } from "../components/content/TransferPage.tsx";
@@ -65,10 +68,13 @@ import { SettingsPage } from "../components/settings/SettingsPage.tsx";
 import { WebhooksPage } from "../components/settings/WebhooksPage.tsx";
 import { ThemesPage } from "../components/settings/ThemesPage.tsx";
 import { GlobalSearch } from "../components/shared/GlobalSearch.tsx";
+import { SiteSwitcher } from "../components/sites/SiteSwitcher.tsx";
+import { SitesPage } from "../components/sites/SitesPage.tsx";
 import { apiData } from "../lib/api.ts";
 import { $collections, loadCollections } from "../stores/content.ts";
 import { $session, loadSession, signOut } from "../stores/session.ts";
-import { ThemeSwitcher, Button, GhostButton, Input, Spinner, ToastHost } from "../ui/index.tsx";
+import { $sites, activeManagedSite, loadSites } from "../stores/sites.ts";
+import { ThemeSwitcher, Button, GhostButton, Spinner, ToastHost } from "../ui/index.tsx";
 
 function NavLink({
 	to,
@@ -106,62 +112,9 @@ function Group({ title, children }: { title: string; children: React.ReactNode }
 	);
 }
 
-function SiteSwitcher() {
-	const [open, setOpen] = useState(false);
-
-	return (
-		<div className="mb-3 grid gap-2">
-			<button
-				type="button"
-				aria-expanded={open}
-				aria-controls="site-switcher-list"
-				onClick={() => setOpen((value) => !value)}
-				className="flex h-10 w-full items-center gap-2 rounded-lg border border-border bg-card px-3 text-sm transition-colors hover:bg-muted/60"
-			>
-				<Computer size="1em" className="shrink-0 text-muted-foreground" />
-				<span className="font-medium">Local</span>
-				<ChevronsUpDown size="1em" className="ms-auto shrink-0 text-muted-foreground" />
-			</button>
-			{open && (
-				<div id="site-switcher-list" className="overflow-hidden rounded-lg border border-border bg-card">
-					<div className="border-b border-border p-2">
-						<div className="relative">
-							<Search
-								size="1em"
-								className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
-							/>
-							<Input
-								aria-label="Search sites"
-								readOnly
-								placeholder="Search sites..."
-								className="h-8 bg-transparent pl-9 text-sm shadow-none"
-							/>
-						</div>
-					</div>
-					<div className="grid gap-0">
-						<div className="flex items-center gap-2 border-b border-border px-3 py-2 text-sm">
-							<Computer size="1em" className="shrink-0 text-muted-foreground" />
-							<span className="font-medium">Local</span>
-							<Check size="1em" className="ms-auto shrink-0 text-primary" />
-						</div>
-						<div className="flex items-center gap-2 px-3 py-2.5">
-							<span className="grid size-6 shrink-0 place-items-center rounded-full bg-secondary text-[10px] font-semibold text-foreground">
-								W
-							</span>
-							<span className="min-w-0">
-								<span className="block truncate text-sm font-medium">uixpress.instawp.xyz</span>
-								<span className="block truncate text-[11px] text-muted-foreground">https://uixpress.instawp.xyz/</span>
-							</span>
-						</div>
-					</div>
-				</div>
-			)}
-		</div>
-	);
-}
-
 function Shell() {
 	const session = useStore($session);
+	const sites = useStore($sites);
 	const collections = useStore($collections);
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [pluginLinks, setPluginLinks] = useState<Array<{ id: string; index: number; label: string }>>([]);
@@ -181,8 +134,14 @@ function Shell() {
 			state.location.pathname === "/settings" ||
 			state.location.pathname === "/security",
 	});
+	const localAllowed = session.status === "authed" && session.user.role !== "client";
 	useEffect(() => {
-		if (session.status !== "authed") return;
+		if (session.status === "authed") void loadSites(localAllowed);
+	}, [session.status, localAllowed]);
+	// Content requests wait until the active site is settled, so they never hit the wrong site.
+	const siteReady = sites.status === "ready" && (sites.active !== "local" || sites.localAllowed);
+	useEffect(() => {
+		if (session.status !== "authed" || !siteReady) return;
 		void loadCollections();
 		// Pages contributed by active plugins; users without plugins:manage simply get none.
 		void apiData<{
@@ -198,7 +157,7 @@ function Shell() {
 				),
 			)
 			.catch(() => setPluginLinks([]));
-	}, [session.status]);
+	}, [session.status, siteReady]);
 
 	if (session.status === "loading")
 		return (
@@ -221,7 +180,28 @@ function Shell() {
 		);
 	}
 	if (session.status === "anon") return <LoginPage />;
-	const isAdmin = session.user.role === "admin";
+	if (sites.status !== "ready")
+		return (
+			<div className="grid min-h-screen place-items-center">
+				<Spinner />
+			</div>
+		);
+	if (!siteReady)
+		return (
+			<main className="mx-auto grid max-w-md gap-3 p-6">
+				<h1 className="text-xl font-semibold">No sites yet</h1>
+				<p className="text-sm text-muted-foreground">
+					No site has been shared with you yet. Ask the person who invited you to give you access.
+				</p>
+				<GhostButton onClick={() => void signOut()}>Sign out</GhostButton>
+			</main>
+		);
+	const remote = activeManagedSite(sites);
+	// On a managed site the menu follows what the hub may do there; on Local it follows this account's role.
+	const can = (permission: string) =>
+		remote ? (sites.permissions ?? []).includes(permission) : session.user.role === "admin";
+	const isAdmin = can("site:settings");
+	const siteHref = remote ? remote.url : "/";
 
 	const nav = (
 		<>
@@ -239,6 +219,9 @@ function Shell() {
 						<span aria-label={c.name}>{c.name.charAt(0).toUpperCase() + c.name.slice(1)}</span>
 					</NavLink>
 				))}
+				<NavLink to="/site" icon={<Monitor size={16} />}>
+					Site
+				</NavLink>
 				<NavLink to="/trash" icon={<FileText size={16} />}>
 					Trash
 				</NavLink>
@@ -288,14 +271,19 @@ function Shell() {
 					<NavLink to="/byline-schema" icon={<UserRound size={16} />}>
 						Byline schema
 					</NavLink>
-					<NavLink to="/users" icon={<UserRound size={16} />}>
-						Users
-					</NavLink>
+					{!remote && (
+						<NavLink to="/users" icon={<UserRound size={16} />}>
+							Users
+						</NavLink>
+					)}
 					<NavLink to="/plugins" icon={<Puzzle size={16} />}>
 						Plugins
 					</NavLink>
 					<NavLink to="/import" icon={<Upload size={16} />}>
 						Import
+					</NavLink>
+					<NavLink to="/ai" icon={<Sparkles size={16} />}>
+						AI
 					</NavLink>
 					<NavLink to="/webhooks" icon={<Webhook size={16} />}>
 						Webhooks
@@ -309,12 +297,20 @@ function Shell() {
 				</Group>
 			)}
 			<div className="mt-4 border-t border-border pt-2">
-				{isAdmin && (
+				<NavLink to="/assistant" icon={<Sparkles size={16} />}>
+					Assistant
+				</NavLink>
+				{sites.canManage && (
+					<NavLink to="/sites" icon={<Globe size={16} />}>
+						Sites
+					</NavLink>
+				)}
+				{can("audit:read") && (
 					<NavLink to="/audit" icon={<ShieldCheck size={16} />}>
 						Security log
 					</NavLink>
 				)}
-				{isAdmin && (
+				{can("site:transfer") && (
 					<NavLink to="/transfer" icon={<DatabaseBackup size={16} />}>
 						Backup
 					</NavLink>
@@ -359,7 +355,7 @@ function Shell() {
 								<MenuIcon size={18} />
 							</Button>
 							<a
-								href="/"
+								href={siteHref}
 								target="_blank"
 								rel="noreferrer"
 								className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
@@ -369,7 +365,7 @@ function Shell() {
 							<span className="flex items-center gap-1 rounded-full border border-border p-0.5 text-xs">
 								<span className="rounded-full bg-secondary px-2 py-0.5 font-medium">Edit</span>
 								<a
-									href="/"
+									href={siteHref}
 									target="_blank"
 									rel="noreferrer"
 									className="px-2 py-0.5 text-muted-foreground hover:text-foreground"
@@ -387,6 +383,17 @@ function Shell() {
 							</Button>
 						</div>
 					</header>
+					{remote && (
+						<p className="border-y border-border bg-muted/40 px-4 py-1 text-xs text-muted-foreground">
+							Managing <span className="font-medium text-foreground">{remote.url.replace(/^https?:\/\//, "")}</span>
+							{remote.status === "connection_error" && (
+								<span className="text-destructive">
+									{" "}
+									— connection problem{remote.lastError ? `: ${remote.lastError}` : ""}
+								</span>
+							)}
+						</p>
+					)}
 					<main className={fullWidth ? "w-full p-2 lg:p-3" : "mx-auto max-w-7xl p-4 lg:p-6"}>
 						<Outlet />
 					</main>
@@ -413,7 +420,14 @@ const entries = createRoute({ getParentRoute: () => root, path: "/c/$collection"
 const translations = createRoute({ getParentRoute: () => root, path: "/t/$collection", component: TranslationsPage });
 const trash = createRoute({ getParentRoute: () => root, path: "/trash", component: TrashPage });
 const editor = createRoute({ getParentRoute: () => root, path: "/e/$collection/$", component: EditorPage });
+const visualEditor = createRoute({
+	getParentRoute: () => root,
+	path: "/v/$collection/$",
+	component: VisualEditorPage,
+});
 const media = createRoute({ getParentRoute: () => root, path: "/media", component: MediaPage });
+const site = createRoute({ getParentRoute: () => root, path: "/site", component: SitePage });
+const ai = createRoute({ getParentRoute: () => root, path: "/ai", component: AiPage });
 const comments = createRoute({ getParentRoute: () => root, path: "/comments", component: CommentsPage });
 const menus = createRoute({ getParentRoute: () => root, path: "/menus", component: MenusPage });
 const redirects = createRoute({ getParentRoute: () => root, path: "/redirects", component: RedirectsPage });
@@ -432,6 +446,14 @@ const settings = createRoute({ getParentRoute: () => root, path: "/settings", co
 const themes = createRoute({ getParentRoute: () => root, path: "/themes", component: ThemesPage });
 const audit = createRoute({ getParentRoute: () => root, path: "/audit", component: AuditPage });
 const transfer = createRoute({ getParentRoute: () => root, path: "/transfer", component: TransferPage });
+const sitesRoute = createRoute({ getParentRoute: () => root, path: "/sites", component: SitesPage });
+const assistant = createRoute({
+	getParentRoute: () => root,
+	path: "/assistant",
+	component: AssistantPage,
+	validateSearch: (search: Record<string, unknown>): { site?: string } =>
+		typeof search.site === "string" ? { site: search.site } : {},
+});
 function AccountSecurity() {
 	const session = useStore($session);
 	return <SecurityPage twoFactorEnabled={session.status === "authed" && session.user.twoFactorEnabled === true} />;
@@ -446,7 +468,10 @@ export const router = createRouter({
 		translations,
 		trash,
 		editor,
+		visualEditor,
 		media,
+		site,
+		ai,
 		comments,
 		menus,
 		redirects,
@@ -465,6 +490,8 @@ export const router = createRouter({
 		themes,
 		audit,
 		transfer,
+		sitesRoute,
+		assistant,
 		security,
 	]),
 	basepath: "/admin",

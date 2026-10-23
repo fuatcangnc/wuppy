@@ -10,6 +10,7 @@ export function Dialog({
 	onClose,
 	footer,
 	size = "default",
+	bare = false,
 }: {
 	open: boolean;
 	title: string;
@@ -20,6 +21,8 @@ export function Dialog({
 	footer?: ReactNode;
 	/** `medium` and `wide` have a ruled header and footer; their bodies set their own padding. */
 	size?: "default" | "medium" | "wide";
+	/** Render no default header/footer; the body owns the full panel chrome. */
+	bare?: boolean;
 }) {
 	useEffect(() => {
 		if (!open) return;
@@ -45,21 +48,31 @@ export function Dialog({
 				data-slot="dialog-content"
 				className={cn(
 					"relative grid w-full rounded-xl border border-border bg-popover text-popover-foreground shadow-lg",
-					framed ? `${width} max-h-[92vh] grid-rows-[auto_1fr_auto]` : `${width} gap-4 p-6`,
+					bare
+						? `${width} max-h-[92vh] overflow-hidden`
+						: framed
+							? `${width} max-h-[92vh] grid-rows-[auto_1fr_auto]`
+							: `${width} gap-4 p-6`,
 				)}
 				onMouseDown={(event) => event.stopPropagation()}
 			>
-				<header className={cn("flex items-start justify-between gap-3", framed && "border-b border-border px-8 py-5")}>
-					<div className="grid min-w-0 gap-1">
-						<h2 className="text-lg leading-none font-semibold">{title}</h2>
-						{description && <p className="truncate text-sm text-muted-foreground">{description}</p>}
-					</div>
-					<Button variant="ghost" size="icon-sm" aria-label="Close" onClick={onClose}>
-						×
-					</Button>
-				</header>
-				<div className={cn("custom-scrollbar overflow-y-auto", framed ? "min-h-0" : "max-h-[70vh]")}>{children}</div>
-				{footer && (
+				{!bare && (
+					<header
+						className={cn("flex items-start justify-between gap-3", framed && "border-b border-border px-8 py-5")}
+					>
+						<div className="grid min-w-0 gap-1">
+							<h2 className="text-lg leading-none font-semibold">{title}</h2>
+							{description && <p className="truncate text-sm text-muted-foreground">{description}</p>}
+						</div>
+						<Button variant="ghost" size="icon-sm" aria-label="Close" onClick={onClose}>
+							×
+						</Button>
+					</header>
+				)}
+				<div className={cn("custom-scrollbar overflow-y-auto", bare ? "min-h-0" : framed ? "min-h-0" : "max-h-[70vh]")}>
+					{children}
+				</div>
+				{!bare && footer && (
 					<footer className={cn("flex justify-end gap-2", framed && "border-t border-border px-8 py-4")}>
 						{footer}
 					</footer>

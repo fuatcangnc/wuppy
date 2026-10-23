@@ -1,0 +1,24 @@
+---
+// Dark hero used on every inner page: breadcrumb, kicker, title and an optional lead.
+interface Props {
+	title: string;
+	kicker?: string;
+	lead?: string;
+	crumbs?: Array<{ label: string; href?: string }>;
+}
+const { title, kicker, lead, crumbs = [] } = Astro.props;
+---
+<section class="page-hero">
+	<div class="shell">
+		<nav aria-label="Breadcrumb">
+			<ol class="crumbs">
+				<li><a href="/">Home</a></li>
+				{crumbs.map((crumb) => <li>{crumb.href ? <a href={crumb.href}>{crumb.label}</a> : <span aria-current="page">{crumb.label}</span>}</li>)}
+			</ol>
+		</nav>
+		{kicker && <p class="kicker" style="margin-top:1.5rem">{kicker}</p>}
+		<slot name="title"><h1 class="display">{title}</h1></slot>
+		{lead && <p class="lead">{lead}</p>}
+		<slot />
+	</div>
+</section>

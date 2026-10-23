@@ -2,7 +2,9 @@
 **/dist
 **/.astro
 .git
-.wuppy
+**/.wuppy
+# Local uploads are runtime data, not part of the site source.
+templates/starter/public/uploads
 **/.env
 e2e/test-results
 e2e/playwright-report

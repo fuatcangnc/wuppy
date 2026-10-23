@@ -78,11 +78,16 @@ const SKIP_PATH = /^\/(admin|api|uploads|_astro)(\/|$)/;
  * Previews, edit mode, non-GET requests and anything that sets cookies or forbids storing are passed through.
  */
 export function createPageCacheMiddleware(root: string, cache = new PageCache(), enabled = true) {
-	return async (ctx: { request: Request; url: URL }, next: () => Promise<Response>): Promise<Response> => {
+	return async (
+		ctx: { request: Request; url: URL; isPrerendered?: boolean },
+		next: () => Promise<Response>,
+	): Promise<Response> => {
 		const { request, url } = ctx;
 		const params = url.searchParams;
 		if (
 			!enabled ||
+			// Prerendered pages are files on disk; there are no request headers to cache by.
+			ctx.isPrerendered ||
 			request.method !== "GET" ||
 			SKIP_PATH.test(url.pathname) ||
 			params.has("wuppy-preview") ||

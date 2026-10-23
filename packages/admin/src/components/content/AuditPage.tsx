@@ -17,6 +17,7 @@ interface AuditEvent {
 	ok: boolean;
 	actor?: string;
 	email?: string;
+	detail?: string;
 }
 
 export function AuditPage() {
@@ -54,7 +55,10 @@ export function AuditPage() {
 						{visible.map((e, i) => (
 							<TableRow key={`${e.at}-${i}`}>
 								<TableCell>{new Date(e.at).toLocaleString()}</TableCell>
-								<TableCell>{e.type}</TableCell>
+								<TableCell>
+									{e.type}
+									{e.detail && <span className="block text-xs text-muted-foreground">{e.detail}</span>}
+								</TableCell>
 								<TableCell className={e.ok ? "" : "text-destructive"}>{e.ok ? "OK" : "Failed"}</TableCell>
 								<TableCell>{e.email ?? e.actor ?? ""}</TableCell>
 							</TableRow>

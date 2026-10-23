@@ -21,10 +21,14 @@ for (const dir of readdirSync(join(root, "packages"), { withFileTypes: true })) 
 let failed = false;
 for (const file of readdirSync(out)) {
 	const tarball = join(out, file);
-	const base = file.replace(/-\d+\.\d+\.\d+.*\.tgz$/, "").replace(/^@/, "").replace("/", "-");
+	const base = file
+		.replace(/-\d+\.\d+\.\d+.*\.tgz$/, "")
+		.replace(/^@/, "")
+		.replace("/", "-");
 	try {
 		run(root, "dlx", "publint@latest", "--strict", tarball);
-		if (!withoutTypes.has(base)) run(root, "dlx", "@arethetypeswrong/cli@latest", tarball, "--profile", "esm-only", "--no-emoji");
+		if (!withoutTypes.has(base))
+			run(root, "dlx", "@arethetypeswrong/cli@latest", tarball, "--profile", "esm-only", "--no-emoji");
 	} catch {
 		failed = true;
 	}

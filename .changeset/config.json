@@ -4,6 +4,17 @@
 	"commit": false,
 	"access": "public",
 	"baseBranch": "main",
-	"fixed": [["wuppy", "@wuppy/admin", "@wuppy/auth", "@wuppy/git", "@wuppy/plugin-types", "@wuppy/plugin-cli", "create-wuppy"]],
+	"fixed": [
+		[
+			"wuppy",
+			"@wuppy/admin",
+			"@wuppy/auth",
+			"@wuppy/git",
+			"@wuppy/plugin-types",
+			"@wuppy/plugin-cli",
+			"create-wuppy",
+			"@wuppy/visual-editor"
+		]
+	],
 	"ignore": ["wuppy-starter", "@wuppy/e2e"]
 }

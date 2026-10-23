@@ -37,5 +37,10 @@ describe("permissionsFor", () => {
 		expect(permissionsFor("hacker")).toEqual([]);
 		expect(permissionsFor(null)).toEqual([]);
 	});
-	it("lists known roles", () => expect(ROLES).toEqual(["admin", "editor", "author", "viewer"]));
+	it("lists known roles", () => expect(ROLES).toEqual(["admin", "editor", "author", "viewer", "client"]));
+	it("client holds nothing on this site; only admins manage sites", () => {
+		expect(permissionsFor("client")).toEqual([]);
+		expect(permissionsFor("admin")).toContain("sites:manage");
+		expect(permissionsFor("editor")).not.toContain("sites:manage");
+	});
 });

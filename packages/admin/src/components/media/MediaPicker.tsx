@@ -1,4 +1,5 @@
 import { useStore } from "@nanostores/react";
+import { apiUrl } from "../../lib/api.ts";
 import { useEffect, useMemo, useState } from "react";
 import { $media, loadMedia, type MediaItem } from "../../stores/content.ts";
 import { Button, Dialog, EmptyState, Input } from "../../ui/index.tsx";
@@ -88,7 +89,12 @@ export function MediaPicker({
 									onClick={() => toggle(m.url)}
 									className={`block w-full rounded-md border-2 p-0.5 ${chosen.includes(m.url) ? "border-primary" : "border-transparent"}`}
 								>
-									<img src={m.url} alt={m.alt ?? ""} className="h-20 w-full rounded object-cover" loading="lazy" />
+									<img
+										src={apiUrl(m.url)}
+										alt={m.alt ?? ""}
+										className="h-20 w-full rounded object-cover"
+										loading="lazy"
+									/>
 								</button>
 							</li>
 						))}

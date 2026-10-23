@@ -1,6 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import { getByline, readData } from "wuppy";
+import PageHero from "../../components/PageHero.astro";
+import PostCard from "../../components/PostCard.astro";
 import Base from "../../layouts/Base.astro";
 
 const slug = Astro.params.slug ?? "";
@@ -10,17 +12,23 @@ if (!byline) return Astro.rewrite("/404");
 const posts = await getCollection("posts", ({ data }) => data.draft !== true && data.author === slug);
 ---
 <Base title={byline.name}>
-	<h1>{byline.name}</h1>
-	{byline.avatar && <img src={byline.avatar} alt="" class="mt-2 size-20 rounded-full object-cover" />}
-	{byline.bio && <p class="mt-2">{byline.bio}</p>}
-	<dl class="mt-2">
-		{fields.filter((f) => byline.extra[f.name]).map((f) => (
-			<><dt>{f.label}</dt><dd>{f.type === "url" ? <a href={byline.extra[f.name]}>{byline.extra[f.name]}</a> : byline.extra[f.name]}</dd></>
-		))}
-	</dl>
-	<ul class="mt-4">
-		{posts.map((post) => (
-			<li><a href={`/posts/${post.id}`}>{post.data.title}</a></li>
-		))}
-	</ul>
+	<PageHero title={byline.name} kicker="Author" lead={byline.bio || undefined} crumbs={[{ label: "Authors" }, { label: byline.name }]}>
+		{byline.avatar && <img src={byline.avatar} alt="" width="80" height="80" style="margin-top:1.5rem;width:5rem;height:5rem;object-fit:cover;border:3px solid var(--primary)" />}
+		{fields.some((f) => byline.extra[f.name]) && (
+			<dl class="meta" style="margin-top:1rem">
+				{fields.filter((f) => byline.extra[f.name]).map((f) => (
+					<><dt style="font-weight:700">{f.label}</dt><dd style="margin:0 0 .5rem">{f.type === "url" ? <a href={byline.extra[f.name]}>{byline.extra[f.name]}</a> : byline.extra[f.name]}</dd></>
+				))}
+			</dl>
+		)}
+	</PageHero>
+	<section class="section section--soft">
+		<div class="shell">
+			<ul class="cards">
+				{posts.map((post) => (
+					<li><PostCard href={`/posts/${post.id}`} title={post.data.title} date={post.data.date} cover={post.data.cover} /></li>
+				))}
+			</ul>
+		</div>
+	</section>
 </Base>

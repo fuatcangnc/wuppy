@@ -12,6 +12,7 @@ import { ContentService } from "../../src/content/service.ts";
 import { JsonStore } from "../../src/data/store.ts";
 import { MediaService } from "../../src/media/index.ts";
 import { RedirectService } from "../../src/redirects/service.ts";
+import { GithubAccounts, GithubThemes } from "../../src/themes/github.ts";
 
 const ALL: User = {
 	id: "u1",
@@ -399,5 +400,56 @@ describe("error catalog", () => {
 		}
 		expect(used.size).toBeGreaterThan(15);
 		for (const [code, status] of used) expect(ERROR_CODES[code as keyof typeof ERROR_CODES], code).toBe(status);
+	});
+});
+
+const githubFetch: typeof fetch = async () => Response.json({ access_token: "gho_t" });
+const themesApp = () =>
+	createApp({
+		service: svc,
+		media: new MediaService(root, git),
+		json,
+		comments,
+		redirects,
+		userCount: () => 1,
+		getUser: async () => user,
+		themes: new GithubThemes({ base: root, run: () => new Promise(() => {}) }),
+		github: new GithubAccounts(
+			new DatabaseSync(":memory:"),
+			"s".repeat(40),
+			{ clientId: "cid", clientSecret: "cs", redirectUri: "http://localhost/api/themes/github/callback" },
+			githubFetch,
+		),
+	});
+const post = (a: ReturnType<typeof themesApp>, path: string, body: unknown) =>
+	a.request(path, { method: "POST", headers: H, body: JSON.stringify(body) });
+
+describe("themes API", () => {
+	it("is for admins only: installing runs the repository's code on the server", async () => {
+		user = { id: "e", permissions: ["content:read", "themes:manage"] };
+		expect((await themesApp().request("/api/themes")).status).toBe(403);
+		expect((await post(themesApp(), "/api/themes/github/install", { repo: "me/a" })).status).toBe(403);
+	});
+
+	it("needs a linked GitHub account, then starts one install at a time", async () => {
+		user = { id: "a", permissions: ["site:settings"] };
+		const on = themesApp();
+		expect(await (await on.request("/api/themes")).json()).toMatchObject({
+			data: { active: null, installed: [], job: null, github: { configured: true, connected: false } },
+		});
+		expect((await on.request("/api/themes/github/repos")).status).toBe(409);
+		const go = await on.request("/api/themes/github/connect");
+		expect(go.status).toBe(302);
+		const state = new URL(go.headers.get("location")!).searchParams.get("state");
+		const bad = await on.request("/api/themes/github/callback?code=c&state=forged");
+		expect(bad.headers.get("location")).toMatch(/^\/admin\/themes\?github_error=/);
+		const back = await on.request(`/api/themes/github/callback?code=c&state=${state}`);
+		expect(back.headers.get("location")).toBe("/admin/themes");
+		expect(await (await on.request("/api/themes")).json()).toMatchObject({ data: { github: { connected: true } } });
+		const started = await post(on, "/api/themes/github/install", { repo: "me/a" });
+		expect(started.status).toBe(202);
+		expect(await started.json()).toMatchObject({ data: { repo: "me/a", status: "running" } });
+		expect((await post(on, "/api/themes/github/install", { repo: "me/b" })).status).toBe(409);
+		expect((await post(on, "/api/themes/activate", { repo: "me/zzz" })).status).toBe(404);
 	});
 });

@@ -79,6 +79,13 @@ describe("capabilityHash", () => {
 		expect(withCap({ email: true })).not.toBe(hash);
 		expect(withCap({ network: [{ host: "a.example.com" }] })).not.toBe(hash);
 	});
+	it("a before-hook needs a new approval; an after-hook does not", () => {
+		const hash = capabilityHash(base);
+		expect(capabilityHash({ ...base, hooks: ["onCommentCreated", "onMediaUploaded"] })).toBe(hash);
+		const filtered = capabilityHash({ ...base, hooks: ["beforeContentSave"] });
+		expect(filtered).not.toBe(hash);
+		expect(capabilityHash({ ...base, hooks: ["beforeContentSave", "beforeMediaUpload"] })).not.toBe(filtered);
+	});
 });
 
 describe("write, secret and settings helpers", () => {

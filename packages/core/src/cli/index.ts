@@ -1,9 +1,10 @@
 import { access, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { manifestSchema } from "@wuppy/plugin-types";
+import { isFilter, manifestSchema } from "@wuppy/plugin-types";
 import { generateTypes } from "../content-types/generate.ts";
 import { loadConfig } from "../config/index.ts";
 import { capabilityHash } from "../plugins/loader.ts";
+import { importRepo, init } from "./init.ts";
 import { upgrade } from "./upgrade.ts";
 
 export interface CliResult {
@@ -12,7 +13,8 @@ export interface CliResult {
 	stderr: string;
 }
 
-const USAGE = "Usage: wuppy plugin hash <plugin-dir> | wuppy doctor | wuppy types | wuppy upgrade [--force]";
+const USAGE =
+	"Usage: wuppy init [--force] | wuppy import [<git-url> <dir>] | wuppy plugin hash <plugin-dir> | wuppy doctor | wuppy types | wuppy upgrade [--force]";
 
 const exists = (p: string) =>
 	access(p).then(
@@ -48,6 +50,8 @@ async function doctor(cwd: string, env: NodeJS.ProcessEnv): Promise<CliResult> {
 export async function run(argv: string[], cwd: string, env: NodeJS.ProcessEnv = process.env): Promise<CliResult> {
 	const [cmd, sub, dir] = argv;
 	if (cmd === "doctor") return doctor(cwd, env);
+	if (cmd === "init") return init(cwd, { force: argv.includes("--force") });
+	if (cmd === "import") return importRepo(sub ?? "", dir ?? "", cwd);
 	if (cmd === "upgrade") {
 		const r = await upgrade(cwd, { force: argv.includes("--force") });
 		return r.code === 0
@@ -67,10 +71,11 @@ export async function run(argv: string[], cwd: string, env: NodeJS.ProcessEnv = 
 		if (!dir) return { code: 1, stdout: "", stderr: USAGE };
 		try {
 			const manifest = manifestSchema.parse(JSON.parse(await readFile(join(cwd, dir, "manifest.json"), "utf8")));
+			const filters = manifest.hooks.filter(isFilter);
 			return {
 				code: 0,
 				stderr: "",
-				stdout: `Capabilities requested by "${manifest.id}":\n${JSON.stringify(manifest.capabilities, null, 2)}\n\nIf you accept them, add to wuppy.config:\n  { dir: "${dir}", approve: "${capabilityHash(manifest)}" }\n`,
+				stdout: `Capabilities requested by "${manifest.id}":\n${JSON.stringify(manifest.capabilities, null, 2)}\n${filters.length ? `\nBefore-hooks (can refuse, and some can change, changes before they are made): ${filters.join(", ")}\n` : ""}\nIf you accept them, add to wuppy.config:\n  { dir: "${dir}", approve: "${capabilityHash(manifest)}" }\n`,
 			};
 		} catch (e) {
 			return { code: 1, stdout: "", stderr: `Cannot read ${dir}/manifest.json: ${(e as Error).message}` };

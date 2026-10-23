@@ -19,6 +19,7 @@ export function parseDocument(source: string): ParsedDocument {
 
 /** Unknown keys in `data` are written back untouched. */
 export function serializeDocument({ data, body }: ParsedDocument): string {
-	const head = Object.keys(data).length ? `---\n${stringify(data)}---\n` : "";
+	// lineWidth 0: never fold long values, so an edit to one field does not rewrap others in the diff.
+	const head = Object.keys(data).length ? `---\n${stringify(data, { lineWidth: 0 })}---\n` : "";
 	return head + body;
 }

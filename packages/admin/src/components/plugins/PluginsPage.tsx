@@ -63,9 +63,18 @@ const TONE = { active: "success", disabled: "warning", "needs-approval": "warnin
 /** What the plugin could do, in plain words, for the approval screen. */
 export function capabilityLines(m: Manifest): string[] {
 	const c = m.capabilities;
+	const has = (hook: string) => m.hooks.includes(hook);
+	const seen = [...new Set([...c.content.read, ...c.content.write])].join(", ");
 	return [
 		...c.content.read.map((x) => `Read ${x} content`),
 		...c.content.write.map((x) => `Create and overwrite ${x} content`),
+		...(has("beforeContentSave") && seen ? [`Refuse saves of ${seen} entries`] : []),
+		...(has("beforeContentSave") && c.content.write.length
+			? [`Change ${c.content.write.join(", ")} entries as they are saved`]
+			: []),
+		...(has("beforeContentDelete") && seen ? [`Refuse deleting ${seen} entries`] : []),
+		...(has("beforeMediaUpload") ? ["Refuse media uploads"] : []),
+		...(has("beforeCommentCreate") ? ["Refuse, hold or mark visitor comments as spam"] : []),
 		...c.network.map((r) => `Call ${r.host} (${r.methods.join("/")} ${r.paths.join(", ")})`),
 		...c.secrets.map((x) => `Read secret ${x}`),
 		...(c.email ? ["Send email from this site"] : []),

@@ -13,9 +13,7 @@ const server = () => {
 	const puts: unknown[] = [];
 	vi.stubGlobal("fetch", async (url: string, init: RequestInit = {}) => {
 		if (url.endsWith("/api/redirects/404")) {
-			return new Response(
-				JSON.stringify({ data: [{ path: "/gone", count: 3, lastSeen: "2026-05-01T00:00:00Z" }] }),
-			);
+			return new Response(JSON.stringify({ data: [{ path: "/gone", count: 3, lastSeen: "2026-05-01T00:00:00Z" }] }));
 		}
 		if (url.endsWith("/api/redirects") && init.method === "PUT") {
 			const body = JSON.parse(String(init.body)) as { data: typeof rules };

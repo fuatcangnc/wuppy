@@ -7,11 +7,13 @@ const dist = new URL("../dist/", import.meta.url);
 const { default: wuppy } = await import(new URL("astro.mjs", dist).href);
 const entrypoints = [];
 wuppy().hooks["astro:config:setup"]({
+	config: { root: new URL("../../..", import.meta.url) },
 	injectRoute: (r) => entrypoints.push(r.entrypoint),
 	addMiddleware: (m) => entrypoints.push(m.entrypoint),
+	updateConfig: () => undefined,
 });
 const missing = entrypoints.filter((u) => !existsSync(fileURLToPath(u)));
-if (entrypoints.length !== 9 || missing.length) {
+if (entrypoints.length !== 10 || missing.length) {
 	console.error("dist is incomplete:", { count: entrypoints.length, missing: missing.map(String) });
 	process.exit(1);
 }

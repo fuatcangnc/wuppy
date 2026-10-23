@@ -1,0 +1,31 @@
+---
+title: Wuppy
+description: Node.js'in çalıştığı her yerde çalışan, dosya tabanlı ve Git destekli Astro CMS'i.
+template: splash
+hero:
+  tagline: İçerik Markdown dosyası, her kayıt bir Git commit'i, müşterilerin de kullanabildiği bir yönetim paneli.
+  actions:
+    - text: Başlayın
+      link: /tr/getting-started/
+      icon: right-arrow
+    - text: Çoklu site ve yapay zekâ
+      link: /tr/sites/managed-sites/
+      variant: minimal
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+<CardGrid stagger>
+	<Card title="İçerik sizde kalır" icon="document">
+		Sayfa ve yazılar frontmatter'lı Markdown/MDX dosyalarıdır. Wuppy'yi kaldırsanız da okunur kalırlar.
+	</Card>
+	<Card title="Her kayıt bir commit" icon="seti:git">
+		Neyin değiştiğini görün, sürümleri karşılaştırın, istediğinizi geri yükleyin. Geçmiş hiç budanmaz.
+	</Card>
+	<Card title="Birçok site için tek merkez" icon="puzzle">
+		Müşterilerinizin Wuppy sitelerini tek bir hub'a bağlayın, hepsini tek panelden yönetin.
+	</Card>
+	<Card title="Ajans için çalışan yapay zekâ" icon="rocket">
+		Asistan, zamanlanmış sağlık ve güvenlik kontrolleri, aylık müşteri raporları, MCP ve OpenAI uyumlu API.
+	</Card>
+</CardGrid>

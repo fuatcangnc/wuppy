@@ -1,4 +1,5 @@
 ---
+import { Button } from "@/ui/button";
 interface Props {
 	collection: string;
 	slug: string;
@@ -12,14 +13,14 @@ const endpoint = `/api/content/${collection}/${slug.split("/").map(encodeURIComp
 	contenteditable={editable ? "true" : undefined}
 	data-inline-title
 	data-endpoint={endpoint}
-	class={editable ? "rounded outline-2 outline-dashed outline-black/30 px-1" : ""}
+	class={editable ? "display inline-edit" : "display"}
 >
 	{title}
 </h1>
 {editable && (
-	<div class="not-prose mt-2 flex items-center gap-3 text-sm">
-		<button type="button" data-inline-save class="rounded bg-black px-3 py-1.5 font-medium text-white">Save title</button>
-		<span data-inline-status role="status" class="text-black/60"></span>
+	<div class="hero-actions" style="align-items:center">
+		<Button type="button" data-inline-save class="h-12 px-5 text-xs font-bold uppercase tracking-wider hover:bg-ink">Save title</Button>
+		<span data-inline-status role="status" class="meta"></span>
 	</div>
 )}
 

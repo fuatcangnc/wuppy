@@ -1,3 +1,5 @@
+// Passkeys pull in tsyringe, which throws unless this polyfill ran first; bundlers may otherwise order it after.
+import "reflect-metadata";
 import type { DatabaseSync } from "node:sqlite";
 import { betterAuth } from "better-auth";
 import { APIError, createAuthMiddleware } from "better-auth/api";
@@ -48,6 +50,8 @@ export interface AuditEvent {
 	actor?: string;
 	/** Email the action targeted. Never the password. */
 	email?: string;
+	/** Short non-secret context, e.g. `POST /api/media → 201` for a managed-site write. */
+	detail?: string;
 	at: string;
 }
 
@@ -140,6 +144,8 @@ export function createAuth({
 		...(socialIds.length > 0
 			? {
 					account: {
+						// A linked GitHub account may carry repo access (Themes); keep provider tokens encrypted at rest.
+						encryptOAuthTokens: true,
 						accountLinking: {
 							enabled: true,
 							disableImplicitLinking: true,
@@ -288,7 +294,12 @@ export async function userFromRequest(auth: WuppyAuth, req: Request) {
 	const session = await auth.api.getSession({ headers: req.headers });
 	if (!session) return null;
 	const role = (session.user as { role?: string | null }).role;
-	return { id: session.user.id, name: session.user.name || session.user.email, permissions: permissionsFor(role) };
+	return {
+		id: session.user.id,
+		name: session.user.name || session.user.email,
+		email: session.user.email,
+		permissions: permissionsFor(role),
+	};
 }
 
 /** Creates/updates the auth tables. Safe to call on every startup. */

@@ -1,4 +1,4 @@
-import { ApiError } from "./api.ts";
+import { ApiError, apiUrl } from "./api.ts";
 
 interface Reply {
 	data?: { url?: string };
@@ -30,7 +30,7 @@ export function uploadWithProgress(
 	form.set("file", file);
 	for (const [key, value] of Object.entries(meta)) if (value) form.set(key, value);
 	const done = new Promise<string>((resolve, reject) => {
-		xhr.open("POST", "/api/media");
+		xhr.open("POST", apiUrl("/api/media"));
 		xhr.setRequestHeader("X-Wuppy-Request", "1");
 		xhr.withCredentials = true;
 		xhr.upload.addEventListener("progress", (e) => e.lengthComputable && onProgress(e.loaded / e.total));

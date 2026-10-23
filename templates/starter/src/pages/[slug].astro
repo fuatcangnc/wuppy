@@ -2,6 +2,7 @@
 import { getEntry, render } from "astro:content";
 import { verifyPreview } from "wuppy/publishing";
 import InlineTitle from "../components/InlineTitle.astro";
+import PageHero from "../components/PageHero.astro";
 import Base from "../layouts/Base.astro";
 
 const editable = Astro.url.searchParams.has("wuppy-edit");
@@ -25,8 +26,10 @@ const { Content } = await render(page);
 	noindex={page.data.noindex === true || previewing}
 	editHref={`/admin/e/pages/${slug}`}
 >
-	<article class="prose">
-		<InlineTitle collection="pages" slug={slug} title={page.data.title} editable={editable} />
-		<Content />
+	<PageHero title={page.data.title} crumbs={[{ label: page.data.title }]}>
+		<InlineTitle slot="title" collection="pages" slug={slug} title={page.data.title} editable={editable} />
+	</PageHero>
+	<article class="section">
+		<div class="narrow prose"><Content /></div>
 	</article>
 </Base>

@@ -1,7 +1,10 @@
 ---
 import { buildSeo, renderHead, renderJsonLd, websiteJsonLd } from "wuppy/seo";
 import { readData } from "wuppy";
+import Brand from "../components/Brand.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 import WidgetArea from "../components/WidgetArea.astro";
+import "../styles/theme.css";
 import config from "../../wuppy.config.mjs";
 
 interface MenuItem {
@@ -11,10 +14,13 @@ interface MenuItem {
 }
 const menus = await readData<Array<{ name: string; label: string; location: string; items: MenuItem[] }>>("menus", []);
 const main = menus.find((menu) => menu.location === "header") ?? null;
+const footerMenu = menus.find((menu) => menu.location === "footer") ?? null;
 const settings = await readData<{
 	siteName?: string;
 	siteUrl?: string;
 	description?: string;
+	logo?: string;
+	locale?: string;
 	seo?: { title?: string; description?: string; image?: string; noindex?: boolean; titleTemplate?: string };
 } | null>("settings", null);
 const site = {
@@ -43,51 +49,52 @@ const seo = buildSeo({
 	titleTemplate: settings?.seo?.titleTemplate,
 });
 const jsonLd = Astro.props.jsonLd ?? (Astro.url.pathname === "/" ? websiteJsonLd(site, "/search?q={q}") : undefined);
+const icon = {
+	search: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+	rss: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>',
+};
 ---
-<html lang="en">
+<html lang={settings?.locale || "en"}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<Fragment set:html={renderHead(seo)} />
 		{jsonLd && <Fragment set:html={renderJsonLd(jsonLd)} />}
 		<link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
-		<style is:global>
-			:root { color-scheme: light dark; }
-			@media (prefers-color-scheme: dark) { body { background: #111; color: #eee; } a { color: #8ab4ff; } }
-			a:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-			.skip-link { position: absolute; inset-inline-start: -999px; }
-			.skip-link:focus { inset-inline-start: 1rem; top: 1rem; background: #fff; color: #000; padding: .5rem 1rem; z-index: 10; }
-		</style>
+		<link rel="preload" href="/fonts/space-grotesk-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
 	</head>
 	<body>
 		<a href="#content" class="skip-link">Skip to content</a>
-		<header class="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-			<a href="/" class="font-semibold">{site.name}</a>
-			{main && (
-				<nav aria-label={main.label}>
-					<ul class="flex gap-4 text-sm">
-						{main.items.map((item) => (
-							<li><a href={item.href}>{item.label}</a></li>
-						))}
-						<li><a href="/search">Search</a></li>
-						<li><a href="/rss.xml">RSS</a></li>
-					</ul>
-				</nav>
-			)}
-		</header>
-		<main id="content" class="mx-auto max-w-3xl px-4 pb-16">
+		<SiteHeader name={site.name} tagline={settings?.description} logo={settings?.logo} menu={main} />
+		<main id="content">
 			<slot />
 		</main>
 		{Astro.props.editHref && (import.meta.env.DEV || Astro.url.searchParams.has("wuppy-edit")) && (
-			<a
-				href={Astro.props.editHref}
-				class="fixed bottom-4 end-4 rounded-full bg-black px-4 py-2 text-sm font-medium text-white shadow-lg"
-			>
-				Edit this page
-			</a>
+			<a href={Astro.props.editHref} class="edit-link">Edit this page</a>
 		)}
-		<footer class="mx-auto max-w-3xl px-4 pb-16">
-			<WidgetArea name="footer" />
+		<footer class="site-footer">
+			<div class="shell footer-grid">
+				<div>
+					<Brand name={site.name} logo={settings?.logo} inverse />
+					{settings?.description && <p>{settings.description}</p>}
+				</div>
+				{(footerMenu ?? main) && (
+					<nav aria-label={(footerMenu ?? main)!.label}>
+						<h2>{(footerMenu ?? main)!.label}</h2>
+						<ul>{(footerMenu ?? main)!.items.map((item) => <li><a href={item.href}>{item.label}</a></li>)}</ul>
+					</nav>
+				)}
+				<WidgetArea name="footer" />
+			</div>
+			<div class="footer-bottom">
+				<div class="shell">
+					<span>© {new Date().getFullYear()} {site.name}</span>
+					<div class="social">
+						<a href="/rss.xml" aria-label="RSS feed"><Fragment set:html={icon.rss} /></a>
+						<a href="/search" aria-label="Search the site"><Fragment set:html={icon.search} /></a>
+					</div>
+				</div>
+			</div>
 		</footer>
 	</body>
 </html>

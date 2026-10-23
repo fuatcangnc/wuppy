@@ -1,11 +1,30 @@
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { join, resolve, sep } from "node:path";
-import { resolveSettings, type Manifest } from "@wuppy/plugin-types";
+import { canReadContent, canWriteContent, resolveSettings, type Manifest } from "@wuppy/plugin-types";
 import type { JsonStore } from "../data/store.ts";
 import { sanitizeHtml } from "../security/sanitize.ts";
-import type { WebhookEvent } from "../webhooks/index.ts";
 import type { HostDeps } from "./host.ts";
-import { loadPlugins, type PluginEntry, type PluginSet, type PluginStatus } from "./loader.ts";
+import { loadPlugins, type PluginEntry, type PluginEvent, type PluginSet, type PluginStatus } from "./loader.ts";
+
+export interface ContentSaveEvent {
+	collection: string;
+	slug: string;
+	isNew: boolean;
+	data: Record<string, unknown>;
+	body: string;
+}
+export interface CommentCreateEvent {
+	collection: string;
+	slug: string;
+	author: string;
+	body: string;
+	/** What the site would store it as; a plugin may only make it stricter. */
+	status: "approved" | "pending" | "spam";
+}
+
+const STRICTNESS = ["approved", "pending", "spam"] as const;
+const seesCollection = (collection: string) => (m: Manifest) =>
+	canReadContent(m, collection) || canWriteContent(m, collection);
 import type { RegistryClient } from "./registry.ts";
 
 /** What the admin changes at runtime. Lives in `.wuppy/data/plugin-state.json`, so it is committed like other site data. */
@@ -96,8 +115,49 @@ export class PluginManager {
 		return this.set;
 	}
 
-	dispatch(event: WebhookEvent): Promise<void> {
+	dispatch(event: PluginEvent): Promise<void> {
 		return this.set?.dispatch(event) ?? Promise.resolve();
+	}
+
+	/** Plugins that can read the collection may refuse a save; only those that can write it may change it. */
+	async beforeContentSave(event: ContentSaveEvent): Promise<ContentSaveEvent> {
+		if (!this.set) return event;
+		return this.set.filter("beforeContentSave", event, {
+			applies: seesCollection(event.collection),
+			apply: (m, answer, current) => {
+				if (!canWriteContent(m, current.collection)) {
+					throw new Error(`may refuse but not change ${current.collection} entries (needs content.write)`);
+				}
+				const { data, body } = answer as { data?: unknown; body?: unknown };
+				if (typeof body !== "string" || !data || typeof data !== "object" || Array.isArray(data)) {
+					throw new Error("answer { data, body }, { reject: reason } or nothing");
+				}
+				return { ...current, data: data as Record<string, unknown>, body };
+			},
+		});
+	}
+
+	/** Moving an entry to the trash; plugins that can see the collection may refuse it. */
+	async beforeContentDelete(event: { collection: string; slug: string }): Promise<void> {
+		await this.set?.filter("beforeContentDelete", event, { applies: seesCollection(event.collection) });
+	}
+
+	/** A file that passed Wuppy's own checks; `replaces` is set when it overwrites an existing one. */
+	async beforeMediaUpload(event: { mime: string; size: number; replaces?: string }): Promise<void> {
+		await this.set?.filter("beforeMediaUpload", event);
+	}
+
+	/** A visitor's comment; plugins may refuse it, hold it or mark it as spam, never approve it. */
+	async beforeCommentCreate(event: CommentCreateEvent): Promise<CommentCreateEvent> {
+		if (!this.set) return event;
+		return this.set.filter("beforeCommentCreate", event, {
+			apply: (_m, answer, current) => {
+				const { status } = answer as { status?: unknown };
+				const rank = STRICTNESS.indexOf(status as (typeof STRICTNESS)[number]);
+				if (rank === -1) throw new Error('answer { status: "pending" | "spam" }, { reject: reason } or nothing');
+				return rank > STRICTNESS.indexOf(current.status) ? { ...current, status: STRICTNESS[rank]! } : current;
+			},
+		});
 	}
 
 	statuses(): Array<PluginStatus & { source: "config" | "registry"; registry?: string }> {

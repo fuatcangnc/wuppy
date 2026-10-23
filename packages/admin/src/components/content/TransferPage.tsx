@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiData } from "../../lib/api.ts";
+import { apiData, apiUrl } from "../../lib/api.ts";
 import { Button, ErrorText, Input } from "../../ui/index.tsx";
 
 const readText = (f: File) =>
@@ -57,7 +57,7 @@ export function TransferPage() {
 				Images stay in
 				<code> public/uploads</code>.
 			</p>
-			<a href="/api/export" download className="text-primary underline">
+			<a href={apiUrl("/api/export")} download className="text-primary underline">
 				Download content (JSON)
 			</a>
 			<div className="grid gap-2">
@@ -80,7 +80,7 @@ export function TransferPage() {
 					<ul className="grid gap-1 text-sm">
 						{backups.map((b) => (
 							<li key={b.name} className="flex justify-between gap-2">
-								<a href={`/api/backups/${b.name}`} download className="text-primary underline">
+								<a href={apiUrl(`/api/backups/${b.name}`)} download className="text-primary underline">
 									{b.name}
 								</a>
 								<span className="text-muted-foreground">{Math.max(1, Math.round(b.bytes / 1024))} KB</span>

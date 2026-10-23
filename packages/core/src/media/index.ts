@@ -64,6 +64,8 @@ export class MediaService {
 		private readonly git: GitAdapter,
 		private readonly emit?: (event: WebhookEvent) => void,
 		private readonly store?: JsonStore,
+		/** Plugins' before-hook: may refuse a file (throw) after Wuppy's own checks passed, before it is written. */
+		private readonly beforeUpload?: (file: { mime: string; size: number; replaces?: string }) => Promise<void>,
 	) {}
 
 	private async data(): Promise<MediaData> {
@@ -136,6 +138,7 @@ export class MediaService {
 		if (limits.allowed && !limits.allowed.includes(type.mime)) {
 			throw new UnsupportedMediaError(`${type.mime} uploads are turned off in Settings`);
 		}
+		await this.beforeUpload?.({ mime: type.mime, size: bytes.byteLength });
 		const now = new Date();
 		const rel = `${now.getUTCFullYear()}/${String(now.getUTCMonth() + 1).padStart(2, "0")}/${randomUUID()}.${type.ext}`;
 		const path = join(this.root, "public", "uploads", rel);
@@ -169,6 +172,7 @@ export class MediaService {
 		await stat(path).catch(() => {
 			throw new UnsupportedMediaError("Unknown media file");
 		});
+		await this.beforeUpload?.({ mime: type.mime, size: bytes.byteLength, replaces: url });
 		await writeFile(path, bytes);
 		const info = await imageInfo(bytes);
 		if (info) await this.update(url, info);

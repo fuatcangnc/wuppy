@@ -29,6 +29,7 @@
 		"@radix-ui/react-select": "^2.4.1",
 		"@react-zero-ui/icon-sprite": "0.5.1",
 		"@tanstack/react-router": "catalog:",
+		"@wuppy/visual-editor": "workspace:*",
 		"better-auth": "1.7.10",
 		"lexical": "0.52.0",
 		"nanostores": "1.5.5",

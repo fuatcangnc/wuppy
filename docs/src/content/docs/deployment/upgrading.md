@@ -1,6 +1,8 @@
 ---
 title: Upgrading and rolling back
 description: Move a site to a newer Wuppy release and undo it if needed.
+sidebar:
+  order: 20
 ---
 
 Content, settings and revisions are files in your Git repository, so an upgrade is reversible by design.

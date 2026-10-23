@@ -3,6 +3,7 @@ import {
 	canReadContent,
 	canReadSecret,
 	canWriteContent,
+	type FilterName,
 	type HookName,
 	type Manifest,
 } from "@wuppy/plugin-types";
@@ -32,9 +33,16 @@ export interface HostDeps {
 }
 
 export type DispatchResult = { ok: true; skipped?: true } | { ok: false; error: string };
+/** `value` is what the hook returned (JSON), or null when it returned nothing. */
+export type FilterResult = { ok: true; value: unknown } | { ok: false; error: string };
+
+/** A before-hook's answer larger than this is refused rather than parsed. */
+const MAX_FILTER_RESULT = 4 * 1024 * 1024;
 
 export interface LoadedPlugin {
 	dispatch(hook: HookName, event: unknown): Promise<DispatchResult>;
+	/** Runs a before-hook and returns its answer. A missing hook answers null. */
+	filter(hook: FilterName, event: unknown): Promise<FilterResult>;
 	request(
 		method: string,
 		path: string,
@@ -62,7 +70,9 @@ const PRELUDE = `
 	});
 	globalThis.__run = async (hook, ev) => {
 		const fn = globalThis.__plugin && globalThis.__plugin[hook];
-		if (typeof fn === "function") await fn(JSON.parse(ev), ctx);
+		if (typeof fn !== "function") return "null";
+		const out = await fn(JSON.parse(ev), ctx);
+		return out === undefined ? "null" : JSON.stringify(out);
 	};
 	globalThis.__handle = async (method, path, body) => {
 		const fn = globalThis.__plugin && globalThis.__plugin.fetch;
@@ -87,6 +97,9 @@ export async function loadPlugin(manifest: Manifest, code: string, deps: HostDep
 	runtime.setInterruptHandler(() => Date.now() > deadline);
 	const vm = runtime.newContext();
 	let dead = false;
+	// shortcut: counted per plugin, so an action hook that writes while the same plugin's before-hook runs is refused too;
+	// track it per call if that ever matters.
+	let filtering = 0;
 
 	const dispose = () => {
 		if (dead) return;
@@ -137,6 +150,9 @@ export async function loadPlugin(manifest: Manifest, code: string, deps: HostDep
 	});
 	asyncFn("__hostContentPut", async ([collection = "", slug = "", raw = "{}"]) => {
 		if (!canWriteContent(manifest, collection)) throw new Error(`Content write denied: ${collection}`);
+		// A before-hook that saves would run the before-hooks again, without end.
+		if (filtering > 0)
+			throw new Error("content.put is not available in before-hooks; return the changed entry instead");
 		if (!deps.writeContent) throw new Error("Content writing is unavailable");
 		const doc = JSON.parse(raw) as { data?: Record<string, unknown>; body?: unknown };
 		if (typeof doc.body !== "string" || !doc.data || typeof doc.data !== "object" || Array.isArray(doc.data)) {
@@ -227,32 +243,46 @@ export async function loadPlugin(manifest: Manifest, code: string, deps: HostDep
 			}
 		},
 		async dispatch(hook, event) {
-			if (dead) return { ok: false, error: "Plugin was stopped" };
 			if (!manifest.hooks.includes(hook)) return { ok: true, skipped: true };
-			deadline = Date.now() + manifest.limits.timeoutMs;
-			const call = vm.evalCode(`__run(${JSON.stringify(hook)}, ${JSON.stringify(JSON.stringify(event))})`);
-			if (call.error) return fail(describe(vm, call.error));
-
-			let timer: NodeJS.Timeout | undefined;
-			const timeout = new Promise<"timeout">(
-				(r) => (timer = setTimeout(() => r("timeout"), manifest.limits.timeoutMs)),
-			);
+			const res = await run(hook, event);
+			return res.ok ? { ok: true } : res;
+		},
+		async filter(hook, event) {
+			if (!manifest.hooks.includes(hook)) return { ok: true, value: null };
+			filtering++;
 			try {
-				const settled = vm.resolvePromise(call.value);
-				runtime.executePendingJobs();
-				const res = await Promise.race([settled, timeout]);
-				if (res === "timeout") return fail("Plugin timed out");
-				if (res.error) return fail(describe(vm, res.error));
-				res.value.dispose();
-				return { ok: true };
+				return await run(hook, event);
 			} finally {
-				clearTimeout(timer);
-				if (!dead) call.value.dispose();
+				filtering--;
 			}
 		},
 	};
 
-	function fail(error: string): DispatchResult {
+	async function run(hook: HookName, event: unknown): Promise<FilterResult> {
+		if (dead) return { ok: false, error: "Plugin was stopped" };
+		deadline = Date.now() + manifest.limits.timeoutMs;
+		const started = vm.evalCode(`__run(${JSON.stringify(hook)}, ${JSON.stringify(JSON.stringify(event))})`);
+		if (started.error) return fail(describe(vm, started.error));
+		let timer: NodeJS.Timeout | undefined;
+		const timeout = new Promise<"timeout">((r) => (timer = setTimeout(() => r("timeout"), manifest.limits.timeoutMs)));
+		try {
+			const settled = vm.resolvePromise(started.value);
+			runtime.executePendingJobs();
+			const res = await Promise.race([settled, timeout]);
+			if (res === "timeout") return fail("Plugin timed out");
+			if (res.error) return fail(describe(vm, res.error));
+			const raw = vm.dump(res.value) as unknown;
+			res.value.dispose();
+			if (typeof raw !== "string") return { ok: true, value: null };
+			if (raw.length > MAX_FILTER_RESULT) return fail("Hook answer is too large");
+			return { ok: true, value: JSON.parse(raw) as unknown };
+		} finally {
+			clearTimeout(timer);
+			if (!dead) started.value.dispose();
+		}
+	}
+
+	function fail(error: string): { ok: false; error: string } {
 		// A plugin that timed out or ran out of memory may be mid-flight; stop it rather than reuse it.
 		if (/timed out|interrupted|out of memory/i.test(error)) dispose();
 		return { ok: false, error };

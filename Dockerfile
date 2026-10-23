@@ -14,10 +14,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends git \
  && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=build --chown=node:node /app /app
+# Volume mount points must exist and belong to node, or Docker creates them root-owned.
+RUN cd /app/templates/starter && mkdir -p .wuppy public/uploads .git && chown node:node .wuppy public/uploads .git
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=4321
 EXPOSE 4321
-VOLUME ["/app/templates/starter/content", "/app/templates/starter/.wuppy"]
+# Content, uploads, Git history and the auth database all survive a container rebuild.
+VOLUME ["/app/templates/starter/content", "/app/templates/starter/public/uploads", "/app/templates/starter/.git", "/app/templates/starter/.wuppy"]
 USER node
 WORKDIR /app/templates/starter
 HEALTHCHECK --interval=30s --timeout=5s CMD node -e "fetch('http://127.0.0.1:4321/api/setup').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
-CMD ["node", "dist/server/entry.mjs"]
+CMD ["node", "serve.mjs"]

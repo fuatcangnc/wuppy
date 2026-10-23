@@ -1,8 +1,15 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { join, resolve, sep } from "node:path";
-import { capabilityHash as hashCapabilities, manifestSchema, type HookName, type Manifest } from "@wuppy/plugin-types";
+import {
+	capabilityHash as hashCapabilities,
+	manifestSchema,
+	type FilterName,
+	type HookName,
+	type Manifest,
+} from "@wuppy/plugin-types";
 import type { WebhookEvent } from "../webhooks/index.ts";
+import { PluginHookError, PluginRejectedError } from "./errors.ts";
 import { loadPlugin, type HostDeps, type LoadedPlugin } from "./host.ts";
 
 export interface PluginEntry {
@@ -19,10 +26,31 @@ export const capabilityHash = (manifest: unknown): string => hashCapabilities(ma
 export const fileDigest = (manifestText: string, code: string): string =>
 	createHash("sha256").update(manifestText).update("\n--\n").update(code).digest("hex");
 
-const HOOK_FOR: Partial<Record<WebhookEvent["type"], HookName>> = {
+/** Events plugins hear about; webhooks get the `WebhookEvent` ones. */
+export type PluginEvent =
+	WebhookEvent | { type: "comment.created"; id: string; collection: string; slug: string; status: string; at: string };
+
+const HOOK_FOR: Partial<Record<PluginEvent["type"], HookName>> = {
 	"content.updated": "onContentUpdated",
 	"content.deleted": "onContentDeleted",
 	"media.uploaded": "onMediaUploaded",
+	"comment.created": "onCommentCreated",
+};
+
+/** What a before-hook may answer besides nothing: a refusal, or (when `apply` accepts it) a changed event. */
+export interface FilterRules<E> {
+	/** Whether this plugin may see the event at all (for example: it can read that collection). */
+	applies?: (manifest: Manifest) => boolean;
+	/** Turns a non-refusal answer into the next event. Throws when the answer is not allowed. */
+	apply?: (manifest: Manifest, answer: unknown, current: E) => E;
+}
+
+const reasonOf = (answer: unknown): string | null | undefined => {
+	if (!answer || typeof answer !== "object" || !("reject" in answer)) return undefined;
+	const raw = (answer as { reject: unknown }).reject;
+	// Shown to people as text: no control characters, bounded length.
+	const reason = typeof raw === "string" ? raw.replace(/[\p{Cc}\s]+/gu, " ").trim() : "";
+	return reason.length >= 1 && reason.length <= 500 ? reason : null;
 };
 
 const MAX_LOG_LINES = 100;
@@ -49,7 +77,12 @@ export interface PluginSet {
 	/** One row per configured plugin, whatever happened to it. */
 	statuses(): PluginStatus[];
 	setEnabled(id: string, enabled: boolean): boolean;
-	dispatch(event: WebhookEvent): Promise<void>;
+	dispatch(event: PluginEvent): Promise<void>;
+	/**
+	 * Runs a before-hook through every enabled plugin that declares it, in config order; each sees the previous answer.
+	 * Throws `PluginRejectedError` on a refusal and `PluginHookError` when a plugin fails (fail closed).
+	 */
+	filter<E>(hook: FilterName, event: E, rules?: FilterRules<E>): Promise<E>;
 	request(
 		id: string,
 		method: string,
@@ -228,6 +261,39 @@ export async function loadPlugins(
 					if (!res.ok) deps.log(`plugin ${p.manifest.id} failed on ${hook}: ${res.error}`);
 				}),
 			);
+		},
+		async filter(hook, event, { applies = () => true, apply } = {}) {
+			let current = event;
+			for (const p of running) {
+				if (!p.enabled || !p.manifest.hooks.includes(hook) || !applies(p.manifest)) continue;
+				// Not refused over quota: that would let a flood of visitor comments block editors' saves. The timeout
+				// still bounds every call, and the call is counted.
+				admit(p);
+				const started = now();
+				const res = await p.instance.filter(hook, current);
+				const refuse = (error: string) => {
+					record(p, started, `${hook}: ${error}`);
+					deps.log(`plugin ${p.manifest.id} failed on ${hook}: ${error}`);
+					return new PluginHookError(p.manifest.id);
+				};
+				if (!res.ok) throw refuse(res.error);
+				const reason = reasonOf(res.value);
+				if (reason === null) throw refuse("a refusal needs a reason of 1-500 characters");
+				if (reason !== undefined) {
+					record(p, started);
+					throw new PluginRejectedError(p.manifest.id, reason);
+				}
+				if (res.value !== null) {
+					if (!apply) throw refuse("this hook can only refuse ({ reject }) or return nothing");
+					try {
+						current = apply(p.manifest, res.value, current);
+					} catch (e) {
+						throw refuse((e as Error).message);
+					}
+				}
+				record(p, started);
+			}
+			return current;
 		},
 		dispose: () => running.forEach((p) => p.instance.dispose()),
 	};

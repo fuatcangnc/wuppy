@@ -1,10 +1,16 @@
 ---
+import PageHero from "../components/PageHero.astro";
 import Base from "../layouts/Base.astro";
+import { Button } from "@/ui/button";
 
 export const prerender = false;
 Astro.response.status = 404;
 ---
 <Base title="Page not found" noindex>
-	<h1>Page not found</h1>
-	<p>The page you asked for does not exist. Try the <a href="/search">search</a> or go back <a href="/">home</a>.</p>
+	<PageHero title="Page not found" kicker="Error 404" lead="The page you asked for does not exist." crumbs={[{ label: "404" }]}>
+		<div class="hero-actions">
+			<Button as="a" href="/" class="h-12 px-5 text-xs font-bold uppercase tracking-wider hover:bg-ink">Go home</Button>
+			<Button as="a" href="/search" variant="outline" class="h-12 px-5 text-xs font-bold uppercase tracking-wider border-white/30 bg-transparent text-white hover:border-primary hover:bg-transparent hover:text-primary">Search</Button>
+		</div>
+	</PageHero>
 </Base>

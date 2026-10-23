@@ -5,7 +5,7 @@ Astro için dosya tabanlı, taşınabilir ve müşteri dostu CMS.
 - **İçerik = Markdown/MDX dosyaları.** Wuppy'yi kaldırsanız da içeriğiniz okunur kalır.
 - **Her kayıt bir Git commit'i.** Değişiklikleri görün, geri alın; geçmiş silinmez.
 - **Node.js'te çalışır.** Cloudflare gerekmez (opsiyonel adaptör olarak düşünüldü, ADR-001).
-- **`/admin`** altında sade bir yönetim paneli: alan formları, Markdown editörü, medya, çeviri durumu, kullanıcılar ve roller (admin/editor/author/viewer), yedekleme/içe aktarma, iki faktörlü doğrulama, güvenlik günlüğü; shadcn tabanlı form kontrolleri ve per-page sayfalama.
+- **`/admin`** altında sade bir yönetim paneli: alan formları, Markdown editörü, görsel editör, medya, çeviri durumu, kullanıcılar ve roller (admin/editor/author/viewer), yedekleme/içe aktarma, iki faktörlü doğrulama, güvenlik günlüğü; shadcn tabanlı form kontrolleri ve per-page sayfalama.
 
 ## Hızlı başlangıç
 
@@ -49,6 +49,7 @@ Alan tipleri: `string`, `text`, `date`, `image`, `boolean`, `number`, `list`. Bi
 | --- | --- |
 | `packages/core` (`wuppy`) | İçerik motoru, Hono API, Astro entegrasyonu, medya, SEO/sitemap, yönlendirme, webhook, eklenti sandbox'ı |
 | `packages/admin` | React yönetim paneli (Nanostores, TanStack Router, Lexical, Tailwind v4) |
+| `packages/visual-editor` | Visual editor çekirdeği: NodeTree, CSS/selector/framework şemaları ve üretimi |
 | `packages/auth` | Better Auth yapılandırması, roller ve izin haritası |
 | `packages/git` | Git adaptörü (commit, geçmiş, diff, revert) |
 | `packages/plugin-types` | Eklenti manifesti ve yetenek (capability) denetimi |

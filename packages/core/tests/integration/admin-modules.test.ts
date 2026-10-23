@@ -60,6 +60,20 @@ const app = () =>
 		getUser: async () => ADMIN,
 	});
 
+const putSection = (body: string) =>
+	app().request("/api/data/sections", {
+		method: "PUT",
+		headers: H,
+		body: JSON.stringify({ data: [{ slug: "cta", title: "CTA", body }] }),
+	});
+
+const putWidgets = (widgets: unknown[]) =>
+	app().request("/api/data/widgets", {
+		method: "PUT",
+		headers: H,
+		body: JSON.stringify({ data: [{ name: "sidebar", label: "Sidebar", widgets }] }),
+	});
+
 beforeEach(async () => {
 	root = await mkdtemp(join(tmpdir(), "wuppy-admin-"));
 	git = await RealGit.init(root);
@@ -97,6 +111,30 @@ describe("site data", () => {
 		const res = await app().request("/api/data/menus");
 		expect((await res.json()).data).toEqual([menu]);
 		expect(await readFile(join(root, ".wuppy/data/menus.json"), "utf8")).toContain('"main"');
+	});
+
+	it("checks section bodies as MDX: markup is saved, code is refused", async () => {
+		expect((await putSection('## Join us\n\n<div class="note">**Free**</div>')).status).toBe(200);
+		const bad = await putSection('<img src="x" onError="alert(1)" /> {process.env.WUPPY_SECRET}');
+		expect(bad.status).toBe(422);
+		expect(JSON.stringify(await bad.json())).toMatch(/cta: onError.*cta: \{expression\}/);
+	});
+
+	it("checks widget bodies: custom ones as MDX, HTML ones for dangerous markup; text is left alone", async () => {
+		const ok = await putWidgets([
+			{ id: "a", type: "custom", body: "**Hello** <div>there</div>" },
+			{ id: "b", type: "html", body: "<p>Hi</p>" },
+			{ id: "c", type: "text", body: "{not code} <script>shown as text</script>" },
+		]);
+		expect(ok.status).toBe(200);
+		const bad = await putWidgets([
+			{ id: "a", type: "custom", body: "{process.env.WUPPY_SECRET}" },
+			{ id: "b", type: "html", body: '<img src="x" onerror="alert(1)">' },
+		]);
+		expect(bad.status).toBe(422);
+		expect(JSON.stringify(await bad.json())).toMatch(/a: \{expression\}/);
+		const html = await putWidgets([{ id: "b", type: "html", body: '<a href="javascript:alert(1)">x</a>' }]);
+		expect(JSON.stringify(await html.json())).toMatch(/b: javascript:/);
 	});
 
 	it("rejects invalid data", async () => {

@@ -1,0 +1,31 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cva } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"button"> {
+  class?: string;
+}
+
+export const navigationMenuTriggerStyle = cva(
+  "relative inline-flex h-11 w-max items-center justify-center gap-1.5 bg-transparent px-3.5 text-[14px] font-sans font-bold text-neutral-950 group-data-[sticky=true]/header:text-white transition-all border-b-2 border-transparent hover:border-primary hover:text-primary group-data-[sticky=true]/header:hover:text-primary focus:border-primary focus:text-primary data-open:border-primary data-open:text-primary group-data-[sticky=true]/header:data-open:text-primary rounded-none outline-none disabled:pointer-events-none cursor-pointer tracking-tight",
+);
+
+const {
+  class: className = "",
+  type = "button",
+  ...rest
+} = Astro.props as Props;
+---
+
+<button
+  {...rest}
+  data-slot="navigation-menu-trigger"
+  type={type}
+  class={cn(navigationMenuTriggerStyle(), "!text-[14px] !font-bold !font-sans text-neutral-950", className)}
+>
+  <slot />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="relative top-px size-3.5 text-neutral-600 group-data-[sticky=true]/header:text-white/60 transition duration-300 group-hover/trigger:text-primary group-data-open/navigation-menu-trigger:text-primary group-data-open/navigation-menu-trigger:rotate-180 group-data-popup-open/navigation-menu-trigger:text-primary group-data-popup-open/navigation-menu-trigger:rotate-180"
+    aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m6 9l6 6l6-6"/></svg>
+</button>
+

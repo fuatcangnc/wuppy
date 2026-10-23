@@ -6,6 +6,8 @@ import { readingTime, related } from "wuppy/site";
 import { readData } from "wuppy";
 import Comments from "../../components/Comments.astro";
 import InlineTitle from "../../components/InlineTitle.astro";
+import PageHero from "../../components/PageHero.astro";
+import PostCard from "../../components/PostCard.astro";
 import Base from "../../layouts/Base.astro";
 
 const editable = Astro.url.searchParams.has("wuppy-edit");
@@ -54,28 +56,44 @@ const coverMeta = post.data.cover ? media.meta[post.data.cover] : undefined;
 	})}
 	editHref={`/admin/e/posts/${slug}`}
 >
-	<article class="prose">
-		{post.data.cover && (
-			<img
-				src={post.data.cover}
-				alt={coverMeta?.alt ?? ""}
-				class="mb-4 max-h-96 w-full rounded object-cover"
-				style={`object-position: ${coverMeta?.focalX ?? 50}% ${coverMeta?.focalY ?? 50}%`}
-			/>
-		)}
-		<InlineTitle collection="posts" slug={slug} title={post.data.title} editable={editable} />
-		<p class="text-sm text-black/60">{author && <>By {author.name} · </>}{minutes} min read</p>
+	<PageHero title={post.data.title} kicker="Article" crumbs={[{ label: "Posts", href: "/#posts" }, { label: post.data.title }]}>
+		<InlineTitle slot="title" collection="posts" slug={slug} title={post.data.title} editable={editable} />
+		<p class="meta" style="margin-top:1rem">
+			{author && <>By <a href={`/authors/${author.slug}`}>{author.name}</a> · </>}
+			{post.data.date && <><time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString("en", { dateStyle: "long" })}</time> · </>}
+			{minutes} min read
+		</p>
 		{selectedCategories.length > 0 && (
-			<ul class="not-prose mt-2 flex flex-wrap gap-2 text-xs">
-				{selectedCategories.map((category) => <li class="rounded-full border border-black/15 px-2 py-0.5">{category.name}</li>)}
+			<ul class="chips">
+				{selectedCategories.map((category) => <li><a href={`/categories/${category.slug}`}>{category.name}</a></li>)}
 			</ul>
 		)}
-		<Content />
+	</PageHero>
+	<article class="section">
+		<div class="narrow prose">
+			{post.data.cover && (
+				<img
+					src={post.data.cover}
+					alt={coverMeta?.alt ?? ""}
+					class="cover"
+					style={`object-position: ${coverMeta?.focalX ?? 50}% ${coverMeta?.focalY ?? 50}%`}
+				/>
+			)}
+			<Content />
+			{(post.data.tags ?? []).length > 0 && (
+				<ul class="chips" aria-label="Tags">
+					{(post.data.tags ?? []).map((tag: string) => <li><a href={`/tags/${tag}`}>#{tag}</a></li>)}
+				</ul>
+			)}
+		</div>
 	</article>
 	{more.length > 0 && (
-		<aside aria-label="Related posts" class="mt-8">
-			<h2>Related</h2>
-			<ul>{more.map((p) => <li><a href={`/posts/${p.id}`}>{p.data.title}</a></li>)}</ul>
+		<aside aria-label="Related posts" class="section section--soft">
+			<div class="shell">
+				<p class="kicker">Keep reading</p>
+				<h2 class="heading" style="margin-bottom:2rem">Related</h2>
+				<ul class="cards">{more.map((p) => <li><PostCard href={`/posts/${p.id}`} title={p.data.title} date={p.data.date} cover={p.data.cover} headingLevel={3} /></li>)}</ul>
+			</div>
 		</aside>
 	)}
 	<Comments collection="posts" slug={slug} />

@@ -2,7 +2,7 @@
 // so the published surface is this narrow description. `tests/public-types.ts` keeps it in sync with `src`.
 import type { DatabaseSync } from "node:sqlite";
 
-export declare const ROLES: readonly ["admin", "editor", "author", "viewer"];
+export declare const ROLES: readonly ["admin", "editor", "author", "viewer", "client"];
 export type Role = (typeof ROLES)[number];
 export declare const PERMISSIONS: readonly string[];
 export type Permission = string;
@@ -23,6 +23,7 @@ export interface AuditEvent {
 	ok: boolean;
 	actor?: string;
 	email?: string;
+	detail?: string;
 	at: string;
 }
 
@@ -57,7 +58,7 @@ export declare function needsSetup(db: DatabaseSync): boolean;
 export declare function userFromRequest(
 	auth: WuppyAuth,
 	req: Request,
-): Promise<{ id: string; name: string; permissions: Permission[] } | null>;
+): Promise<{ id: string; name: string; email: string; permissions: Permission[] } | null>;
 
 export interface Invitation {
 	id: string;

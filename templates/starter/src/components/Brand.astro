@@ -1,0 +1,12 @@
+---
+interface Props {
+	name: string;
+	logo?: string;
+	inverse?: boolean;
+}
+const { name, logo, inverse = false } = Astro.props;
+---
+<a href="/" class:list={["inline-flex items-center gap-2.5 text-lg font-bold uppercase tracking-tight no-underline", inverse ? "text-white" : "text-ink group-data-[sticky=true]/header:text-white"]}>
+	{logo ? <img src={logo} alt="" class="h-9 w-auto" /> : <span class="grid size-9 place-items-center bg-primary text-base text-white" aria-hidden="true">{name.slice(0, 1)}</span>}
+	<span>{name}</span>
+</a>

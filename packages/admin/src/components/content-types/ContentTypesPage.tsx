@@ -49,7 +49,13 @@ export function compactField(f: { type: string } & Record<string, unknown>): Fie
 	return extra.length ? (Object.fromEntries([["type", f.type], ...extra]) as FieldDef) : f.type;
 }
 
-export const blankType = (): ContentType => ({ name: "", dir: "content/", format: "md", route: "/{slug}", fields: {} });
+export const blankType = (): ContentType => ({
+	name: "",
+	dir: "content/",
+	format: "mdx",
+	route: "/{slug}",
+	fields: {},
+});
 
 export function ContentTypesPage() {
 	const stored = useStore($data)["content-types"] as ContentType[] | undefined;

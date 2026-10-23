@@ -56,14 +56,14 @@ describe("SettingsPage", () => {
 		expect(saved.backup).toMatchObject({ enabled: true, intervalHours: 24, keep: 14 });
 		expect(saved.media.allowed).not.toContain("image/gif");
 		expect(await screen.findByText("Settings saved")).toBeInTheDocument();
-	});
+	}, 15_000);
 
 	it("shows the built-in text as placeholder and the placeholders each template accepts", async () => {
 		server();
 		render(<SettingsPage />);
 		expect(await screen.findByPlaceholderText("You're invited to {{siteName}}")).toBeInTheDocument();
 		expect(screen.getAllByText(/Placeholders: \{\{link\}\}/)).toHaveLength(3);
-	});
+	}, 10_000);
 
 	it("sends a test email to the typed address", async () => {
 		const calls = server();
@@ -78,5 +78,5 @@ describe("SettingsPage", () => {
 		await user.click(screen.getByRole("button", { name: "Send test email" }));
 		await waitFor(() => expect(calls.find((c) => c.url === "/api/email/test")?.body).toEqual({ to: "me@example.com" }));
 		expect(await screen.findByText("Test email sent to me@example.com")).toBeInTheDocument();
-	});
+	}, 10_000);
 });

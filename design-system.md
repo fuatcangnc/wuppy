@@ -301,6 +301,16 @@ Settings, Users ve Account security ekranlarının ortak iki panelli kabuğudur:
   kolon seçimlerini yönetir.
 - Satır ve detay aksiyonları `ActionMenu` ile aynı erişilebilir menüyü kullanır.
 
+### Visual editor
+
+- Tam ekran, `dark` sabit kabuk; admin sidebar'ı yerine kendi üst toolbar'ı ve panel rail'i kullanılır.
+- Rail 44px; Explorer/Properties yan panelleri 256/288px; canvas kalan alanı kaplar.
+- Canvas iframe içine portal edilir; seçim/hover çerçeveleri, seçim toolbar'ı ve breakpoint/condition
+  context selector canvas koordinatlarında çizilir.
+- Design modu tüm breakpoint'leri yan yana, Live modu tek gerçek boyutlu çerçeve gösterir.
+- Stil değerleri `@wuppy/visual-editor` güvenlik filtrelerinden geçer; blok metni karakter
+  referanslarıyla yazılır.
+
 Kırılma noktaları Tailwind varsayılanları: `sm 640`, `md 768`, `lg 1024`,
 `xl 1280`, `2xl 1536`.
 

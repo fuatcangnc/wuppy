@@ -14,7 +14,9 @@ packages:
   - packages/*
   - packages/plugins/*
   - templates/*
+  - "!templates/astrojs-boilerplate" # design source only (a client site); its look lives in templates/starter
   - e2e
+  - docs
 catalog:
   oxlint: ^1.74.0
   prettier: ^3.9.5
@@ -30,14 +32,25 @@ catalog:
   react: 19.2.4
   react-dom: 19.2.4
   tailwindcss: ^4.1.18
+  bejamas: ^0.3.3
+  "@data-slot/navigation-menu": ^0.2.166
+  class-variance-authority: ^0.7.1
+  clsx: ^2.1.1
+  tailwind-merge: ^3.6.0
+  tw-animate-css: ^1.4.0
   vite: ^8.3.0
   astro: ^7.3.2
   "@astrojs/node": ^11.1.5
-  hono: 4.12.27
+  hono: 4.13.13
   typescript: ^6.0.3
-  vitest: 4.1.10
+  vitest: 4.1.12
   yaml: ^2.8.0
   "@playwright/test": 1.61.1
   tsdown: ^0.20.3
   zod: 4.5.4
   "@types/node": ^22.16.0
+allowBuilds:
+  msw: false # comes via bejamas -> shadcn CLI; its postinstall is not needed
+overrides:
+  postcss-selector-parser@<7.1.6: ^7.1.7 # docs (Starlight > expressive-code): GHSA quadratic selector parsing
+  hono@<4.13.11: 4.13.13 # bejamas CLI > shadcn > MCP SDK pins an older Hono (dev only)

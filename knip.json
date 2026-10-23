@@ -1,29 +1,19 @@
 {
 	"$schema": "https://unpkg.com/knip@6/schema.json",
-	"ignoreDependencies": [
-		"vitest"
-	],
+	"ignore": ["**/.wuppy/**"],
+	"ignoreDependencies": ["vitest"],
 	"workspaces": {
 		"packages/admin": {
-			"ignoreDependencies": [
-				"@lexical/history"
-			]
+			"ignoreDependencies": ["@lexical/history"]
 		},
 		"packages/auth": {
-			"entry": [
-				"types/index.d.ts",
-				"tests/public-types.ts"
-			]
+			"entry": ["types/index.d.ts", "tests/public-types.ts"]
 		},
 		"packages/core": {
-			"ignoreDependencies": [
-				"@wuppy/admin"
-			]
+			"ignoreDependencies": ["@wuppy/admin"]
 		},
 		"templates/starter": {
-			"ignoreDependencies": [
-				"zod"
-			]
+			"ignoreDependencies": ["zod"]
 		}
 	},
 	"rules": {

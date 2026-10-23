@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { apiUrl } from "../../lib/api.ts";
 import { Button, Card, CardHeader, ErrorText, Input, PageHeader, Select, Textarea, toast } from "../../ui/index.tsx";
 import { WordpressImport } from "./WordpressImport.tsx";
 
@@ -17,7 +18,7 @@ export function ImportPage() {
 			const text = await file.text();
 			if (mode === "json") {
 				const parsed = JSON.parse(text) as unknown;
-				const res = await fetch("/api/import", {
+				const res = await fetch(apiUrl("/api/import"), {
 					method: "POST",
 					credentials: "same-origin",
 					headers: { "X-Wuppy-Request": "1", "Content-Type": "application/json" },

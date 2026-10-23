@@ -10,7 +10,7 @@ import {
 	Upload,
 } from "@react-zero-ui/icon-sprite";
 import { useEffect, useMemo, useState } from "react";
-import { apiData } from "../../lib/api.ts";
+import { apiData, apiUrl } from "../../lib/api.ts";
 import {
 	Badge,
 	Button,
@@ -528,14 +528,14 @@ export function RedirectsPage() {
 					<div className="flex flex-wrap gap-3 text-sm">
 						<a
 							className="inline-flex items-center gap-1 text-primary underline"
-							href="/api/redirects/export?format=csv"
+							href={apiUrl("/api/redirects/export?format=csv")}
 							download
 						>
 							<Download size={14} /> CSV
 						</a>
 						<a
 							className="inline-flex items-center gap-1 text-primary underline"
-							href="/api/redirects/export"
+							href={apiUrl("/api/redirects/export")}
 							download="redirects.json"
 						>
 							<Download size={14} /> JSON

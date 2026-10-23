@@ -8,6 +8,8 @@
 - No secrets in source; `.env` is never committed
 - This file is not weakened to make a change pass
 - Relative imports use explicit `.ts` / `.tsx` extensions (not `.js`); `allowImportingTsExtensions` is on
+- Every user-visible feature ships with its docs in the same change: an English page in `docs/src/content/docs/` and its Turkish twin under `docs/src/content/docs/tr/`, then the docs site is rebuilt and published (ADR-014)
+- Site templates (the starter and every theme a new site installs with) are built on Tailwind CSS 4 + bejamas/ui; no other CSS framework or hand-rolled replacement (ADR-015)
 
 ## Enforced
 
@@ -23,6 +25,7 @@
 | Supply chain | 24 h release age, trust-downgrade block, install scripts denied | `pnpm-workspace.yaml` |
 | Dead code | no unused files or dependencies | `pnpm knip` |
 | Packages | every tarball passes publint and attw | `pnpm verify:pack` (after `pnpm build`) |
+| Docs | every English docs page has a Turkish twin | `pnpm test` (`@wuppy/docs`: `scripts/check-locales.mjs`) |
 | Architecture | `packages/core/src` imports no `cloudflare:*`, `@cloudflare/*`, `wrangler`, `kysely-d1` | `packages/core/tests/unit/architecture.test.ts` |
 
 `pnpm check` runs lint, typecheck and tests.

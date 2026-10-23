@@ -85,7 +85,7 @@ describe("roles matrix", () => {
 			data: { permissions: string[]; roles: Array<{ name: string; permissions: string[] }> };
 		};
 		const byName = Object.fromEntries(data.roles.map((r) => [r.name, r.permissions]));
-		expect(Object.keys(byName)).toEqual(["admin", "editor", "author", "viewer"]);
+		expect(Object.keys(byName)).toEqual(["admin", "editor", "author", "viewer", "client"]);
 		expect(byName.admin).toEqual(data.permissions);
 		expect(byName.viewer).toEqual(["content:read"]);
 		expect(byName.author).not.toContain("content:publish");

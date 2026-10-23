@@ -6,7 +6,7 @@ import { $createHeadingNode, $createQuoteNode } from "@lexical/rich-text";
 import { $setBlocksType } from "@lexical/selection";
 import { $createParagraphNode, $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND, type ElementNode } from "lexical";
 import { useEffect, useState } from "react";
-import { apiData } from "../../lib/api.ts";
+import { apiData, apiUrl } from "../../lib/api.ts";
 import type { MediaItem } from "../../stores/content.ts";
 import { Button, Dialog, Input, Select } from "../../ui/index.tsx";
 import { MediaPicker } from "../media/MediaPicker.tsx";
@@ -101,7 +101,7 @@ export function EditorToolbar() {
 			>
 				{image && (
 					<div className="grid gap-3">
-						<img src={image.item.url} alt="" className="max-h-40 rounded-md object-contain" />
+						<img src={apiUrl(image.item.url)} alt="" className="max-h-40 rounded-md object-contain" />
 						<Input
 							label="Alt text"
 							hint="Describe the image for people who cannot see it. Leave empty for decorative images."

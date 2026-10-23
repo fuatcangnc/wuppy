@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { NoopGit, RealGit } from "@wuppy/git";
@@ -35,6 +35,28 @@ describe("ContentService", () => {
 		expect(await svc.restore("posts", "hello")).toBe(true);
 		expect((await svc.get("posts", "hello"))?.body).toBe("x\n");
 		expect(await svc.listTrash()).toHaveLength(0);
+	});
+
+	it("an MDX collection keeps existing .md entries, writes new ones as .mdx and checks each by its format", async () => {
+		const mdx = new ContentService(
+			root,
+			[collectionSchema.parse({ name: "notes", dir: "content/notes", format: "mdx" })],
+			await RealGit.init(root),
+		);
+		await mkdir(join(root, "content/notes"), { recursive: true });
+		await writeFile(join(root, "content/notes/old.md"), "---\ntitle: Old\n---\nPlain {braces} are fine in Markdown\n");
+		await mdx.put("notes", "new", { data: {}, body: "# New\n" });
+		await mdx.put("notes", "old", { data: {}, body: "Still {Markdown}\n" });
+		expect(await readFile(join(root, "content/notes/new.mdx"), "utf8")).toContain("# New");
+		expect(await readFile(join(root, "content/notes/old.md"), "utf8")).toContain("Still {Markdown}");
+		expect((await mdx.listEntries("notes")).map((e) => e.slug)).toEqual(["new", "old"]);
+		// The same text is code in MDX: refused for the .mdx entry.
+		await expect(mdx.put("notes", "new", { data: {}, body: "{process.env.WUPPY_SECRET}" })).rejects.toThrow(
+			/expression/,
+		);
+		// Trash commits the .md file it removed (a wrong path would make the commit fail).
+		await mdx.delete("notes", "old");
+		expect(await mdx.list("notes")).toEqual(["new"]);
 	});
 
 	it("revert restores previous content through a new commit", async () => {

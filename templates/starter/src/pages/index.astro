@@ -1,25 +1,86 @@
 ---
 import { isPublished } from "wuppy/publishing";
 import { paginate } from "wuppy/site";
+import { readData } from "wuppy";
 import { getCollection } from "astro:content";
+import PostCard from "../components/PostCard.astro";
 import Base from "../layouts/Base.astro";
+import { Button } from "@/ui/button";
+import config from "../../wuppy.config.mjs";
 
 // Drafts are visible only while running `astro dev` (that is the preview).
 const posts = (await getCollection("posts", ({ data }) => import.meta.env.DEV || isPublished(data))).toSorted(
 	(a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0),
 );
-const { items, page, pages, prev, next } = paginate(posts, Astro.url.searchParams.get("page"), 10);
+const { items, page, pages, prev, next } = paginate(posts, Astro.url.searchParams.get("page"), 9);
+const settings = await readData<{ siteName?: string; description?: string } | null>("settings", null);
+const name = settings?.siteName || config.site.name;
+const taxonomies = await readData<Array<{ name: string; terms: unknown[] }>>("taxonomies", []);
+const categoryCount = taxonomies.find((t) => t.name === "categories")?.terms.length ?? 0;
+const pageCount = (await getCollection("pages", ({ data }) => data.draft !== true)).length;
 ---
 <Base>
-	<h1>Wuppy Starter</h1>
-	<ul>
-		{items.map((p) => <li><a href={`/posts/${p.id}`}>{p.data.title}</a>{p.data.draft && " (draft)"}</li>)}
-	</ul>
-	{pages > 1 && (
-		<nav aria-label="Pagination" class="mt-6 flex gap-4 text-sm">
-			{prev && <a href={`/?page=${prev}`} rel="prev">Newer</a>}
-			<span aria-current="page">Page {page} of {pages}</span>
-			{next && <a href={`/?page=${next}`} rel="next">Older</a>}
-		</nav>
-	)}
+	<section class="hero">
+		<div class="shell">
+			<span class="eyebrow">Welcome</span>
+			<h1 class="display">{name}</h1>
+			<p class="lead">{settings?.description || "Stories, notes and updates. Written and published with Wuppy."}</p>
+			<div class="hero-actions">
+				<Button as="a" href="#posts" class="h-12 px-5 text-xs font-bold uppercase tracking-wider hover:bg-ink">Read the latest →</Button>
+				<Button as="a" href="/search" variant="outline" class="h-12 px-5 text-xs font-bold uppercase tracking-wider border-ink bg-transparent hover:border-primary hover:bg-transparent hover:text-primary">Search</Button>
+			</div>
+			<ul class="stats">
+				<li><strong>{posts.length}</strong><span>Posts</span></li>
+				<li><strong>{pageCount}</strong><span>Pages</span></li>
+				<li><strong>{categoryCount}</strong><span>Categories</span></li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="section section--soft" id="posts">
+		<div class="shell">
+			<div class="section-head">
+				<div>
+					<p class="kicker">Latest</p>
+					<h2 class="heading">Recent posts</h2>
+				</div>
+				<Button as="a" href="/rss.xml" variant="outline" class="h-12 px-5 text-xs font-bold uppercase tracking-wider border-ink bg-transparent hover:border-primary hover:bg-transparent hover:text-primary">RSS feed</Button>
+			</div>
+			{items.length === 0 ? (
+				<p class="empty">No posts yet. Write your first one in the admin.</p>
+			) : (
+				<ul class="cards">
+					{items.map((p, i) => (
+						<li>
+							<PostCard
+								href={`/posts/${p.id}`}
+								title={p.data.title}
+								index={(page - 1) * 9 + i + 1}
+								date={p.data.date}
+								cover={p.data.cover}
+								draft={p.data.draft}
+							/>
+						</li>
+					))}
+				</ul>
+			)}
+			{pages > 1 && (
+				<nav aria-label="Pagination" class="pager">
+					{prev && <Button as="a" href={`/?page=${prev}#posts`} rel="prev" variant="outline" class="h-12 px-5 text-xs font-bold uppercase tracking-wider border-ink bg-transparent hover:border-primary hover:bg-transparent hover:text-primary">Newer</Button>}
+					<span aria-current="page">Page {page} of {pages}</span>
+					{next && <Button as="a" href={`/?page=${next}#posts`} rel="next" variant="outline" class="h-12 px-5 text-xs font-bold uppercase tracking-wider border-ink bg-transparent hover:border-primary hover:bg-transparent hover:text-primary">Older</Button>}
+				</nav>
+			)}
+		</div>
+	</section>
+
+	<section class="cta">
+		<div class="shell">
+			<div>
+				<p class="kicker">Stay in the loop</p>
+				<h2 class="heading">Get new posts as soon as they are published.</h2>
+			</div>
+			<Button as="a" href="/rss.xml" class="h-12 px-5 text-xs font-bold uppercase tracking-wider bg-white text-ink hover:bg-ink hover:text-white">Subscribe via RSS</Button>
+		</div>
+	</section>
 </Base>

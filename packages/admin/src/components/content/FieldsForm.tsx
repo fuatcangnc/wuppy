@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiData } from "../../lib/api.ts";
+import { apiData, apiUrl } from "../../lib/api.ts";
 import type { FieldDef } from "../../stores/content.ts";
 import { MediaPicker } from "../media/MediaPicker.tsx";
 import { Button, Checkbox, Input, Select, Textarea, toast } from "../../ui/index.tsx";
@@ -217,7 +217,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 								/>
 							)}
 							{typeof value === "string" && value.startsWith("/") && (
-								<img src={value} alt="" className="max-h-32 rounded-md object-contain" />
+								<img src={apiUrl(value)} alt="" className="max-h-32 rounded-md object-contain" />
 							)}
 						</div>
 					);

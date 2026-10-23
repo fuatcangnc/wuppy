@@ -4,6 +4,7 @@ import { ContentExistsError, DisallowedContentError, UnknownCollectionError } fr
 import { MediaTooLargeError, UnsupportedMediaError } from "../media/index.ts";
 import { redact } from "../security/redact.ts";
 import { UnsafePathError } from "../content/validation/path.ts";
+import { PluginHookError, PluginRejectedError } from "../plugins/errors.ts";
 
 export class ApiError extends Error {
 	constructor(
@@ -29,6 +30,9 @@ export function onError(err: Error, c: Context) {
 	if (err instanceof MediaTooLargeError) return fail(c, 413, "PAYLOAD_TOO_LARGE", err.message);
 	if (err instanceof UnsupportedMediaError) return fail(c, 415, "UNSUPPORTED_MEDIA", err.message);
 	if (err instanceof UnknownCollectionError) return fail(c, 404, "NOT_FOUND", "Unknown collection");
+	if (err instanceof PluginRejectedError)
+		return fail(c, 422, "REJECTED_BY_PLUGIN", err.message, { plugin: err.plugin, reason: err.reason });
+	if (err instanceof PluginHookError) return fail(c, 502, "PLUGIN_ERROR", err.message, { plugin: err.plugin });
 	console.error(redact(String(err.stack ?? err)));
 	return fail(c, 500, "INTERNAL", "Internal server error");
 }

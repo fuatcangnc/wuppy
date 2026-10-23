@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { collectionSchema } from "../content-types/index.ts";
+import { defaultVisualData, visualDataSchema } from "@wuppy/visual-editor";
 import { webhooksSchema } from "../webhooks/index.ts";
 
 const id = z.string().regex(/^[a-z0-9][a-z0-9-]*$/);
@@ -237,6 +238,7 @@ export const dataSchemas = {
 	themes: z.array(themeSchema),
 	"content-types": z.array(collectionSchema),
 	webhooks: webhooksSchema,
+	visual: visualDataSchema,
 } as const;
 
 export type DataName = keyof typeof dataSchemas;
@@ -256,4 +258,5 @@ export const dataDefaults: Record<DataName, unknown> = {
 	themes: [],
 	"content-types": [],
 	webhooks: [],
+	visual: defaultVisualData(),
 };

@@ -32,7 +32,7 @@ import { WorkspaceLayout, WorkspacePanel, WorkspaceSidebar } from "../shared/Wor
 import { UserSecurityDialog } from "./UserSecurityDialog.tsx";
 import type { InvitationRow, UserRow } from "./types.ts";
 
-const ROLES = ["admin", "editor", "author", "viewer"];
+const ROLES = ["admin", "editor", "author", "viewer", "client"];
 
 /** What a token may do. "same" sends no list, so the server uses the creator's own permissions. */
 export const TOKEN_SCOPES = {
@@ -42,6 +42,32 @@ export const TOKEN_SCOPES = {
 	publish: {
 		label: "Write and publish content",
 		permissions: ["content:read", "content:write", "content:publish", "content:schedule", "media:write"],
+	},
+	// Lets another Wuppy manage this site. Users, tokens, plugins and backups stay with this site's own admins.
+	hub: {
+		label: "Connect to a hub (manage this site from another Wuppy)",
+		permissions: [
+			"content:read",
+			"content:write",
+			"content:delete",
+			"content:publish",
+			"content:schedule",
+			"media:write",
+			"media:delete",
+			"comments:read",
+			"comments:moderate",
+			"menus:manage",
+			"widgets:manage",
+			"sections:manage",
+			"taxonomies:manage",
+			"bylines:manage",
+			"content-types:manage",
+			"themes:manage",
+			"site:settings",
+			"git:read",
+			"git:revert",
+			"audit:read",
+		],
 	},
 } as const;
 
@@ -64,6 +90,7 @@ export function UsersPage() {
 			lastUsedAt: string | null;
 			expiresAt?: string | null;
 			permissions?: string[];
+			kind?: "user" | "hub";
 		}>
 	>([]);
 	const [tokenName, setTokenName] = useState("");
@@ -546,7 +573,8 @@ export function UsersPage() {
 											))}
 										</Select>
 										<Select label="Expires" value={tokenDays} onChange={(e) => setTokenDays(e.target.value)}>
-											<option value="">Never</option>
+											{/* Hub tokens must expire; "Never" falls back to a year for them. */}
+											<option value="">{tokenScope === "hub" ? "In a year" : "Never"}</option>
 											<option value="30">In 30 days</option>
 											<option value="90">In 90 days</option>
 											<option value="365">In a year</option>
@@ -557,17 +585,24 @@ export function UsersPage() {
 											onClick={() =>
 												void api<{ data: { token: string } }>("POST", "/api/tokens", {
 													name: tokenName.trim(),
+													...(tokenScope === "hub" ? { kind: "hub" } : {}),
 													...(TOKEN_SCOPES[tokenScope].permissions
 														? { permissions: TOKEN_SCOPES[tokenScope].permissions }
 														: {}),
-													...(tokenDays
-														? { expiresAt: new Date(Date.now() + Number(tokenDays) * 86_400_000).toISOString() }
+													...(tokenDays || tokenScope === "hub"
+														? {
+																expiresAt: new Date(
+																	Date.now() + Number(tokenDays || 365) * 86_400_000 - 60_000,
+																).toISOString(),
+															}
 														: {}),
-												}).then((res) => {
-													setCreatedToken(res.data.token);
-													setTokenName("");
-													void load();
 												})
+													.then((res) => {
+														setCreatedToken(res.data.token);
+														setTokenName("");
+														void load();
+													})
+													.catch((failure: Error) => toast(failure.message, "error"))
 											}
 										>
 											Create token
@@ -594,7 +629,9 @@ export function UsersPage() {
 											<tbody>
 												{tokens.map((token) => (
 													<tr key={token.id}>
-														<Td>{token.name}</Td>
+														<Td>
+															{token.name} {token.kind === "hub" && <Badge>Hub</Badge>}
+														</Td>
 														<Td className="text-muted-foreground">{token.permissions?.length ?? 0} permissions</Td>
 														<Td className="text-muted-foreground">
 															{token.expiresAt ? new Date(token.expiresAt).toLocaleDateString() : "never"}

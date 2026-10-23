@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import PageHero from "../components/PageHero.astro";
 import Base from "../layouts/Base.astro";
 
 const posts = await getCollection("posts", ({ data }) => data.draft !== true);
@@ -10,9 +11,13 @@ const items = posts.map((post) => ({
 }));
 ---
 <Base title="Search">
-	<h1>Search</h1>
-	<input id="q" type="search" placeholder="Search posts…" class="mt-4 w-full rounded border border-black/20 px-3 py-2" aria-label="Search posts" />
-	<ul id="results" class="mt-4 grid gap-2"></ul>
+	<PageHero title="Search" kicker="Find a post" crumbs={[{ label: "Search" }]} />
+	<section class="section">
+		<div class="narrow">
+			<input id="q" type="search" placeholder="Search posts…" class="input" aria-label="Search posts" autofocus />
+			<ul id="results" class="cards" style="margin-top:1.5rem;grid-template-columns:1fr"></ul>
+		</div>
+	</section>
 	<script define:vars={{ items }}>
 		const input = document.getElementById("q");
 		const results = document.getElementById("results");
@@ -20,16 +25,24 @@ const items = posts.map((post) => ({
 			results.innerHTML = "";
 			for (const item of list) {
 				const li = document.createElement("li");
+				li.className = "card";
+				const body = document.createElement("div");
+				body.className = "card-body";
 				const a = document.createElement("a");
 				a.href = `/posts/${item.slug}`;
 				a.textContent = item.title;
-				li.append(a);
+				body.append(a);
+				li.append(body);
 				results.append(li);
 			}
 		};
-		input.addEventListener("input", () => {
+		const params = new URLSearchParams(location.search);
+		const search = () => {
 			const q = input.value.trim().toLowerCase();
 			render(q ? items.filter((item) => `${item.title}\n${item.body}`.toLowerCase().includes(q)) : []);
-		});
+		};
+		input.value = params.get("q") ?? "";
+		input.addEventListener("input", search);
+		search();
 	</script>
 </Base>

@@ -27,6 +27,22 @@ describe("scaffold", () => {
 		await expect(stat(join(target, ".wuppy"))).rejects.toThrow();
 	});
 
+	it("pins every catalog dependency to the workspace catalog version and keeps the theme", async () => {
+		const target = join(base, "themed");
+		await scaffold({ template: TEMPLATE, target, name: "themed", url: "http://x" });
+		const source = JSON.parse(await readFile(join(TEMPLATE, "package.json"), "utf8"));
+		const pkg = JSON.parse(await readFile(join(target, "package.json"), "utf8"));
+		const catalog = await readFile(resolve(TEMPLATE, "../../pnpm-workspace.yaml"), "utf8");
+		for (const field of ["dependencies", "devDependencies"]) {
+			for (const [dep, range] of Object.entries<string>(source[field] ?? {})) {
+				if (range !== "catalog:") continue;
+				const pinned = new RegExp(`^  "?${dep.replace(/[/.]/g, "\\$&")}"?: (\\S+)`, "m").exec(catalog)?.[1];
+				expect(pkg[field][dep], dep).toBe(pinned);
+			}
+		}
+		expect((await stat(join(target, "src/styles/theme.css"))).isFile()).toBe(true);
+	});
+
 	it("pins wuppy to the version the CLI was released with", async () => {
 		const target = join(base, "pinned");
 		await scaffold({ template: TEMPLATE, target, name: "pinned", url: "http://x", wuppyVersion: "^1.2.3" });

@@ -39,6 +39,8 @@ const child = spawn(cmd, args, {
 		// Simulate a loopback reverse proxy so a test can present a distinct
 		// forwarded client IP without weakening the production default.
 		WUPPY_TRUSTED_PROXIES: "127.0.0.1,::1",
+		// The two fixture servers manage each other over loopback (managed-sites spec).
+		WUPPY_ALLOW_PRIVATE_URLS: "1",
 	},
 });
 child.stdout.on("data", (chunk) => {

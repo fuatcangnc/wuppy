@@ -5,3 +5,4 @@ pnpm-lock.yaml
 .claude
 e2e/test-results
 *.md
+templates/astrojs-boilerplate

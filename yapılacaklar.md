@@ -32,10 +32,10 @@ işaretlenir. Kaynaklar:
 | Medya | 🟡 Kısmi | Üç panelli kütüphane, klasör, alt metin, kırpma/odak, kullanım takibi, sayfa bazlı filtre, toplu düzenleme, görsel optimizasyonu, istemci tarafı WebP dönüştürme; S3 adaptörü ve blurhash yok |
 | Manage modülleri | 🟡 Kısmi | Comments, Menus, Redirects, Widgets, Sections, Taxonomies, Bylines CRUD; Bylines ve Sections iki panelli çalışma alanında |
 | Admin modülleri | 🟡 Kısmi | Content Types, Byline Schema, Users+token, Plugins, Import, Settings, Themes; Content Types/Webhooks/Settings/Account security iki panelli çalışma alanında |
-| SEO / i18n / önizleme | 🟡 Kısmi | SEO çekirdek + panel, i18n tablo, dev preview; visual editing yok |
+| SEO / i18n / önizleme | 🟡 Kısmi | SEO çekirdek + panel, i18n tablo, dev preview, MDX görsel editör; form/loop ve canlı ortak düzenleme yok |
 | Eklenti sistemi | 🟡 Kısmi | WASM sandbox + capability + yüklü/hata UI; SDK/registry/marketplace yok |
-| Test / kabul | 🟡 Kısmi | 13 E2E, modül smoke, 356 core + 152 admin + 37 auth testi; görsel regresyon/a11y yok |
-| Yayın / operasyon | 🟡 Kısmi | Build + dist smoke; CI, Docker, npm publish, docs sitesi yok |
+| Test / kabul | 🟡 Kısmi | 15 E2E, modül smoke, 428 core + 165 admin + 38 auth + 6 visual-editor testi; görsel regresyon/a11y yok |
+| Yayın / operasyon | 🟡 Kısmi | Build + dist smoke, CI, Docker, docs sitesi (EN+TR); npm publish yok |
 
 **Öncelik dalgaları**
 
@@ -47,6 +47,7 @@ işaretlenir. Kaynaklar:
 
 **Bu turda tamamlananlar**
 
+- [x] Çoklu site yönetimi (bölüm 15, ADR-011): bu kurulum hub olur; diğer Wuppy siteleri şifreli `kind=hub` token ile bağlanır ve sunucu tarafı proxy üzerinden yönetilir. Gerçek site switcher (mock kaldırıldı), Sites sayfası, üyeler ve `client` rolü ile müşteriye yalnızca kendi sitesi; SSRF, yol/başlık allowlist'i, boyut sınırları ve audit. Unit + entegrasyon + E2E testli.
 - [x] Başlıktan otomatik slug: yeni içerikte başlık yazılırken `slugify` paketiyle güvenli slug üretilir (Türkçe karakter ve aksan normalizasyonu); kullanıcı slug'ı elle düzenlerse otomatik üretim durur; var olan slug `409 SLUG_TAKEN` ile korunur.
 - [x] Güvenilir istemci IP'si: Astro `clientAddress` iç `x-wuppy-client-ip` başlığına yazılır; `WUPPY_TRUSTED_PROXIES` (IP/CIDR) ile ters proxy zinciri güvenilir sayılır; doğrudan bağlantıda spoof edilebilir `X-Forwarded-For` kullanılmaz. Better Auth'un "client IP belirlenemedi" uyarısı kalktı ve hız sınırı istemci bazlı çalışıyor.
 - [x] 2FA politikası: parola girişi TOTP ister; magic link yeni hesap açamaz ve 2FA açık hesaplara gönderilmez; 2FA açılınca o hesabın bekleyen magic-link token'ları geçersiz olur; passkey ve bağlı OAuth sağlayıcıları güçlü alternatif olarak ek kod istemez.
@@ -58,7 +59,7 @@ işaretlenir. Kaynaklar:
 - [x] Admin icon sprite'ı sürümlendi: `/icons.svg?v=<content-hash>`, `no-cache` + ETag ile sunuluyor; yeni eklenen ikonlar eski immutable cache yüzünden kaybolmuyor.
 - [x] Menus ekranı yenilendi: shadcn Accordion tabanlı kaynak seçimi (Pages/Posts/Categories/Custom Links), native HTML5 drag-and-drop sıralama, alt menü yönetimi, klavye/erişilebilir kontroller, menü oluşturma/silme ve Manage Locations sekmesi. Menü yokken ayrı bir boş sayfa gösterilmez; editör kabuğu ve create linki doğrudan gelir.
 - [x] Dark tema yüzeyleri standartlaştırıldı: `#09090b` ana zemin, `#101011` kart/paneller, `#171719` yüzen dialog/menü katmanı, `#1d1d20` kontroller; sidebar zemini şeffaf. Dashboard dış kabuğu `rounded-xl`, kartları 10px radius (`rounded-lg`) ile hizalandı.
-- [x] Sidebar üstüne UI-only site switcher eklendi: varsayılan kapalı Local seçicisi, açıldığında “Search sites...” alanı, seçili Local satırı ve mock `uixpress.instawp.xyz` sitesi. Veri kaynağı veya çalışma davranışı yok; yalnızca görsel kabuk.
+- [x] (Yerini çoklu site switcher'ı aldı) Sidebar üstüne UI-only site switcher eklendi: varsayılan kapalı Local seçicisi, açıldığında “Search sites...” alanı, seçili Local satırı ve mock `uixpress.instawp.xyz` sitesi. Veri kaynağı veya çalışma davranışı yok; yalnızca görsel kabuk.
 - [x] Pages ekranı Media ile aynı iki panelli çalışma alanına taşındı: solda arama, All/Published/Drafts sekmeleri, sayfalama ve durum ikonlu liste; sağda başlık/meta, Edit/View/aksiyon menüsü, Status/Author/URL ve imzalı iframe önizleme. Aynı ekran Tablo görünümüne geçebiliyor; tablo ayarları tarih aralığı, per-page, sıralama, yazar/dil filtresi ve kolon seçimlerini içeriyor. Seçili sayfalarda alttaki toplu işlem çubuğu publish/draft, duplicate, delete ve clear sunuyor. Media ve Pages `WorkspaceLayout`, `WorkspaceSidebar` ve `WorkspacePanel` bileşenlerini paylaşıyor.
 - [x] Liste/çalışma alanları Media ile hizalandı: **Posts** sayfaları aynı split/table içerik çalışma alanını kullanıyor; **Redirects** solda kural/404 listesi, sağda inline kural editörü ve import/export dialog’u; **Widgets** ve **Sections** solda arama + kayıt listesi, sağda inline alan editörü (`ResourceWorkspacePage`); **Categories & tags** solda terim ağacı, sağda terim editörü ve taxonomy ayarları; **Users** solda arama/durum filtreli hesap listesi, sağda rol/erişim detayı ve mevcut invitations/API token/rol matrisi kartları. Mevcut create, edit, delete, toplu işlem, import/export ve güvenlik akışları korunuyor.
 - [x] Media Library tam genişlikte üç panelli görünüme taşındı: arama/filtre listesi, varyantlı büyük önizleme, inline metadata paneli, dosya URL'si, kullanım listesi ve aksiyonlar. **Convert Webp** istemci tarafında Canvas `toBlob()` ile dönüştürüp yeni WebP dosyası yükler. Sol kütüphane ve önizleme/detay alanı (#101011) aralarında boşluk olan iki ayrı rounded karttır. Dosya seçilmediğinde sağ panelde metin yerine ortada dropzone gösterilir; dar ekranlarda paneller alt alta, 1400px üzerinde üç sütun kullanılır. Sol panelde 32px boyutlu, 200px radius ile beyaz dairesel upload butonu ve eşit boyutlu, kenarlıksız, hover’da zemin değiştiren tek ikonlu grid/list geçişi (ikonlar 1em), placeholder’ı `text-sm` olan full-width/search alanı (arama ikonu 1em), seçimde alt ortada preview/edit/download/copy/delete/clear toolbar’ı ve çoklu seçimde ayrı “Bulk Edit Media” dialog’u, tür, sıralama (tarih/ad/boyut/tür), tarih aralığı, sayfa (Pages) bazlı kullanım filtresi ve “Unused Media Only” filtreleri bulunur; ayrıntılı filtre paneli varsayılan olarak kapalıdır ve WebP’nin sağındaki toggle ile açılır. Aktif tab/segment zemini global olarak `#2B2B2E`.
@@ -66,7 +67,7 @@ işaretlenir. Kaynaklar:
 - [x] Yuvarlatılmış kabuk için sidebar sağ ve topbar alt border'ları kaldırıldı; paneller kendi radius/kenarlıklarıyla ayrışıyor.
 - [x] Scrollbar standardı: tüm scroll alanlarında ince, yuvarlak thumb; light `#a1a1aa4d`, dark `#52525b66`, track şeffaf. `html` ve `.custom-scrollbar` `scrollbar-gutter: stable` kullanır; dialog gövdeleri bu sınıfla kaydırılır. Form etiketleri `text-xs` (`--text-xs: 0.6em`), tamamı büyük harf, `text-zinc-400`; sidebar grup ve medya filtre başlıkları aynı stile hizalandı. Admin input/textarea zeminleri şeffaf; placeholder’lar `text-sm`.
 
-**Doğrulama:** `pnpm check` → 356 core + 152 admin + 37 auth testi; `pnpm build` temiz; `pnpm test:e2e` → 13/13.
+**Doğrulama:** `pnpm check` → 428 core + 165 admin + 38 auth + 6 visual-editor testi; `pnpm build` temiz; `pnpm test:e2e` → 15/15.
 
 **Sıradaki işler (öncelik sırasıyla)**
 
@@ -430,6 +431,8 @@ işaretlenir. Kaynaklar:
 - [x] Aşamalı ilerleme, duraklat/devam, geri alma
 - [ ] (kısmi) 50 MB üst sınır ve SSRF korumalı indirme var; dosya bellekte ayrıştırılıyor (akış yok)
 - [x] Import testleri: fixture WXR, çakışma, kısmi hata, rollback
+- [x] Mevcut Astro projesini sarma: `wuppy init` (koleksiyon/alan/rota keşfi, astro.config yaması), `wuppy import <git-url> <dir>`, `wuppy import` ile GitHub'dan Astro deposu seçme (`gh`), `wuppy({ sitemap, robots, rss })`; sunucu push etmez; EN+TR doküman `guides/existing-astro-project` (ADR-016)
+- [x] Anında yayın: `astro:content` okuyan sayfalar diskten okur, istekte çizilir, yeniden derleme/push yok; `wuppy({ live: false })` (ADR-016)
 
 ### 5.6 Settings (Ayarlar)
 
@@ -451,6 +454,9 @@ işaretlenir. Kaynaklar:
 
 ### 5.7 Themes (Temalar)
 
+- [x] Varsayılan başlangıç teması: astrojs-boilerplate tasarımı starter'a taşındı (Tailwind 4 + bejamas/ui: Button, NavigationMenu; `src/styles/theme.css`, Space Grotesk yerel, header/footer menüsü + footer widget alanı, tüm public sayfalar); EN+TR doküman `guides/starter-theme` (ADR-015)
+- [x] GitHub'dan tema: Admin → Themes, GitHub bağlama (OAuth izin sayfası, tüm depolar / `repo` kapsamı, `WUPPY_GITHUB_CLIENT_SECRET`, kullanıcı başına şifreli token), Astro depolarını listeleme, sunucuda klon + `wuppy init` + npm install + Node adapter ile derleme, etkinleştirme/geri dönme (`.wuppy/themes/active.json`, `serve.mjs`, yeniden başlatma), hesaplar ortak; EN+TR doküman `guides/github-themes` (ADR-017)
+- [ ] Tema güncelleme: GitHub'dan yeni commit çekme (şimdilik klasörü silip yeniden kurmak gerekiyor)
 - [ ] Tema kayıt defteri: aktif tema, sürüm, kaynak
 - [ ] Tema yükleme (zip/tar), doğrulama, önizleme
 - [ ] Tema etkinleştirme ve geri alma (Git commit)
@@ -491,7 +497,7 @@ işaretlenir. Kaynaklar:
 - [x] "View on site" bağlantısı (temel)
 - [x] Taslak önizleme: imzalı, süreli, tek içeriğe özel bağlantı (oturum gerekmez); starter'da uygulandı
 - [ ] Cihaz önizlemesi (masaüstü/tablet/mobil)
-- [ ] **Edit/Preview** anahtarı ve sayfa üzerinde düzenleme (visual editing)
+- [x] **Edit/Preview** anahtarı ve sayfa üzerinde düzenleme (visual editing)
 - [ ] Düzenleme modunda alan vurgulama, tıklayınca panele gitme
 - [ ] (kısmi) Token imzası/süre/içerik bağı testli; noindex ve sayfa düzeyi testi yok
 
@@ -565,9 +571,14 @@ Not: Mevcut `RESEND_API_KEY` sending-only, ancak henüz domain kısıtı yok. Do
 
 ### 7.5 MCP ve AI (P2)
 
-- [ ] MCP sunucusu: içerik okuma/yazma, arama, taslak oluşturma
-- [ ] AI taslak/SEO/çeviri önerisi (opt-in, sağlayıcı adaptörü)
-- [ ] AI çıktısı doğrulama ve kullanıcı onayı
++ [x] MCP sunucusu (`POST /api/mcp`, hub'da): siteleri listeleme, içerik okuma/arama, taslak/düzenleme, sağlık, aktivite (bkz. `wuppy-ai-agency.md`)
++ [x] Sağlayıcı adaptörü: OpenAI uyumlu uç nokta (`WUPPY_AI_*`), admin Assistant sayfası, hazır ajanlar
++ [x] Kullanıcı onayı: yazma araçları yalnız "Allow changes" açık mesajda; taslaklar her zaman `draft: true`
++ [x] Akışlı sohbet (SSE), kayıtlı sohbet geçmişi, OpenAI uyumlu `/api/v1` (salt okunur)
++ [x] Instatic uyarlaması `/ai`: Providers/Defaults/MCP connections/Audit üç kolonlu UI, StudioBar ve Site/AI workspace linkleri
++ [x] Site bakımı: saatlik sağlık + güvenlik taraması ve e-posta uyarısı, aylık müşteri raporu, yazdırılabilir PDF rapor, toplu eklenti güncellemesi (ADR-013)
++ [x] Sağlayıcı: EVREN (DeepSeek V4.1 Flash) canlı hub'da
+- [ ] AI taslak/SEO/çeviri önerisi editör içinde (Assistant dışında)
 - [ ] Maliyet/kota görünürlüğü
 
 ---
@@ -637,7 +648,7 @@ Not: Mevcut `RESEND_API_KEY` sending-only, ancak henüz domain kısıtı yok. Do
 - [x] `pnpm check` tüm modüllerde yeşil
 - [x] `knip` kullanılmayan dosya/bağımlılık yok
 - [x] `publint`/`attw` paket doğrulaması
-- [ ] Docs: her modül için kullanıcı rehberi + API referansı
++ [x] Docs: her modül için kullanıcı rehberi + API referansı (`docs/`, İngilizce + Türkçe, 31 sayfa)
 - [x] Kod yorumları/commit mesajı politikası (CONSTRAINTS)
 
 ---
@@ -652,7 +663,14 @@ Not: Mevcut `RESEND_API_KEY` sending-only, ancak henüz domain kısıtı yok. Do
 - [ ] (kısmi) `npm publish --dry-run` ve gerçek yayın provası
 - [x] CI: lint + typecheck + test + build + e2e + audit
 - [x] Docker imajı ve compose (Node standalone)
-- [ ] Dokümantasyon sitesi (Starlight) ve arama
++ [x] Docker imajı yerel `.wuppy` (auth DB, ayarlar) ve yerel yüklemeleri artık içermiyor; yüklemeler ve Git geçmişi de volume'da kalıcı
++ [x] AWS canlı deneme: Lightsail `wuppy-cigce` (eu-north-1, 1 GB) + Docker + Caddy (otomatik HTTPS), Route 53 `cigce.com.tr` A kaydı; kurulum, giriş, içerik oluşturma ve izin kontrolleri canlıda denendi
+- [ ] Canlıda admin'den yazılan içerik public sayfalarda yeniden build olmadan görünmüyor (Astro content collections build zamanında okunuyor); webhook ile rebuild ya da canlı okuma gerekli
++ [x] `cigce.com.tr` NS'leri Route 53'e çevrildi; Caddy Let's Encrypt sertifikası aldı
++ [x] Canlı e-posta: SES SMTP (eu-north-1), `noreply@cigce.com.tr` DKIM doğrulandı, IAM `wuppy-ses-smtp` yalnız `ses:SendRawEmail`
++ [x] Canlı çoklu site denemesi: `musteri1` ve `musteri2.cigce.com.tr` ayrı Wuppy konteynerleri; `musteri1` hub'a bağlandı, hub üzerinden yazı oluşturuldu
+- [ ] SES sandbox'tan çıkış (production access) — şu an yalnız doğrulanmış alıcılara gider
++ [x] Dokümantasyon sitesi (Starlight + Pagefind arama): https://docs.cigce.com.tr, Caddy statik `/opt/wuppy/docs` (ADR-014)
 - [x] CHANGELOG/Changesets
 - [x] Yükseltme rehberi ve geri alma
 - [ ] Telemetri (opt-in, gizlilik dostu)
@@ -705,8 +723,8 @@ Not: Mevcut `RESEND_API_KEY` sending-only, ancak henüz domain kısıtı yok. Do
 | Arama / komut paleti | 🟡 | Global arama var; Cmd+K paleti yok |
 | i18n / RTL | 🟡 | Çeviri tablosu var; RTL testi yok |
 | SEO / sitemap / robots | ✅ | Çekirdek + editör paneli |
-| Preview / visual editing | 🟡 | Dev preview; görsel düzenleme yok |
-| Çoklu site / AI | ❌ | P2 |
+| Preview / visual editing | 🟡 | Dev preview + MDX görsel editör; form/loop/collab yok |
+| Çoklu site / AI | 🟡 | Çoklu site (hub + proxy + client) bitti, bölüm 15; AI P2 |
 
 ---
 
@@ -722,3 +740,88 @@ Bir modül ancak şunlarla "bitti" sayılır:
 6. Dokümantasyon: kullanıcı rehberi + API referansı.
 7. `pnpm check` ve `pnpm build` yeşil.
 8. `CONSTRAINTS.md` zayıflatılmamış.
+
+---
+
+## 15. Çoklu site yönetimi (Managed Sites)
+
+Spec: `wuppy-multiple-managed-sites.md`. Model: bu kurulum **hub** (Local),
+diğer Wuppy kurulumları **uzak site**; tarayıcı yalnızca hub ile konuşur, hub
+uzak `/api/*`'ye şifreli `kind=hub` token ile proxy yapar. Sıra güvenlik önce:
+temel → uzak taraf → hub → proxy → UI → client → test.
+
+### 15.0 Karar
+
++ [x] ADR-011 "Çoklu site: hub + proxy, uzak Git'e dokunulmaz" (ADR-007 numarası revizyonlara ait) → `.opencode/KARARLAR.md`
+
+### 15.1 Güvenlik temeli
+
++ [x] `security/secret-box.ts`: AES-256-GCM, anahtar `WUPPY_SECRET`'tan HKDF (`info = "wuppy-sites-v1"`), AAD = `siteId`; format `v1.iv.tag.ciphertext`; çözülemezse `null` (çökme yok) + test
++ [x] `WUPPY_SECRET` < 32 karakterse sunucu zaten açılmaz (auth kontrolü); site deposu yoksa uç noktalar `NOT_ENABLED`
++ [x] Token loglara düşmez: uzak hata mesajları sabit metin, `redact()` Bearer'ı süzer; testte log/yanıt kontrolü
++ [x] Mevcut açık: kullanıcı token izinleri, sahibin **güncel** rolüyle kesişsin (rol düşünce token yetkisi de düşsün) + test
+
+### 15.2 Uzak site tarafı
+
++ [x] `wuppy_api_tokens.kind` kolonu (`user` | `hub`), idempotent migration
++ [x] `POST /api/tokens` `kind: "hub"` kabul eder; hub token için süre zorunlu (≤ 365 gün)
++ [x] `getUser`: `kind=hub` → izin = `token.permissions ∩ permissionsFor(X-Wuppy-Acting-Role)`; başlık yok/bilinmiyor → izin yok; `kind=user` acting başlıklarını yok sayar + test
++ [x] `GET /api/hub/whoami` (yalnızca hub token): `siteName, siteUrl, apiVersion, permissions, tokenExpiresAt` (sürüm sızdırılmaz)
++ [x] Uzak audit: hub üzerinden gelen yazmalarda `email = X-Wuppy-Acting-User`
++ [x] Users → API tokens: "Connect to a hub" akışı, hub rozeti, varsayılan kapalı izinler (`users:manage`, `site:transfer`, `plugins:manage`)
+
+### 15.3 Hub: kayıtlar ve bağlantı
+
++ [x] `auth`: `client` rolü (Local'de izin yok), `sites:manage` izni (admin), `ROLES`/`PERMISSIONS` testleri
++ [x] `sites/store.ts`: `wuppy_sites (id, name, url, token_enc, token_last4, status, version, permissions, last_checked_at, last_error, created_by, created_at)`, `wuppy_site_members (site_id, user_id, role, PK(site_id,user_id))`; kullanıcı silinince üyelikler trigger ile silinir; ayrıca `wuppy_site_invites`
++ [x] `sites/connect.ts`: URL doğrulama (https, `assertPublicUrl`, kimlik bilgisiz URL), `whoami` çağrısı, `apiVersion` kontrolü, `redirect: "error"`, 10 sn timeout
++ [x] Route'lar (`api/app.ts`): `GET/POST /api/sites`, `PATCH/DELETE /api/sites/:id`, `POST /api/sites/:id/check`, `PUT /api/sites/:id/token` (rotate), `GET/PUT/DELETE /api/sites/:id/members[/:userId]`, `GET /api/sites/:id/me`; Zod şemaları; token yanıtta yok, yalnızca `last4`
++ [x] Liste filtreleme sunucu tarafında: admin hepsi, diğerleri yalnızca üyelikleri; üye olunmayan `siteId` → 404
++ [x] Audit olayları: `site.connect`, `site.update`, `site.disconnect`, `site.rotate`, `site.member.add`, `site.member.remove`
++ [x] Testler: SSRF reddi (127.0.0.1, 169.254.169.254, `::1`, DNS'i private'a çözen host), token sızmıyor, client başka siteyi göremiyor
+
+### 15.4 Hub: proxy
+
++ [x] `sites/proxy.ts` + `ALL /api/sites/:id/proxy/*`
++ [x] Yol normalize + allowlist (`/api/` önek + `/uploads` salt okunur; `/api/auth`, `/api/hub`, `/api/tokens`, `/api/sites`, users, invitations, `..`, `%2e`, `%2f`, `//`, `\` red) + test
++ [x] İstek başlık allowlist'i; `cookie`/`authorization`/`host`/`x-forwarded-*` iletilmez; hub `Bearer`, `X-Wuppy-Request`, `X-Wuppy-Acting-Role/User` ekler
++ [x] Yanıt başlık süzme (`set-cookie`, `location`, `www-authenticate` atılır)
++ [x] Her istekte `assertPublicUrl`, `redirect: "error"`, 30 sn timeout, istek ≤ 50 MB, yanıt ≤ 100 MB akış sınırı
++ [x] Etkin rol: hub admin → site üyeliği varsa o rol, yoksa `admin`; diğerleri üyelik rolü
++ [x] Hata eşleme: uzak 401/403(token) → `502 SITE_AUTH_FAILED` + `status=connection_error`; ağ → `502 SITE_UNREACHABLE`; 4xx doğrulama hataları aynen
++ [x] Site başına yazma rate limit'i; yazmalarda `site.proxy.write` audit'i (gövdesiz)
++ [x] Entegrasyon testi: iki Hono app (hub + uzak) bellekte, gerçek token ile uçtan uca
+
+### 15.5 Admin UI
+
++ [x] `stores/sites.ts`: `$sites`, `$activeSite` (localStorage `wuppy.activeSite`), site değişince tam sayfa yenileme (state sızmaz)
++ [x] `lib/api.ts`: aktif site uzaksa `/api/...` → `/api/sites/:id/proxy/api/...` (`/api/auth`, `/api/setup`, `/api/sites` hariç); doğrudan `fetch`/`src` yolları (`ImportPage`, upload, dışa aktarma, görseller) `apiUrl()` kullanır
++ [x] `components/sites/SiteSwitcher.tsx`: sidebar marka alanı altında arama + liste + ✓ (ekran görüntüsündeki tasarım), klavye/ARIA
++ [x] Kaydedilmemiş editör varken site değişiminde onay
++ [x] Uzak site bandı ("Managing …") ve "View site" uzak URL
++ [x] Menü görünürlüğü uzak sitede `GET /api/sites/:id/me` izinlerinden
++ [x] Uzak medya `/uploads/*` proxy'sinden (aynı origin; kırpıcı çalışır, CSP değişmez)
++ [x] `/sites` sayfası Media gibi iki panelli çalışma alanı: solda arama, durum sekmeleri (sayılı), sayfalama; ortada site özeti, token erişimi, satır içi üyeler; sağda ad, aksiyonlar (Manage this site, Check, Replace token, Disconnect) ve detaylar. Örnek veri: `pnpm seed:sites [kök] [--remove]`
++ [x] Bağlantı hatası: durum rozeti + "Replace token"; `RECONNECT_REQUIRED` hatası
+
+### 15.6 Client (müşteri) atama
+
++ [x] Members diyaloğu: hub kullanıcısı seç veya e-posta ile davet et, site rolü (`editor | author | viewer`)
++ [x] Davet akışı opsiyonel `siteId + siteRole` taşır; kabulde üyelik oluşur, global rol `client`
++ [x] Client girişinde Local gizli; varsayılan ilk üyelik; üyelik yoksa boş durum ekranı
+- [ ] Users sayfasında kullanıcının site üyelikleri görünür
+
+### 15.7 Test ve kabul
+
++ [x] Unit: secret-box, yol allowlist'i, başlık süzme, izin kesişimi, SSRF
++ [x] Entegrasyon: hub ↔ uzak proxy, token iptali → `connection_error`, `WUPPY_SECRET` değişimi → "reconnect required"
++ [x] E2E: ikinci starter farklı portta (`WUPPY_ALLOW_PRIVATE_URLS=1`); site ekle → geç → sayfa düzenle → uzakta commit; client yalnızca kendi sitesini görür
++ [x] Spec bölüm 10'daki kabul kriterlerinin tamamı
+- [ ] Dokümantasyon: "Bir siteyi hub'a bağlama" rehberi + API referansı
++ [x] MDX her yerde, güvenlik öncelikli: içerik tipi varsayılanı `mdx`, starter posts/pages `mdx` (`@astrojs/mdx`, glob `*.{md,mdx}`, eski `.md` dosyaları `.md` kalır); gövde Astro'nun parser'ı (satteri) ile denetlenir: import/export, `{ifade}`, listede olmayan bileşen, `on*`/`set:html`/`srcdoc`, tehlikeli etiketler, `javascript:`/`data:` URL reddedilir; bölümler (sections) MDX olarak kaydedilip `mdxContent()` ile render edilir; build sonrası değişen `.mdx` istek anında derlenir
++ [x] MDX: docs EN+TR sayfası (`guides/mdx`), changeset, ADR-018, `wuppy/mdx` export'u
++ [x] MDX güvenlik devamı: istek anında derlenen MDX'te başlık id'leri/`headings` ve kod renklendirme build ile aynı; widget gövdeleri kayıtta denetlenir (custom = MDX, HTML = ham HTML kuralları); `wuppy init` `@astrojs/mdx` ekler ve `*.md` glob'larını genişletir; hono 4.13.13 + audit override'ları; e2e
++ [x] Eklenti önce çalışan hook'ları (güvenlik öncelikli): `beforeContentSave` (red/değişiklik), `beforeContentDelete`, `beforeMediaUpload`, `beforeCommentCreate` (red/beklet/spam, onay yok) + `onCommentCreated`; fail closed, onay hash'inde, `draft` korunur, sonuç MDX'ten yeniden geçer; docs EN+TR `plugins/hooks`, ADR-019
+- [ ] Eklenti hook'ları: cron (zamanlanmış görev) ve yaşam döngüsü (install/activate/deactivate) hook'ları
++ [x] Görsel editör (wuppy-visual-editor, Instatic'ten MIT uyarlama): Edit with Visual → `/admin/v/:collection/:slug`; Explorer (Layers/Site/Code/Media, arama), Framework (renk/type/space/font), Selectors, Canvas (design/live, breakpoint/condition context, iframe, sürükle-bırak, inline edit), Properties (class/selector, responsive/state, Componentize), component/slot/layout, HTML import, Spotlight, undo/redo, kopyala/yapıştır; bloklar MDX/MD gövdeye tek satır `data-ve` HTML, el yazısı Markdown korunur; site verisi `.wuppy/data/visual.json` + `/api/public/visual.css`; docs EN+TR `guides/visual-editor`, ADR-020
+- [ ] Görsel editör sonraki adımlar: güvenli form/loop uyarlaması, zengin metin (kalın/italik/bağlantı), çoklu seçim, Astro layout template'leri, canlı ortak düzenleme

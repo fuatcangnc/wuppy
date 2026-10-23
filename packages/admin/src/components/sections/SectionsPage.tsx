@@ -37,7 +37,7 @@ export function SectionsPage() {
 			fields={[
 				{ key: "slug", label: "Slug" },
 				{ key: "title", label: "Title" },
-				{ key: "body", label: "Body", type: "textarea" },
+				{ key: "body", label: "Body (MDX)", type: "textarea" },
 				{ key: "locale", label: "Locale (empty = every language)" },
 				{ key: "draft", label: "Draft", type: "checkbox" },
 			]}

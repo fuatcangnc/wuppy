@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import type { Collection } from "../../content-types/index.ts";
@@ -14,9 +15,19 @@ export class FilesystemContent {
 		private readonly collection: Collection,
 	) {}
 
+	/**
+	 * A collection holds `.md` and `.mdx` files side by side: an existing entry keeps its own extension,
+	 * a new one gets the collection's format.
+	 */
+	formatOf(slug: string): "md" | "mdx" {
+		const other = this.collection.format === "md" ? "mdx" : "md";
+		const at = (ext: string) => join(this.root, `${this.collection.dir}/${assertSafeSlug(slug)}.${ext}`);
+		return !existsSync(at(this.collection.format)) && existsSync(at(other)) ? other : this.collection.format;
+	}
+
 	/** Repo-relative path (forward slashes), for Git. */
 	relPath(slug: string): string {
-		return `${this.collection.dir}/${assertSafeSlug(slug)}.${this.collection.format}`;
+		return `${this.collection.dir}/${assertSafeSlug(slug)}.${this.formatOf(slug)}`;
 	}
 
 	/** Absolute path, for metadata reads. */
@@ -49,13 +60,17 @@ export class FilesystemContent {
 
 	async list(): Promise<string[]> {
 		const base = join(this.root, this.collection.dir);
-		const ext = `.${this.collection.format}`;
 		try {
 			const names = await readdir(base, { recursive: true });
-			return names
-				.filter((n) => n.endsWith(ext))
-				.map((n) => n.slice(0, -ext.length).split("\\").join("/"))
-				.toSorted();
+			const slugs = names
+				.filter((n) => /\.mdx?$/.test(n))
+				.map((n) =>
+					n
+						.replace(/\.mdx?$/, "")
+						.split("\\")
+						.join("/"),
+				);
+			return [...new Set(slugs)].toSorted();
 		} catch (e) {
 			if ((e as NodeJS.ErrnoException).code === "ENOENT") return [];
 			throw e;

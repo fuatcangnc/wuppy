@@ -12,7 +12,7 @@ import {
 } from "@react-zero-ui/icon-sprite";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import type { PercentCrop } from "react-image-crop";
-import { ApiError } from "../../lib/api.ts";
+import { ApiError, apiUrl } from "../../lib/api.ts";
 import {
 	createCroppedFilename,
 	createCroppedImageFile,
@@ -57,7 +57,7 @@ const extOf = (name: string) => name.split(".").pop()?.toLowerCase() ?? "";
 export const sizeLabel = (bytes: number) =>
 	bytes < 1024 * 1024 ? `${(bytes / 1024).toFixed(1)} KB` : `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 /** Replacing a file keeps its URL, so the modified time keeps browsers from showing the old picture. */
-export const fresh = (m: Pick<MediaItem, "url" | "modified">) => `${m.url}?v=${encodeURIComponent(m.modified)}`;
+export const fresh = (m: Pick<MediaItem, "url" | "modified">) => apiUrl(`${m.url}?v=${encodeURIComponent(m.modified)}`);
 
 function aspectNumber(mode: CropAspectMode, source: { width: number; height: number } | null) {
 	if (mode === "freeform") return undefined;

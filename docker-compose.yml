@@ -9,9 +9,13 @@ services:
       WUPPY_URL: ${WUPPY_URL:-http://localhost:4321}
     volumes:
       - content:/app/templates/starter/content
+      - uploads:/app/templates/starter/public/uploads
+      - history:/app/templates/starter/.git
       - state:/app/templates/starter/.wuppy
     restart: unless-stopped
 
 volumes:
   content:
+  uploads:
+  history:
   state:

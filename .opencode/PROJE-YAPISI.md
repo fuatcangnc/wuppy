@@ -5,7 +5,7 @@ klasörün ne işe yaradığını açıklar. Yapı, `emdash-main` deposunun mono
 yaklaşımı, paket sınırları, test katmanları ve bileşen organizasyonu örnek
 alınarak **Wuppy'nin dosya tabanlı CMS hedefine uyarlanmıştır**.
 
-> **Durum (güncel):** Çalışan dikey dilim var — `packages/{core,admin,auth,git,plugin-types,create-wuppy}`,
+> **Durum (güncel):** Çalışan dikey dilim var — `packages/{core,admin,visual-editor,auth,git,plugin-types,create-wuppy}`,
 > `templates/starter` ve `e2e` gerçek kod içerir. Henüz yazılmamış klasörlerde yalnızca `.gitkeep` durur.
 > Plan değişiklikleri: Markdown doğrudan kaynaktır, `packages/markdown` ve `packages/blocks` ertelendi (KARARLAR.md ADR-006);
 > SEO, sitemap, yönlendirme, i18n, medya, webhook ve eklenti sandbox'ı şimdilik `packages/core` içindedir
@@ -81,7 +81,8 @@ wuppy/
 ```
 packages/
 ├── core/               wuppy        Astro entegrasyonu + Hono API + içerik motoru
-├── admin/              @wuppy/admin React yönetim SPA'sı
+├── admin/              @wuppy/admin React yönetim SPA'sı + visual editor UI
+├── visual-editor/      @wuppy/visual-editor NodeTree, CSS/framework/selector şemaları
 ├── auth/               @wuppy/auth  Better Auth yapılandırması + RBAC
 ├── blocks/             @wuppy/blocks Editör blokları ve renderer'lar
 ├── git/                @wuppy/git   Commit, diff, geçmiş, geri alma
@@ -104,7 +105,8 @@ packages/
 | Paket | Bağımlı olduğu | ASLA bağımlı olmadığı |
 | --- | --- | --- |
 | `core` | `admin`, `auth`, `blocks`, `git`, `markdown`, `plugin-types` | Uygulama şablonları, demolar |
-| `admin` | HTTP API + paylaşılan tipler; shadcn/ui, Nanostores, Lexical | `core`'un iç modülleri, Node API'leri |
+| `admin` | HTTP API + paylaşılan tipler; shadcn/ui, Nanostores, Lexical, `@wuppy/visual-editor` | `core`'un iç modülleri, Node API'leri |
+| `visual-editor` | zod ve saf TypeScript | `admin`, `core`, tarayıcı DOM'u |
 | `auth` | `better-auth`, Kysely adaptörü | `admin`, `core` |
 | `git` | Node `fs`, Git kütüphanesi | `core`, `admin` |
 | `markdown` | remark/rehype/MDX araçları | `core`, `admin` |
@@ -543,8 +545,12 @@ taslağını incele", "Kazara düzenlemeyi geri al". Her yolculuk bir kabul
 ```
 docs/
 ├── src/content/docs/
-│   ├── concepts/       Mimari, içerik modeli, admin paneli
-│   ├── guides/         Nasıl yapılır: yazı, medya, menü, SEO, çeviri
+│   ├── tr/             Her sayfanın Türkçe eşi (ana dil İngilizce, ADR-014)
+│   ├── getting-started.md
+│   ├── concepts/       Mimari, içerik modeli, roller
+│   ├── guides/         Panel: yazı, medya, menü, SEO, çeviri, kullanıcı, ayar
+│   ├── sites/          Çoklu site yönetimi
+│   ├── ai/             Asistan, site bakımı, OpenAI API ve MCP
 │   ├── reference/      API, CLI, config referansı
 │   ├── deployment/     Node, Cloudflare, depolama, yedekleme
 │   ├── plugins/        Eklenti yazma ve yayınlama

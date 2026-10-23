@@ -1,3 +1,6 @@
+import { aiConfigFromEnv } from "./ai/chat.ts";
+import { ChatHistory } from "./ai/history.ts";
+import { careRound, sendMonthlyReports } from "./sites/care.ts";
 import { mkdir } from "node:fs/promises";
 import { DatabaseSync } from "node:sqlite";
 import { join } from "node:path";
@@ -8,6 +11,7 @@ import {
 	listPendingInvitations,
 	needsSetup,
 	normalizeInvitationEmail,
+	permissionsFor,
 	revokeInvitation as revokeInvitationRecord,
 	userFromRequest,
 } from "@wuppy/auth";
@@ -32,7 +36,9 @@ import { MediaService } from "./media/index.ts";
 import { JsonStore } from "./data/store.ts";
 import { CommentService } from "./comments/index.ts";
 import { RedirectService } from "./redirects/service.ts";
-import { ApiTokenService } from "./security/api-tokens.ts";
+import { ApiTokenService, bearerUser } from "./security/api-tokens.ts";
+import { SiteStore } from "./sites/store.ts";
+import { GITHUB_CLIENT_ID, GithubAccounts, GithubThemes } from "./themes/github.ts";
 import { renderEmail } from "./email/templates.ts";
 import { createEmailSender } from "./email/index.ts";
 import { settingsSchema } from "./data/schemas.ts";
@@ -71,7 +77,8 @@ export async function createServer({
 	const config = await loadConfig(root);
 	await loadDotEnv(root);
 	await mkdir(join(root, ".wuppy"), { recursive: true });
-	const db = new DatabaseSync(join(root, ".wuppy", "auth.db"));
+	// A GitHub theme runs from its own folder but keeps the accounts of the site it was installed on (serve.mjs sets this).
+	const db = new DatabaseSync(process.env.WUPPY_AUTH_DB || join(root, ".wuppy", "auth.db"));
 	const audit = new AuditLog(db);
 	const git = config.git ? await RealGit.ensure(root) : new NoopGit();
 	const json = new JsonStore(root, git);
@@ -141,8 +148,17 @@ export async function createServer({
 		if (index === -1) collections.push(type);
 		else collections[index] = type;
 	}
-	const service = new ContentService(root, collections, git, { components: config.components, emit });
-	const media = new MediaService(root, git, emit, json);
+	// Plugins load after these services, so the before-hooks reach them through `plugins` at call time.
+	const service = new ContentService(root, collections, git, {
+		components: config.components,
+		emit,
+		beforeSave: async (e) => {
+			const out = (await plugins?.beforeContentSave(e)) ?? e;
+			return { data: out.data, body: out.body };
+		},
+		beforeDelete: async (e) => plugins?.beforeContentDelete(e),
+	});
+	const media = new MediaService(root, git, emit, json, async (file) => plugins?.beforeMediaUpload(file));
 	const backups = new BackupService(root, service, settings.backup.keep);
 	// shortcut: settings are read once at startup, so changing the schedule needs a restart.
 	if (settings.backup.enabled) {
@@ -184,6 +200,37 @@ export async function createServer({
 	});
 	await plugins.load();
 
+	const sites = new SiteStore(db, secret);
+	const siteNetwork = { allowPrivate: process.env.WUPPY_ALLOW_PRIVATE_URLS === "1" };
+	/** Hub users who manage sites hear about site problems. */
+	const siteManagers = () =>
+		(db.prepare("SELECT email, role FROM user").all() as { email: string; role: string | null }[])
+			.filter((u) =>
+				permissionsFor((u.role ?? "viewer") as Parameters<typeof permissionsFor>[0]).includes("sites:manage"),
+			)
+			.map((u) => u.email);
+	// shortcut: the last alert lives in memory, so a restart repeats an ongoing alert once.
+	let lastAlert = "";
+	const siteCare = async () => {
+		if (sites.list().length === 0) return;
+		const problems = await careRound(sites, siteNetwork);
+		const key = problems.join("\n");
+		if (key && key !== lastAlert) {
+			const current = await currentSettings();
+			for (const to of siteManagers())
+				await sendEmail({
+					to,
+					subject: `${current.siteName}: ${problems.length} site problem${problems.length === 1 ? "" : "s"}`,
+					text: `The hourly site check found:\n\n${problems.map((p) => `- ${p}`).join("\n")}\n\nOpen Sites in the admin to fix them.`,
+				});
+		}
+		lastAlert = key;
+		await sendMonthlyReports(sites, siteNetwork, sendEmail);
+	};
+	const runCare = () => void siteCare().catch((e: Error) => log(`[wuppy] site care failed: ${e.message}`));
+	setTimeout(runCare, 60_000).unref();
+	setInterval(runCare, 3_600_000).unref();
+
 	return new Hono()
 		.get("/api/setup", (c) =>
 			c.json({
@@ -207,6 +254,10 @@ export async function createServer({
 				autosave: new AutosaveStore(root),
 				sendEmail,
 				previewSecret: secret,
+				sites,
+				ai: aiConfigFromEnv(),
+				chats: new ChatHistory(db),
+				siteNetwork,
 				resetTwoFactor: (userId) => {
 					const row = db.prepare("SELECT email FROM user WHERE id = ?").get(userId) as { email: string } | undefined;
 					if (!row) return null;
@@ -250,17 +301,27 @@ export async function createServer({
 				acceptInvitation: (input) => acceptInvitationRecord(db, input),
 				userCount: () => (db.prepare("SELECT COUNT(*) AS n FROM user").get() as { n: number }).n,
 				pluginManager: plugins,
+				themes: new GithubThemes({
+					base: process.env.WUPPY_BASE_ROOT || root,
+					// Only serve.mjs restarts the process after an exit (Docker's restart policy); `astro dev` would just stop.
+					restart: () => {
+						if (process.env.WUPPY_RESTART !== "1") return false;
+						setTimeout(() => process.exit(0), 1000);
+						return true;
+					},
+				}),
+				github: new GithubAccounts(db, secret, {
+					clientId: process.env.WUPPY_GITHUB_CLIENT_ID || GITHUB_CLIENT_ID,
+					clientSecret: process.env.WUPPY_GITHUB_CLIENT_SECRET ?? "",
+					redirectUri: `${baseURL.replace(/\/+$/, "")}/api/themes/github/callback`,
+				}),
 				imports: new ImportJobs({ root, service, media, json, redirects }),
 				audit,
 				locales: config.locales,
-				getUser: async (req) => {
-					const bearer = req.headers.get("authorization");
-					if (bearer?.startsWith("Bearer ")) {
-						const token = tokens.verify(bearer.slice(7));
-						return token ? { id: token.userId, permissions: token.permissions } : null;
-					}
-					return userFromRequest(auth, req);
-				},
+				getUser: async (req) =>
+					req.headers.get("authorization")?.startsWith("Bearer ")
+						? bearerUser(tokens, db, req)
+						: userFromRequest(auth, req),
 			}),
 		);
 }

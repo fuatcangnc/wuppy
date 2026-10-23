@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiData } from "../../lib/api.ts";
+import { apiData, apiUrl } from "../../lib/api.ts";
 
 interface SiteSeo {
 	siteName: string;
@@ -59,7 +59,7 @@ export function SeoPreview(input: SeoPreviewInput) {
 			</div>
 			<div className="overflow-hidden rounded-md border text-sm">
 				{p.image ? (
-					<img src={p.image} alt="" className="h-32 w-full object-cover" />
+					<img src={apiUrl(p.image)} alt="" className="h-32 w-full object-cover" />
 				) : (
 					<div className="h-32 bg-muted" />
 				)}
