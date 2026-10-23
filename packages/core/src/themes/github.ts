@@ -167,9 +167,11 @@ export class GithubThemes {
 			})
 			.then(
 				async () => {
+					// Finish activation (sample pages + restart) before reporting done: the install is not complete while the
+					// running server still serves the old site.
+					await this.activate(repo);
 					job.status = "done";
 					job.step = "Done";
-					await this.activate(repo);
 				},
 				(e: Error & { stderr?: string }) => {
 					job.status = "failed";
