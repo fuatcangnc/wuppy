@@ -12,7 +12,7 @@ let svc: ContentService;
 const posts = collectionSchema.parse({ name: "posts", dir: "content/posts", fields: { title: "string" } });
 beforeEach(async () => {
 	root = await mkdtemp(join(tmpdir(), "wuppy-xfer-"));
-	svc = new ContentService(root, [posts], await RealGit.init(root), { components: [] });
+	svc = new ContentService(root, [posts], await RealGit.init(root));
 });
 afterEach(() => rm(root, { recursive: true, force: true }));
 

@@ -5,102 +5,214 @@ sidebar:
   order: 2.6
 ---
 
-Görsel editör, bir girdinin gövdesini Markdown yazmak yerine tuvale bloklar ekleyerek kurmanızı sağlar. Bir
-koleksiyonu açın, bir girdi seçin ve **Edit with Visual**'a tıklayın. Klasik editörle aynı girdiyi düzenler ve aynı
-API ile kaydeder; bu yüzden yetkiler, [MDX kuralları](/tr/guides/mdx/), [eklentilerin önce çalışan hook'ları](/tr/plugins/hooks/),
-düzenleme kilitleri ve **History** aynı şekilde çalışır.
+Görsel editör, bir girdinin gövdesini Markdown/MDX yazmak yerine tuvale bloklar ekleyerek kurmanızı sağlar. Klasik
+editörle aynı girdiyi düzenler ve aynı API ile kaydeder; bu yüzden yetkiler, [Markdown kuralları](/tr/guides/markdown/),
+[eklentilerin önce çalışan hook'ları](/tr/plugins/hooks/), düzenleme kilitleri ve **History** aynı şekilde çalışır.
 
-Editör [Instatic](https://github.com/corebunch/instatic)'ten (MIT) uyarlanmıştır: aynı sayfa ağacı, düzenleme
-işlemleri, component/layout modeli, paneller ve bırakma kuralları, Wuppy'nin dosya tabanlı MDX içeriği ve Git
-kayıtları üzerinde.
+Editör [Instatic](https://github.com/corebunch/instatic) (MIT) uyarlamasıdır: aynı sayfa ağacı, düzenleme işlemleri,
+component/layout modeli, paneller ve bırakma kuralları; Wuppy'nin dosya tabanlı MDX içeriği ve Git kayıtları
+üzerinde.
+
+## Açmak
+
+- Üst çubuktaki **Site** editörü ana sayfada açar (Pages içinde `index` veya `home`, yoksa ilk sayfa). Hiç sayfa yoksa
+  önce Content'te bir sayfa oluşturmanızı ister.
+- Bir koleksiyonda girdiyi seçip **Edit with Visual** deyin. Adres `/admin/v/<koleksiyon>/<slug>` olur.
+- **Back** koleksiyona döner, **Open live page** sitedeki sayfayı açar, bir bağlantı klasik editöre geçer.
+- Girdiyi başkası düzenlerken araç çubuğunda **… is editing** yazar ve kayıt kapalıdır (düzenleme kilidi).
+  Kaydedilmemiş değişiklikle çıkarken önce sorulur.
 
 ## Ekran
 
-- **Üst araç çubuğu:** hızlı **Container / Text / Image**, beyaz **Add** grid’i **Add to canvas**’ı açar, **Code**
-  tam ekran kod çalışma alanını açar, katman/komut ara (Ctrl/⌘+K), geri/ileri al, editör ayarları, canlı sayfayı aç,
-  klasik editöre geç ve kaydet.
-- **Explorer** (sol ray): **Layers** alanında arama ve ekleme düğmesi, renkli HTML etiketi pill'leri, modül
-  ikonları ve aç/kapat okları vardır; satırları sürükleyerek taşıyın (üst: önüne, alt: arkasına, kapsayıcının ortası:
-  içine), yeniden adlandırmak için çift tıklayın, sağ tıkla ikonlu menüden çoğaltın, componentleştirin,
-  kopyalayın/kesin/yapıştırın, sarın, modül ekleyin, kilitleyin veya silin. Sürüklerken Instatic tarzı yüzen satır,
-  cyan öncesi/sonrası çizgisi ve div/kapsayıcı satırının neredeyse tamamında yeşil iç-vurgu görünür; kapalı
-  kapsayıcılar kısa süre sonra açılır.
-  **Site** sayfaları, template'leri (kayıtlı layoutlar) ve componentleri Instatic tarzı sayaçlı bölümlerde ve boş
-  durumlarla listeler. **Code** site stylesheet'ini ve mevcut MDX kaynağını düzenler. **Media** arama,
-  All/Images/Videos filtreleri, list/grid görünümü, görsel/video küçük resimleri ve yükleme düğmeleri sunar.
-- **Code görünümü:** arama yapılabilen dosya ağacı (`src/pages`, `src/styles`, `src/components`, `.wuppy/data`),
-  breakpoint/zoom önizleme çubuğu, satır numaralı sözdizimi editörü, sekmeler, **Saved/Unsaved** durumu, Ctrl/⌘+S
-  kaydı ve altta **Styles/Computed** denetçisi olan Instatic tarzı tam ekran çalışma alanı. Sayfa kaynağı ve site CSS'i
-  düzenlenebilir; component/visual JSON dosyaları salt okunurdur. Kayıtlar aynı Git tabanlı içerik ve görsel veri
-  API'lerini kullanır. Tek satırlık elle yazılmış HTML görsel düğümlere çevrilir; geçerli Tailwind utility'leri
-  kayıtta derlenir (starter'da content için `@source` vardır). Önizleme kayıttan sonra yenilenir; kaydedilmemiş veya
-  geçersiz sınıflar (örneğin `text-red-500` yerine `text-red-10`) Tailwind tarafından üretilemez. Kurulu bir GitHub
-  teması aktifse yöneticiler `theme: owner/repo` altında `.astro` sayfa ve component dosyalarını da görür; tema
-  kaynak dosyaları düzenlenebilir; Astro değişikliklerinin çalışan siteye geçmesi için alt çubuktaki **Rebuild**
-  düğmesi temayı yeniden derler ve sunucuyu yeniden başlatır.
-- **Framework** (sol ray): shade/tint/şeffaflık renk token'ları, fluid type/space ölçekleri, font stack'leri ve
-  stylesheet bağlantıları. **Overview**, **Colors**, **Type**, **Space** sekmeleri.
-- **Selectors** (sol ray): ortak class/element selector kütüphanesi; bir selector'ı açıp tüm sayfalarda eşleşen
-  elemanları biçimlendirin.
-- **Canvas** (orta): sayfa iframe içinde. Seçmek için tıklayın, metni yerinde düzenlemek için çift tıklayın (Enter
-  kaydeder, Escape geri alır), sürükleyerek sıralayın, sağ tıkla kopyala/kes/yapıştır, çoğalt, sar, gizle, kilitle,
-  layout olarak kaydet, componentleştir, ayır veya sil. **Design/Live** görünümünü ve breakpoint/condition'ı yüzen
-  context selector'dan seçin.
-- **Properties** (sağ): class pill'leri (selector düzenlemek için tıklayın), responsive/state context'i, blok alanları,
-  component parametreleri ve gruplanmış stiller (Layout, Position, Spacing, Size, Typography, Background, Border,
-  Effects). Token datalist'leri `--v-*` framework değerlerini önerir. **Componentize** seçili alt ağacı yeniden
-  kullanılabilir component yapar.
-
-| Blok | Yazdığı |
+| Alan | Görevi |
 | --- | --- |
-| Container, Columns, Stack, Row, Card, Hero | diğer blokları tutan semantik kapsayıcılar |
-| Heading, Text, Quote, Code | `<h1>`–`<h6>`, `<p>`, `<blockquote>`, `<pre>` |
-| Button, Link | `<a>` |
-| Image, Video | `<img>` (Properties'ten yükle), `<video controls>` |
-| List, Divider, Spacer | `<ul>`/`<ol>`, `<hr>`, boş kapsayıcı |
-| Component | bir Visual Component örneği, kendi slot içeriğiyle |
-| Markdown | serbest Markdown/MDX metni, aynen korunur |
+| Araç çubuğu | hızlı ekleme **Container / Text / Image**, **Add** ızgarası, **Code** görünümü, arama (Ctrl/⌘+K), geri al/yinele, ayarlar, canlı sayfa, klasik editör, **Save** |
+| Sol ray | **Explorer** (Layers, Site, Code, Media), **Framework**, **Selectors** |
+| Tuval | sitenin stilleriyle iframe'ler içinde sayfa |
+| Properties (sağ) | seçili bloğun alanları, sınıfları, bağlamı ve stilleri |
+| Notch (alt) | **Design/Live** geçişi, zoom, sığdır |
+| Breadcrumbs | sayfadan seçili bloğa giden yol; bir parçaya tıklayınca o seçilir |
 
-Kısayollar: **Ctrl/⌘+Z** geri, **Ctrl/⌘+Shift+Z** veya **Ctrl/⌘+Y** ileri, **Ctrl/⌘+D** çoğalt, **Delete** sil,
-**Ctrl/⌘+C/X/V** kopyala/kes/yapıştır, **Ctrl/⌘+S** kaydet, **Ctrl/⌘+0** zoom sıfırla, **Ctrl/⌘++/−** zoom,
-**Shift+1** sığdır, **Alt+↑/↓** kaydır, **A** inserter, **Escape** selector'dan çık/seçimi bırak. Geri alma 100 adım
-tutar; tek alanda yazmak tek adım sayılır.
+### Tuval
 
-### Add to canvas
+- **Design** temel (masaüstü) çerçeveyi ve tüm breakpoint'leri yan yana gösterir; örneğin Desktop 1440px, Tablet
+  768px, Mobile 375px. Tekerlek kaydırır, Ctrl/⌘ + tekerlek yakınlaştırır, **Fit** tüm çerçeveleri sığdırır.
+- **Live** ziyaretçinin gördüğü gibi tek çerçeve gösterir.
+- Bloğa tıklayınca seçilir. Metne çift tıklayınca yerinde düzenlenir: tek satırlık blokta **Enter**, çok satırlıda
+  Ctrl/⌘+Enter onaylar (Shift+Enter satır ekler), **Escape** geri alır.
+- Blokları sürükleyerek sıralayın: üst veya alt kenar önüne/arkasına, container'ın ortası içine yerleştirir.
+- Seçili bloğun küçük bir araç çubuğu (sürükleme tutamacı, üst öğeyi seç, arkasına ekle, çoğalt, sil) ve sağ tık menüsü
+  (kopyala/kes/yapıştır, çoğalt, sar, gizle, kilitle, layout olarak kaydet, componentize, detach, sil) vardır.
+- Markdown blokları sitenin işlediği gibi işlenmiş görünür (sunucu bunları kayıttaki gibi kontrol eder). Kaynakları
+  Properties'te düzenlenir.
 
-Instatic’teki gibi: solda **Modules / Layouts / Components / Recent** ve canlı sayıları, seçili öğenin önizlemesi;
-sağda arama, list/grid geçişi, wireframe küçük resimleri, favoriler ve son kullanılanlar. Modüller kategori rengiyle
-ayrılır; kayıtlı layoutlar ve görsel componentler kendi bölümlerinde görünür. HTML yapıştırma sol rayda kalır.
+- Temanın canlı sayfasında temanın kendi işaretlemesi de düzenlenir (yalnız dev sunucusu). Blokların dışındaki bir öğeye
+  tıklayınca seçilir: Properties etiketini ve dosyasını gösterir; metnini, class'larını ve inline stilini düzenler,
+  yukarı/aşağı taşır, çoğaltır, siler ya da dosyayı Code görünümünde açar. Yalnız metin içeren öğelere çift tıklayınca
+  yerinde düzenlenir. Değişiklik temanın `.astro` dosyasına yazılır ve sayfa yenilenir. Kodla üretilen metin ya da
+  öznitelikler (`{...}`, `.map()` öğeleri) Code görünümünde düzenlenir; `Footer.astro` gibi ortak bir bileşendeki öğe
+  her sayfada değişir.
+- Tema öğesinin denetçisi Instatic'inkiyle aynıdır: metin, etiket (`p`, `h2`, `section`…), tüm stil grupları (Layout,
+  Position, Size, Spacing, Typography, Background, Border, Effects, Interaction) ve HTML öznitelikleri. Tema Tailwind 4
+  kullanıyorsa stiller class olarak kaydedilir: `align-self: center` `self-center`, `320px` genişlik `w-[320px]` olur;
+  karşılığı olmayan özellikler arbitrary property olarak yazılır (`[filter:blur(4px)]`). Tailwind değeri (`4`, `full`,
+  `red-500`) ya da CSS (`320px`, `#fff`) yazılabilir. Breakpoint ve state seçilince class `max-[768px]:` ve `hover:`
+  altında yazılır; başka variant'lardaki class'lar korunur. Tailwind kullanmayan temada stiller inline style olur. Boş
+  alanlar tarayıcının değerini gösterir.
 
-## Neler kaydedilir
+### Explorer
 
-Her üst düzey blok gövdeye `data-ve="…"` işaretli tek satır HTML olarak yazılır:
+- **Layers:** arama, ekleme düğmesi, renkli HTML tag etiketleri, modül ikonları ve aç/kapat oklarıyla sayfa ağacı.
+  Satırları sürükleyerek taşıyın (üst kenar: önüne, alt kenar: arkasına, container'ın ortası: içine); kapalı container
+  üzerinde beklerken açılır. Çift tıklayınca yeniden adlandırılır. Sağ tık: Hide, Rename, Duplicate, Componentize, Save
+  as layout, Copy, Cut, Paste, Wrap, Select parent, **Insert module here**, Lock ve Delete.
+- **Site:** Pages koleksiyonunun sayfaları, **Templates** (kayıtlı layout'lar) ve **Components**; sayaçlar ve boş
+  durumlarla. Sayfaya tıklayınca açılır; template'i tuvale sürükleyin veya ekleme düğmesine basın.
+- **Code:** site stylesheet'i ve açık sayfanın MDX/Markdown kaynağı için hızlı editör.
+- **Media:** arama, All/Images/Videos filtreleri, liste/ızgara görünümü, küçük resimler ve yükleme. Dosyayı tuvale
+  sürükleyin veya kullanmak için tıklayın.
+
+### Tuvale ekleme
+
+**Add** (veya **A**) ekleyiciyi açar. Sol rayda sayaçlı **Modules / Layouts / Components / Recent** ve vurgulanan
+öğenin önizlemesi; sağ panelde arama, liste/ızgara görünümü, wireframe küçük resimler ve favoriler (yıldız) vardır.
+**Paste HTML** yapıştırılan HTML'i bloklara çevirir; JSX'ten gelen `className` `class` olarak okunur. Yeni blok seçili
+bloğun arkasına, seçili blok container ise içine eklenir.
+
+| Kategori | Hazır bloklar |
+| --- | --- |
+| Layout | Section, Container, Columns, Stack, Row, Card, Hero, Spacer |
+| Basic | Heading, Text, Button, Link, List, Quote, Divider |
+| Media | Image, Video |
+| Advanced | Code, Markdown |
+
+| Blok | Yazdığı | Alanlar |
+| --- | --- | --- |
+| Container | `<section>`, `<div>`, `<header>`, `<footer>`, `<main>`, `<article>`, `<aside>`, `<nav>` | öğe, sınıflar |
+| Heading | `<h1>`–`<h6>` | seviye, sınıflar |
+| Text | `<p>` | sınıflar |
+| Button, Link | `<a>` | bağlantı, sınıflar |
+| Image | `<img>` | görsel (yükleme veya Media), alt metin, sınıflar |
+| Video | `<video controls>` | `.mp4`/`.webm` adresi, sınıflar |
+| List | `<ul>` / `<ol>` | maddeler (satır başına bir), numaralı |
+| Quote, Code, Divider | `<blockquote>`, `<pre><code>`, `<hr>` | sınıflar |
+| Component instance | component'in işaretlemesi | parametreleri, slot içeriği |
+| Markdown | serbest Markdown, aynen korunur | kaynak |
+| Astro bileşeni | `<Callout data-ve="component" data-ve-name="Callout">`; tema haritası render eder | bileşen adı |
+
+### Properties
+
+- Bloğun **alanları** (yukarıdaki tablo).
+- **Sınıflar:** sınıf etiketleri. Sınıf ekleyin ya da birine tıklayarak bu blok yerine o sınıfın seçicisini
+  stillendirin.
+- **Bağlam:** stillerin uygulandığı breakpoint (Base, Tablet, Mobile veya sizinkiler) ya da koşul ve bir **durum**:
+  `:hover`, `:focus`, `:focus-visible`, `:focus-within`, `:active`, `:visited`, `:disabled`, `:first-child`,
+  `:last-child`, `:nth-child(odd/even)`, `::before`, `::after`, `::placeholder`, `::marker`.
+- Gruplu **stiller:** Layout (display, flex, gap, grid sütunları), Position, Spacing, Size, Typography, Background,
+  Border ve Effects (transition, transform). Girişler framework token'larını (`--v-*`) önerir; başka CSS özellikleri de
+  eklenebilir.
+- **Componentize**; bir instance için parametreleri, **Edit component** ve **Detach**.
+
+### Framework
+
+**Overview**, **Colors**, **Type** ve **Space** sekmelerinde site geneli tasarım token'ları:
+
+- sınıf öneki, kök font boyutu ve akışkan ölçeklerin en küçük/en büyük ekran genişliği;
+- isteğe bağlı koyu değerli renkler, en fazla 9 koyu ve 9 açık ton, şeffaf varyantlar ve utility sınıfları;
+- akışkan **type** ve **space** ölçekleri (en küçük/en büyük boyut ve oran, adım adları, temel adım), Instatic'teki gibi
+  hesaplanır;
+- isteğe bağlı `https` stylesheet bağlantılı font yığınları.
+
+Her token bir CSS değişkeni, utility'leri açıksa bir utility sınıfı da olur (varsayılan önek `v-`).
+
+### Selectors
+
+Ortak seçici kütüphanesi (`.card`, `h2`, `.hero > p`…). Birini açınca her sayfada eşleşen tüm öğeleri, Properties ile
+aynı bağlam ve durum seçenekleriyle stillendirirsiniz. Sınıf seçicileri sınıf seçicide önerilir.
+
+### Ayarlar
+
+Temel çerçeve genişliği, bağlam seçicideki **breakpoint'ler** (max-width, önce masaüstü; en fazla 8) ve **koşullar**
+(`@media`, `@container` veya `@supports` sorguları; en fazla 20), ayrıca kısayol listesi.
+
+### Arama (Ctrl/⌘+K)
+
+Adıyla herhangi bir katmana gidin veya bir komut çalıştırın: Add, Undo, Redo, Paste, Live veya Design modu, tuvali
+sığdır, Framework, Selectors veya Explorer'ı aç, Settings.
+
+## Code görünümü
+
+Araç çubuğundaki **Code** tam genişlikte bir çalışma alanı açar:
+
+- Gerçek yollarla aranabilir dosya ağacı. **site** sayfayı (`content/pages/about.md`), site CSS'ini
+  (`.wuppy/data/visual/site.css`), componentleri (`.wuppy/data/visual/components/*.json`) ve `visual.json`'u tutar.
+  **New page** yeni sayfa için koleksiyona gider.
+- GitHub teması aktifken ikinci bir **theme: owner/repo** kökü adminlere temanın kodunu (`.astro`, CSS, script, config)
+  gösterir. İçerik **site** altında kalır, bu yüzden temanın örnek içerik klasörleri listelenmez. Kaydedilen tema
+  dosyası `pnpm dev` altında hemen görünür; production'da durum çubuğundaki **Rebuild** düğmesine basın. Bağımlılıklar,
+  build çıktısı, lockfile'lar ve `.env` hiç listelenmez ve yazılamaz. Bkz.
+  [GitHub'dan temalar](/tr/guides/github-themes/).
+- Sekmeler, satır numaralı ve renklendirmeli editör, **Saved/Unsaved** durumu ve Ctrl/⌘+S ile kayıt.
+- Breakpoint ve zoom kontrollü önizleme ve seçili blok için altta **Styles/Computed** paneli.
+- Sayfa kaynağı (`.mdx` veya `.md`), site CSS'i ve tema dosyaları düzenlenebilir; component ve `visual.json` dosyaları salt okunurdur. Site
+  kayıtları Git tabanlı aynı içerik ve görsel veri API'lerini kullanır.
+- Yazdığınız tek satırlık HTML görsel bloklara çevrilir. Geçerli Tailwind utility'leri kayıtta derlenir (starter
+  içeriği `@source` ile tarar) ve önizleme CSS'i yeniden yükler; `text-red-10` gibi geçersiz bir sınıf CSS üretmez.
+
+## Componentler ve layout'lar
+
+- **Componentize** (katman menüsü veya Properties) seçili alt ağaçtan bir component yapar. Bir component en fazla 20
+  **parametre** alabilir: metin ve özniteliklerindeki `{{ad}}` her instance'ın değeriyle değişir. İçindeki **Slot**,
+  her instance'ın kendi içeriğini tutar.
+- **Edit component** tüm instance'ların işaretlemesini değiştirir; **Detach** bir instance'ı normal bloklara çevirir.
+  Explorer → Site içindeki **Update pages** güncel işaretlemeyi component'i kullanan her sayfaya yazar.
+- **Save as layout** seçili alt ağacı stilleriyle saklar; Add → Layouts veya Explorer → Site'tan eklenir.
+- **Tema bileşenleri:** bir GitHub teması etkinse `src/components/*.astro` dosyaları `ASTRO` rozetiyle Add → Components altında görünür. Birini seçmek sayfaya gerçek bir Astro bileşeni bloğu ekler. Wuppy, bileşen haritasını temanın `<Content />` öğesine otomatik verir; içe aktarma satırı yazılmaz. Canvas bileşenin gerçek çıktısını temanın stilleriyle gösterir (prop olmadan, Wuppy entegrasyonunun siteye eklediği `/_wuppy/component/<Ad>` sayfasıyla işlenir); seçilebilmesi için çerçeveli ve etiketlidir, içindeki script'ler canvas'ta çalışmaz. Verilmeyen prop'lara ihtiyaç duyan bir bileşen (`headings` olmadan içindekiler tablosu) sayfayı bozmaz: site onu atlar (bir HTML yorumu, hata sunucu günlüğünde) ve canvas prop gerektiğini yazar. Bileşen eklenen bir `.md` girdisi `.mdx` olarak kaydedilir, bu yüzden gövdesi geçerli MDX olmalıdır: `</div>` gibi fazladan bir kapanış etiketi satırıyla birlikte `invalid MDX` olarak bildirilir.
+
+## Klavye
+
+| Tuşlar | İşlem |
+| --- | --- |
+| Ctrl/⌘+S | kaydet (yazarken de) |
+| Ctrl/⌘+K | katman ve komut ara |
+| Ctrl/⌘+Z; Ctrl/⌘+Shift+Z veya Ctrl/⌘+Y | geri al; yinele (100 adım, bir alana yazmak tek adımdır) |
+| Ctrl/⌘+C / X / V | kopyala, kes, yapıştır (seçili bloğun arkasına) |
+| Ctrl/⌘+D | çoğalt |
+| Delete, Backspace | seçili bloğu sil |
+| Alt+↑ / Alt+↓ | seçili bloğu yukarı veya aşağı taşı |
+| A | Add'i aç |
+| Ctrl/⌘+0; Ctrl/⌘++ / −; Shift+1 | %100 zoom; yakınlaştır/uzaklaştır; sığdır |
+| Escape | menüyü kapat, stillenen seçiciden çık, sonra üst öğeyi seç ve seçimi kaldır |
+
+## Ne kaydedilir
+
+Her üst düzey blok gövdede `data-ve="…"` ile işaretli tek satır HTML olarak kaydedilir, örneğin:
 
 ```html
-<section data-ve="container" style="padding: 32px 16px"><h2 data-ve="heading">Welcome</h2></section>
+<section data-ve="container" style="padding: 32px 16px"><h2 data-ve="heading">Hoş geldiniz</h2></section>
 ```
 
-- Aynı satır `.mdx` ve `.md` girdilerinde geçerlidir; mevcut Markdown sayfaları da görsel olarak düzenlenebilir.
-- Editörün yazmadığı her şey (Markdown, componentler, kod blokları) tek bir **Markdown** bloğu olur ve aynen geri
+- Görsel bloklar `.mdx` girdisinin içinde HTML benzeri JSX'tir; mevcut MDX sayfaları da görsel olarak düzenlenebilir. Bir bileşen eklendiğinde `.md` sayfası `.mdx`'e yükseltilir; düz Markdown girdileri `.md` kalır.
+- Editörün yazmadığı her şey (Markdown, çok satırlı HTML, kod blokları) tek bir **Markdown** bloğu olur ve aynen geri
   yazılır.
-- Metin karakter referanslarıyla saklanır; `*`, `{`, `<` gibi karakterler yazıldığı gibi görünür, Markdown/JSX olmaz.
+- Metin karakter referanslarıyla saklanır; `*`, `{`, `<` gibi karakterler yazıldığı gibi görünür.
 - Inline stiller filtrelenir (`;`/`{}`/`<>`/tırnak/ters bölü, `expression()`, `javascript:` yok; `url()` yalnız https
-  veya site yolu). Responsive/state override'ları `data-ve-r` içinde taşınır; public site bunları CSS'e çevirir.
-- Gizli bloklar `hidden` ile kaydedilir; gövdede kalır ama sitede görünmez.
-- Site geneli framework, selector, component ve layout verisi `.wuppy/data/visual.json` içine yazılır; public sayfalar
-  bunu `/api/public/visual.css` ve sayfa başına üretilen CSS ile alır. Kaydetmek diğer içerikler gibi Git commit'idir.
-
-## Componentler ve layoutlar
-
-- Bir katmanın context menüsünden veya Properties'teki düğmeden **Create component** yapın. Örnekler component
-  markup'ını kendi slot içerikleriyle çizer; **Edit component** tüm örnekleri değiştirir, Explorer → Site'daki
-  **Update pages** mevcut component markup'ını kullanan tüm sayfalara yazar.
-- **Save as layout** seçili alt ağacı stilleriyle saklar; sonra Add → Layouts'tan ekleyin veya sürükleyin.
+  veya site yolları). Responsive ve durum stilleri `data-ve-r` ile taşınır; site bunları CSS'e çevirir.
+- Gizli bloklar `hidden` ile kaydedilir: gövdede kalır ama görünmez. Kilitli bloklar editörde taşınamaz ve silinemez.
+- Framework, seçiciler, componentler, layout'lar, breakpoint'ler ve site stylesheet'i `.wuppy/data/visual.json`'a
+  kaydedilir. Site sayfaları bunları `/api/public/visual.css` ve sayfa başına üretilen küçük bir `<style>` ile alır. Her
+  kayıt diğer içerik gibi bir Git commit'idir.
 
 ## Sınırlar
 
-- Formlar, keyfi script'ler, dinamik döngü/binding'ler, Yjs ortak düzenleme ve npm bağımlılık paneli bu editörün
-  parçası değildir: Wuppy MDX'i doğrular ve düz dosya saklar; bunlar ayrı bir güvenlik modeli gerektirir.
-- Bir Markdown bloğu sayfanın üst düzeyinde kalır (kapsayıcı içine giremez).
-- Kaydedilen satırları elle düzenlemek sorun değildir; yeter ki her görsel blok tek satırda kalsın.
-- Tuval sitenin stylesheet'ini ve fontlarını kullanır; Astro'ya özgü componentler placeholder olarak gösterilir.
+- Formlar, script'ler, dinamik döngü/bağlamalar, canlı ortak düzenleme (Wuppy düzenleme kilidi kullanır) ve npm
+  bağımlılık paneli bu editörün parçası değildir: Wuppy Markdown'ı doğrular ve düz dosya saklar; bunlar ayrı bir
+  güvenlik modeli gerektirir.
+- Bir Markdown bloğu sayfanın üst düzeyinde kalır (kapsayıcı içine giremez) ve bütün olarak seçilir.
+- Kaydedilen satırları elle düzenlemek, her görsel blok tek satırda kaldığı sürece sorun değildir.
+- Yerel sitede tuval girdinin canlı sayfasını yükler ve gövdeyi yerinde, temanın kendi header, footer, stil ve
+  script'leri içinde düzenler (karanlık mod dahil). Bu, girdiyi `<Content />` ile çizen her Astro temasında çalışır:
+  entegrasyon çizildiği yeri `<!--wuppy:body-->` yorumlarıyla işaretler. Temanın link ve formları tuvalde sayfa
+  değiştirmez. İşaretli gövde yoksa (kaydedilmemiş veya yayımlanmamış girdi, girdiden üretilmeyen sayfa, uzak site,
+  component düzenleme) tuval sitenin stylesheet'i, fontları, `<html>`/`<body>` öznitelikleri ve head inline
+  script'leriyle boş bir çerçeveye döner.

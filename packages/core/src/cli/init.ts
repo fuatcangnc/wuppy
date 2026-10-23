@@ -27,6 +27,10 @@ export interface FoundCollection {
 	dir: string;
 	format: "md" | "mdx";
 	route?: string;
+	/** The admin section it fills (Posts or Pages); only set when the name is not already `posts`/`pages`. */
+	kind?: "posts" | "pages";
+	/** Field names Wuppy knows under another name: `{ pubDate: "date" }`. Used when the project runs as a theme. */
+	map?: Record<string, string>;
 	fields: Record<string, FieldType>;
 	files: number;
 }
@@ -56,6 +60,12 @@ async function walk(dir: string): Promise<string[]> {
 
 const IMAGE = /\.(png|jpe?g|webp|avif|gif|svg)$/i;
 const DATE = /^\d{4}-\d{2}-\d{2}(T[\d:.]+(Z|[+-]\d{2}:\d{2})?)?$/;
+
+/** Common Astro theme field names for the starter's `date` and `cover`. */
+const ALIASES: Record<string, string[]> = {
+	date: ["pubDate", "publishDate", "pubDatetime", "publishedAt", "published", "publishedDate"],
+	cover: ["heroImage", "coverImage", "image", "featuredImage", "thumbnail"],
+};
 
 /** Guesses one field's type from the values it has across the existing files. */
 export function inferField(key: string, values: unknown[]): FieldType {
@@ -165,6 +175,24 @@ export async function planInit(root: string): Promise<InitPlan> {
 			plan.warnings.push(`${c.name}: no page renders it with a [slug] param; set "route" in wuppy.config.mjs`);
 		plan.collections.push({ name: c.name, dir, format, route, fields, files: editable.length });
 	}
+	// Dated entries read as Posts (a theme's `blog`), undated ones as Pages (`about`), so the admin keeps both sections.
+	for (const kind of ["posts", "pages"] as const) {
+		if (plan.collections.some((c) => c.name === kind || c.kind === kind)) continue;
+		const dated = (c: FoundCollection) =>
+			Object.values(c.fields).some((f) => (typeof f === "string" ? f : f.type) === "date");
+		const pick = plan.collections.find(
+			(c) => !c.kind && c.name !== "posts" && c.name !== "pages" && dated(c) === (kind === "posts"),
+		);
+		if (pick) pick.kind = kind;
+	}
+	for (const c of plan.collections) {
+		const map: Record<string, string> = {};
+		for (const [to, names] of Object.entries(ALIASES)) {
+			const from = names.find((n) => n in c.fields);
+			if (from && !(to in c.fields)) map[from] = to;
+		}
+		if (Object.keys(map).length) c.map = map;
+	}
 	plan.components = [...components].toSorted();
 
 	const pages = (await walk(join(root, "src/pages"))).map((f) => relative(join(root, "src/pages"), f));
@@ -226,10 +254,12 @@ export function renderConfig(plan: InitPlan, site: { url?: string; name: string 
 	const config = {
 		...(site.url ? { site: { url: site.url, name: site.name } } : {}),
 		...(plan.components.length ? { components: plan.components } : {}),
-		collections: plan.collections.map(({ name, dir, format, route, fields }) => ({
+		collections: plan.collections.map(({ name, dir, format, kind, map, route, fields }) => ({
 			name,
 			dir,
 			format,
+			...(kind ? { kind } : {}),
+			...(map ? { map } : {}),
 			...(route ? { route } : {}),
 			fields,
 		})),

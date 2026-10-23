@@ -1,6 +1,9 @@
 import { readdir, readFile, stat } from "node:fs/promises";
-import { join, relative, sep } from "node:path";
+import { join, relative, resolve, sep } from "node:path";
 import { loadConfig } from "../config/index.ts";
+import { parseDocument } from "../content/parsers/frontmatter.ts";
+import { markdownContent, mdxContent, type MarkdownHeading, type MarkdownSettings } from "../markdown/render.ts";
+import { loadSiteConfig, pagesDir, renameFields } from "../themes/site.ts";
 
 /**
  * Runtime half of live content. The site's pages keep calling `getCollection()` / `getEntry()` from `astro:content`;
@@ -23,7 +26,16 @@ interface SchemaLike {
 	safeParseAsync(data: unknown): Promise<{ success: boolean; data?: unknown; error?: { message: string } }>;
 }
 
-type LiveCollection = { name: string; dir: string; format: "md" | "mdx" };
+/** `dir` is relative to the root or absolute (a theme reading the site's entries); `rename` is site -> theme field. */
+type LiveCollection = { name: string; dir: string; rename?: Record<string, string> };
+
+/** The collections in wuppy.config; a theme run for a site (WUPPY_BASE_ROOT) reads them from the site's folders. */
+async function configured(root: string): Promise<LiveCollection[]> {
+	const site = process.env.WUPPY_BASE_ROOT;
+	if (!site || resolve(site) === resolve(root)) return (await loadConfig(root)).collections;
+	const { links } = await loadSiteConfig(site, root);
+	return links.map((l) => ({ name: l.name, dir: join(site, l.dir), rename: l.rename }));
+}
 
 export interface LiveDeps {
 	root: string;
@@ -37,7 +49,52 @@ export interface LiveDeps {
 	renderMarkdown(body: string, frontmatter: Record<string, unknown>, filePath: string): Promise<AstroEntry["rendered"]>;
 }
 
-export { mdxContent } from "../mdx/render.ts";
+export { markdownRenderer, mdxContent } from "../markdown/render.ts";
+
+let pages: Promise<string | undefined> | undefined;
+
+type PageBody = { data: Record<string, unknown>; headings: MarkdownHeading[]; html?: string; Content?: unknown };
+
+/** The site's Pages entry files for a theme page `rel`, `.mdx` first. */
+async function entryFiles(rel: string): Promise<string[]> {
+	const site = process.env.WUPPY_BASE_ROOT || process.cwd();
+	pages ??= loadSiteConfig(site, process.cwd()).then((c) => pagesDir(c.collections));
+	const dir = await pages;
+	return dir ? [".mdx", ".md"].map((ext) => join(site, dir, rel + ext)) : [];
+}
+
+async function renderBody(file: string, source: string, markdown?: MarkdownSettings): Promise<PageBody> {
+	const { data, body } = parseDocument(source);
+	const { layout: _layout, ...rest } = data;
+	if (file.endsWith(".md")) return { data: rest, ...(await markdownContent(body, { root: process.cwd(), markdown })) };
+	return { data: rest, ...(await mdxContent(body, { markdown })) };
+}
+
+/**
+ * A theme's Markdown page body (`rel` like `about`), read on each request from the site's Pages entry, or from the theme
+ * file itself when the site has none. `.mdx` compiles to a component (theme components allowed); `.md` to HTML.
+ */
+export async function themePage(rel: string, themeFile: string, markdown?: MarkdownSettings): Promise<PageBody> {
+	for (const file of [...(await entryFiles(rel)), themeFile]) {
+		const source = await readFile(file, "utf8").catch(() => null);
+		if (source !== null) return renderBody(file, source, markdown);
+	}
+	throw new Error(`[wuppy] ${themeFile} is gone`);
+}
+
+/**
+ * The blocks added in the admin to a theme `.astro` page: the body of the site's Pages entry that names the page as its
+ * `template`, or undefined when there is none.
+ */
+export async function themeBody(rel: string, markdown?: MarkdownSettings): Promise<PageBody | undefined> {
+	for (const file of await entryFiles(rel)) {
+		const source = await readFile(file, "utf8").catch(() => null);
+		if (source === null) continue;
+		if (typeof parseDocument(source).data.template !== "string") return undefined;
+		return renderBody(file, source, markdown);
+	}
+	return undefined;
+}
 
 async function files(dir: string): Promise<string[]> {
 	const names = await readdir(dir, { recursive: true }).catch(() => [] as string[]);
@@ -66,9 +123,7 @@ export function defaultId(path: string): string {
 export function createLive(deps: LiveDeps) {
 	let collections: Promise<Map<string, LiveCollection>> | undefined;
 	const named = () =>
-		(collections ??= (
-			deps.collections ? Promise.resolve(deps.collections) : loadConfig(deps.root).then((c) => c.collections)
-		).then(
+		(collections ??= (deps.collections ? Promise.resolve(deps.collections) : configured(deps.root)).then(
 			(list) => new Map(list.map((c) => [c.name, c])),
 			(e: Error) => {
 				console.error(`[wuppy] live content is off: ${e.message}`);
@@ -84,10 +139,15 @@ export function createLive(deps: LiveDeps) {
 		const digest = await deps.digest(source);
 		if (built?.digest === digest) return built;
 		const collection = (await named()).get(name)!;
-		const { frontmatter, content } = deps.parseFrontmatter(source);
+		const doc = deps.parseFrontmatter(source);
+		const frontmatter = renameFields(doc.frontmatter, collection.rename ?? {});
+		const content = doc.content;
 		const body = content.trim();
 		const slug = typeof frontmatter.slug === "string" ? frontmatter.slug : undefined;
-		const id = slug ?? built?.id ?? defaultId(filePath.slice(collection.dir.length + 1));
+		const id =
+			slug ??
+			built?.id ??
+			defaultId(relative(resolve(deps.root, collection.dir), resolve(deps.root, filePath)).split(sep).join("/"));
 		let data: Record<string, unknown> = frontmatter;
 		const schema = deps.schema(name);
 		if (schema) {
@@ -109,7 +169,7 @@ export function createLive(deps: LiveDeps) {
 		const collection = (await named()).get(name)!;
 		const built = new Map((await deps.built(name).catch(() => [])).map((e) => [e.filePath, e]));
 		const out: AstroEntry[] = [];
-		for (const abs of await files(join(deps.root, collection.dir))) {
+		for (const abs of await files(resolve(deps.root, collection.dir))) {
 			const info = await stat(abs).catch(() => null);
 			if (!info) continue;
 			let hit = cache.get(abs);

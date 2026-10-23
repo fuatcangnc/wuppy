@@ -79,8 +79,12 @@ export function ThemesPage() {
 		if (!connected) return;
 		void apiData<Repo[]>("GET", "/api/themes/github/repos")
 			.then(setRepos)
-			.catch((e: Error) => setError(e.message));
-	}, [connected]);
+			.catch((e: Error) => {
+				setError(e.message);
+				// An expired token is dropped by the server: reload so Connect GitHub shows again.
+				void load();
+			});
+	}, [connected, load]);
 
 	// Poll while an install runs; it switches and restarts by itself when the build succeeds.
 	const running = state?.job?.status === "running";

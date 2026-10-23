@@ -103,13 +103,12 @@ import xxhash from ${await from("xxhash-wasm")};
 import { pathToFileURL } from "node:url";
 import { createRequire } from "node:module";
 import { join } from "node:path";
-import { createLive, mdxContent } from ${JSON.stringify(o.runtime)};
+import { createLive, markdownRenderer, mdxContent } from ${JSON.stringify(o.runtime)};
 export * from "astro:content";
 
 const settings = ${JSON.stringify(o.markdown())};
 const hasher = xxhash();
 const schemas = new Map();
-let renderer;
 const live = createLive({
 	root: process.cwd(),
 	built: (name) => real.getCollection(name),
@@ -125,13 +124,8 @@ const live = createLive({
 	parseFrontmatter: (source) => parseFrontmatter(source),
 	digest: async (source) => (await hasher).h64ToString(source),
 	async renderMarkdown(body, data, filePath) {
-		// Loaded from Astro's own dependency at runtime: it has a native binding, which cannot be bundled.
-		renderer ??= (async () => {
-			const astro = createRequire(join(process.cwd(), "package.json")).resolve("astro/package.json");
-			const { satteri } = await import(/* @vite-ignore */ pathToFileURL(createRequire(astro).resolve("@astrojs/markdown-satteri")).href);
-			return satteri({ features: settings.features }).createRenderer(settings.shared);
-		})();
-		const result = await (await renderer).render(body, { frontmatter: data, fileURL: pathToFileURL(join(process.cwd(), filePath)) });
+		const renderer = await markdownRenderer(process.cwd(), settings);
+		const result = await renderer.render(body, { frontmatter: data, fileURL: pathToFileURL(join(process.cwd(), filePath)) });
 		return { html: result.code, metadata: { ...result.metadata, imagePaths: [] } };
 	},
 });

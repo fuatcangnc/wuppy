@@ -27,7 +27,14 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, apiData, slugPath } from "../../../lib/api.ts";
 import { slugifyTitle } from "../../../lib/slug.ts";
-import { $collections, deleteEntry, duplicateEntry, loadCollections, setEntryDraft } from "../../../stores/content.ts";
+import {
+	$collections,
+	deleteEntry,
+	duplicateEntry,
+	kindOf,
+	loadCollections,
+	setEntryDraft,
+} from "../../../stores/content.ts";
 import { newEntry } from "../../../stores/editor.ts";
 import {
 	Badge,
@@ -52,6 +59,7 @@ import {
 } from "../../../ui/index.tsx";
 import { ActionMenu, type ActionMenuItem } from "../../shared/ActionMenu.tsx";
 import { WorkspaceLayout, WorkspacePanel, WorkspaceSidebar } from "../../shared/WorkspaceLayout.tsx";
+import { templateOf, templateUrl } from "../../../lib/theme-page.ts";
 import { listQuery, NO_FILTERS, TONES, type ContentListPage, type Filters, type Row } from "../list.ts";
 
 const CONTENT_FILTERS: Filters = { ...NO_FILTERS, sort: "title" };
@@ -98,12 +106,19 @@ const relativeTime = (iso: string) => {
 	return "just now";
 };
 const absoluteUrl = (path: string) => new URL(path, window.location.origin).href;
-const previewPath = (route: string | undefined, slug: string) => (route ?? "/{slug}").replace("{slug}", slug);
+// A theme `.astro` page is served at its file's URL, not the collection route.
+const previewPath = (route: string | undefined, row: Row) => {
+	const template = templateOf(row.data);
+	return template ? templateUrl(template) : (route ?? "/{slug}").replace("{slug}", row.slug);
+};
 
 export function ContentWorkspacePage({ collection }: { collection: string }) {
 	const collections = useStore($collections);
 	const info = collections.find((candidate) => candidate.name === collection);
-	const label = collection.charAt(0).toUpperCase() + collection.slice(1);
+	// A theme's `blog` is shown as Posts, its `about` as Pages.
+	const kind = info && kindOf(info);
+	const label =
+		kind === "posts" ? "Posts" : kind === "pages" ? "Pages" : collection.charAt(0).toUpperCase() + collection.slice(1);
 	const singular = label.replace(/s$/, "");
 	const navigate = useNavigate();
 	const [filters, setFilters] = useState<Filters>(CONTENT_FILTERS);
@@ -217,8 +232,8 @@ export function ContentWorkspacePage({ collection }: { collection: string }) {
 	}, [rows, selectedSlug]);
 
 	const selected = rows.find((row) => row.slug === selectedSlug) ?? null;
-	const viewUrl = selected ? absoluteUrl(previewPath(info?.route, selected.slug)) : "";
-	const showTree = collection === "pages";
+	const viewUrl = selected ? absoluteUrl(previewPath(info?.route, selected)) : "";
+	const showTree = collection === "pages" || kind === "pages";
 	const childCounts = useMemo(() => {
 		const next = new Map<string, number>();
 		if (!showTree) return next;
@@ -293,7 +308,7 @@ export function ContentWorkspacePage({ collection }: { collection: string }) {
 		void navigate({ to: "/e/$collection/$", params: { collection, _splat: pageSlug } });
 
 	const openPreview = (row: Row) => {
-		const fallback = absoluteUrl(previewPath(info?.route, row.slug));
+		const fallback = absoluteUrl(previewPath(info?.route, row));
 		// Open blank synchronously so the browser treats this as part of the click,
 		// then point it at the signed preview once the API responds.
 		const tab = window.open("about:blank", "_blank");
@@ -420,7 +435,7 @@ export function ContentWorkspacePage({ collection }: { collection: string }) {
 			return;
 		}
 		let cancelled = false;
-		const fallback = absoluteUrl(previewPath(info?.route, selected.slug));
+		const fallback = absoluteUrl(previewPath(info?.route, selected));
 		setPreviewLoading(true);
 		setPreviewError(null);
 		void api<{ data: { url: string } }>("GET", `/api/preview-link/${collection}/${slugPath(selected.slug)}`)
@@ -678,6 +693,11 @@ export function ContentWorkspacePage({ collection }: { collection: string }) {
 										</TableCell>
 										<TableCell>
 											<Badge tone={TONES[row.status]}>{STATUS_LABEL[row.status]}</Badge>
+											{templateOf(row.data) && (
+												<span className="ms-1" title={templateOf(row.data)}>
+													<Badge>Theme page</Badge>
+												</span>
+											)}
 										</TableCell>
 										{columns.author && (
 											<TableCell className="text-muted-foreground">{authorOf(row, bylines)}</TableCell>

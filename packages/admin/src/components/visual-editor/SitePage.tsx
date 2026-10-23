@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { api } from "../../lib/api.ts";
+import { api, apiData } from "../../lib/api.ts";
+import { collectionOfKind, type CollectionInfo } from "../../stores/content.ts";
 import { Spinner } from "../../ui/index.tsx";
 import { StudioBar } from "../shared/StudioBar.tsx";
 
@@ -13,8 +14,10 @@ export function SitePage() {
 	const navigate = useNavigate();
 	const [empty, setEmpty] = useState(false);
 	useEffect(() => {
-		void api<PageList>("GET", "/api/content/pages?limit=200&sort=title")
-			.then((result) => {
+		void apiData<CollectionInfo[]>("GET", "/api/collections")
+			.then(async (collections) => {
+				const collection = collectionOfKind(collections, "pages") ?? "pages";
+				const result = await api<PageList>("GET", `/api/content/${collection}?limit=200&sort=title`);
 				const pages = Array.isArray(result.data) ? result.data : [];
 				const page =
 					pages.find((entry) => entry.slug === "index") ?? pages.find((entry) => entry.slug === "home") ?? pages[0];
@@ -22,7 +25,7 @@ export function SitePage() {
 					setEmpty(true);
 					return;
 				}
-				void navigate({ to: "/v/$collection/$", params: { collection: "pages", _splat: page.slug }, replace: true });
+				void navigate({ to: "/v/$collection/$", params: { collection, _splat: page.slug }, replace: true });
 			})
 			.catch(() => setEmpty(true));
 	}, [navigate]);

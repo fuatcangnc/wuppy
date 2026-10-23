@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { importHtml, parse, safeCssValue, serialize } from "../src/components/visual-editor/mdx.ts";
+import { importHtml, parse, safeCssValue, serialize } from "../src/components/visual-editor/markdown.ts";
 import { PRESETS } from "../src/components/visual-editor/modules.ts";
 import {
 	$context,

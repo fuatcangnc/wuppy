@@ -246,7 +246,9 @@ export function parse(body: string): NodeTree {
 			continue;
 		}
 		flush();
-		const doc = new DOMParser().parseFromString(`<!doctype html><body>${line.trim()}</body>`, "text/html");
+		// JSX-authored HTML uses className; the visual model and the site use class.
+		const html = line.trim().replace(/(<[a-z][\w-]*\b[^>]*?\s)className=/gi, "$1class=");
+		const doc = new DOMParser().parseFromString(`<!doctype html><body>${html}</body>`, "text/html");
 		if (doc.body.querySelector("[data-ve]")) {
 			for (const el of doc.body.children) fromElement(tree, el, root.id);
 		} else {

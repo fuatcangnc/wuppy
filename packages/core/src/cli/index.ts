@@ -5,6 +5,7 @@ import { generateTypes } from "../content-types/generate.ts";
 import { loadConfig } from "../config/index.ts";
 import { capabilityHash } from "../plugins/loader.ts";
 import { importRepo, init } from "./init.ts";
+import { convertMdx } from "./mdx-to-md.ts";
 import { upgrade } from "./upgrade.ts";
 
 export interface CliResult {
@@ -14,7 +15,7 @@ export interface CliResult {
 }
 
 const USAGE =
-	"Usage: wuppy init [--force] | wuppy import [<git-url> <dir>] | wuppy plugin hash <plugin-dir> | wuppy doctor | wuppy types | wuppy upgrade [--force]";
+	"Usage: wuppy init [--force] | wuppy import [<git-url> <dir>] | wuppy plugin hash <plugin-dir> | wuppy doctor | wuppy types | wuppy upgrade [--force] | wuppy mdx-to-md [<dir>]";
 
 const exists = (p: string) =>
 	access(p).then(
@@ -51,6 +52,7 @@ export async function run(argv: string[], cwd: string, env: NodeJS.ProcessEnv = 
 	const [cmd, sub, dir] = argv;
 	if (cmd === "doctor") return doctor(cwd, env);
 	if (cmd === "init") return init(cwd, { force: argv.includes("--force") });
+	if (cmd === "mdx-to-md") return convertMdx(cwd, sub);
 	if (cmd === "import") return importRepo(sub ?? "", dir ?? "", cwd);
 	if (cmd === "upgrade") {
 		const r = await upgrade(cwd, { force: argv.includes("--force") });

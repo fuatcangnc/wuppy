@@ -8,7 +8,8 @@
 		"./seo": "./src/seo/index.ts",
 		"./publishing": "./src/publishing/index.ts",
 		"./site": "./src/site/index.ts",
-		"./mdx": "./src/mdx/render.ts",
+		"./markdown": "./src/markdown/render.ts",
+		"./mdx": "./src/markdown/render.ts",
 		"./package.json": "./package.json"
 	},
 	"scripts": {
@@ -18,6 +19,7 @@
 		"smoke:dist": "node scripts/smoke-dist.mjs"
 	},
 	"dependencies": {
+		"@astrojs/compiler-rs": "^0.5.2",
 		"@wuppy/admin": "workspace:*",
 		"@wuppy/auth": "workspace:*",
 		"@wuppy/git": "workspace:*",
@@ -68,6 +70,10 @@
 			"./site": {
 				"types": "./dist/site.d.mts",
 				"import": "./dist/site.mjs"
+			},
+			"./markdown": {
+				"types": "./dist/markdown.d.mts",
+				"import": "./dist/markdown.mjs"
 			},
 			"./mdx": {
 				"types": "./dist/mdx.d.mts",

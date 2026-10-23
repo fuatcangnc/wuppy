@@ -10,6 +10,10 @@ let base: string;
 beforeEach(async () => {
 	base = await mkdtemp(join(tmpdir(), "wuppy-themes-"));
 	await mkdir(join(base, "node_modules", "wuppy"), { recursive: true });
+	await writeFile(
+		join(base, "wuppy.config.mjs"),
+		`export default { collections: [{ name: "posts", dir: "content/posts" }] };`,
+	);
 });
 afterEach(() => rm(base, { recursive: true, force: true }));
 
@@ -56,6 +60,8 @@ describe("GitHub themes", () => {
 		themes.install("me/site", "gho_secret");
 		await settle(themes);
 		expect(themes.job).toMatchObject({ status: "done" });
+		// The theme's sample post is now the site's.
+		expect(await readFile(join(base, "content/posts/a.md"), "utf8")).toContain("title: A");
 
 		expect(calls.map((c) => c.cmd)).toEqual(["git", "npm", process.execPath]);
 		const [clone, npm, build] = calls;
@@ -127,7 +133,9 @@ describe("GitHub themes", () => {
 			);
 		expect(await githubAstroRepos("t", fetchFn)).toEqual([{ repo: "me/a", private: true, description: "" }]);
 		expect(JSON.parse(fetchFn.mock.calls[1]![1]!.body as string).variables).toEqual({ endCursor: "c1" });
-		await expect(githubAstroRepos("t", async () => new Response("", { status: 401 }))).rejects.toThrow(/401/);
+		await expect(githubAstroRepos("t", async () => new Response("", { status: 401 }))).rejects.toMatchObject({
+			status: 401,
+		});
 	});
 
 	it("connects GitHub through the OAuth consent page and keeps the token sealed per user", async () => {

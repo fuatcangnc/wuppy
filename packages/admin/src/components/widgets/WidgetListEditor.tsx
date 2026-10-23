@@ -93,7 +93,7 @@ export function WidgetListEditor({ widgets, onChange }: { widgets: Widget[]; onC
 								w.type === "html"
 									? "HTML (scripts and event handlers are refused)"
 									: w.type === "custom"
-										? "MDX with your allowed components, e.g. <Callout>…</Callout>"
+										? 'Markdown, e.g. **Hello** or <div class="note">…</div>'
 										: "Text"
 							}
 							value={w.body}

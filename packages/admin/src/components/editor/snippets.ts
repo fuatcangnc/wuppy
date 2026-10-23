@@ -23,12 +23,6 @@ export const tableSnippet = (columns = 3, rows = 2): string => {
 	);
 };
 
-/** An MDX component the site allows. Only names matching the allowlist pattern can be inserted. */
-export function componentSnippet(name: string): string {
-	if (!/^[A-Z][A-Za-z0-9]*$/.test(name)) throw new Error(`Not a component name: ${name}`);
-	return `<${name}>\nContent\n</${name}>`;
-}
-
 /** Puts `text` (several lines allowed) in a new paragraph after the block with the cursor, or at the end. */
 export function insertSnippet(editor: LexicalEditor, text: string): void {
 	editor.update(() => {

@@ -1,7 +1,9 @@
 import { useStore } from "@nanostores/react";
-import { useBlocker, useParams } from "@tanstack/react-router";
+import { useBlocker, useNavigate, useParams } from "@tanstack/react-router";
 import { Fragment, useEffect, useState } from "react";
 import { api, slugPath } from "../../lib/api.ts";
+import { templateOf, templateUrl } from "../../lib/theme-page.ts";
+import { $codeFile } from "../visual-editor/store.ts";
 import {
 	$autosaved,
 	$conflict,
@@ -41,7 +43,7 @@ export function EditorPage() {
 	const collections = useStore($collections);
 	const info = collections.find((c) => c.name === collection);
 	const fields = info?.fields ?? {};
-	const siteUrl = `${(info?.route ?? `/${collection}/{slug}`).replace("{slug}", slug)}?wuppy-edit=1`;
+	const navigate = useNavigate();
 	const [version, setVersion] = useState(0);
 	const conflict = useStore($conflict);
 	const recovery = useStore($recovery);
@@ -86,6 +88,11 @@ export function EditorPage() {
 
 	if (!doc) return error ? <ErrorText>{error}</ErrorText> : <p className="text-muted-foreground">Loading…</p>;
 	const status = doc.data.draft === true ? "draft" : "published";
+	// A theme `.astro` page: its text lives in the theme's code, so the entry holds only its title and SEO fields.
+	const template = templateOf(doc.data);
+	const siteUrl = template
+		? templateUrl(template)
+		: `${(info?.route ?? `/${collection}/{slug}`).replace("{slug}", slug)}?wuppy-edit=1`;
 
 	return (
 		<div className="grid gap-5">
@@ -217,6 +224,25 @@ export function EditorPage() {
 							<FieldsForm fields={fields} data={doc.data} onChange={setField} onUpload={uploadImage} />
 						</div>
 					</Card>
+					{template && (
+						<Card>
+							<CardHeader
+								title="Theme page"
+								description={`The page's own content is theme code (${template}); the body below is added at the end of it.`}
+							/>
+							<div className="p-4">
+								<Button
+									variant="secondary"
+									onClick={() => {
+										$codeFile.set(template);
+										void navigate({ to: "/v/$collection/$", params: { collection, _splat: slug } });
+									}}
+								>
+									Open in Code view
+								</Button>
+							</div>
+						</Card>
+					)}
 					<Card>
 						<CardHeader title="Body" description="Markdown/MDX; JSX and allowed components are preserved." />
 						<div className="p-4">

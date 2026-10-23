@@ -15,10 +15,10 @@ import {
 	Text as TextIcon,
 	Undo2,
 } from "@react-zero-ui/icon-sprite";
+import { templateOf, templateUrl } from "../../lib/theme-page.ts";
 import { useStore } from "@nanostores/react";
 import { Link, useBlocker, useParams } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
-import { apiData } from "../../lib/api.ts";
 import { $collections, loadCollections } from "../../stores/content.ts";
 import {
 	$dirty,
@@ -41,6 +41,7 @@ import { Breadcrumbs, ContextMenu, Inserter, Notch, Settings, Spotlight } from "
 import { PropertiesPanel } from "./Properties.tsx";
 import { SelectorsPanel } from "./Selectors.tsx";
 import {
+	$codeFile,
 	$editingComponent,
 	$history,
 	$inserter,
@@ -149,9 +150,15 @@ export function VisualEditorPage() {
 	const info = collections.find((c) => c.name === collection);
 	const loaded = doc?.slug === slug && doc.collection === collection;
 	const unsaved = dirty || visualDirty || !!editing;
-	const [components, setComponents] = useState<string[]>([]);
 	const [view, setView] = useState<"design" | "code">("design");
 	const [codeDirty, setCodeDirty] = useState(false);
+	const codeFile = useStore($codeFile);
+
+	useEffect(() => {
+		if (!codeFile) return;
+		$mode.set("design");
+		setView("code");
+	}, [codeFile]);
 
 	useBlocker({
 		shouldBlockFn: () =>
@@ -163,9 +170,6 @@ export function VisualEditorPage() {
 	useEffect(() => {
 		void loadCollections();
 		void loadVisual();
-		void apiData<string[]>("GET", "/api/editor/components")
-			.then(setComponents)
-			.catch(() => setComponents([]));
 	}, []);
 	useEffect(() => {
 		const d = $doc.get();
@@ -218,9 +222,9 @@ export function VisualEditorPage() {
 
 	if (!loaded || !visualLoaded)
 		return error ? <ErrorText>{error}</ErrorText> : <p className="text-muted-foreground">Loading…</p>;
-	const allowed = info?.format === "mdx" ? components : [];
 	const component = editing && visual.components.find((c) => c.id === editing.id);
-	const livePath = (info?.route ?? `/${collection}/{slug}`).replace("{slug}", slug);
+	const template = doc ? templateOf(doc.data) : undefined;
+	const livePath = template ? templateUrl(template) : (info?.route ?? `/${collection}/{slug}`).replace("{slug}", slug);
 	const toggleCode = () => {
 		if (view === "code" && codeDirty && !confirm("Discard unsaved code changes?")) return;
 		$mode.set("design");
@@ -354,19 +358,19 @@ export function VisualEditorPage() {
 								{saving ? "Saving…" : unsaved ? "Publish" : "Published"}
 							</Button>
 						</div>
-						<Canvas onKey={onKey} />
-						<Notch components={allowed} />
+						<Canvas onKey={onKey} page={editing ? undefined : livePath} preview={!!template} />
+						<Notch />
 					</div>
 					<aside
 						className="w-[360px] shrink-0 overflow-y-auto border-l border-[#2a2a2d] bg-[#111113]"
 						aria-label="Properties"
 					>
-						<PropertiesPanel components={allowed} />
+						<PropertiesPanel />
 					</aside>
 				</div>
 			)}
 			{view === "design" && <Breadcrumbs />}
-			{view === "design" && <Inserter components={allowed} />}
+			{view === "design" && <Inserter />}
 			<Spotlight />
 			<Settings />
 			<ContextMenu />

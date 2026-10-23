@@ -15,7 +15,7 @@ describe("config", () => {
 			'export default { collections: [{ name: "posts", dir: "content/posts" }] };',
 		);
 		const cfg = await loadConfig(root);
-		expect(cfg.collections[0]).toMatchObject({ name: "posts", format: "md" });
+		expect(cfg.collections[0]).toMatchObject({ name: "posts", fields: {} });
 		expect(cfg.git).toBe(true);
 		expect(cfg.admin.path).toBe("/admin");
 	});

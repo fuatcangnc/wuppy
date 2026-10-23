@@ -12,7 +12,7 @@ export interface ContentEntry extends ParsedDocument {
 export class FilesystemContent {
 	constructor(
 		private readonly root: string,
-		private readonly collection: Collection,
+		readonly collection: Collection,
 	) {}
 
 	/**
@@ -26,8 +26,8 @@ export class FilesystemContent {
 	}
 
 	/** Repo-relative path (forward slashes), for Git. */
-	relPath(slug: string): string {
-		return `${this.collection.dir}/${assertSafeSlug(slug)}.${this.formatOf(slug)}`;
+	relPath(slug: string, format: "md" | "mdx" = this.formatOf(slug)): string {
+		return `${this.collection.dir}/${assertSafeSlug(slug)}.${format}`;
 	}
 
 	/** Absolute path, for metadata reads. */
@@ -35,8 +35,8 @@ export class FilesystemContent {
 		return join(this.root, this.relPath(slug));
 	}
 
-	private file(slug: string): string {
-		return join(this.root, this.relPath(slug));
+	private file(slug: string, format: "md" | "mdx" = this.formatOf(slug)): string {
+		return join(this.root, this.relPath(slug, format));
 	}
 
 	async get(slug: string): Promise<ContentEntry | null> {
@@ -48,14 +48,14 @@ export class FilesystemContent {
 		}
 	}
 
-	async put(slug: string, doc: ParsedDocument): Promise<void> {
-		const path = this.file(slug);
+	async put(slug: string, doc: ParsedDocument, format: "md" | "mdx" = this.formatOf(slug)): Promise<void> {
+		const path = this.file(slug, format);
 		await mkdir(dirname(path), { recursive: true });
 		await writeFile(path, serializeDocument(doc));
 	}
 
-	async delete(slug: string): Promise<void> {
-		await rm(this.file(slug), { force: true });
+	async delete(slug: string, format: "md" | "mdx" = this.formatOf(slug)): Promise<void> {
+		await rm(this.file(slug, format), { force: true });
 	}
 
 	async list(): Promise<string[]> {

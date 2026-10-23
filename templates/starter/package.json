@@ -3,7 +3,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "astro dev",
+		"dev": "node dev.mjs",
 		"build": "astro build",
 		"preview": "astro preview",
 		"start": "node serve.mjs"

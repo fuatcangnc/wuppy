@@ -1,8 +1,12 @@
 import { fileURLToPath } from "node:url";
 import type { AstroConfig, AstroIntegration } from "astro";
 import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { mkdir, writeFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
+import { listThemeComponents } from "../themes/components.ts";
 import { isLiveRoute, liveContentPlugin } from "./live-content.ts";
+import { mapSource, themeComponentsPlugin } from "./theme-components.ts";
+import { themePageRel, themePagesPlugin } from "./theme-pages.ts";
 
 // Source runs as .ts (workspace dev); the published build is .mjs. Entrypoints sit next to this file in both layouts.
 const ext = import.meta.url.endsWith(".ts") ? "ts" : "mjs";
@@ -24,48 +28,57 @@ export default function wuppy(options: WuppyIntegrationOptions = {}): AstroInteg
 	let image: AstroConfig["image"] | undefined;
 	const liveRoutes = new Set<string>();
 	let live = false;
+	let site: string | undefined;
+	// Plugins (functions) cannot cross into the runtime module; the rest of the settings can.
+	const settings = () =>
+		JSON.parse(
+			JSON.stringify({
+				features: (markdown?.processor?.options as { features?: unknown } | undefined)?.features ?? {},
+				shared: {
+					image,
+					syntaxHighlight: markdown?.syntaxHighlight,
+					shikiConfig: markdown?.shikiConfig,
+					gfm: markdown?.gfm,
+					smartypants: markdown?.smartypants,
+				},
+			}),
+		) as Record<string, unknown>;
 	return {
 		name: "wuppy",
 		hooks: {
-			"astro:config:setup": ({ config, injectRoute, addMiddleware, updateConfig }) => {
+			"astro:config:setup": async ({ config, injectRoute, addMiddleware, updateConfig }) => {
 				root = fileURLToPath(config.root);
 				// Reading wuppy.config here is not possible (Astro's config loader is closed by now); the runtime reads it.
 				live = options.live !== false && CONFIG_FILES.some((f) => existsSync(join(root, f)));
+				const runtime = fileURLToPath(entry("live-runtime"));
+				site =
+					process.env.WUPPY_BASE_ROOT && resolve(process.env.WUPPY_BASE_ROOT) !== resolve(root)
+						? process.env.WUPPY_BASE_ROOT
+						: undefined;
 				if (live)
 					updateConfig({
 						vite: {
 							plugins: [
-								liveContentPlugin({
-									root,
-									runtime: fileURLToPath(entry("live-runtime")),
-									liveRoutes,
-									// Plugins (functions) cannot cross into the runtime module; the rest of the settings can.
-									markdown: () =>
-										JSON.parse(
-											JSON.stringify({
-												features: (markdown?.processor?.options as { features?: unknown } | undefined)?.features ?? {},
-												shared: {
-													image,
-													syntaxHighlight: markdown?.syntaxHighlight,
-													shikiConfig: markdown?.shikiConfig,
-													gfm: markdown?.gfm,
-													smartypants: markdown?.smartypants,
-												},
-											}),
-										),
-								}),
+								liveContentPlugin({ root, runtime, liveRoutes, markdown: settings }),
+								// A theme run for a site: its Markdown pages render the site's Pages entries.
+								...(site ? [themePagesPlugin({ root, runtime, markdown: settings })] : []),
 							],
 						},
 					});
+				// Themes expose their Astro components to MDX through a generated components map. The plugin is a no-op
+				// when there are none, so sites that never use components pay nothing at runtime.
+				updateConfig({ vite: { plugins: [themeComponentsPlugin(root)] } });
 				// .wuppy/ holds the auth database and GitHub themes (whole Astro projects): watching it would restart
 				// `astro dev` while a theme is cloned and lose the install in progress.
-				updateConfig({ vite: { server: { watch: { ignored: ["**/.wuppy/**"] } } } });
+				// Only the project's own .wuppy/: a theme runs from inside the site's, and its files must still reload on edit.
+				updateConfig({ vite: { server: { watch: { ignored: [`${join(root, ".wuppy")}/**`] } } } });
 				// Workspace siblings are TypeScript sources: let Vite compile them instead of handing them to Node. Published builds are plain JS.
 				if (ext === "ts") updateConfig({ vite: { ssr: { noExternal: [/^@wuppy\//] } } });
 				addMiddleware({ entrypoint: entry("redirect-middleware"), order: "pre" });
 				addMiddleware({ entrypoint: entry("page-cache-middleware"), order: "post" });
 				// After the page cache, so cached pages already carry the visual CSS.
 				addMiddleware({ entrypoint: entry("visual-middleware"), order: "post" });
+				if (site) addMiddleware({ entrypoint: entry("theme-seo-middleware"), order: "post" });
 				if (options.sitemap !== false) injectRoute({ pattern: "/sitemap.xml", entrypoint: entry("routes/sitemap") });
 				if (options.robots !== false) injectRoute({ pattern: "/robots.txt", entrypoint: entry("routes/robots") });
 				if (options.rss !== false) injectRoute({ pattern: "/rss.xml", entrypoint: entry("routes/rss") });
@@ -73,9 +86,14 @@ export default function wuppy(options: WuppyIntegrationOptions = {}): AstroInteg
 				injectRoute({ pattern: "/uploads/[...path]", entrypoint: entry("routes/uploads") });
 				injectRoute({ pattern: "/admin/[...path]", entrypoint: entry("routes/admin") });
 				injectRoute({ pattern: "/icons.svg", entrypoint: entry("routes/icons") });
+				const preview = await componentPreview(root);
+				if (preview) injectRoute({ pattern: "/_wuppy/component/[name]", entrypoint: preview });
 			},
 			"astro:route:setup": ({ route }) => {
-				if (!live || !isLiveRoute(root, route.component)) return;
+				if (!live) return;
+				// A theme Markdown page backed by a site entry renders it on request, like other live pages.
+				if (site && themePageRel(root, join(root, route.component))) route.prerender = false;
+				if (!isLiveRoute(root, route.component)) return;
 				route.prerender = false;
 				liveRoutes.add(route.component);
 			},
@@ -89,4 +107,33 @@ export default function wuppy(options: WuppyIntegrationOptions = {}): AstroInteg
 			},
 		},
 	};
+}
+
+/**
+ * A page that renders one of the project's Astro components by name, without props, for the visual editor's canvas.
+ * It is generated (one static import per component) so the project's own Astro compiles it, styles included. It only
+ * renders design code the site already ships, and takes no input but a name from that list, so it needs no sign-in.
+ */
+export async function componentPreview(root: string): Promise<string | undefined> {
+	const list = await listThemeComponents(root);
+	if (!list.length) return undefined;
+	const file = join(root, "node_modules", ".wuppy", "component-preview.astro");
+	await mkdir(join(file, ".."), { recursive: true });
+	await writeFile(
+		file,
+		[
+			"---",
+			mapSource(list.map((c) => ({ ...c, path: join(root, c.path) }))),
+			"export const prerender = false;",
+			"const map = __wuppyComponents;",
+			'const name = Astro.params.name ?? "";',
+			"const Component = Object.hasOwn(map, name) ? map[name] : undefined;",
+			"if (!Component) return new Response(null, { status: 404 });",
+			'Astro.response.headers.set("x-robots-tag", "noindex");',
+			"---",
+			"<Component />",
+			"",
+		].join("\n"),
+	);
+	return file;
 }

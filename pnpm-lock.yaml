@@ -290,6 +290,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@astrojs/compiler-rs':
+        specifier: ^0.5.2
+        version: 0.5.2
       '@wuppy/admin':
         specifier: workspace:*
         version: link:../admin

@@ -1,4 +1,6 @@
 import { execFile } from "node:child_process";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { promisify } from "node:util";
 import type { Commit, GitAdapter } from "../types.ts";
 
@@ -60,10 +62,21 @@ export class RealGit implements GitAdapter {
 
 	async commit(paths: string[], message: string): Promise<string> {
 		paths.forEach(assertRepoPath);
-		await this.git("add", "--", ...paths);
-		const staged = await this.git("diff", "--cached", "--name-only", "--", ...paths);
+		// -A also stages a deleted `.md` when a save promotes an entry to `.mdx`. A path that never existed and was
+		// not tracked (an untracked source file promoted in memory) makes `git add` reject the whole pathspec; retry
+		// with the existing/new paths only.
+		let stage = paths;
+		try {
+			await this.git("add", "-A", "--", ...paths);
+		} catch (e) {
+			const existing = paths.filter((path) => existsSync(join(this.cwd, path)));
+			if (!existing.length) throw e;
+			await this.git("add", "-A", "--", ...existing);
+			stage = existing;
+		}
+		const staged = await this.git("diff", "--cached", "--name-only", "--", ...stage);
 		if (!staged.trim()) throw new Error("Nothing to commit");
-		await this.git("commit", "-q", "-m", message, "--", ...paths);
+		await this.git("commit", "-q", "-m", message, "--", ...stage);
 		return (await this.git("rev-parse", "HEAD")).trim();
 	}
 

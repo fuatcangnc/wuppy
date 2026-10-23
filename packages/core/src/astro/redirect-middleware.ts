@@ -2,6 +2,7 @@ import { readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
 import { loadConfig, type WuppyConfig } from "../config/index.ts";
 import { type RedirectRule, resolveRedirect } from "../redirects/index.ts";
+import { siteRoot } from "../themes/site.ts";
 
 let config: Promise<WuppyConfig> | undefined;
 let stored: { mtime: number; rules: RedirectRule[] } | undefined;
@@ -20,7 +21,7 @@ async function storedRedirects(root: string): Promise<RedirectRule[]> {
 }
 
 export const onRequest = async (ctx: { url: URL }, next: () => Promise<Response>): Promise<Response> => {
-	const root = process.cwd();
+	const root = siteRoot();
 	config ??= loadConfig(root);
 	const [cfg, dynamic] = await Promise.all([config, storedRedirects(root)]);
 	const hit = resolveRedirect([...cfg.redirects, ...dynamic], ctx.url.pathname, ctx.url.search);

@@ -1,38 +1,38 @@
-# Graph Report - wuppy  (2026-10-23)
+# Graph Report - wuppy  (2026-10-24)
 
 ## Corpus Check
-- 788 files · ~2,982,777 words
+- 819 files · ~3,009,369 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 6532 nodes · 11631 edges · 461 communities (344 shown, 61 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 176 edges (avg confidence: 0.84)
+- 6709 nodes · 12040 edges · 484 communities (355 shown, 64 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 176 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `99fd9b90`
+- Built from commit: `5f88c9bd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - index.tsx
-- EditorPage.tsx
-- visual-editor/store.ts
-- MediaService
+- SiteStore
+- visual-editor/tree.ts
+- FilesystemContent
 - Wuppy — Multiple Managed Sites (tek admin'den çoklu site)
 - router.tsx
 - motion-init.js
-- FieldsForm.tsx
-- Canvas.tsx
-- MediaPage.tsx
-- data/site.ts
-- CalendarPage.tsx
-- Button
-- PluginManager
+- WidgetListEditor.tsx
 - Properties.tsx
+- apiData
+- data/site.ts
+- EditorPage.tsx
+- RealGit
+- PluginManager
+- ai-agency.test.ts
 - Security and Hardening
 - Security and Hardening
-- app.ts
+- CalendarPage.tsx
 - RPC
 - Code Review and Quality
 - Test-Driven Development
@@ -45,7 +45,7 @@
 - Wuppy Design System
 - Git Workflow and Versioning
 - Git Workflow and Versioning
-- manager.ts
+- loader.ts
 - API and Interface Design
 - Browser Testing with DevTools
 - Performance Optimization
@@ -87,16 +87,16 @@
 - Debugging and Error Recovery
 - Documentation and ADRs
 - Key Best Practices
-- modules.ts
+- content-types/index.ts
 - git/package.json
 - dependencies
 - core/src/index.ts
 - EmDash — Kullanılan Teknolojiler Envanteri
 - compilerOptions
-- src/server.ts
+- vitest
 - Context
 - Planning and Task Breakdown
-- SeoPreview.tsx
+- Explorer.tsx
 - Context
 - Planning and Task Breakdown
 - compilerOptions
@@ -104,11 +104,11 @@
 - Interview Me
 - ReOrder: Keep Your Regulars Ordering Direct
 - Interview Me
-- vitest
+- core/src/config/index.ts
 - wxr.ts
 - dependencies
 - Wuppy — Proje Klasör Yapısı
-- plugin-cli/src/index.ts
+- Select
 - Wuppy — Proje Klasör Yapısı
 - schema.ts
 - create-wuppy/package.json
@@ -119,7 +119,7 @@
 - JSX
 - Doubt-Driven Development
 - exports
-- findDisallowed
+- render.ts
 - Bun
 - Deno
 - Cloudflare Pages
@@ -134,8 +134,8 @@
 - Idea Refine
 - Process
 - Using Agent Skills
-- core/src/config/index.ts
-- api-app.test.ts
+- Canvas.tsx
+- redirects/index.ts
 - Node.js
 - Routing
 - Spec-Driven Development
@@ -148,7 +148,7 @@
 - e2e/package.json
 - HEAD Request Best Practices
 - Source-Driven Development
-- Overlays.tsx
+- visual-editor/store.ts
 - compilerOptions
 - compilerOptions
 - compilerOptions
@@ -160,17 +160,17 @@
 - Refinement & Evaluation Criteria
 - admin/package.json
 - core/package.json
-- managed-sites.test.ts
+- app.ts
 - EmDash CMS Rakibi — Ürün Planı
 - App - Hono
 - EmDash CMS Rakibi — Ürün Planı
 - App - Hono
 - devDependencies
-- starter/src/pages/posts/[slug].astro
+- proxy.ts
 - git/tsconfig.json
 - Wuppy — Mimari Kararlar
 - Getting Started
-- ai-agency.test.ts
+- plugin-types/src/index.ts
 - Getting Started
 - lib/api.ts
 - Client Components
@@ -183,7 +183,7 @@
 - Create-hono
 - Validation
 - Ideation Frameworks Reference
-- themes/site.ts
+- modules.ts
 - Nr
 - Wuppy — Yapılacaklar
 - 4. `packages/core/` — çekirdek
@@ -198,7 +198,7 @@
 - 4. Manage modülleri
 - 5. Admin modülleri
 - EmDash analizi (`emdash-main`)
-- sanitize.ts
+- FocalPoint.tsx
 - WebAssembly (w/ WASI)
 - WebAssembly (w/ WASI)
 - cli/init.ts
@@ -209,20 +209,20 @@
 - astro/types
 - competitive-programming-guide.md
 - live-runtime.ts
-- ip.ts
+- Button
 - Fastly Compute
 - rules
 - PagesPage.tsx
 - Throwing HTTPExceptions
 - Constraints
 - start-fixture.mjs
-- RealGit
+- care.ts
 - Google Cloud Run
 - toast
 - Wuppy — AI ajans katmanı (Managed Sites için)
-- cli/index.ts
+- connect.ts
 - astro-blog-setup.md
-- themes-github.test.ts
+- github.ts
 - Throwing HTTPExceptions
 - ADR-002 — Kimlik doğrulama: Better Auth
 - ADR-003 — UI: Astro'da Bejamas UI, React admin'de shadcn/ui
@@ -240,7 +240,7 @@
 - Service Worker
 - astro/admin.ts
 - scripts
-- redirects/index.ts
+- astro-edit.ts
 - 1. Admin kabuğu, dashboard ve bilgi mimarisi
 - 2. İçerik yönetimi
 - 6. SEO, i18n, önizleme
@@ -256,6 +256,7 @@
 - 0. Durum özeti
 - 10. Test, güvenlik ve kalite
 - 13. Test ve kalite
+- ContentService
 - .claude/skills/software-engineer/idea-refine/scripts/idea-refine.sh
 - playwright.config.ts
 - dev-server.spec.ts
@@ -267,35 +268,39 @@
 - visual-editor/markdown.ts
 - .opencode/skills/software-engineer/idea-refine/scripts/idea-refine.sh
 - AI workspace (`/admin/ai`)
-- seo/index.ts
+- ip.ts
 - config.json
 - vite.config.ts
+- plugin-cli/src/index.ts
 - FakeXhr
-- ContentService
+- loadPlugin
 - scripts
 - pages-page.test.tsx
+- src/server.ts
 - verify-pack.mjs
 - docs/guides/markdown.md
 - Changelog
-- FocalPoint.tsx
+- templates.ts
 - copy-template.mjs
 - .changeset/README.md
 - compilerOptions
 - docs/deployment/docker.md
 - dependencies
-- apiData
+- CommentsPage.tsx
 - react-image-crop
 - Bitenler
-- RegistryClient
+- registry.ts
 - Alibaba Cloud Function Compute
 - Alibaba Cloud Function Compute
 - components.json
 - devDependencies
 - tr/guides/markdown.md
-- optimize.ts
+- MediaService
 - ADR-011 — Çoklu site: hub + sunucu tarafı proxy, uzak Git'e dokunulmaz
 - jn
 - managed-sites.spec.ts
+- integration.ts
+- manager.ts
 - on
 - optimize-all-images.mjs
 - Google Cloud Run
@@ -304,7 +309,8 @@
 - Vercel
 - docs/package.json
 - ADR-002 — Kimlik doğrulama: Better Auth
-- site/index.ts
+- Cloudflare Workers + Vite
+- Cloudflare Workers + Vite
 - ADR-017 — GitHub deposunu tema olarak kurmak (Admin → Themes)
 - ADR-021 — İçerik yalnız Markdown (`.md`), tasarım `.astro`'da; tema öncelikli geliştirme
 - Callout Syntax (MD)
@@ -344,6 +350,7 @@
 - tr/plugins/overview.md
 - tr/reference/cli.md
 - tr/guides/existing-astro-project.md
+- ignorePatterns
 - astro
 - InteractiveTseProcess.astro
 - astrojs-boilerplate/src/content.config.ts
@@ -390,24 +397,25 @@
 - astrojs-boilerplate/astro.config.mjs
 - docs/plugins/hooks.md
 - ADR-012 — AI ajans katmanı: araçlar = kullanıcının kendi API istekleri
-- MenusPage.tsx
+- Azure Functions
 - tr/plugins/hooks.md
+- Azure Functions
+- GithubAccounts
 - ADR-014 — Dokümantasyon: Starlight, İngilizce ana dil + Türkçe eş, tek adres değişkeni
-- ADR-019 — Eklenti hook'ları: önce çalışan (filter) hook'lar, güvenlik öncelikli
+- sites/store.ts
 - docs/guides/github-themes.md
 - tr/guides/github-themes.md
 - ADR-004 — İstemci durumu: Nanostores
 - ADR-007 — Revizyonlar Git'tir; otomatik kaydetme revizyon değil kurtarma kopyasıdır
-- astro
+- optimize.ts
 - dev.mjs
 - @fontsource-variable/jetbrains-mono
 - ADR-020 — Görsel editör (wuppy-visual-editor): Instatic uyarlaması, MDX + Git
 - @lexical/selection
 - The screen
 - Ekran
-- ADR-015 — Başlangıç teması: astrojs-boilerplate tasarımı, Tailwind CSS 4 + bejamas/ui
 - ADR-018 — MDX her yerde, güvenlik öncelikli
-- loader.ts
+- themes/site.ts
 - @nanostores/react
 - @radix-ui/react-select
 - @react-zero-ui/icon-sprite
@@ -415,21 +423,27 @@
 - @wuppy/visual-editor
 - ADR-022 — İçerik sitenin, tema yalnız tasarım
 - Image Lightbox
-- Next.js
-- Presets
-- Next.js
+- Lambda@Edge
+- seo/index.ts
 - Welcome to CapsuleX
-- Presets
+- Lambda@Edge
+- PluginSet
+- ADR-006 — P0'da Markdown doğrudan kaynak, portable-text ertelendi
+- ADR-013 — Site bakımı ve AI Faz 2: zamanlayıcı, tarama, rapor, akış, geçmiş
+- ADR-023 — MDX geri geldi; tema `.astro` bileşenleri içerikte gerçek bileşen olarak kullanılır
+- Code Block Enhancements (MDX)
+- Callout Components (MDX)
+- About CapsuleX
 
 ## God Nodes (most connected - your core abstractions)
-1. `vitest` - 102 edges
-2. `createApp()` - 89 edges
-3. `apiData()` - 74 edges
-4. `toast` - 73 edges
-5. `ContentService` - 70 edges
+1. `vitest` - 110 edges
+2. `createApp()` - 90 edges
+3. `apiData()` - 77 edges
+4. `toast` - 75 edges
+5. `ContentService` - 71 edges
 6. `cn()` - 62 edges
-7. `MediaService` - 49 edges
-8. `createServer()` - 49 edges
+7. `createServer()` - 50 edges
+8. `MediaService` - 49 edges
 9. `Button()` - 48 edges
 10. `JsonStore` - 40 edges
 
@@ -442,73 +456,69 @@
   packages/admin/src/components/content/SeoPreview.tsx → packages/admin/src/components/visual-editor/Explorer.tsx
 - `SeoPreview` --indirect_call--> `title()`  [INFERRED]
   packages/admin/src/components/content/SeoPreview.tsx → packages/core/src/api/list.ts
-- `Spotlight()` --indirect_call--> `fitView()`  [INFERRED]
-  packages/admin/src/components/visual-editor/Overlays.tsx → packages/admin/src/components/visual-editor/Canvas.tsx
+- `MarkdownBlock()` --calls--> `apiData()`  [EXTRACTED]
+  packages/admin/src/components/visual-editor/Canvas.tsx → packages/admin/src/lib/api.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (461 total, 61 thin omitted)
+## Communities (484 total, 64 thin omitted)
 
 ### Community 0 - "index.tsx"
 Cohesion: 0.05
-Nodes (76): ActionMenu(), ActionMenuItem, MenuPosition, Accordion, AccordionContent(), AccordionItem(), AccordionTrigger(), Alert() (+68 more)
+Nodes (76): AuditEvent, AuditPage(), TranslationsPage(), Props, TranslationRow, TranslationTable(), Accordion, AccordionContent() (+68 more)
 
-### Community 1 - "EditorPage.tsx"
-Cohesion: 0.06
-Nodes (68): changedFields(), EditorPage(), languageOf(), toLocalInput(), TranslatePanel(), TranslationsPage(), TranslationRow, button() (+60 more)
+### Community 1 - "SiteStore"
+Cohesion: 0.14
+Nodes (5): buildReport(), careRound(), scanSite(), SiteStore, toSite()
 
-### Community 2 - "visual-editor/store.ts"
-Cohesion: 0.10
-Nodes (55): dropOn(), SiteTab(), canHaveChildren(), SelectorsPanel(), addJson(), allowedParent(), commit(), componentize() (+47 more)
-
-### Community 3 - "MediaService"
-Cohesion: 0.03
-Nodes (83): User, CommentService, hashIp(), Row, dataSchemas, taxonomySchema, JsonStore, UnknownDataFileError (+75 more)
+### Community 2 - "visual-editor/tree.ts"
+Cohesion: 0.12
+Nodes (39): CodeTab(), ContextMenu(), componentize(), $context, copySelected(), cutSelected(), detachSelected(), duplicateSelected() (+31 more)
 
 ### Community 4 - "Wuppy — Multiple Managed Sites (tek admin'den çoklu site)"
 Cohesion: 0.17
 Nodes (11): 10. Kabul kriterleri, 1. Model: Hub + uzak siteler, 2. Kavramlar, 3. Kod yerleşimi (mevcut yapıya göre), 4. Bağlantı akışı, 5. Müşteri (client) atama, 6. Proxy kuralları (güvenlik çekirdeği), 7. Uzak site tarafı (+3 more)
 
 ### Community 5 - "router.tsx"
-Cohesion: 0.04
-Nodes (44): BylineSchemaPage(), BylinesPage(), SchemaField, SectionsPage(), Usage, GlobalSearch(), Hit, ResourceField (+36 more)
+Cohesion: 0.03
+Nodes (64): BylineSchemaPage(), hrefFor(), linksOf(), LOCATION_LABEL, LOCATIONS, Menu, MenuItem, MenuLink (+56 more)
 
 ### Community 6 - "motion-init.js"
 Cohesion: 0.04
 Nodes (61): add(), addVariantChild(), an(), animation(), build(), cr(), ct(), di() (+53 more)
 
-### Community 7 - "FieldsForm.tsx"
-Cohesion: 0.08
-Nodes (22): AddTerm(), Byline, EntryRef, FieldsForm(), kindOf(), Props, Section, Taxonomy (+14 more)
+### Community 7 - "WidgetListEditor.tsx"
+Cohesion: 0.24
+Nodes (5): newWidget(), Widget, WIDGET_TYPES, WidgetListEditor(), WidgetsPage()
 
-### Community 8 - "Canvas.tsx"
-Cohesion: 0.07
-Nodes (44): Drag, DragPreview, dropPosition(), editableHtml(), endDrag(), Frame(), hideNativeDragImage(), idAt() (+36 more)
+### Community 8 - "Properties.tsx"
+Cohesion: 0.09
+Nodes (35): listFor(), SelectorProperties(), setAttr(), StyleEditor(), StyleInput(), TagPills(), TAGS, ThemeAttributes() (+27 more)
 
-### Community 9 - "MediaPage.tsx"
+### Community 9 - "apiData"
 Cohesion: 0.06
-Nodes (64): filterMedia(), aspectNumber(), ASPECTS, extOf(), fresh(), MediaDetailDialog(), MIME, sizeLabel() (+56 more)
+Nodes (66): TrashPage(), filterMedia(), aspectNumber(), ASPECTS, extOf(), fresh(), MediaDetailDialog(), MIME (+58 more)
 
 ### Community 10 - "data/site.ts"
 Cohesion: 0.06
 Nodes (34): group(), /scripts/motion-init.js, length(), title(), day, month, carBrands, activateStep() (+26 more)
 
-### Community 11 - "CalendarPage.tsx"
-Cohesion: 0.23
-Nodes (17): CalendarItem, CalendarPage(), edge, label(), loadItems(), today(), tone, addDays() (+9 more)
+### Community 11 - "EditorPage.tsx"
+Cohesion: 0.05
+Nodes (68): changedFields(), EditorPage(), languageOf(), toLocalInput(), previewPath(), DESCRIPTION_MAX, SeoPreview, SeoPreviewInput (+60 more)
 
-### Community 12 - "Button"
-Cohesion: 0.07
-Nodes (60): blankType(), compactField(), ContentType, ContentTypesPage(), FIELD_TYPES, FieldDef, Impact, optsOf() (+52 more)
+### Community 12 - "RealGit"
+Cohesion: 0.24
+Nodes (4): assertRepoPath(), assertSha(), RealGit, run
 
 ### Community 13 - "PluginManager"
-Cohesion: 0.13
-Nodes (5): PluginEvent, PluginSet, PluginStatus, PluginManager, Manifest
+Cohesion: 0.19
+Nodes (5): PluginStatus, PluginManager, PluginNotFoundError, Manifest, resolveSettings()
 
-### Community 14 - "Properties.tsx"
-Cohesion: 0.13
-Nodes (20): FieldInput(), GROUPED, listFor(), ParamsEditor(), SelectorProperties(), SELECTS, STYLE_GROUPS, StyleEditor() (+12 more)
+### Community 14 - "ai-agency.test.ts"
+Cohesion: 0.08
+Nodes (16): AiConfig, ChatHistory, ChatSummary, ChatTurn, AppOptions, AutosaveStore, SiteNetwork, admin (+8 more)
 
 ### Community 15 - "Security and Hardening"
 Cohesion: 0.06
@@ -518,9 +528,9 @@ Nodes (30): Always Do (No Exceptions), Ask First (Requires Human Approval), Brok
 Cohesion: 0.06
 Nodes (30): Always Do (No Exceptions), Ask First (Requires Human Approval), Broken Access Control, Broken Authentication, Common Rationalizations, Cross-Site Scripting (XSS), Data Privacy & Compliance, File Upload Safety (+22 more)
 
-### Community 17 - "app.ts"
-Cohesion: 0.04
-Nodes (76): acceptInvitationSchema, aiFailure(), allowComment(), commentAttempts, commentStatus, createApp(), createDocumentSchema, csrf() (+68 more)
+### Community 17 - "CalendarPage.tsx"
+Cohesion: 0.23
+Nodes (17): CalendarItem, CalendarPage(), edge, label(), loadItems(), today(), tone, addDays() (+9 more)
 
 ### Community 18 - "RPC"
 Cohesion: 0.07
@@ -547,8 +557,8 @@ Cohesion: 0.07
 Nodes (29): Browser Testing with DevTools, Common Rationalizations, DAMP Over DRY in Tests, Decision Guide, Discover the Stack First, Name Tests Descriptively, One Assertion Per Concept, Overview (+21 more)
 
 ### Community 24 - "api"
-Cohesion: 0.13
-Nodes (30): LoginPage(), oauthErrorMessage(), Enrollment, LinkedAccount, PasskeyInfo, secretFromUri(), SecurityPage(), browserName() (+22 more)
+Cohesion: 0.08
+Nodes (45): LoginPage(), oauthErrorMessage(), Enrollment, LinkedAccount, PasskeyInfo, secretFromUri(), SecurityPage(), browserName() (+37 more)
 
 ### Community 25 - "auth/package.json"
 Cohesion: 0.06
@@ -570,9 +580,9 @@ Nodes (26): 1. Commit Early, Commit Often, 2. Atomic Commits, 3. Descriptive Mes
 Cohesion: 0.07
 Nodes (26): 1. Commit Early, Commit Often, 2. Atomic Commits, 3. Descriptive Messages, 4. Keep Concerns Separate, 5. Size Your Changes, Branch Naming, Branching Strategy, Change Summaries (+18 more)
 
-### Community 30 - "manager.ts"
-Cohesion: 0.10
-Nodes (28): describe(), DispatchResult, FilterResult, HostDeps, loadPlugin(), fail(), run(), loadPlugins() (+20 more)
+### Community 30 - "loader.ts"
+Cohesion: 0.14
+Nodes (9): PluginHookError, PluginRejectedError, LoadedPlugin, FilterRules, HOOK_FOR, LoadOptions, Running, FilterName (+1 more)
 
 ### Community 31 - "API and Interface Design"
 Cohesion: 0.08
@@ -595,8 +605,8 @@ Cohesion: 0.07
 Nodes (27): jsdom, devDependencies, jsdom, tailwindcss, @tailwindcss/vite, @testing-library/jest-dom, @testing-library/react, @testing-library/user-event (+19 more)
 
 ### Community 36 - ".opencode/skills/hono/SKILL.md"
-Cohesion: 0.06
-Nodes (30): 1. Install CLI, 1. Setup, 1. Setup, 2. Hello World, 2. Hello World, 2. Setup, 3. Deploy, 3. Hello World (+22 more)
+Cohesion: 0.08
+Nodes (23): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, API, Contributing, Env, Examples (+15 more)
 
 ### Community 37 - "API and Interface Design"
 Cohesion: 0.08
@@ -654,13 +664,9 @@ Nodes (23): Adapter Pattern, Code Is a Liability, Common Rationalizations, Compu
 Cohesion: 0.08
 Nodes (23): Accessibility (WCAG 2.1 AA), ARIA Labels, Avoid the AI Aesthetic, Color, Common Rationalizations, Component Architecture, Component Patterns, Design System Adherence (+15 more)
 
-### Community 51 - "GithubThemes"
-Cohesion: 0.27
-Nodes (3): cleanEnv(), GithubThemes, roots
-
 ### Community 52 - ".claude/skills/hono/SKILL.md"
-Cohesion: 0.06
-Nodes (30): 1. Install CLI, 1. Setup, 1. Setup, 2. Hello World, 2. Hello World, 2. Setup, 3. Deploy, 3. Hello World (+22 more)
+Cohesion: 0.08
+Nodes (23): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, API, Contributing, Env, Examples (+15 more)
 
 ### Community 53 - "Context Engineering"
 Cohesion: 0.09
@@ -738,21 +744,21 @@ Nodes (21): ADR Lifecycle, ADR Template, API Documentation, Architecture Decisio
 Cohesion: 0.09
 Nodes (21): 10. Performance Optimization, 1. Input Validation, 2. Router Organization, 3. Middleware Implementation, 4. Error Handling, 5. Data Transformers, 6. React Query Integration, 7. Context Creation (+13 more)
 
-### Community 72 - "modules.ts"
-Cohesion: 0.13
-Nodes (17): Category, classField, column, CONTAINER_TAGS, defs, Field, LEVELS, MODULE_ICONS (+9 more)
+### Community 72 - "content-types/index.ts"
+Cohesion: 0.08
+Nodes (31): generateTypes(), obj(), pascal(), tsType(), schemaImpact, BASE, Collection, dataSchema() (+23 more)
 
 ### Community 73 - "git/package.json"
 Cohesion: 0.09
 Nodes (21): devDependencies, tsdown, @types/node, typescript, vitest, exports, files, dist (+13 more)
 
 ### Community 74 - "dependencies"
-Cohesion: 0.09
-Nodes (23): hono, nodemailer, dependencies, hono, nodemailer, quickjs-emscripten, resend, @wuppy/admin (+15 more)
+Cohesion: 0.08
+Nodes (25): @astrojs/compiler-rs, hono, nodemailer, dependencies, @astrojs/compiler-rs, hono, nodemailer, quickjs-emscripten (+17 more)
 
 ### Community 75 - "core/src/index.ts"
-Cohesion: 0.07
-Nodes (42): AppType, CSRF_HEADER, BylineIssue, Credit, creditsOf(), Comment, CommentStatus, numberFromEnv() (+34 more)
+Cohesion: 0.03
+Nodes (87): ignore, ignoreDependencies, templates/starter, BylineIssue, Credit, creditsOf(), validateBylines(), getByline() (+79 more)
 
 ### Community 76 - "EmDash — Kullanılan Teknolojiler Envanteri"
 Cohesion: 0.10
@@ -762,9 +768,9 @@ Nodes (20): 10. İçerik dönüşümü ve içe aktarma, 11. Eklenti sistemi ve r
 Cohesion: 0.10
 Nodes (19): compilerOptions, declaration, declarationMap, jsx, lib, noEmit, types, verbatimModuleSyntax (+11 more)
 
-### Community 78 - "src/server.ts"
-Cohesion: 0.05
-Nodes (68): AuditEvent, AuthOptions, countUsers(), createAuth(), createMigratedAuth(), deleteMagicLinksForEmail(), migrateAuth(), needsSetup() (+60 more)
+### Community 78 - "vitest"
+Cohesion: 0.10
+Nodes (16): FieldsForm(), kindOf(), Term, TOKEN_SCOPES, entry(), navigate, server(), reply() (+8 more)
 
 ### Community 79 - "Context"
 Cohesion: 0.11
@@ -774,9 +780,9 @@ Nodes (9): Context, ContextVariableMap, env, error, event, executionCtx, req, re
 Cohesion: 0.11
 Nodes (18): Common Rationalizations, Output Files, Overview, Parallelization Opportunities, Plan Document Template, Planning and Task Breakdown, Red Flags, See Also (+10 more)
 
-### Community 81 - "SeoPreview.tsx"
-Cohesion: 0.29
-Nodes (6): DESCRIPTION_MAX, SeoPreview, SeoPreviewInput, SiteSeo, TITLE_MAX, site
+### Community 81 - "Explorer.tsx"
+Cohesion: 0.09
+Nodes (38): endDrag(), hideNativeDragImage(), moveDragPreview(), previewFor(), startDrag(), stop(), Toolbar(), CodeStylesPanel() (+30 more)
 
 ### Community 82 - "Context"
 Cohesion: 0.11
@@ -806,33 +812,33 @@ Nodes (17): Example 1: Vague Early-Stage Concept (Full 3-Phase Session), Example
 Cohesion: 0.11
 Nodes (17): Common Rationalizations, Example, Interaction with Other Skills, Interview Me, Loading Constraints, Output, Overview, Red Flags (+9 more)
 
-### Community 89 - "vitest"
-Cohesion: 0.05
-Nodes (43): validateBylines(), FilesystemContent, parseDocument(), serializeDocument(), generateTypes(), obj(), pascal(), tsType() (+35 more)
+### Community 89 - "core/src/config/index.ts"
+Cohesion: 0.10
+Nodes (26): onRequest(), storedRedirects(), CliResult, doctor(), exists(), run(), convertMdx(), compareVersions() (+18 more)
 
 ### Community 90 - "wxr.ts"
 Cohesion: 0.12
-Nodes (23): escapeRe(), hostOf(), ImportJobs, termSlug(), blocks(), decodeEntities(), ENTITIES, escapeRe() (+15 more)
+Nodes (22): hostOf(), ImportJobs, termSlug(), blocks(), decodeEntities(), ENTITIES, escapeRe(), htmlToMarkdown() (+14 more)
 
 ### Community 91 - "dependencies"
-Cohesion: 0.06
-Nodes (34): @astrojs/node, dependencies, astro, @astrojs/node, class-variance-authority, clsx, @data-slot/navigation-menu, tailwind-merge (+26 more)
+Cohesion: 0.05
+Nodes (36): @astrojs/mdx, @astrojs/node, dependencies, astro, @astrojs/mdx, @astrojs/node, class-variance-authority, clsx (+28 more)
 
 ### Community 92 - "Wuppy — Proje Klasör Yapısı"
 Cohesion: 0.12
 Nodes (17): 10. `acceptance/`, 11. `docs/`, 12. `.github/`, `.changeset/`, `scripts/` ve diğerleri, 13. İsimlendirme ve dosya koyma kuralları, 14. Teknoloji kararları (özet), 15. Sonraki adım, 1. Genel ağaç, 2. Kök dizinler (+9 more)
 
-### Community 93 - "plugin-cli/src/index.ts"
-Cohesion: 0.26
-Nodes (9): checkCapabilities(), CliResult, run(), TEMPLATE_MANIFEST, TEMPLATE_PLUGIN, base, write(), capabilityHash() (+1 more)
+### Community 93 - "Select"
+Cohesion: 0.12
+Nodes (18): AddTerm(), Byline, EntryRef, Props, Section, Taxonomy, denormalize(), normalize() (+10 more)
 
 ### Community 94 - "Wuppy — Proje Klasör Yapısı"
-Cohesion: 0.12
+Cohesion: 0.11
 Nodes (17): 10. `acceptance/`, 11. `docs/`, 12. `.github/`, `.changeset/`, `scripts/` ve diğerleri, 13. İsimlendirme ve dosya koyma kuralları, 14. Teknoloji kararları (özet), 15. Sonraki adım, 1. Genel ağaç, 2. Kök dizinler (+9 more)
 
 ### Community 95 - "schema.ts"
-Cohesion: 0.05
-Nodes (71): uiCss(), CodeTab(), Section(), edit(), FrameworkPanel(), num(), ScaleEditor(), Settings() (+63 more)
+Cohesion: 0.04
+Nodes (79): uiCss(), Section(), edit(), FrameworkPanel(), num(), ScaleEditor(), Settings(), ParamsEditor() (+71 more)
 
 ### Community 96 - "create-wuppy/package.json"
 Cohesion: 0.08
@@ -863,12 +869,12 @@ Cohesion: 0.12
 Nodes (15): Common Rationalizations, Cross-model escalation, Doubt-Driven Development, Interaction with Other Skills, Loading Constraints, Overview, Red Flags, Step 1: CLAIM — Surface what stands (+7 more)
 
 ### Community 103 - "exports"
-Cohesion: 0.13
-Nodes (19): import, types, exports, ./astro, ./markdown, ./package.json, ./publishing, ./seo (+11 more)
+Cohesion: 0.12
+Nodes (21): import, types, exports, ./astro, ./markdown, ./mdx, ./package.json, ./publishing (+13 more)
 
-### Community 104 - "findDisallowed"
-Cohesion: 0.14
-Nodes (18): convertMdx(), mdxToMarkdown(), prose(), badUrl(), checkHtml(), DANGEROUS_TAGS, findDisallowed(), loadSatteri() (+10 more)
+### Community 104 - "render.ts"
+Cohesion: 0.10
+Nodes (29): mdxToMarkdown(), prose(), badUrl(), checkHtml(), checkJsx(), componentTags(), DANGEROUS_TAGS, findDisallowed() (+21 more)
 
 ### Community 105 - "Bun"
 Cohesion: 0.13
@@ -926,13 +932,13 @@ Nodes (14): 1. Define "working" before instrumenting, 2. Pick the right signal f
 Cohesion: 0.13
 Nodes (14): 1. Surface Assumptions, 2. Manage Confusion Actively, 3. Push Back When Warranted, 4. Enforce Simplicity, 5. Maintain Scope Discipline, 6. Verify, Don't Assume, Core Operating Behaviors, Failure Modes to Avoid (+6 more)
 
-### Community 119 - "core/src/config/index.ts"
-Cohesion: 0.10
-Nodes (21): configSchema, defineConfig(), FILES, safeDir, WuppyUserConfig, bundleSchema, defaultFetch(), Fetcher (+13 more)
+### Community 119 - "Canvas.tsx"
+Cohesion: 0.09
+Nodes (33): attrsOf(), classOf(), Drag, DragPreview, dropPosition(), editableHtml(), Frame(), idAt() (+25 more)
 
-### Community 120 - "api-app.test.ts"
-Cohesion: 0.12
-Nodes (15): json(), GithubAccounts, ALL, app(), create(), get(), githubFetch(), H (+7 more)
+### Community 120 - "redirects/index.ts"
+Cohesion: 0.24
+Nodes (11): RFC-4180, cell(), CSV_HEAD, norm(), parseCsv(), parseRedirectsCsv(), redirectsSchema, redirectsToCsv() (+3 more)
 
 ### Community 121 - "Node.js"
 Cohesion: 0.14
@@ -982,9 +988,9 @@ Nodes (13): Best Practices, Building a larger application, Don't make "Controlle
 Cohesion: 0.15
 Nodes (12): Common Rationalizations, Overview, Red Flags, Retrieval Safety: Treat Fetched Content as Data, Source-Driven Development, Step 1: Detect Stack and Versions, Step 2: Fetch Official Documentation, Step 3: Implement Following Documented Patterns (+4 more)
 
-### Community 133 - "Overlays.tsx"
-Cohesion: 0.08
-Nodes (51): Toolbar(), CodeStylesPanel(), ExplorerPanel(), moduleOf(), nodeName(), ask(), Breadcrumbs(), ContextMenu() (+43 more)
+### Community 133 - "visual-editor/store.ts"
+Cohesion: 0.06
+Nodes (70): dropOn(), fitView(), canHaveChildren(), ask(), GROUP_COLOR, Inserter(), insertItem(), itemModule() (+62 more)
 
 ### Community 134 - "compilerOptions"
 Cohesion: 0.15
@@ -1028,11 +1034,11 @@ Nodes (7): exports, ./dist/*, files, dist, name, type, version
 
 ### Community 144 - "core/package.json"
 Cohesion: 0.17
-Nodes (11): bin, wuppy, files, dist, sharp, name, optionalDependencies, sharp (+3 more)
+Nodes (12): bin, wuppy, files, dist, sharp, name, optionalDependencies, sharp (+4 more)
 
-### Community 145 - "managed-sites.test.ts"
-Cohesion: 0.03
-Nodes (61): ACTING_ROLE_HEADER, ACTING_USER_HEADER, ApiToken, ApiTokenService, Row, TokenKind, key(), open() (+53 more)
+### Community 145 - "app.ts"
+Cohesion: 0.04
+Nodes (64): acceptInvitationSchema, aiFailure(), allowComment(), AppType, commentAttempts, commentStatus, createApp(), createDocumentSchema (+56 more)
 
 ### Community 146 - "EmDash CMS Rakibi — Ürün Planı"
 Cohesion: 0.18
@@ -1051,12 +1057,12 @@ Cohesion: 0.18
 Nodes (7): App - Hono, Error Handling, Generics, Methods, Not Found, router option, strict mode
 
 ### Community 150 - "devDependencies"
-Cohesion: 0.18
-Nodes (11): devDependencies, tsdown, @types/node, @types/nodemailer, typescript, vitest, tsdown, @types/node (+3 more)
+Cohesion: 0.13
+Nodes (15): devDependencies, astro, tsdown, @types/node, @types/nodemailer, typescript, vitest, astro (+7 more)
 
-### Community 151 - "starter/src/pages/posts/[slug].astro"
-Cohesion: 0.08
-Nodes (17): prerender, taxonomy, term, { items, page, pages, prev, next }, posts, author, editable, minutes (+9 more)
+### Community 151 - "proxy.ts"
+Cohesion: 0.12
+Nodes (18): ACTING_ROLE_HEADER, ACTING_USER_HEADER, ApiToken, Row, TokenKind, remoteGet, DENIED, forward() (+10 more)
 
 ### Community 152 - "git/tsconfig.json"
 Cohesion: 0.18
@@ -1070,17 +1076,17 @@ Nodes (7): ADR-006 — P0'da Markdown doğrudan kaynak, portable-text ertelendi,
 Cohesion: 0.20
 Nodes (10): Adapter, Getting Started, Hello World, Next step, Request and Response, Return HTML, Return JSON, Return raw Response (+2 more)
 
-### Community 155 - "ai-agency.test.ts"
-Cohesion: 0.07
-Nodes (16): AiConfig, ChatHistory, ChatSummary, ChatTurn, AppOptions, SiteNetwork, BackupService, admin (+8 more)
+### Community 155 - "plugin-types/src/index.ts"
+Cohesion: 0.16
+Nodes (13): DispatchResult, FilterResult, seesCollection(), ACTIONS, canFetch(), canReadContent(), canReadSecret(), canRoute() (+5 more)
 
 ### Community 156 - "Getting Started"
 Cohesion: 0.20
 Nodes (10): Adapter, Getting Started, Hello World, Next step, Request and Response, Return HTML, Return JSON, Return raw Response (+2 more)
 
 ### Community 157 - "lib/api.ts"
-Cohesion: 0.06
-Nodes (51): AssistantPage(), Change, changesOf(), ChatSummary, Config, findSite(), hostOf(), openEntry() (+43 more)
+Cohesion: 0.07
+Nodes (44): AssistantPage(), Change, changesOf(), ChatSummary, Config, findSite(), hostOf(), openEntry() (+36 more)
 
 ### Community 158 - "Client Components"
 Cohesion: 0.22
@@ -1122,9 +1128,9 @@ Nodes (9): Manual validator, Multiple validators, Standard Schema Validator Midd
 Cohesion: 0.22
 Nodes (8): Analogous Inspiration, Constraint-Based Ideation, First Principles Thinking, How Might We (HMW), Ideation Frameworks Reference, Jobs to Be Done (JTBD), Pre-mortem, SCAMPER
 
-### Community 168 - "themes/site.ts"
-Cohesion: 0.11
-Nodes (33): configured(), onRequest(), storedRedirects(), ALL(), prerender, trustedProxies, GET(), prerender (+25 more)
+### Community 168 - "modules.ts"
+Cohesion: 0.13
+Nodes (17): Category, classField, column, CONTAINER_TAGS, defs, Field, LEVELS, MODULE_ICONS (+9 more)
 
 ### Community 169 - "Nr"
 Cohesion: 0.11
@@ -1182,9 +1188,9 @@ Nodes (8): 5.1 Content Types (İçerik tipleri), 5.2 Byline Schema, 5.3 Users (K
 Cohesion: 0.29
 Nodes (6): Admin rota envanteri (kaynak: `packages/admin/src/router.tsx`), EmDash analizi (`emdash-main`), Gözlenenler, REA analizi (admin uygulaması), Sidebar bilgi mimarisi (ekran görüntüsü + `Shell`), Wuppy'ye aktarım
 
-### Community 183 - "sanitize.ts"
-Cohesion: 0.39
-Nodes (6): ALLOWED, decode(), esc(), safeHref(), sanitizeHtml(), VOID
+### Community 183 - "FocalPoint.tsx"
+Cohesion: 0.23
+Nodes (11): clamp(), Focal, FocalPointEditor(), FocalPreviews(), MOVES, position(), ImageCropper(), initialCrop() (+3 more)
 
 ### Community 184 - "WebAssembly (w/ WASI)"
 Cohesion: 0.29
@@ -1195,16 +1201,16 @@ Cohesion: 0.29
 Nodes (7): 1. Setup, 2. Set up WIT interface & dependencies, 3. Hello Wasm, 4. Build, 5. Run, More information, WebAssembly (w/ WASI)
 
 ### Community 186 - "cli/init.ts"
-Cohesion: 0.09
-Nodes (34): ADR-0022, ALIASES, astroOnly(), astroRepos(), collectionsFromConfig(), CONFIGS, CONTENT_CONFIGS, exec (+26 more)
+Cohesion: 0.15
+Nodes (24): ALIASES, astroRepos(), collectionsFromConfig(), CONTENT_CONFIGS, exec, exists(), failed(), findAstroConfig() (+16 more)
 
 ### Community 187 - "Tencent CloudBase"
 Cohesion: 0.33
 Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Bootstrap, 5. Deploy, Tencent CloudBase
 
 ### Community 188 - "CodeView.tsx"
-Cohesion: 0.10
-Nodes (30): Canvas(), fitView(), refreshThemeHead(), $zoom, zoomBy(), CodeEditor(), CodePreviewToolbar(), CodeWorkspace() (+22 more)
+Cohesion: 0.14
+Nodes (24): Canvas(), refreshThemeHead(), $zoom, zoomBy(), CodeEditor(), CodePreviewToolbar(), CodeWorkspace(), fileIcon() (+16 more)
 
 ### Community 189 - "Wuppy"
 Cohesion: 0.29
@@ -1215,7 +1221,7 @@ Cohesion: 0.29
 Nodes (7): 7.1 API, 7.2 Arama, 7.3 Önbellek ve performans, 7.4.1 Resend production domain — **sonra yapılacak**, 7.4 E-posta ve bildirim, 7.5 MCP ve AI (P2), 7. API ve platform
 
 ### Community 191 - "astro/types"
-Cohesion: 0.11
+Cohesion: 0.10
 Nodes (9): /scripts/navigation-menu-init.js, cn(), buttonVariants, carouselVariants, marqueeVariants, navigationMenuTriggerStyle, cn(), buttonVariants (+1 more)
 
 ### Community 192 - "competitive-programming-guide.md"
@@ -1223,24 +1229,24 @@ Cohesion: 0.12
 Nodes (16): After a Contest, Before a Contest, Common Contest Formats, During a Contest, Essential Algorithms by Difficulty, Learning Roadmap, Level 1: Fundamentals, Level 2: Sorting and Searching (+8 more)
 
 ### Community 193 - "live-runtime.ts"
-Cohesion: 0.08
-Nodes (28): CONFIG_FILES, entry(), wuppy(), WuppyIntegrationOptions, CONTENT_CONFIGS, isLiveRoute(), LiveContentOptions, liveContentPlugin() (+20 more)
+Cohesion: 0.12
+Nodes (20): configured(), createLive(), build(), load(), defaultId(), entryFiles(), Factory, files() (+12 more)
 
-### Community 194 - "ip.ts"
-Cohesion: 0.52
-Nodes (5): ClientIPInput, familyOf(), proxyList(), resolveClientIP(), trustedProxiesFromEnv()
+### Community 194 - "Button"
+Cohesion: 0.06
+Nodes (65): BylinesPage(), SchemaField, blankType(), compactField(), ContentType, ContentTypesPage(), FIELD_TYPES, FieldDef (+57 more)
 
 ### Community 195 - "Fastly Compute"
 Cohesion: 0.33
 Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, Bindings, Fastly Compute
 
 ### Community 196 - "rules"
-Cohesion: 0.08
-Nodes (23): ignore, ignoreDependencies, ignoreDependencies, entry, ignoreDependencies, rules, duplicates, exports (+15 more)
+Cohesion: 0.09
+Nodes (21): ignore, ignoreDependencies, ignoreDependencies, entry, ignoreDependencies, rules, duplicates, exports (+13 more)
 
 ### Community 197 - "PagesPage.tsx"
-Cohesion: 0.08
-Nodes (43): AuditEvent, AuditPage(), EntriesPage(), ContentListPage, ContentStatus, DEFAULT_PAGE_SIZE, Filters, listQuery() (+35 more)
+Cohesion: 0.11
+Nodes (32): EntriesPage(), ContentListPage, ContentStatus, DEFAULT_PAGE_SIZE, Filters, listQuery(), NO_FILTERS, Row (+24 more)
 
 ### Community 198 - "Throwing HTTPExceptions"
 Cohesion: 0.33
@@ -1254,33 +1260,33 @@ Nodes (6): Comments and commits, Constraints, Enforced, Exceptions, Floor (alway
 Cohesion: 0.33
 Nodes (5): child, dir, log, logPath, src
 
-### Community 201 - "RealGit"
-Cohesion: 0.24
-Nodes (4): assertRepoPath(), assertSha(), RealGit, run
+### Community 201 - "care.ts"
+Cohesion: 0.19
+Nodes (11): esc(), Finding, HEADER_CHECKS, PRIVATE_PATHS, reportHtml(), reportText(), ScanResult, sendMonthlyReports() (+3 more)
 
 ### Community 202 - "Google Cloud Run"
 Cohesion: 0.33
 Nodes (6): 1. Install the CLI, 2. Project setup, 3. Hello World, 4. Deploy, Changing runtimes, Google Cloud Run
 
 ### Community 203 - "toast"
-Cohesion: 0.06
-Nodes (36): AiPage(), McpSection(), ProviderId, PROVIDERS, ProvidersSection(), ROUTES, Section, SECTIONS (+28 more)
+Cohesion: 0.05
+Nodes (42): AiPage(), McpSection(), ProviderId, PROVIDERS, ProvidersSection(), ROUTES, Section, SECTIONS (+34 more)
 
 ### Community 204 - "Wuppy — AI ajans katmanı (Managed Sites için)"
 Cohesion: 0.20
 Nodes (9): 1. Ana fikir, 2. Dollie özellikleri → Wuppy karşılığı, 3. Güvenlik kuralları, 4. Yapılacaklar, 5. Kurulum, Faz 1 — Bağlam + MCP + Assistant (bu sürüm), Faz 2 — Dışa açık API, Faz 3 — Operasyonlar (+1 more)
 
-### Community 205 - "cli/index.ts"
-Cohesion: 0.16
-Nodes (15): CliResult, doctor(), exists(), run(), failed(), importRepo(), compareVersions(), git (+7 more)
+### Community 205 - "connect.ts"
+Cohesion: 0.23
+Nodes (10): assertSiteAddress(), HUB_API_VERSION, normalizeSiteUrl(), SiteError, SiteErrorCode, SiteFetch, SiteInfo, toCheck() (+2 more)
 
 ### Community 206 - "astro-blog-setup.md"
 Cohesion: 0.12
 Nodes (15): Build, Conclusion, Content Collections, Create a Post, Define a Schema, Deployment, Deployment Platforms, Dynamic Routes (+7 more)
 
-### Community 207 - "themes-github.test.ts"
-Cohesion: 0.40
-Nodes (3): Run, fakeRun(), put()
+### Community 207 - "github.ts"
+Cohesion: 0.10
+Nodes (19): ADR-0022, astroOnly(), CONFIGS, GithubRepo, NODE_ADAPTER, REPOS_QUERY, ElementEdit, cleanEnv() (+11 more)
 
 ### Community 208 - "Throwing HTTPExceptions"
 Cohesion: 0.33
@@ -1343,16 +1349,16 @@ Cohesion: 0.40
 Nodes (5): 1. Setup, 2. Hello World, 3. Run, Service Worker, Using `fire()`
 
 ### Community 223 - "astro/admin.ts"
-Cohesion: 0.09
-Nodes (22): categories, correctness, suspicious, ignorePatterns, **/dist/**, **/node_modules/**, rules, no-console (+14 more)
+Cohesion: 0.20
+Nodes (10): adminDist(), findAdminDist(), notFound(), serveAdmin(), TYPES, dist, GET(), prerender (+2 more)
 
 ### Community 224 - "scripts"
 Cohesion: 0.40
 Nodes (5): scripts, build, smoke:dist, test, typecheck
 
-### Community 225 - "redirects/index.ts"
+### Community 225 - "astro-edit.ts"
 Cohesion: 0.24
-Nodes (11): RFC-4180, cell(), CSV_HEAD, norm(), parseCsv(), parseRedirectsCsv(), redirectsSchema, redirectsToCsv() (+3 more)
+Nodes (15): astroAt(), Attr, editAstroElement(), El, ElementEditError, elements(), escapeAttr(), escapeText() (+7 more)
 
 ### Community 226 - "1. Admin kabuğu, dashboard ve bilgi mimarisi"
 Cohesion: 0.40
@@ -1376,7 +1382,7 @@ Nodes (4): ADR-001 — Cloudflare opsiyonel adaptördür, Bağlam, Karar, Sonuç
 
 ### Community 231 - "Wuppy — Mimari Kararlar"
 Cohesion: 0.13
-Nodes (15): ADR-006 — P0'da Markdown doğrudan kaynak, portable-text ertelendi, ADR-010 — Çeviri grubu slug kuralıdır; açık `translationOf` alanı yok, ADR-013 — Site bakımı ve AI Faz 2: zamanlayıcı, tarama, rapor, akış, geçmiş, Bağlam, Bağlam, Bağlam, Değişiklik süreci, Karar (+7 more)
+Nodes (15): ADR-010 — Çeviri grubu slug kuralıdır; açık `translationOf` alanı yok, ADR-015 — Başlangıç teması: astrojs-boilerplate tasarımı, Tailwind CSS 4 + bejamas/ui, ADR-019 — Eklenti hook'ları: önce çalışan (filter) hook'lar, güvenlik öncelikli, Bağlam, Bağlam, Bağlam, Değişiklik süreci, Karar (+7 more)
 
 ### Community 232 - "chat.ts"
 Cohesion: 0.10
@@ -1414,6 +1420,10 @@ Nodes (4): 10.1 Test, 10.2 Güvenlik, 10.3 Kalite, 10. Test, güvenlik ve kalite
 Cohesion: 0.67
 Nodes (3): 13. Test ve kalite, Lint / format / analiz, Test profilleri
 
+### Community 241 - "ContentService"
+Cohesion: 0.06
+Nodes (26): ContentEntry, Autosave, ParsedDocument, ContentExistsError, ContentService, collectionSchema, esc(), marked() (+18 more)
+
 ### Community 246 - "Vercel"
 Cohesion: 0.33
 Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, Further reading, Vercel
@@ -1431,24 +1441,28 @@ Cohesion: 0.23
 Nodes (5): contentVersion(), createPageCacheMiddleware(), Entry, onRequest, PageCache
 
 ### Community 250 - "visual-editor/markdown.ts"
-Cohesion: 0.11
-Nodes (31): classOf(), JsonView(), nodesCss(), NodeView(), Attr, CONTAINERS, element(), escAttr() (+23 more)
+Cohesion: 0.13
+Nodes (25): Attr, CONTAINERS, element(), escAttr(), escJson(), escText(), fromElement(), htmlNode() (+17 more)
 
 ### Community 252 - "AI workspace (`/admin/ai`)"
 Cohesion: 0.12
 Nodes (15): AI workspace (`/admin/ai`), Audit, Canvas, Chrome, Defaults, Explorers, Instatic UI analysis, Layout (+7 more)
 
-### Community 253 - "seo/index.ts"
-Cohesion: 0.11
-Nodes (21): isPublished(), articleJsonLd(), breadcrumbJsonLd(), buildSeo(), FeedItem, LinkTag, MetaTag, renderHead() (+13 more)
+### Community 253 - "ip.ts"
+Cohesion: 0.52
+Nodes (5): ClientIPInput, familyOf(), proxyList(), resolveClientIP(), trustedProxiesFromEnv()
 
 ### Community 256 - "config.json"
 Cohesion: 0.20
 Nodes (9): access, baseBranch, changelog, commit, fixed, ignore, $schema, @wuppy/e2e (+1 more)
 
-### Community 269 - "ContentService"
-Cohesion: 0.09
-Nodes (11): ContentEntry, Autosave, AutosaveStore, ParsedDocument, ContentExistsError, ContentService, esc(), marked() (+3 more)
+### Community 265 - "plugin-cli/src/index.ts"
+Cohesion: 0.23
+Nodes (10): checkCapabilities(), CliResult, run(), TEMPLATE_MANIFEST, TEMPLATE_PLUGIN, base, write(), canonical() (+2 more)
+
+### Community 269 - "loadPlugin"
+Cohesion: 0.18
+Nodes (9): describe(), HostDeps, loadPlugin(), fail(), run(), loadPlugins(), event, run() (+1 more)
 
 ### Community 270 - "scripts"
 Cohesion: 0.29
@@ -1458,17 +1472,21 @@ Nodes (7): scripts, build, dev, prebuild, prepack, test, typecheck
 Cohesion: 0.33
 Nodes (5): PagesPage(), navigate, page(), pages, server()
 
+### Community 272 - "src/server.ts"
+Cohesion: 0.05
+Nodes (63): AuditEvent, AuthOptions, countUsers(), createAuth(), createMigratedAuth(), deleteMagicLinksForEmail(), migrateAuth(), needsSetup() (+55 more)
+
 ### Community 273 - "verify-pack.mjs"
 Cohesion: 0.40
 Nodes (3): out, root, withoutTypes
 
 ### Community 274 - "docs/guides/markdown.md"
 Cohesion: 0.40
-Nodes (4): Content in, design out, Moving from MDX, Sections and widgets, What is refused
+Nodes (4): On the site, What authors may write, What is refused, Where MDX is used
 
-### Community 276 - "FocalPoint.tsx"
-Cohesion: 0.23
-Nodes (11): clamp(), Focal, FocalPointEditor(), FocalPreviews(), MOVES, position(), ImageCropper(), initialCrop() (+3 more)
+### Community 276 - "templates.ts"
+Cohesion: 0.20
+Nodes (9): WuppySettings, EmailMessage, EmailSender, DEFAULT_TEMPLATES, EMAIL_KINDS, EMAIL_VARIABLES, EmailKind, esc() (+1 more)
 
 ### Community 282 - "compilerOptions"
 Cohesion: 0.15
@@ -1478,17 +1496,17 @@ Nodes (12): compilerOptions, declaration, declarationMap, noEmit, types, verbati
 Cohesion: 0.11
 Nodes (19): astro-indexnow, @astrojs/sitemap, @iconify-json/lucide, motion, dependencies, astro-indexnow, @astrojs/sitemap, class-variance-authority (+11 more)
 
-### Community 288 - "apiData"
-Cohesion: 0.11
-Nodes (26): CommentsPage(), tabs, Backup, ImportResult, readText(), TransferPage(), TrashPage(), blankRule() (+18 more)
+### Community 288 - "CommentsPage.tsx"
+Cohesion: 0.28
+Nodes (13): CommentsPage(), tabs, bulkCommentStatus(), Comment, $commentCounts, $comments, COMMENTS_PAGE_SIZE, $commentsError (+5 more)
 
 ### Community 290 - "Bitenler"
 Cohesion: 0.22
-Nodes (8): Admin (`packages/admin/src/components/visual-editor/`), Bilerek atlananlar (Markdown + Git ile uyumsuz), Bitenler, Core (`packages/core`), Kalanlar, Markdown + tema öncelikli (2026-10-23, ADR-021), `packages/visual-editor` (`@wuppy/visual-editor`, yeni paket), Visual editor (Instatic uyarlaması) — durum
+Nodes (8): Admin (`packages/admin/src/components/visual-editor/`), Bilerek atlananlar (Markdown + Git ile uyumsuz), Bitenler, Core (`packages/core`), Kalanlar, MDX + tema bileşenleri (2026-10-23, ADR-023), `packages/visual-editor` (`@wuppy/visual-editor`, yeni paket), Visual editor (Instatic uyarlaması) — durum
 
-### Community 291 - "RegistryClient"
-Cohesion: 0.31
-Nodes (5): fileDigest(), ManagerDeps, RegistryClient, signedMessage(), verifySignature()
+### Community 291 - "registry.ts"
+Cohesion: 0.16
+Nodes (13): fileDigest(), ManagerDeps, bundleSchema, defaultFetch(), Fetcher, indexSchema, RegistryClient, RegistryConfig (+5 more)
 
 ### Community 292 - "Alibaba Cloud Function Compute"
 Cohesion: 0.40
@@ -1508,11 +1526,11 @@ Nodes (17): @astrojs/check, esbuild, @playform/compress, shadcn, devDependencies
 
 ### Community 296 - "tr/guides/markdown.md"
 Cohesion: 0.40
-Nodes (4): Bölümler ve widget'lar, İçerik içeride, tasarım dışarıda, MDX'ten geçiş, Neler reddedilir
+Nodes (4): MDX nerede kullanılır, Neler reddedilir, Sitede, Yazarlar ne yazabilir
 
-### Community 297 - "optimize.ts"
-Cohesion: 0.19
-Nodes (13): ASPECT_RATIOS, AspectRatio, clamp(), cropBox(), Format, FORMATS, loadSharp(), parseVariant() (+5 more)
+### Community 297 - "MediaService"
+Cohesion: 0.03
+Nodes (100): json(), User, Comment, CommentService, CommentStatus, hashIp(), Row, taxonomyTermSchema (+92 more)
 
 ### Community 298 - "ADR-011 — Çoklu site: hub + sunucu tarafı proxy, uzak Git'e dokunulmaz"
 Cohesion: 0.50
@@ -1521,6 +1539,14 @@ Nodes (4): ADR-011 — Çoklu site: hub + sunucu tarafı proxy, uzak Git'e dokun
 ### Community 299 - "jn"
 Cohesion: 0.14
 Nodes (16): As(), Co(), $i(), In(), jn(), ki(), Kn(), Ln() (+8 more)
+
+### Community 302 - "integration.ts"
+Cohesion: 0.09
+Nodes (27): componentPreview(), CONFIG_FILES, entry(), wuppy(), WuppyIntegrationOptions, CONTENT_CONFIGS, isLiveRoute(), LiveContentOptions (+19 more)
+
+### Community 303 - "manager.ts"
+Cohesion: 0.25
+Nodes (6): PluginEntry, CommentCreateEvent, ContentSaveEvent, EMPTY, State, STRICTNESS
 
 ### Community 304 - "on"
 Cohesion: 0.16
@@ -1554,9 +1580,13 @@ Nodes (13): @astrojs/starlight, dependencies, astro, @astrojs/starlight, astro, 
 Cohesion: 0.40
 Nodes (5): ADR-002 — Kimlik doğrulama: Better Auth, Bağlam, Karar, Sonuçlar, Sınırlar
 
-### Community 312 - "site/index.ts"
-Cohesion: 0.26
-Nodes (12): hreflangAlternates(), LocaleLink, localeSwitcher(), resolveLocale(), splitLocale(), TranslationRow, translationStatus(), imageSrcset() (+4 more)
+### Community 312 - "Cloudflare Workers + Vite"
+Cohesion: 0.29
+Nodes (7): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, Bindings, Client-side, Cloudflare Workers + Vite
+
+### Community 313 - "Cloudflare Workers + Vite"
+Cohesion: 0.29
+Nodes (7): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, Bindings, Client-side, Cloudflare Workers + Vite
 
 ### Community 314 - "ADR-017 — GitHub deposunu tema olarak kurmak (Admin → Themes)"
 Cohesion: 0.50
@@ -1672,7 +1702,7 @@ Nodes (4): dist, generated, index, sitemap
 
 ### Community 346 - "docs/concepts/configuration.md"
 Cohesion: 0.40
-Nodes (4): Content is Markdown, Field types, Posts and Pages, Types for your templates
+Nodes (4): Content is MDX or Markdown, Field types, Posts and Pages, Types for your templates
 
 ### Community 347 - "docs/guides/media.md"
 Cohesion: 0.50
@@ -1688,7 +1718,7 @@ Nodes (3): create-wuppy, wuppy, wuppy-plugin
 
 ### Community 350 - "tr/concepts/configuration.md"
 Cohesion: 0.40
-Nodes (4): Alan tipleri, İçerik Markdown'dır, Posts ve Pages, Şablonlarınız için tipler
+Nodes (4): Alan tipleri, İçerik MDX veya Markdown'dır, Posts ve Pages, Şablonlarınız için tipler
 
 ### Community 351 - "tr/guides/media.md"
 Cohesion: 0.50
@@ -1705,6 +1735,10 @@ Nodes (3): create-wuppy, wuppy, wuppy-plugin
 ### Community 354 - "tr/guides/existing-astro-project.md"
 Cohesion: 0.33
 Nodes (5): Anında yayın, Bilinmesi gerekenler, GitHub'dan depo seçin, Projeyi sarmak, Sitenin zaten sunduğu adresler
+
+### Community 356 - "ignorePatterns"
+Cohesion: 0.15
+Nodes (12): categories, correctness, suspicious, ignorePatterns, **/dist/**, **/node_modules/**, rules, no-console (+4 more)
 
 ### Community 358 - "InteractiveTseProcess.astro"
 Cohesion: 0.67
@@ -1734,29 +1768,37 @@ Nodes (4): After-hooks, Before-hooks, Compared with WordPress and EmDash, Securi
 Cohesion: 0.50
 Nodes (4): ADR-012 — AI ajans katmanı: araçlar = kullanıcının kendi API istekleri, Bağlam, Karar, Sonuçlar
 
-### Community 428 - "MenusPage.tsx"
-Cohesion: 0.12
-Nodes (21): hrefFor(), linksOf(), LOCATION_LABEL, LOCATIONS, Menu, MenuItem, MenuLink, MenusPage() (+13 more)
+### Community 428 - "Azure Functions"
+Cohesion: 0.33
+Nodes (6): 1. Install CLI, 2. Setup, 3. Hello World, 4. Run, 5. Deploy, Azure Functions
 
 ### Community 429 - "tr/plugins/hooks.md"
 Cohesion: 0.40
 Nodes (4): Güvenlik kuralları, Sonra çalışan hook'lar, WordPress ve EmDash ile karşılaştırma, Önce çalışan hook'lar
 
+### Community 432 - "Azure Functions"
+Cohesion: 0.33
+Nodes (6): 1. Install CLI, 2. Setup, 3. Hello World, 4. Run, 5. Deploy, Azure Functions
+
+### Community 433 - "GithubAccounts"
+Cohesion: 0.18
+Nodes (4): GithubAccounts, Run, fakeRun(), put()
+
 ### Community 434 - "ADR-014 — Dokümantasyon: Starlight, İngilizce ana dil + Türkçe eş, tek adres değişkeni"
 Cohesion: 0.50
 Nodes (4): ADR-014 — Dokümantasyon: Starlight, İngilizce ana dil + Türkçe eş, tek adres değişkeni, Bağlam, Karar, Sonuçlar
 
-### Community 435 - "ADR-019 — Eklenti hook'ları: önce çalışan (filter) hook'lar, güvenlik öncelikli"
-Cohesion: 0.50
-Nodes (4): ADR-019 — Eklenti hook'ları: önce çalışan (filter) hook'lar, güvenlik öncelikli, Bağlam, Karar, Sonuçlar
+### Community 435 - "sites/store.ts"
+Cohesion: 0.19
+Nodes (10): key(), open(), seal(), AGENCY_SCOPE, Row, SITE_ROLES, SiteCheck, SiteRole (+2 more)
 
 ### Community 436 - "docs/guides/github-themes.md"
-Cohesion: 0.29
-Nodes (6): Connect GitHub, Pick a repository, Requirements, Server setup, What to know, Where content lives
+Cohesion: 0.25
+Nodes (7): Connect GitHub, Pick a repository, Requirements, Server setup, Theme pages, What to know, Where content lives
 
 ### Community 437 - "tr/guides/github-themes.md"
-Cohesion: 0.29
-Nodes (6): Bilinmesi gerekenler, Depo seçin, Gereksinimler, GitHub'ı bağlayın, İçerik nerede durur, Sunucu ayarı
+Cohesion: 0.25
+Nodes (7): Bilinmesi gerekenler, Depo seçin, Gereksinimler, GitHub'ı bağlayın, İçerik nerede durur, Sunucu ayarı, Tema sayfaları
 
 ### Community 438 - "ADR-004 — İstemci durumu: Nanostores"
 Cohesion: 0.40
@@ -1766,9 +1808,9 @@ Nodes (5): ADR-004 — İstemci durumu: Nanostores, Bağlam, Karar, Kurallar, So
 Cohesion: 0.50
 Nodes (4): ADR-007 — Revizyonlar Git'tir; otomatik kaydetme revizyon değil kurtarma kopyasıdır, Bağlam, Karar, Sonuçlar
 
-### Community 441 - "astro"
-Cohesion: 0.50
-Nodes (4): astro, astro, peerDependencies, astro
+### Community 441 - "optimize.ts"
+Cohesion: 0.15
+Nodes (17): GET(), prerender, serveUpload(), ASPECT_RATIOS, AspectRatio, clamp(), cropBox(), Format (+9 more)
 
 ### Community 442 - "dev.mjs"
 Cohesion: 0.25
@@ -1786,17 +1828,13 @@ Nodes (15): Add to canvas, Canvas, Code view, Components and layouts, Explorer, 
 Cohesion: 0.12
 Nodes (15): Arama (Ctrl/⌘+K), Ayarlar, Açmak, Code görünümü, Componentler ve layout'lar, Ekran, Explorer, Framework (+7 more)
 
-### Community 450 - "ADR-015 — Başlangıç teması: astrojs-boilerplate tasarımı, Tailwind CSS 4 + bejamas/ui"
-Cohesion: 0.50
-Nodes (4): ADR-015 — Başlangıç teması: astrojs-boilerplate tasarımı, Tailwind CSS 4 + bejamas/ui, Bağlam, Karar, Sonuçlar
-
 ### Community 451 - "ADR-018 — MDX her yerde, güvenlik öncelikli"
 Cohesion: 0.50
 Nodes (4): ADR-018 — MDX her yerde, güvenlik öncelikli, Bağlam, Karar, Sonuçlar
 
-### Community 452 - "loader.ts"
-Cohesion: 0.10
-Nodes (12): LoadedPlugin, FilterRules, HOOK_FOR, LoadOptions, PluginEntry, Running, manifest, H (+4 more)
+### Community 452 - "themes/site.ts"
+Cohesion: 0.16
+Nodes (18): createThemeSeoMiddleware(), onRequest, templatePages(), withSeo(), parseDocument(), serializeDocument(), assertSafeSlug(), UnsafePathError (+10 more)
 
 ### Community 460 - "ADR-022 — İçerik sitenin, tema yalnız tasarım"
 Cohesion: 0.50
@@ -1806,45 +1844,65 @@ Nodes (4): ADR-022 — İçerik sitenin, tema yalnız tasarım, Bağlam, Karar, 
 Cohesion: 0.25
 Nodes (7): Configuration, Features, How It Works, Image Lightbox, Keyboard Shortcuts, Multiple Images, Usage
 
-### Community 463 - "Next.js"
-Cohesion: 0.33
-Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, Next.js, Pages Router
-
-### Community 464 - "Presets"
+### Community 462 - "Lambda@Edge"
 Cohesion: 0.40
-Nodes (5): `hono`, `hono/quick`, `hono/tiny`, Presets, Which preset should I use?
+Nodes (5): 1. Setup, 2. Hello World, 3. Deploy, Callback, Lambda@Edge
 
-### Community 465 - "Next.js"
-Cohesion: 0.33
-Nodes (6): 1. Setup, 2. Hello World, 3. Run, 4. Deploy, Next.js, Pages Router
+### Community 465 - "seo/index.ts"
+Cohesion: 0.09
+Nodes (36): ALL(), prerender, trustedProxies, GET(), prerender, GET(), prerender, GET() (+28 more)
 
 ### Community 466 - "Welcome to CapsuleX"
 Cohesion: 0.50
 Nodes (3): Features, Getting Started, Welcome to CapsuleX
 
-### Community 467 - "Presets"
+### Community 467 - "Lambda@Edge"
 Cohesion: 0.40
-Nodes (5): `hono`, `hono/quick`, `hono/tiny`, Presets, Which preset should I use?
+Nodes (5): 1. Setup, 2. Hello World, 3. Deploy, Callback, Lambda@Edge
+
+### Community 472 - "ADR-006 — P0'da Markdown doğrudan kaynak, portable-text ertelendi"
+Cohesion: 0.50
+Nodes (4): ADR-006 — P0'da Markdown doğrudan kaynak, portable-text ertelendi, Bağlam, Karar, Sonuçlar
+
+### Community 474 - "ADR-013 — Site bakımı ve AI Faz 2: zamanlayıcı, tarama, rapor, akış, geçmiş"
+Cohesion: 0.50
+Nodes (4): ADR-013 — Site bakımı ve AI Faz 2: zamanlayıcı, tarama, rapor, akış, geçmiş, Bağlam, Karar, Sonuçlar
+
+### Community 476 - "ADR-023 — MDX geri geldi; tema `.astro` bileşenleri içerikte gerçek bileşen olarak kullanılır"
+Cohesion: 0.50
+Nodes (4): ADR-023 — MDX geri geldi; tema `.astro` bileşenleri içerikte gerçek bileşen olarak kullanılır, Bağlam, Karar, Sonuçlar
+
+### Community 477 - "Code Block Enhancements (MDX)"
+Cohesion: 0.20
+Nodes (9): Basic Code Block, Code Block Enhancements (MDX), Copy Button, Diff Syntax, Features, Filename + Diff, Multiple Languages, Usage (+1 more)
+
+### Community 483 - "Callout Components (MDX)"
+Cohesion: 0.29
+Nodes (6): Available Types, Basic Usage, Callout Components (MDX), Custom Titles, How to Use, Multi-line Content
+
+### Community 487 - "About CapsuleX"
+Cohesion: 0.50
+Nodes (3): About CapsuleX, Features, Getting Started
 
 ## Knowledge Gaps
-- **3231 isolated node(s):** `$schema`, `changelog`, `commit`, `access`, `baseBranch` (+3226 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 3657 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **61 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **3275 isolated node(s):** `$schema`, `changelog`, `commit`, `access`, `baseBranch` (+3270 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 3720 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **64 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `vitest` connect `vitest` to `index.tsx`, `EditorPage.tsx`, `MediaService`, `router.tsx`, `FieldsForm.tsx`, `MediaPage.tsx`, `data/site.ts`, `CalendarPage.tsx`, `Button`, `Properties.tsx`, `pages-page.test.tsx`, `managed-sites.test.ts`, `app.ts`, `api`, `ai-agency.test.ts`, `lib/api.ts`, `manager.ts`, `apiData`, `themes/site.ts`, `optimize.ts`, `MenusPage.tsx`, `cli.ts`, `GithubThemes`, `sanitize.ts`, `site/index.ts`, `cli/init.ts`, `live-runtime.ts`, `ip.ts`, `rules`, `PagesPage.tsx`, `loader.ts`, `RealGit`, `toast`, `core/src/index.ts`, `cli/index.ts`, `src/server.ts`, `themes-github.test.ts`, `SeoPreview.tsx`, `MenuItemsEditor.tsx`, `plugin-cli/src/index.ts`, `astro/admin.ts`, `schema.ts`, `redirects/index.ts`, `findDisallowed`, `core/src/config/index.ts`, `api-app.test.ts`, `page-cache.test.ts`, `visual-editor/markdown.ts`, `seo/index.ts`?**
-  _High betweenness centrality (0.074) - this node is a cross-community bridge._
+- **Why does `vitest` connect `vitest` to `index.tsx`, `visual-editor/tree.ts`, `FilesystemContent`, `router.tsx`, `WidgetListEditor.tsx`, `Properties.tsx`, `apiData`, `plugin-cli/src/index.ts`, `EditorPage.tsx`, `RealGit`, `loadPlugin`, `ai-agency.test.ts`, `pages-page.test.tsx`, `src/server.ts`, `CalendarPage.tsx`, `app.ts`, `api`, `plugin-types/src/index.ts`, `lib/api.ts`, `MediaService`, `integration.ts`, `GithubAccounts`, `cli.ts`, `sites/store.ts`, `optimize.ts`, `cli/init.ts`, `Button`, `rules`, `PagesPage.tsx`, `themes/site.ts`, `content-types/index.ts`, `toast`, `core/src/index.ts`, `github.ts`, `seo/index.ts`, `core/src/config/index.ts`, `MenuItemsEditor.tsx`, `astro/admin.ts`, `schema.ts`, `astro-edit.ts`, `render.ts`, `ContentService`, `Canvas.tsx`, `redirects/index.ts`, `page-cache.test.ts`, `visual-editor/markdown.ts`, `ip.ts`?**
+  _High betweenness centrality (0.080) - this node is a cross-community bridge._
 - **Why does `bo()` connect `bo` to `motion-init.js`?**
+  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+- **Why does `e()` connect `bo` to `core/src/index.ts`?**
   _High betweenness centrality (0.021) - this node is a cross-community bridge._
-- **Why does `e()` connect `bo` to `site/index.ts`?**
-  _High betweenness centrality (0.020) - this node is a cross-community bridge._
 - **Are the 8 inferred relationships involving `createApp()` (e.g. with `aiFailure()` and `csrf()`) actually correct?**
   _`createApp()` has 8 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `changelog`, `commit` to the rest of the system?**
-  _3231 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _3275 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `index.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.04896907216494845 - nodes in this community are weakly interconnected._
-- **Should `EditorPage.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.055381400208986416 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.04930693069306931 - nodes in this community are weakly interconnected._
+- **Should `SiteStore` be split into smaller, more focused modules?**
+  _Cohesion score 0.14130434782608695 - nodes in this community are weakly interconnected._

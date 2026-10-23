@@ -30,11 +30,13 @@ import { useStore } from "@nanostores/react";
 import { safeQuery, type NodeJson } from "@wuppy/visual-editor";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { apiData } from "../../lib/api.ts";
 import { Button, Dialog, IconButton, Input, toast } from "../../ui/index.tsx";
 import { $zoom, fitView, zoomBy } from "./Canvas.tsx";
-import { importHtml } from "./mdx.ts";
+import { importHtml } from "./markdown.ts";
 import { MODULE_ICONS, MODULES, moduleOf, nodeName, PRESETS, type Category, type Preset } from "./modules.ts";
 import {
+	$componentNames,
 	$editingComponent,
 	$favorites,
 	$inserter,
@@ -75,9 +77,20 @@ interface Item {
 	id: string;
 	label: string;
 	group: Category | "Layouts" | "Components";
-	nodes: () => NodeJson[];
+	nodes?: () => NodeJson[];
+	moduleId?: string;
+	/** Source path of a theme component, used as a hint in the catalog. */
+	themePath?: string;
 	description?: string;
 }
+
+type ThemeFile = { path: string; content: string; size: number };
+type ThemeSource = { repo: string; files: ThemeFile[] };
+let themeSourcePromise: Promise<ThemeSource | null> | undefined;
+const loadThemeSource = (): Promise<ThemeSource | null> => {
+	themeSourcePromise ??= apiData<ThemeSource | null>("GET", "/api/themes/files").catch(() => null);
+	return themeSourcePromise;
+};
 
 const MODULE_DESCRIPTION: Record<string, string> = {
 	container: "A semantic container.",
@@ -91,9 +104,9 @@ const MODULE_DESCRIPTION: Record<string, string> = {
 	divider: "A horizontal rule.",
 	quote: "A blockquote.",
 	code: "A code block.",
-	markdown: "Free Markdown/MDX source.",
+	markdown: "Free Markdown source.",
 	ref: "A reusable component instance.",
-	component: "A site component.",
+	component: "An Astro component available to MDX.",
 };
 const GROUP_COLOR: Record<string, string> = {
 	Layout: "#8b5cf6",
@@ -111,17 +124,29 @@ const PICKER_SECTIONS = [
 ] as const;
 type PickerSection = (typeof PICKER_SECTIONS)[number]["id"];
 
-function useItems(components: string[]): Item[] {
+function useItems(): Item[] {
 	const visual = useStore($visual);
+	const componentNames = useStore($componentNames);
+	const [themeSource, setThemeSource] = useState<ThemeSource | null>(null);
+	useEffect(() => {
+		let live = true;
+		void loadThemeSource().then((source) => live && setThemeSource(source));
+		void apiData<string[]>("GET", "/api/editor/components")
+			.then((names) => {
+				if (live) $componentNames.set(names);
+			})
+			.catch(() => undefined);
+		return () => {
+			live = false;
+		};
+	}, []);
 	return useMemo(() => {
-		const presets = PRESETS.filter((p) => p.moduleId !== "component" || components.length > 0).map((p): Item => ({
+		const presets = PRESETS.map((p): Item => ({
 			id: `preset:${p.label}`,
 			label: p.label,
 			group: p.category ?? "Basic",
 			description: MODULE_DESCRIPTION[p.moduleId] ?? "A content block.",
-			nodes: () => [
-				presetJson(p.moduleId === "component" ? ({ ...p, props: { name: components[0]! } } satisfies Preset) : p),
-			],
+			nodes: () => [presetJson(p)],
 		}));
 		const layouts = visual.layouts.map((l): Item => ({
 			id: `layout:${l.id}`,
@@ -137,12 +162,30 @@ function useItems(components: string[]): Item[] {
 			description: "A reusable visual component.",
 			nodes: () => [{ moduleId: "ref", props: { ref: c.id, name: c.name }, styles: {}, children: [] }],
 		}));
-		return [...presets, ...layouts, ...comps];
-	}, [visual.layouts, visual.components, components]);
+		const astro = componentNames.map((name): Item => {
+			const file = themeSource?.files.find(
+				(candidate) =>
+					candidate.path
+						.split("/")
+						.pop()
+						?.replace(/\.astro$/i, "") === name,
+			);
+			return {
+				id: `astro:${name}`,
+				label: name,
+				group: "Components",
+				moduleId: "component",
+				themePath: file?.path,
+				description: file ? `Astro component · ${file.path}` : "Astro component available to MDX.",
+				nodes: () => [{ moduleId: "component", props: { name, text: "" }, styles: {}, children: [] }],
+			};
+		});
+		return [...presets, ...layouts, ...comps, ...astro];
+	}, [componentNames, themeSource, visual.layouts, visual.components]);
 }
 
 function insertItem(item: Item): void {
-	addJson(item.nodes(), $inserter.get()?.at);
+	addJson(item.nodes?.() ?? [], $inserter.get()?.at);
 	pushRecent(item.id);
 	$inserter.set(null);
 }
@@ -193,14 +236,14 @@ function Wireframe({ moduleId, className = "" }: { moduleId: string; className?:
 				))}
 			</div>
 		);
-	if (moduleId === "container" || moduleId === "body")
-		return <div className={`m-2 rounded border border-dashed border-[#4a4a50] ${className}`} />;
 	if (moduleId === "ref" || moduleId === "component")
 		return (
 			<div className={`grid h-full place-items-center ${className}`}>
 				<span className="size-4 rotate-45 rounded-[2px] border border-[#a78bfa]" />
 			</div>
 		);
+	if (moduleId === "container" || moduleId === "body")
+		return <div className={`m-2 rounded border border-dashed border-[#4a4a50] ${className}`} />;
 	if (moduleId === "layout" || moduleId === "preset")
 		return (
 			<div className={`grid h-full grid-cols-3 gap-1 p-2 ${className}`}>
@@ -216,14 +259,14 @@ function Wireframe({ moduleId, className = "" }: { moduleId: string; className?:
 	);
 }
 
-const itemModule = (item: Item) => item.nodes()[0]?.moduleId ?? "container";
+const itemModule = (item: Item) => item.moduleId ?? item.nodes?.()[0]?.moduleId ?? "container";
 
 /** Instatic's "Add to canvas": category rail, search, list/grid views, wireframes, favorites and recents. */
-export function Inserter({ components }: { components: string[] }) {
+export function Inserter() {
 	const open = useStore($inserter);
 	const favorites = useStore($favorites);
 	const recents = useStore($recents);
-	const items = useItems(components);
+	const items = useItems();
 	const [query, setQuery] = useState("");
 	const [section, setSection] = useState<PickerSection>("modules");
 	const [view, setView] = useState<"list" | "grid">("list");
@@ -317,7 +360,9 @@ export function Inserter({ components }: { components: string[] }) {
 							<div className="rounded-lg bg-[#26262a] p-3 text-xs">
 								<p className="mb-1 text-[10px] tracking-wide text-[#71717a] uppercase">
 									{previewItem.group === "Components"
-										? "Component"
+										? previewItem.themePath
+											? "Theme component"
+											: "Component"
 										: previewItem.group === "Layouts"
 											? "Layout"
 											: "Module"}
@@ -454,7 +499,12 @@ export function Inserter({ components }: { components: string[] }) {
 											onMouseEnter={() => setPreview(item.id)}
 											className="group relative rounded-lg bg-[#2f2f33] p-2"
 										>
-											<button type="button" onClick={() => insert(item)} className="grid w-full gap-2 text-left">
+											<button
+												type="button"
+												title={item.themePath ? "Add this Astro component to the canvas" : undefined}
+												onClick={() => insert(item)}
+												className="grid w-full gap-2 text-left"
+											>
 												<div className="h-[86px] overflow-hidden rounded-md border border-[#3f3f42] bg-[#27272a]">
 													<Wireframe moduleId={mod} />
 												</div>
@@ -464,6 +514,11 @@ export function Inserter({ components }: { components: string[] }) {
 														style={{ background: GROUP_COLOR[item.group] ?? "#a1a1aa" }}
 													/>
 													<span className="truncate font-medium text-white">{item.label}</span>
+													{item.themePath && (
+														<span className="rounded bg-[#174b37] px-1 py-0.5 text-[8px] font-semibold tracking-wide text-[#6ee7b7] uppercase">
+															Astro
+														</span>
+													)}
 												</div>
 												<p className="line-clamp-2 text-[11px] leading-4 text-[#a1a1aa]">{item.description}</p>
 											</button>
@@ -492,6 +547,7 @@ export function Inserter({ components }: { components: string[] }) {
 										>
 											<button
 												type="button"
+												title={item.themePath ? "Add this Astro component to the canvas" : undefined}
 												onClick={() => insert(item)}
 												className="flex min-w-0 flex-1 items-center gap-3 text-left"
 											>
@@ -505,6 +561,11 @@ export function Inserter({ components }: { components: string[] }) {
 															style={{ background: GROUP_COLOR[item.group] ?? "#a1a1aa" }}
 														/>
 														{item.label}
+														{item.themePath && (
+															<span className="rounded bg-[#174b37] px-1 py-0.5 text-[8px] font-semibold tracking-wide text-[#6ee7b7] uppercase">
+																Astro
+															</span>
+														)}
 													</p>
 													<p className="truncate text-[11px] text-[#a1a1aa]">{item.description}</p>
 												</div>
@@ -530,11 +591,11 @@ export function Inserter({ components }: { components: string[] }) {
 }
 
 /** The floating bar over the canvas: favorites, add, Design/Live and zoom (Instatic's canvas notch). */
-export function Notch({ components }: { components: string[] }) {
+export function Notch() {
 	const mode = useStore($mode);
 	const zoom = useStore($zoom);
 	const favorites = useStore($favorites);
-	const items = useItems(components);
+	const items = useItems();
 	const favs = favorites.flatMap((id) => items.find((i) => i.id === id) ?? []).slice(0, 6);
 	return (
 		<div className="absolute top-14 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full border border-[#3f3f42] bg-[#171719]/95 px-2 py-1 shadow-lg">

@@ -5,7 +5,7 @@ sidebar:
   order: 16
 ---
 
-Siteniz Git deposunda duran ve içeriği Markdown ya da MDX olan bir Astro projesiyse Wuppy onun üzerine oturabilir. Dosyalar yerinde kalır, sayfalarınız ve tasarımınız değişmez. Yönetim panelindeki her düzenleme aynı depoda bir commit olur.
+Siteniz Git deposunda duran ve içeriği Markdown olan bir Astro projesiyse Wuppy onun üzerine oturabilir. Dosyalar yerinde kalır, sayfalarınız ve tasarımınız değişmez. Yönetim panelindeki her düzenleme aynı depoda bir commit olur.
 
 ## Projeyi sarmak
 
@@ -37,12 +37,12 @@ Bu, [GitHub CLI](https://cli.github.com/) kullanır; özel depolar kendi girişi
 
 `wuppy init` şunları yapar:
 
-- `src/content.config.ts` (ya da `src/content/config.ts`) dosyasını okur ve `.md` ya da `.mdx` dosyası olan her koleksiyonu alır. JSON/YAML veri koleksiyonları ve uzak loader'lar "atlandı" diye listelenir, dokunulmaz. İçerik ayarı olmayan projelerde `src/content/<ad>/` klasörleri okunur.
+- `src/content.config.ts` (ya da `src/content/config.ts`) dosyasını okur ve `.md` dosyası olan her koleksiyonu alır. JSON/YAML veri koleksiyonları ve uzak loader'lar "atlandı" diye listelenir, dokunulmaz. İçerik ayarı olmayan projelerde `src/content/<ad>/` klasörleri okunur.
 - Her alanı dosyalardaki frontmatter'dan tahmin eder: tarih, boolean, sayı, metin listesi, görsel (anahtar adından ya da dosya uzantısından), uzun metin ve düz metin. Her dosyada bulunan alan zorunlu olur. Tanımadığı anahtarlar kayıtta yine korunur.
 - Her koleksiyonun public adresini `getCollection("<ad>")` çağıran `[slug]` ya da `[...slug]` sayfasından bulur.
-- `wuppy.config.mjs` dosyasını yazar, `astro.config` içindeki `integrations`'a `wuppy()` ve `mdx()` ekler (MDX yalnızca yoksa), adapter yoksa Node adapter'ı ekler.
-- Yalnızca Markdown okuyan içerik glob'larını (`pattern: "**/*.md"`) `**/*.{md,mdx}` yapar; koleksiyonlar [MDX](/tr/guides/mdx/) olur: yeni girdiler `.mdx`, mevcut `.md` dosyaları olduğu gibi kalır ve düzenlenebilir.
-- `package.json`'a `wuppy` (gerekirse `@astrojs/mdx`, `@astrojs/node`), `.gitignore`'a Wuppy satırlarını, `.env`'e rastgele bir `WUPPY_SECRET` ekler.
+- `wuppy.config.mjs` dosyasını yazar, `astro.config` içindeki `integrations`'a `wuppy()` ekler, adapter yoksa Node adapter'ı ekler.
+- `@astrojs/mdx` ekler, `.md` glob'larını `.mdx` için genişletir ve `.mdx` dosyalarında bulduğu bileşenleri izin listesine alır. `wuppy mdx-to-md` bileşen içermeyen `.mdx` dosyalarını hâlâ `.md`'ye çevirebilir.
+- `package.json`'a `wuppy` (gerekirse `@astrojs/node`), `.gitignore`'a Wuppy satırlarını, `.env`'e rastgele bir `WUPPY_SECRET` ekler.
 
 Hiçbir şeyin üzerine yazılmaz: `wuppy.config.mjs` zaten varsa komut `--force` verilmedikçe durur. `astro.config` güvenle değiştirilemeyecek biçimdeyse elle eklenecek satırı yazdırır.
 
@@ -53,7 +53,7 @@ Oluşan `wuppy.config.mjs` dosyasını gözden geçirin, o bir başlangıç nokt
 Wuppy `/sitemap.xml`, `/robots.txt` ve `/rss.xml` sunar. Projede bu dosyalardan biri zaten varsa (örneğin `public/robots.txt`), `init` Wuppy'nin sürümünü kapatır. `@astrojs/sitemap` `/sitemap-index.xml` yazdığı için çakışmaz:
 
 ```js
-integrations: [wuppy({ robots: false }), mdx(), sitemap()],
+integrations: [wuppy({ robots: false }), sitemap()],
 ```
 
 `src/pages/admin`, `src/pages/api` ya da `src/pages/uploads` varsa uyarır, çünkü Wuppy bu adresleri kullanır.
@@ -78,7 +78,6 @@ Değişiklikleri Git sunucunuza göndermek isterseniz sunucuda istediğiniz zama
 ## Bilinmesi gerekenler
 
 - Düzenlenen Markdown, Astro'nun varsayılan Markdown ayarlarıyla çizilir. Ayarınızdaki remark/rehype eklentileri ve göreli yolla verilen görseller (`./foto.jpg`) bir sonraki derlemeden sonra uygulanır. `public/` altındaki ya da Wuppy ile yüklenen görseller hemen çalışır.
-- Değişen `.mdx` dosyası da hemen görünür: gövdesi [MDX kurallarıyla](/tr/guides/mdx/) denetlenir ve bir sonraki derlemeye kadar istek anında derlenir.
+- Projenin kendi `.mdx` dosyaları panelde listelenmez, derlendiği gibi sunulur.
 - `@astrojs/sitemap` yalnız derleme sırasında üretilen sayfaları listeler. Wuppy'nin `/sitemap.xml` dosyası koleksiyon sayfalarını listeler; onu `robots.txt` içine `sitemap-index.xml` yanına ekleyin.
-- Bir koleksiyonda hem `.md` hem `.mdx` dosyası olabilir; ikisi de düzenlenebilir. Glob'u `.mdx`'e genişletilemiyorsa yeni girdiler Markdown kalır ve `init` bunun için uyarır.
 - Yönetim paneli bir sunucu ister: sarılmış site Node adapter ile sunucu rotaları kazanır. Statik olan sayfalar statik kalır.

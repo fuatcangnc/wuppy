@@ -91,12 +91,12 @@ function isJson(source: string): boolean {
 }
 
 /** Raw HTML in Markdown: dangerous tags, event handlers (`onerror=`) and code URLs in any attribute. */
-function checkHtml(html: string, allowedComponents: readonly string[], found: Set<string>): void {
+function checkHtml(html: string, found: Set<string>): void {
 	for (const m of html.matchAll(/<\s*\/?\s*([A-Za-z][\w:-]*)/g)) {
 		const tag = m[1]!;
 		if (DANGEROUS_TAGS.has(tag.toLowerCase())) found.add(tag.toLowerCase());
-		// Markdown has no components: a PascalCase tag is a mistake (or a probe), like in MDX.
-		else if (/^[A-Z]/.test(tag) && !allowedComponents.includes(tag)) found.add(tag);
+		// Raw HTML in Markdown: a PascalCase tag is a component or a probe, not an HTML element.
+		else if (/^[A-Z]/.test(tag)) found.add(tag);
 	}
 	for (const m of html.matchAll(/[\s"'/]((?:on|formaction|srcdoc)[\w-]*)\s*=/gi)) found.add(m[1]!.toLowerCase());
 	for (const m of html.matchAll(/=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g)) {
@@ -149,7 +149,7 @@ function walk(node: Node, allowedComponents: readonly string[], found: Set<strin
 			checkJsx(node, allowedComponents, found);
 			break;
 		case "html":
-			checkHtml(String(node.value ?? ""), allowedComponents, found);
+			checkHtml(String(node.value ?? ""), found);
 			break;
 		case "link":
 		case "image":
@@ -185,5 +185,46 @@ export async function findDisallowed(
 	}
 	const found = new Set<string>();
 	walk(tree, allowedComponents, found);
+	return [...found];
+}
+
+/**
+ * Theme sample entries often import their components explicitly. In the site, the generated components map already
+ * provides every theme component (and runtime MDX cannot resolve arbitrary imports), so component imports are removed
+ * when content enters Wuppy or is rendered live.
+ */
+export function stripComponentImports(body: string): string {
+	return body
+		.replace(/^[ \t]*import\s+[^;\n]*?\.astro["']\s*;?[ \t]*$/gm, "")
+		.replace(/\n{3,}/g, "\n\n")
+		.trimStart();
+}
+
+/** PascalCase JSX tags in a body, used to promote a Markdown entry to `.mdx` when a component is inserted. */
+export async function componentTags(body: string): Promise<string[]> {
+	const parser = await loadSatteri();
+	let tree: Node;
+	try {
+		tree = parser.mdxToMdast(body, { position: false });
+	} catch {
+		// Not valid MDX (yet): still report the component tags, so the entry is checked (and its error reported) as MDX
+		// instead of the component being refused as unknown Markdown HTML.
+		const html: string[] = [];
+		const collect = (node: Node) => {
+			if (node.type === "html") html.push(String(node.value ?? ""));
+			for (const child of node.children ?? []) collect(child);
+		};
+		collect(parser.markdownToMdast(body, { position: false }));
+		return [...new Set(Array.from(html.join("\n").matchAll(/<([A-Z][A-Za-z0-9]*)\b/g), (m) => m[1]!))];
+	}
+	const found = new Set<string>();
+	const visit = (node: Node) => {
+		if ((node.type === "mdxJsxFlowElement" || node.type === "mdxJsxTextElement") && node.name) {
+			const name = node.name;
+			if (/^[A-Z]/.test(name) && !name.includes(".")) found.add(name);
+		}
+		for (const child of node.children ?? []) visit(child);
+	};
+	visit(tree);
 	return [...found];
 }

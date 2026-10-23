@@ -169,9 +169,7 @@ const defs: ModuleDef[] = [
 		id: "component",
 		label: "Component",
 		tag: (p) => (/^[A-Z][A-Za-z0-9]*$/.test(p.name ?? "") ? p.name! : "div"),
-		text: "text",
 		fields: [{ key: "name", label: "Component", type: "select", options: [] }],
-		defaults: { text: "" },
 	},
 	{
 		id: "markdown",
@@ -283,7 +281,6 @@ export const PRESETS: Preset[] = [
 	{ label: "Video", category: "Media", moduleId: "video" },
 	{ label: "Code", category: "Advanced", moduleId: "code" },
 	{ label: "Markdown", category: "Advanced", moduleId: "markdown" },
-	{ label: "Component", category: "Advanced", moduleId: "component" },
 ];
 
 /** The name shown in Layers: the user's label, else the start of its text, else the module's name. */

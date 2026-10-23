@@ -3,7 +3,7 @@ import { dirname, join } from "node:path";
 import type { Commit, GitAdapter } from "@wuppy/git";
 import { dataSchema, type Collection } from "../content-types/index.ts";
 import type { WebhookEvent } from "../webhooks/index.ts";
-import { findDisallowed } from "../mdx/index.ts";
+import { componentTags, findDisallowed, stripComponentImports } from "../markdown/index.ts";
 import { FilesystemContent, type ContentEntry } from "./adapters/filesystem.ts";
 import { parseDocument, type ParsedDocument } from "./parsers/frontmatter.ts";
 
@@ -145,7 +145,13 @@ export class ContentService {
 			else delete data.draft;
 			doc = { data, body: out.body };
 		}
-		const found = await findDisallowed(doc.body, this.options.components ?? [], s.formatOf(slug));
+		// Keep an existing `.md` entry on Markdown's HTML rules (void tags like `<img>` are valid there) unless it
+		// uses a component and will be promoted to `.mdx`. New entries in an MDX collection are MDX from the start.
+		const current = s.formatOf(slug);
+		const tags = await componentTags(doc.body);
+		const format = current === "mdx" || (s.collection.format === "mdx" && tags.length > 0) ? "mdx" : "md";
+		if (format === "mdx") doc = { ...doc, body: stripComponentImports(doc.body) };
+		const found = await findDisallowed(doc.body, this.options.components ?? [], format);
 		if (found.length > 0) throw new DisallowedContentError(found);
 		return doc;
 	}
@@ -169,11 +175,21 @@ export class ContentService {
 		const isNew = this.options.beforeSave ? !(await s.get(slug)) : false;
 		doc = await this.checked(collection, slug, doc, isNew);
 		doc = { ...doc, data: this.schemas.get(collection)!.parse(doc.data) };
+		const before = s.formatOf(slug);
+		// A Markdown entry in an MDX collection is promoted when it starts using a component; the old file goes away
+		// in the same commit so the collection never lists the slug twice.
+		const format = s.collection.format === "mdx" && (await componentTags(doc.body)).length ? "mdx" : before;
 		await this.serial(async () => {
-			await s.put(slug, doc);
-			await this.git.commit([s.relPath(slug)], message ?? `content: update ${collection}/${slug}`).catch((e: Error) => {
-				if (!/nothing to commit/i.test(e.message)) throw e;
-			});
+			await s.put(slug, doc, format);
+			if (format !== before) await s.delete(slug, before);
+			await this.git
+				.commit(
+					[...new Set([s.relPath(slug, before), s.relPath(slug, format)])],
+					message ?? `content: update ${collection}/${slug}`,
+				)
+				.catch((e: Error) => {
+					if (!/nothing to commit/i.test(e.message)) throw e;
+				});
 		});
 		this.emit("content.updated", { collection, slug });
 	}

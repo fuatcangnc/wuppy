@@ -75,7 +75,12 @@ export const fieldTypeSchema: z.ZodType<FieldType, unknown> = z.union([z.enum(FI
 export const collectionSchema = z.object({
 	name: z.string().regex(/^[a-z][a-z0-9-]*$/),
 	dir: z.string().min(1),
+	/** New entries are saved as `.mdx` (components allowed) or `.md`; an existing `.md` is promoted when it gains a component. */
 	format: z.enum(["md", "mdx"]).default("md"),
+	/** The admin section it fills: Posts or Pages. Collections named `posts`/`pages` need not set it (a theme's `blog`). */
+	kind: z.enum(["posts", "pages"]).optional(),
+	/** In a theme's config: its field name -> the site's (`{ pubDate: "date" }`), so the theme reads the site's entries. */
+	map: z.record(z.string(), z.string()).optional(),
 	/** Public URL of an entry; `{slug}` is replaced. Defaults to `/<name>/{slug}`. */
 	route: z.string().startsWith("/").includes("{slug}").optional(),
 	fields: z.record(z.string(), fieldTypeSchema).default({}),

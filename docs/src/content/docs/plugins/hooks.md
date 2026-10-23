@@ -62,7 +62,7 @@ Before-hooks are powerful: they can block other people's work. So:
 - **They cannot widen access.** A plugin cannot publish or unpublish an entry: `draft` keeps the editor's value. A
   comment plugin can make a comment stricter (pending or spam), never approve it. A spam comment is not shown,
   triggers no notification email, and the visitor is told it is awaiting moderation.
-- **What they change is checked like an editor's text.** After the plugins, the [MDX rules](/guides/mdx/) and (when saving) the
+- **What they change is checked like an editor's text.** After the plugins, the [Markdown rules](/guides/markdown/) and (when saving) the
   collection's schema run on the result, so a plugin cannot slip in a script.
 - **They cannot save from inside.** `ctx.content.put` throws in a before-hook (it would run the hooks again). Return
   the changed entry instead.

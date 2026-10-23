@@ -3,15 +3,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { isLiveRoute, routePattern, wrapPage } from "../../src/astro/live-content.ts";
-import { findDisallowed } from "../../src/mdx/index.ts";
-import {
-	type AstroEntry,
-	createLive,
-	defaultId,
-	livePage,
-	mdxContent,
-	paginator,
-} from "../../src/astro/live-runtime.ts";
+import { markdownContent } from "../../src/markdown/render.ts";
+import { type AstroEntry, createLive, defaultId, livePage, paginator } from "../../src/astro/live-runtime.ts";
 
 let root: string;
 beforeEach(async () => {
@@ -32,7 +25,7 @@ const write = (name: string, text: string) => writeFile(join(root, "src/content/
 function live(built: AstroEntry[] = []) {
 	return createLive({
 		root,
-		collections: [{ name: "posts", dir: "src/content/posts", format: "md" }],
+		collections: [{ name: "posts", dir: "src/content/posts" }],
 		built: async () => built,
 		schema: () => ({
 			safeParseAsync: async (d: unknown) =>
@@ -82,7 +75,7 @@ describe("live content", () => {
 		expect(await l.isLive("couriers")).toBe(false);
 	});
 
-	it("reads .md and .mdx side by side; a changed .mdx renders on request, an unchanged one keeps its build", async () => {
+	it("serves a theme's .mdx from its build only; Wuppy renders .md", async () => {
 		const source = "---\ntitle: Built\n---\n# Hi";
 		await write("built.mdx", source);
 		await write("plain.md", "---\ntitle: Plain\n---\ntext");
@@ -95,51 +88,25 @@ describe("live content", () => {
 		};
 		const l = live([built]);
 		expect((await l.getCollection("posts")).map((e) => e.id)).toEqual(["built", "plain"]);
-		expect(l.rendersAtRuntime(await l.getEntry("posts", "built"))).toBe(false);
-		expect(l.rendersAtRuntime(await l.getEntry("posts", "plain"))).toBe(false);
 		await write("built.mdx", "---\ntitle: Edited\n---\n# Changed");
-		const edited = await l.getEntry("posts", "built");
-		expect(edited).toMatchObject({ body: "# Changed", data: { title: "Edited" } });
-		expect(l.rendersAtRuntime(edited)).toBe(true);
+		expect(await l.getEntry("posts", "built")).toMatchObject({ data: { title: "Edited" }, body: "# Changed" });
+		await write("new.mdx", "---\ntitle: New\n---\n");
+		expect(await l.getEntry("posts", "new")).toMatchObject({ data: { title: "New" } });
 	});
 
-	it("compiles stored MDX into a component Astro's MDX renderer accepts, after the security checks", async () => {
-		const opts = { allowed: ["Callout"], root };
-		const { Content, headings } = await mdxContent(
-			'# Hi *there*\n\n## Hi *there*\n\n<Callout tone="info">ok</Callout>\n\n```js\nconst x = 1\n```\n\n| a |\n|---|\n| 1 |\n',
-			opts,
-		);
-		expect((Content as unknown as Record<symbol, unknown>)[Symbol.for("mdx-component")]).toBe(true);
-		// Same heading ids and list as Astro's build gives.
-		expect(headings).toEqual([
-			{ depth: 1, slug: "hi-there", text: "Hi there" },
-			{ depth: 2, slug: "hi-there-1", text: "Hi there" },
-		]);
-		const tree = JSON.stringify(Content({ components: { Callout: "aside" } }));
-		expect(tree).toContain('"id":"hi-there"');
-		expect(tree).toContain("aside");
-		expect(tree).toContain("astro-code"); // highlighted like the build
-		expect(tree).toContain('"table"'); // GFM
-		await expect(mdxContent("{process.exit(1)}", opts)).rejects.toThrow(/expression/);
-		await expect(mdxContent("<Evil />", opts)).rejects.toThrow(/Evil/);
-		await expect(mdxContent("import fs from 'node:fs'", opts)).rejects.toThrow(/import/);
-	});
-
-	it("renders the visual editor's blocks (one line of JSX each) with the author's text kept literal", async () => {
-		// What packages/admin/src/components/visual-editor/mdx.ts writes.
+	it("renders the visual editor's blocks (one line of HTML each) with the author's text kept literal", async () => {
+		// What packages/admin/src/components/visual-editor/markdown.ts writes.
 		const body =
 			'<section data-ve="container" data-ve-label="Hero" style="padding: 32px 16px"><h2 data-ve="heading">Hi &#42;there&#42; &#123;x&#125; &lt;b&gt;</h2>' +
 			'<p data-ve="text" class="lead">a<br />b</p><a data-ve="button" href="/x" style="color: #fff">Go</a>' +
 			'<img data-ve="image" src="/a.png" alt="" /><ul data-ve="list"><li>One</li></ul>' +
 			'<video data-ve="video" src="/v.mp4" controls></video><hr data-ve="divider" /></section>\n\n' +
 			'# Markdown kept\n\n<p data-ve="text" hidden>secret</p>\n';
-		const { Content } = await mdxContent(body, { allowed: [], root });
-		const tree = JSON.stringify(Content({}));
-		expect(tree).toContain("Hi *there* {x} <b>");
-		expect(tree).not.toContain('"em"');
-		for (const tag of ["section", "h2", "br", "img", "li", "video", "hr", "h1"]) expect(tree).toContain(`"${tag}"`);
-		expect(tree).toContain('"padding: 32px 16px"');
-		expect(await findDisallowed(body, [], "md")).toEqual([]);
+		const { html } = await markdownContent(body);
+		expect(html).toContain("Hi &#42;there&#42; &#123;x&#125; &lt;b&gt;");
+		expect(html).not.toContain("<em>");
+		for (const tag of ["section", "h2", "br", "img", "li", "video", "hr", "h1"]) expect(html).toContain(`<${tag}`);
+		expect(html).toContain('style="padding: 32px 16px"');
 	});
 
 	it("matches Astro's default ids", () => {

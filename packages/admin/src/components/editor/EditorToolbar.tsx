@@ -5,12 +5,12 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { $createHeadingNode, $createQuoteNode } from "@lexical/rich-text";
 import { $setBlocksType } from "@lexical/selection";
 import { $createParagraphNode, $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND, type ElementNode } from "lexical";
-import { useEffect, useState } from "react";
-import { apiData, apiUrl } from "../../lib/api.ts";
+import { useState } from "react";
+import { apiUrl } from "../../lib/api.ts";
 import type { MediaItem } from "../../stores/content.ts";
-import { Button, Dialog, Input, Select } from "../../ui/index.tsx";
+import { Button, Dialog, Input } from "../../ui/index.tsx";
 import { MediaPicker } from "../media/MediaPicker.tsx";
-import { componentSnippet, imageSnippet, insertSnippet, tableSnippet } from "./snippets.ts";
+import { imageSnippet, insertSnippet, tableSnippet } from "./snippets.ts";
 
 /** Turns the blocks in the selection into another kind (heading, quote, code, paragraph). */
 const setBlock = (make: () => ElementNode) => {
@@ -26,16 +26,9 @@ const button = (label: string, run: () => void, text = label) => (
 
 export function EditorToolbar() {
 	const [editor] = useLexicalComposerContext();
-	const [components, setComponents] = useState<string[]>([]);
 	const [pickerOpen, setPickerOpen] = useState(false);
 	const [image, setImage] = useState<{ item: MediaItem; alt: string; caption: string } | null>(null);
 	const [link, setLink] = useState<string | null>(null);
-
-	useEffect(() => {
-		void apiData<string[]>("GET", "/api/editor/components")
-			.then(setComponents)
-			.catch(() => undefined);
-	}, []);
 
 	return (
 		<div
@@ -56,20 +49,6 @@ export function EditorToolbar() {
 			{button("Link", () => setLink("https://"), "🔗")}
 			{button("Table", () => insertSnippet(editor, tableSnippet()), "▦")}
 			{button("Image from library", () => setPickerOpen(true), "🖼")}
-			{components.length > 0 && (
-				<Select
-					aria-label="Insert component"
-					value=""
-					onChange={(e) => e.target.value && insertSnippet(editor, componentSnippet(e.target.value))}
-				>
-					<option value="">Component…</option>
-					{components.map((c) => (
-						<option key={c} value={c}>
-							{c}
-						</option>
-					))}
-				</Select>
-			)}
 
 			<MediaPicker
 				open={pickerOpen}

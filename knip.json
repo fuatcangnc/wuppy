@@ -13,6 +13,7 @@
 			"ignoreDependencies": ["@wuppy/admin"]
 		},
 		"templates/starter": {
+			"ignore": ["content/**"],
 			"ignoreDependencies": ["zod"]
 		}
 	},

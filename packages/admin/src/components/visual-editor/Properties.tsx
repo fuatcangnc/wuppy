@@ -5,9 +5,14 @@ import { useMemo, useState } from "react";
 import { uploadImage } from "../../stores/content.ts";
 import { Button, IconButton, Input, Select, Textarea, toast } from "../../ui/index.tsx";
 import { Section } from "./Explorer.tsx";
-import { safeCssValue } from "./mdx.ts";
+import { $themeElement, codePath, editThemeElement, type ThemeElement } from "./theme-element.ts";
+import { safeCssValue } from "./markdown.ts";
+import { GROUPED, SELECTS, STYLE_GROUPS } from "./style-props.ts";
+import { classValue, parseStyle, printStyle, variantFor, withClassValue } from "./tailwind.ts";
 import { moduleOf, nodeName, type Field } from "./modules.ts";
 import {
+	$codeFile,
+	$componentNames,
 	$context,
 	$editingComponent,
 	$selected,
@@ -30,45 +35,6 @@ import {
 } from "./store.ts";
 import { updateNodeProps } from "./tree.ts";
 
-const SELECTS: Record<string, readonly string[]> = {
-	display: ["", "block", "flex", "grid", "inline-block", "inline", "contents", "none"],
-	position: ["", "static", "relative", "absolute", "fixed", "sticky"],
-	"flex-direction": ["", "row", "row-reverse", "column", "column-reverse"],
-	"flex-wrap": ["", "nowrap", "wrap"],
-	"justify-content": ["", "flex-start", "center", "flex-end", "space-between", "space-around", "space-evenly"],
-	"align-items": ["", "stretch", "flex-start", "center", "flex-end", "baseline"],
-	"text-align": ["", "left", "center", "right", "justify"],
-	"text-transform": ["", "none", "uppercase", "lowercase", "capitalize"],
-	"font-weight": ["", "300", "400", "500", "600", "700", "800", "900"],
-	overflow: ["", "visible", "hidden", "auto", "scroll"],
-	"object-fit": ["", "fill", "contain", "cover", "none"],
-};
-const STYLE_GROUPS: [string, string[]][] = [
-	[
-		"Layout",
-		["display", "flex-direction", "flex-wrap", "justify-content", "align-items", "gap", "grid-template-columns"],
-	],
-	["Position", ["position", "top", "right", "bottom", "left", "z-index"]],
-	["Spacing", ["margin", "padding"]],
-	["Size", ["width", "max-width", "min-height", "height", "aspect-ratio", "object-fit", "overflow"]],
-	[
-		"Typography",
-		[
-			"font-family",
-			"font-size",
-			"font-weight",
-			"line-height",
-			"letter-spacing",
-			"text-align",
-			"text-transform",
-			"color",
-		],
-	],
-	["Background", ["background-color", "background-image"]],
-	["Border", ["border", "border-radius", "box-shadow", "opacity"]],
-	["Effects", ["transition", "transform"]],
-];
-const GROUPED = new Set(STYLE_GROUPS.flatMap(([, keys]) => keys));
 const COLOR = /(^|-)color$/;
 const SPACE = /^(margin|padding|gap|top|right|bottom|left)/;
 
@@ -125,19 +91,18 @@ function FieldInput({
 	id,
 	field,
 	value,
-	components,
+	options,
 }: {
 	id: string;
 	field: Field;
 	value: string;
-	components: string[];
+	options?: readonly string[];
 }) {
 	const set = (v: string) => mutate((d) => updateNodeProps(d, id, { [field.key]: v }), `${id}:${field.key}`);
 	if (field.type === "select") {
-		const options = field.key === "name" ? components : field.options!;
 		return (
 			<Select size="sm" label={field.label} value={value} onChange={(e) => set(e.target.value)}>
-				{options.map((o) => (
+				{(options ?? field.options ?? []).map((o) => (
 					<option key={o} value={o}>
 						{o}
 					</option>
@@ -382,7 +347,7 @@ function SelectorProperties({ id }: { id: string }) {
 }
 
 /** The right-hand panel: what the selected element is, its content and its styles (Instatic's Properties). */
-export function PropertiesPanel({ components }: { components: string[] }) {
+export function PropertiesPanel() {
 	const tree = useStore($tree);
 	const selected = useStore($selected);
 	const target = useStore($target);
@@ -390,8 +355,12 @@ export function PropertiesPanel({ components }: { components: string[] }) {
 	const context = useStore($context);
 	const state = useStore($state);
 	const editing = useStore($editingComponent);
+	const componentNames = useStore($componentNames);
+	const themeElement = useStore($themeElement);
 	if (target) return <SelectorProperties id={target} />;
 	const node = selected ? tree.nodes[selected] : undefined;
+	if (!node && themeElement)
+		return <ThemeElementProperties key={`${themeElement.file}:${themeElement.loc}`} el={themeElement} />;
 	if (!node || selected === tree.rootNodeId)
 		return (
 			<p className="p-3 text-sm text-muted-foreground">
@@ -454,8 +423,19 @@ export function PropertiesPanel({ components }: { components: string[] }) {
 				{def.fields
 					.filter((f) => f.key !== "class")
 					.map((f) => (
-						<FieldInput key={f.key} id={id} field={f} value={node.props[f.key] ?? ""} components={components} />
+						<FieldInput
+							key={f.key}
+							id={id}
+							field={f}
+							value={node.props[f.key] ?? ""}
+							options={node.moduleId === "component" && f.key === "name" ? componentNames : undefined}
+						/>
 					))}
+				{node.moduleId === "component" && (
+					<p className="text-[11px] leading-4 text-muted-foreground">
+						Astro component. Save, then rebuild the theme to see the real output on the site.
+					</p>
+				)}
 				{def.fields.some((f) => f.key === "class") && <TagPills id={id} value={node.props.class ?? ""} />}
 			</Section>
 			{node.moduleId === "ref" && (
@@ -553,5 +533,288 @@ function ParamsEditor({ id }: { id: string }) {
 				</p>
 			</div>
 		</details>
+	);
+}
+
+const TAGS = [
+	"div",
+	"section",
+	"article",
+	"aside",
+	"header",
+	"footer",
+	"main",
+	"nav",
+	"p",
+	"h1",
+	"h2",
+	"h3",
+	"h4",
+	"h5",
+	"h6",
+	"span",
+	"a",
+	"button",
+	"ul",
+	"ol",
+	"li",
+	"figure",
+	"blockquote",
+	"strong",
+	"em",
+	"small",
+	"label",
+];
+
+/** One style of a theme element; typed values are saved on blur or Enter (each save rewrites the theme file). */
+function ThemeStyleInput({
+	prop,
+	value,
+	placeholder,
+	onCommit,
+}: {
+	prop: string;
+	value: string;
+	placeholder?: string;
+	onCommit: (value: string) => void;
+}) {
+	const [draft, setDraft] = useState(value);
+	const commit = (v: string) => v !== value && onCommit(v);
+	if (SELECTS[prop])
+		return (
+			<Select size="sm" label={prop} value={value} onChange={(e) => commit(e.target.value)}>
+				{[...new Set([...SELECTS[prop], value])].map((o) => (
+					<option key={o} value={o}>
+						{o || (placeholder ? `— (${placeholder})` : "—")}
+					</option>
+				))}
+			</Select>
+		);
+	return (
+		<div className="flex items-end gap-1">
+			<Input
+				label={prop}
+				value={draft}
+				placeholder={placeholder}
+				list={listFor(prop)}
+				onChange={(e) => setDraft(e.target.value)}
+				onBlur={() => commit(draft)}
+				onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+				className="h-8 text-xs"
+			/>
+			{COLOR.test(prop) && (
+				<input
+					type="color"
+					aria-label={`${prop} picker`}
+					value={/^#[0-9a-f]{6}$/i.test(draft) ? draft : "#000000"}
+					onChange={(e) => setDraft(e.target.value)}
+					onBlur={() => commit(draft)}
+					className="mb-0.5 h-8 w-8 shrink-0 rounded border border-border"
+				/>
+			)}
+		</div>
+	);
+}
+
+const setAttr = (attr: string, v: string | null) => void editThemeElement({ action: "attrs", attrs: { [attr]: v } });
+
+/** The element's HTML attributes (Instatic's Attributes tab); values made by code are left to Code view. */
+function ThemeAttributes({ attrs }: { attrs: Record<string, string> }) {
+	const [name, setName] = useState("");
+	const [value, setValue] = useState("");
+	return (
+		<Section title="Attributes">
+			{Object.entries(attrs).map(([k, v]) => (
+				<div key={`${k}=${v}`} className="flex items-end gap-1">
+					<Input
+						label={k}
+						defaultValue={v}
+						onBlur={(e) => e.target.value !== v && setAttr(k, e.target.value)}
+						onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+						className="h-8 text-xs"
+					/>
+					<IconButton label={`Remove ${k}`} size="icon-sm" onClick={() => setAttr(k, null)}>
+						<X size={12} />
+					</IconButton>
+				</div>
+			))}
+			<div className="flex items-end gap-1">
+				<Input
+					label="Name"
+					placeholder="aria-label"
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+					className="h-8 text-xs"
+				/>
+				<Input label="Value" value={value} onChange={(e) => setValue(e.target.value)} className="h-8 text-xs" />
+				<Button
+					size="sm"
+					variant="secondary"
+					disabled={!/^[a-zA-Z_@:][\w:.@-]*$/.test(name)}
+					onClick={() => {
+						setAttr(name, value);
+						setName("");
+						setValue("");
+					}}
+				>
+					Add
+				</Button>
+			</div>
+		</Section>
+	);
+}
+
+/**
+ * An element of the theme's own markup, with Instatic's inspector: its text and tag, every style group and its
+ * attributes, written straight into the theme's `.astro` file. Styles are Tailwind 4 classes (under the chosen
+ * breakpoint and state) when the theme uses Tailwind, inline style otherwise. Anything made by code (a `{...}`
+ * expression) is left to Code view.
+ */
+function ThemeElementProperties({ el }: { el: ThemeElement }) {
+	const visual = useStore($visual);
+	const [text, setText] = useState(el.text ?? "");
+	const [cls, setCls] = useState(el.cls);
+	const [inline, setInline] = useState(el.style);
+	const [breakpoint, setBreakpoint] = useState("");
+	const [state, setState] = useState("");
+	const path = codePath(el.file);
+	const line = el.loc.split(":")[0];
+	const classes = el.cls.split(/\s+/).filter(Boolean);
+	const styles = parseStyle(el.style);
+	const variant = variantFor(visual.breakpoints.find((b) => b.id === breakpoint)?.width, state);
+	const valueOf = (prop: string) => (el.tailwind ? classValue(classes, prop, variant) : (styles[prop] ?? ""));
+	const commit = (prop: string, v: string) =>
+		void editThemeElement({
+			action: "attrs",
+			attrs: el.tailwind
+				? { class: withClassValue(classes, prop, variant, v).join(" ") || null }
+				: { style: printStyle({ ...styles, [prop]: v }) || null },
+		});
+	return (
+		<div>
+			<Section title={`<${el.tag}>`}>
+				<p className="text-[11px] leading-4 break-all text-muted-foreground">
+					Theme code: {path}, line {line}. Changes are saved to this file.
+				</p>
+				<div className="flex flex-wrap gap-0.5">
+					<IconButton label="Move up" size="icon-sm" onClick={() => void editThemeElement({ action: "move", by: -1 })}>
+						<ArrowUp size={14} />
+					</IconButton>
+					<IconButton label="Move down" size="icon-sm" onClick={() => void editThemeElement({ action: "move", by: 1 })}>
+						<ArrowDown size={14} />
+					</IconButton>
+					<IconButton label="Duplicate" size="icon-sm" onClick={() => void editThemeElement({ action: "duplicate" })}>
+						<Copy size={14} />
+					</IconButton>
+					<Button size="sm" variant="secondary" className="h-8" onClick={() => $codeFile.set(path)}>
+						<Pencil size={14} /> Open in Code
+					</Button>
+					<IconButton
+						label="Delete"
+						size="icon-sm"
+						onClick={() =>
+							confirm(`Delete this <${el.tag}> from ${path}?`) && void editThemeElement({ action: "delete" })
+						}
+					>
+						<Trash2 size={14} />
+					</IconButton>
+				</div>
+				{el.text !== null && (
+					<Textarea
+						label="Text"
+						value={text}
+						rows={3}
+						onChange={(e) => setText(e.target.value)}
+						onBlur={() => text !== el.text && void editThemeElement({ action: "text", value: text })}
+					/>
+				)}
+				<Select
+					size="sm"
+					label="Tag"
+					value={el.tag}
+					onChange={(e) => void editThemeElement({ action: "tag", name: e.target.value })}
+				>
+					{[...new Set([el.tag, ...TAGS])].map((t) => (
+						<option key={t} value={t}>
+							{t}
+						</option>
+					))}
+				</Select>
+				<Input
+					label="Classes"
+					value={cls}
+					onChange={(e) => setCls(e.target.value)}
+					onBlur={() =>
+						cls !== el.cls && void editThemeElement({ action: "attrs", attrs: { class: cls.trim() || null } })
+					}
+					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+				/>
+				<Input
+					label="Inline style"
+					value={inline}
+					placeholder="color: red; padding: 1rem"
+					onChange={(e) => setInline(e.target.value)}
+					onBlur={() =>
+						inline !== el.style && void editThemeElement({ action: "attrs", attrs: { style: inline.trim() || null } })
+					}
+					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+				/>
+			</Section>
+			<Section title="Styles">
+				{el.tailwind ? (
+					<>
+						<div className="grid grid-cols-2 gap-2">
+							<Select size="sm" label="Breakpoint" value={breakpoint} onChange={(e) => setBreakpoint(e.target.value)}>
+								<option value="">Base</option>
+								{visual.breakpoints
+									.toSorted((a, b) => b.width - a.width)
+									.map((b) => (
+										<option key={b.id} value={b.id}>
+											{b.label} (≤{b.width}px)
+										</option>
+									))}
+							</Select>
+							<Select size="sm" label="State" value={state} onChange={(e) => setState(e.target.value)}>
+								<option value="">None</option>
+								{STATES.map((s) => (
+									<option key={s} value={s}>
+										{s}
+									</option>
+								))}
+							</Select>
+						</div>
+						<p className="text-[11px] leading-4 text-muted-foreground">
+							Saved as Tailwind 4 classes
+							{variant && (
+								<>
+									{" "}
+									under <code>{variant}</code>
+								</>
+							)}
+							. Values are Tailwind values (<code>4</code>, <code>full</code>, <code>red-500</code>) or CSS (
+							<code>320px</code>, <code>#fff</code>).
+						</p>
+					</>
+				) : (
+					<p className="text-[11px] leading-4 text-muted-foreground">
+						This theme does not use Tailwind: styles are saved as the element's inline style.
+					</p>
+				)}
+			</Section>
+			{STYLE_GROUPS.map(([group, keys]) => (
+				<Section key={group} title={group}>
+					{keys.map((k) => (
+						<ThemeStyleInput
+							key={`${k}:${variant}:${valueOf(k)}`}
+							prop={k}
+							value={valueOf(k)}
+							placeholder={variant ? undefined : el.computed[k]}
+							onCommit={(v) => commit(k, v)}
+						/>
+					))}
+				</Section>
+			))}
+			<ThemeAttributes attrs={el.attrs} />
+		</div>
 	);
 }

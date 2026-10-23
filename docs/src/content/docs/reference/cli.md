@@ -12,6 +12,7 @@ description: The wuppy and wuppy-plugin commands.
 | `wuppy import` | Lists your Astro repositories on GitHub (needs `gh`), clones the one you pick and runs `wuppy init`. |
 | `wuppy doctor` | Checks the config, content folders, Git and `WUPPY_SECRET`. Exits with 1 on a problem. |
 | `wuppy types` | Writes `wuppy-env.d.ts` with types for every collection. |
+| `wuppy mdx-to-md [dir]` | Converts `.mdx` entries without components or expressions to `.md`; files that still need MDX are kept and listed. |
 | `wuppy upgrade [--force]` | Applies data migrations after a package update. See [Upgrading](/deployment/upgrading/). |
 | `wuppy plugin hash <dir>` | Prints a plugin's capabilities and the hash to approve it in `wuppy.config`. |
 

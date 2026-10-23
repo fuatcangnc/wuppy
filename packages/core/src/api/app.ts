@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { githubAstroRepos, type GithubAccounts, type GithubThemes } from "../themes/github.ts";
+import { templateUrl } from "../themes/site.ts";
 import { PERMISSIONS, permissionsFor, ROLES, type PendingInvitation, type Permission, type Role } from "@wuppy/auth";
 import { canRoute } from "@wuppy/plugin-types";
 import { visualCss } from "@wuppy/visual-editor";
@@ -27,7 +28,8 @@ import { signPreview } from "../publishing/index.ts";
 import type { BackupService } from "../transfer/backups.ts";
 import { exportContent, importContent } from "../transfer/index.ts";
 import { DisallowedContentError, type ContentService } from "../content/service.ts";
-import { findDisallowed } from "../mdx/index.ts";
+import { findDisallowed } from "../markdown/index.ts";
+import { markdownRenderer } from "../markdown/render.ts";
 import type { AuditLog } from "../audit/index.ts";
 import type { CommentService, CommentStatus } from "../comments/index.ts";
 import { DEFAULT_TEMPLATES, EMAIL_VARIABLES } from "../email/templates.ts";
@@ -921,6 +923,14 @@ export function createApp({
 			})
 			.get("/api/editor/components", need("content:read"), (c) => c.json({ data: service.allowedComponents }))
 			.get("/api/collections", need("content:read"), (c) => c.json({ data: service.collections }))
+			// The visual editor's canvas shows Markdown blocks as the site renders them (same checks as a save).
+			.post("/api/editor/markdown", need("content:write"), async (c) => {
+				const { source } = z.object({ source: z.string().max(200_000) }).parse(await c.req.json().catch(() => ({})));
+				const found = await findDisallowed(source, [], "md");
+				if (found.length) throw new DisallowedContentError(found);
+				const result = await (await markdownRenderer()).render(source, { frontmatter: {} });
+				return c.json({ data: { html: result.code } });
+			})
 			.get("/api/dashboard", need("content:read"), async (c) =>
 				c.json({ data: await buildDashboard(service, media, userCount) }),
 			)
@@ -1574,6 +1584,33 @@ export function createApp({
 					throw new ApiError(400, "INVALID_THEME_FILE", (e as Error).message);
 				}
 			})
+			.post("/api/themes/element", need("site:settings"), async (c) => {
+				if (!themes) throw new ApiError(400, "NOT_ENABLED", "Themes are not enabled");
+				const body = z
+					.object({
+						file: z.string().trim().min(1).max(1000),
+						loc: z.string().regex(/^\d+:\d+$/),
+						tag: z.string().max(100).optional(),
+						edit: z.discriminatedUnion("action", [
+							z.object({ action: z.literal("text"), value: z.string().max(10_000) }),
+							z.object({
+								action: z.literal("attrs"),
+								attrs: z.record(z.string().regex(/^[a-zA-Z_@:][\w:.@-]{0,99}$/), z.string().max(5000).nullable()),
+							}),
+							z.object({ action: z.literal("tag"), name: z.string().regex(/^[a-z][a-z0-9-]{0,49}$/) }),
+							z.object({ action: z.enum(["delete", "duplicate"]) }),
+							z.object({ action: z.literal("move"), by: z.union([z.literal(-1), z.literal(1)]) }),
+						]),
+					})
+					.parse(await c.req.json().catch(() => ({})));
+				try {
+					const out = await themes.editElement(body.file, body.loc, body.edit, body.tag);
+					record(c, "theme.file.write", { detail: body.file });
+					return c.json({ data: out });
+				} catch (e) {
+					throw new ApiError(400, "INVALID_THEME_EDIT", (e as Error).message);
+				}
+			})
 			.post("/api/themes/rebuild", need("site:settings"), async (c) => {
 				if (!themes) throw new ApiError(400, "NOT_ENABLED", "Themes are not enabled");
 				try {
@@ -1612,6 +1649,10 @@ export function createApp({
 				try {
 					return c.json({ data: await githubAstroRepos(token) });
 				} catch (e) {
+					if ((e as { status?: number }).status === 401) {
+						github?.disconnect(c.get("user").id);
+						throw new ApiError(409, "GITHUB_NOT_CONNECTED", "GitHub access expired. Connect GitHub again.");
+					}
 					throw new ApiError(502, "GITHUB_FAILED", (e as Error).message);
 				}
 			})
@@ -1795,10 +1836,14 @@ export function createApp({
 				if (!previewSecret) throw new ApiError(500, "NOT_CONFIGURED", "Preview links unavailable");
 				const collection = service.collections.find((x) => x.name === c.req.param("collection"));
 				const slug = c.req.param("slug");
-				if (!collection || !(await service.get(collection.name, slug)))
-					throw new ApiError(404, "NOT_FOUND", "Entry not found");
+				const entry = collection && (await service.get(collection.name, slug));
+				if (!collection || !entry) throw new ApiError(404, "NOT_FOUND", "Entry not found");
 				const { token, expires } = signPreview(previewSecret, collection.name, slug);
-				const path = (collection.route ?? `/${collection.name}/{slug}`).replace("{slug}", slug);
+				// A theme `.astro` page's entry is served at that page's URL.
+				const path =
+					typeof entry.data.template === "string"
+						? templateUrl(entry.data.template)
+						: (collection.route ?? `/${collection.name}/{slug}`).replace("{slug}", slug);
 				return c.json({ data: { url: `${path}?wuppy-preview=${token}`, expiresAt: expires.toISOString() } });
 			})
 			.get("/api/history/:collection/:slug{.+}", need("git:read"), async (c) =>

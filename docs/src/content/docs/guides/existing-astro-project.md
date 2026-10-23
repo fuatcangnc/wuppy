@@ -5,7 +5,7 @@ sidebar:
   order: 16
 ---
 
-If your site is already an Astro project with Markdown or MDX content in a Git repository, Wuppy can sit on top of it. The files stay where they are, your pages and design stay as they are, and every edit in the admin becomes a commit in the same repository.
+If your site is already an Astro project with Markdown content in a Git repository, Wuppy can sit on top of it. The files stay where they are, your pages and design stay as they are, and every edit in the admin becomes a commit in the same repository.
 
 ## Wrap a project
 
@@ -37,12 +37,12 @@ This uses the [GitHub CLI](https://cli.github.com/), so private repositories wor
 
 `wuppy init` does the following:
 
-- Reads `src/content.config.ts` (or `src/content/config.ts`) and keeps every collection that holds `.md` or `.mdx` files. JSON/YAML data collections and remote loaders are listed as skipped and left alone. Projects without a content config are read from `src/content/<name>/`.
+- Reads `src/content.config.ts` (or `src/content/config.ts`) and keeps every collection that holds `.md` files. JSON/YAML data collections and remote loaders are listed as skipped and left alone. Projects without a content config are read from `src/content/<name>/`.
 - Guesses each field from the frontmatter already in the files: dates, booleans, numbers, string lists, images (by key name or file extension), long text and plain strings. A field present in every file becomes required. Keys it does not know are still kept when an entry is saved.
 - Finds the public URL of each collection from the `[slug]` or `[...slug]` page that calls `getCollection("<name>")`.
-- Writes `wuppy.config.mjs`, adds `wuppy()` and `mdx()` to `integrations` in `astro.config` (MDX only when it is not there yet), and adds the Node adapter if there is no adapter yet.
-- Widens content globs that read only Markdown (`pattern: "**/*.md"`) to `**/*.{md,mdx}`, so collections become [MDX](/guides/mdx/): new entries are `.mdx`, existing `.md` files stay as they are and stay editable.
-- Adds `wuppy` (and `@astrojs/mdx`, `@astrojs/node` when needed) to `package.json`, Wuppy's ignore lines to `.gitignore`, and a random `WUPPY_SECRET` to `.env`.
+- Writes `wuppy.config.mjs`, adds `wuppy()` to `integrations` in `astro.config`, and adds the Node adapter if there is no adapter yet.
+- Adds `@astrojs/mdx`, widens `.md` globs to `.mdx`, and imports the components it finds in `.mdx` files into the allowlist. `wuppy mdx-to-md` can still convert component-free `.mdx` files to `.md`.
+- Adds `wuppy` (and `@astrojs/node` when needed) to `package.json`, Wuppy's ignore lines to `.gitignore`, and a random `WUPPY_SECRET` to `.env`.
 
 Nothing is overwritten: an existing `wuppy.config.mjs` stops the command unless you pass `--force`. When `astro.config` has a shape it cannot patch safely, it prints the line to add by hand.
 
@@ -53,7 +53,7 @@ Review the generated `wuppy.config.mjs`: it is a starting point. Turn a `string`
 Wuppy serves `/sitemap.xml`, `/robots.txt` and `/rss.xml`. If the project already has one of these files (for example `public/robots.txt`), `init` turns Wuppy's version off. `@astrojs/sitemap` writes `/sitemap-index.xml`, so it does not clash:
 
 ```js
-integrations: [wuppy({ robots: false }), mdx(), sitemap()],
+integrations: [wuppy({ robots: false }), sitemap()],
 ```
 
 It warns if `src/pages/admin`, `src/pages/api` or `src/pages/uploads` exist, because Wuppy uses those paths.
@@ -78,7 +78,6 @@ To publish the edits back to your Git host, push from the server yourself when y
 ## What to know
 
 - Edited Markdown is rendered with Astro's default Markdown settings. Remark/rehype plugins from your config, and images referenced with a relative path (`./photo.jpg`), apply after the next build. Images under `public/` or uploaded through Wuppy work at once.
-- A changed `.mdx` file shows at once too: its body is checked with the [MDX rules](/guides/mdx/) and compiled on request until the next build.
+- A project's own `.mdx` files are not listed in the admin and are served as built.
 - `@astrojs/sitemap` lists only pages built at build time. Wuppy's `/sitemap.xml` lists the collection pages, so add it to `robots.txt` next to `sitemap-index.xml`.
-- A collection can hold both `.md` and `.mdx` files; both are editable. If its glob cannot be widened to `.mdx`, new entries stay Markdown and `init` warns about it.
 - The admin needs a server: the wrapped site gets server routes through the Node adapter. Pages that were static stay static.

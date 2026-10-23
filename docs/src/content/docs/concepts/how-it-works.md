@@ -7,7 +7,7 @@ sidebar:
 
 ## Content is files
 
-Every entry is a Markdown or MDX file with YAML frontmatter, for example `content/posts/en/hello.md`.
+Every entry is a Markdown (`.md`) file with YAML frontmatter, for example `content/posts/en/hello.md`.
 Fields that Wuppy does not know about are kept as they are. Astro reads the same files through its Content
 Collections (`glob` loader), so your templates use the normal Astro APIs.
 

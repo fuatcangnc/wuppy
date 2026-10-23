@@ -126,6 +126,10 @@ Screenshots: `acceptance/instatic-ui/screenshots/`.
   `.wuppy/data`, and the canvas refetches Vite's transformed CSS after a page save, so valid Tailwind utilities show
   up without restarting the dev server. Tailwind compiles on save; a browser-only unsaved class cannot be generated.
   `text-red-10` is not a valid default utility — use a real shade such as `text-red-500`.
+- **Theme components:** the active theme's `src/components/*.astro` files appear in Add → Components with an
+  `ASTRO` badge and source path; selecting one inserts a real component block (`data-ve="component"`) into the page.
+  The integration provides the theme components map to `<Content />`, so no import line is written. The canvas shows a
+  labelled placeholder; save and rebuild to see the component's real output. A Markdown entry is promoted to `.mdx`.
 - **Theme source in code:** when a GitHub theme is active, admins also get `theme: owner/repo` in the workspace tree,
   including the theme's `.astro` pages/components/layouts, `.ts`/`.js`, CSS, MDX and config files. `node_modules`,
   build output, `.git`, `.env` and lockfiles are excluded. Theme files are editable; saving writes the active theme
@@ -136,5 +140,5 @@ Screenshots: `acceptance/instatic-ui/screenshots/`.
   `wuppy-layer-menu-insert.png`, `wuppy-drag-indicator.png`, `wuppy-drag-line-after.png`, `wuppy-drag-real.png`,
   `wuppy-drag-inside-easy.png`, `wuppy-site-panel.png`, `wuppy-media-panel.png`, `wuppy-media-grid.png`,
   `wuppy-design-toolbar-code-button.png`, `wuppy-code-view.png`, `wuppy-code-view-saved.png`,
-  `wuppy-code-tailwind.png`, `wuppy-code-theme-files.png`, `wuppy-ai-final2.png`, `wuppy-ai-defaults.png`,
-  `wuppy-ai-mcp.png`.
+  `wuppy-code-tailwind.png`, `wuppy-code-theme-files.png`, `wuppy-add-astro-components.png`,
+  `wuppy-add-astro-component-inserted.png`, `wuppy-ai-final2.png`, `wuppy-ai-defaults.png`, `wuppy-ai-mcp.png`.

@@ -71,7 +71,7 @@ import { GlobalSearch } from "../components/shared/GlobalSearch.tsx";
 import { SiteSwitcher } from "../components/sites/SiteSwitcher.tsx";
 import { SitesPage } from "../components/sites/SitesPage.tsx";
 import { apiData } from "../lib/api.ts";
-import { $collections, loadCollections } from "../stores/content.ts";
+import { $collections, collectionOfKind, kindOf, loadCollections } from "../stores/content.ts";
 import { $session, loadSession, signOut } from "../stores/session.ts";
 import { $sites, activeManagedSite, loadSites } from "../stores/sites.ts";
 import { ThemeSwitcher, Button, GhostButton, Spinner, ToastHost } from "../ui/index.tsx";
@@ -214,11 +214,26 @@ function Shell() {
 				</NavLink>
 			</Group>
 			<Group title="Content">
-				{collections.map((c) => (
-					<NavLink key={c.name} to="/c/$collection" params={{ collection: c.name }}>
-						<span aria-label={c.name}>{c.name.charAt(0).toUpperCase() + c.name.slice(1)}</span>
-					</NavLink>
-				))}
+				{(["posts", "pages"] as const).map((kind) => {
+					const name = collectionOfKind(collections, kind);
+					return (
+						name && (
+							<NavLink key={kind} to="/c/$collection" params={{ collection: name }}>
+								<span aria-label={name}>{kind === "posts" ? "Posts" : "Pages"}</span>
+							</NavLink>
+						)
+					);
+				})}
+				{collections
+					.filter(
+						(c) =>
+							c.name !== collectionOfKind(collections, "posts") && c.name !== collectionOfKind(collections, "pages"),
+					)
+					.map((c) => (
+						<NavLink key={c.name} to="/c/$collection" params={{ collection: c.name }}>
+							<span aria-label={c.name}>{c.name.charAt(0).toUpperCase() + c.name.slice(1)}</span>
+						</NavLink>
+					))}
 				<NavLink to="/site" icon={<Monitor size={16} />}>
 					Site
 				</NavLink>
@@ -406,7 +421,8 @@ function Shell() {
 
 function CollectionPage() {
 	const { collection } = useParams({ from: "/c/$collection" });
-	return collection === "pages" || collection === "posts" ? (
+	const info = useStore($collections).find((c) => c.name === collection);
+	return collection === "pages" || collection === "posts" || (info && kindOf(info)) ? (
 		<ContentWorkspacePage collection={collection} />
 	) : (
 		<EntriesPage />

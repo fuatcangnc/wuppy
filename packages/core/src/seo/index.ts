@@ -66,7 +66,8 @@ export function buildSeo({
 	return { title: fullTitle, meta, links };
 }
 
-const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+export const esc = (s: string) =>
+	s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 /** HTML for non-Astro consumers; every value is escaped. */
 export function renderHead(seo: Seo): string {

@@ -7,7 +7,7 @@ sidebar:
 
 ## İçerik dosyadır
 
-Her kayıt YAML frontmatter'lı bir Markdown veya MDX dosyasıdır, örneğin `content/posts/en/hello.md`.
+Her kayıt YAML frontmatter'lı bir Markdown (`.md`) dosyasıdır, örneğin `content/posts/en/hello.md`.
 Wuppy'nin tanımadığı alanlar olduğu gibi korunur. Astro aynı dosyaları Content Collections (`glob` loader) ile
 okur; şablonlarınız normal Astro API'lerini kullanır.
 

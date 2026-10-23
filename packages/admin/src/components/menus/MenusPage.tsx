@@ -17,7 +17,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { api, apiData } from "../../lib/api.ts";
 import { slugifyTitle } from "../../lib/slug.ts";
 import { $data, $dataErrors, loadData, saveData } from "../../stores/dashboard.ts";
-import type { CollectionInfo, EntrySummary } from "../../stores/content.ts";
+import { kindOf, type CollectionInfo, type EntrySummary } from "../../stores/content.ts";
 import {
 	Accordion,
 	AccordionContent,
@@ -135,9 +135,10 @@ export function MenusPage() {
 					apiData<TaxonomyRow[]>("GET", "/api/data/taxonomies").catch(() => []),
 				]);
 				const groups: SourceGroup[] = [];
-				for (const name of ["pages", "posts"] as const) {
-					const collection = collections.find((item) => item.name === name);
+				for (const kind of ["pages", "posts"] as const) {
+					const collection = collections.find((item) => kindOf(item) === kind);
 					if (!collection) continue;
+					const name = collection.name;
 					let entries: EntrySummary[] = [];
 					try {
 						const result = await api<{ data: EntrySummary[] }>("GET", `/api/content/${name}?limit=200&sort=title`);
@@ -146,15 +147,15 @@ export function MenusPage() {
 						// Content read access can be narrower than menus: manage; keep the group empty.
 					}
 					groups.push({
-						id: name,
-						label: name === "pages" ? "Pages" : "Posts",
-						icon: name === "pages" ? <FileText size={15} /> : <Newspaper size={15} />,
+						id: kind,
+						label: kind === "pages" ? "Pages" : "Posts",
+						icon: kind === "pages" ? <FileText size={15} /> : <Newspaper size={15} />,
 						items: entries.map((entry) => ({
 							label: String(entry.data.title ?? entry.slug),
 							href: hrefFor(collection, entry.slug),
-							kind: name === "pages" ? "page" : "post",
+							kind: kind === "pages" ? "page" : "post",
 						})),
-						empty: `No ${name} available.`,
+						empty: `No ${kind} available.`,
 					});
 				}
 				groups.push({

@@ -66,7 +66,7 @@ Sonra çalışan hook içerik değil, kimlik bilgisi alır. Girdiyi yüklemek i�
 - **Erişimi genişletemezler.** Eklenti bir girdiyi yayımlayamaz ya da yayından kaldıramaz: `draft` editörün
   verdiği değerde kalır. Yorum eklentisi bir yorumu yalnızca sıkılaştırabilir (beklemede ya da spam), asla
   onaylayamaz. Spam yorum gösterilmez, bildirim e-postası göndermez ve ziyaretçiye moderasyon beklediği söylenir.
-- **Değiştirdikleri, editörün yazdığı gibi denetlenir.** Eklentilerden sonra sonuca [MDX kuralları](/tr/guides/mdx/)
+- **Değiştirdikleri, editörün yazdığı gibi denetlenir.** Eklentilerden sonra sonuca [Markdown kuralları](/tr/guides/markdown/)
   ve (kaydederken) koleksiyonun şeması uygulanır; böylece bir eklenti araya script sokamaz.
 - **İçeriden kaydedemezler.** `ctx.content.put` önce çalışan hook içinde hata verir (hook'ları yeniden çalıştırırdı).
   Bunun yerine değiştirilmiş girdiyi döndürün.

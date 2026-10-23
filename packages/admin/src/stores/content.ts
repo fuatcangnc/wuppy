@@ -14,10 +14,13 @@ export type FieldDef =
 			showIf?: { field: string; equals: unknown };
 	  };
 
+export type CollectionKind = "posts" | "pages";
+
 export interface CollectionInfo {
 	name: string;
 	dir: string;
 	format: "md" | "mdx";
+	kind?: CollectionKind;
 	fields: Record<string, FieldDef>;
 	route?: string;
 }
@@ -30,6 +33,13 @@ export interface EntrySummary {
 }
 
 export const $collections = atom<CollectionInfo[]>([]);
+
+/** The admin section a collection fills: `kind` from wuppy.config, else its name (`posts`, `pages`). */
+export const kindOf = (c: CollectionInfo): CollectionKind | undefined =>
+	c.kind ?? (c.name === "posts" || c.name === "pages" ? c.name : undefined);
+/** The collection behind Posts or Pages (a theme may call it `blog` or `about`). */
+export const collectionOfKind = (list: CollectionInfo[], kind: CollectionKind): string | undefined =>
+	list.find((c) => kindOf(c) === kind)?.name;
 export const $entries = map<Record<string, EntrySummary[]>>({});
 export const $contentError = atom<string | null>(null);
 

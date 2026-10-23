@@ -23,7 +23,11 @@ export const fail = (c: Context, status: ApiError["status"] | 500, code: string,
 /** One error shape for the whole API; unknown errors never leak internals. */
 export function onError(err: Error, c: Context) {
 	if (err instanceof ApiError) return fail(c, err.status, err.code, err.message, err.details);
-	if (err instanceof ZodError) return fail(c, 422, "VALIDATION_ERROR", "Invalid input", err.issues);
+	if (err instanceof ZodError) {
+		// Name the fields, so a save that fails says which one to fix.
+		const fields = [...new Set(err.issues.map((i) => i.path.join(".")).filter(Boolean))].join(", ");
+		return fail(c, 422, "VALIDATION_ERROR", fields ? `Invalid input: ${fields}` : "Invalid input", err.issues);
+	}
 	if (err instanceof ContentExistsError) return fail(c, 409, "SLUG_TAKEN", err.message);
 	if (err instanceof DisallowedContentError) return fail(c, 422, "DISALLOWED_CONTENT", err.message, err.found);
 	if (err instanceof UnsafePathError) return fail(c, 400, "BAD_REQUEST", "Invalid slug");

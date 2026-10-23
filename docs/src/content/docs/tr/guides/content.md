@@ -18,7 +18,7 @@ Listenin iki görünümü vardır: **bölünmüş** (solda liste, sağda önizle
 
 ## Editör
 
-- Alanlar koleksiyon şemasından gelir; gövde, MDX bileşenlerini bozmayan bir Markdown editörüyle düzenlenir.
+- Alanlar koleksiyon şemasından gelir; gövde, ham HTML'i ve izinli bileşenleri bozmayan bir Markdown/MDX editörüyle düzenlenir.
 - **Slug**, başlığı yazarken otomatik oluşur; Türkçe karakterler ve aksanlar dönüştürülür. Slug'ı elle
   değiştirirseniz başlığı izlemeyi bırakır. Zaten var olan bir slug reddedilir.
 - Görsel ekleyin (Wuppy alt metin sorar) ve sitenizin izin verdiği içerik bileşenlerini kullanın.

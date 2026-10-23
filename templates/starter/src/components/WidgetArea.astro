@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { getMenu, getWidgetArea, readData } from "wuppy";
-import { mdxContent } from "wuppy/mdx";
+import { markdownContent } from "wuppy/markdown";
 import { isPublished } from "wuppy/publishing";
 
 interface Props {
@@ -25,15 +25,15 @@ const recent = widgets.some((w) => w.type === "recent")
 		{await Promise.all(widgets.map(async (widget) => {
 			const menu = widget.type === "menu" && widget.menu ? await getMenu(widget.menu, locale) : null;
 			const terms = widget.type === "taxonomy" ? (taxonomies.find((t) => t.name === widget.taxonomy)?.terms ?? []) : [];
-			// Custom widgets are MDX, checked again before they are compiled.
-			const Custom = widget.type === "custom" && widget.body ? (await mdxContent(widget.body)).Content : null;
+			// Custom widgets are Markdown, checked again before they are rendered.
+			const custom = widget.type === "custom" && widget.body ? (await markdownContent(widget.body)).html : null;
 			return (
 				<section class="panel">
 					{widget.title && <h2>{widget.title}</h2>}
 					{widget.type === "text" && widget.body && <p style="margin:0;white-space:pre-wrap">{widget.body}</p>}
 					{/* getWidgetArea has already sanitized html widgets */}
 					{widget.type === "html" && <div set:html={widget.body} />}
-					{Custom && <div><Custom /></div>}
+					{custom && <div set:html={custom} />}
 					{menu && (
 						<ul>
 							{menu.items.map((item) => <li><a href={item.href}>{item.label}</a></li>)}

@@ -21,9 +21,9 @@ import {
 	type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-import { apiSite } from "../../lib/api.ts";
+import { apiData, apiSite } from "../../lib/api.ts";
 import { Select } from "../../ui/index.tsx";
-import { expandComponent, paramsOf, safeCssValue } from "./mdx.ts";
+import { expandComponent, paramsOf, safeCssValue } from "./markdown.ts";
 import { MODULES, moduleOf, nodeName } from "./modules.ts";
 import {
 	$context,
@@ -46,6 +46,7 @@ import {
 	selectParent,
 	$inserter,
 } from "./store.ts";
+import { $themeElement, describeElement, editThemeElement, SOURCE } from "./theme-element.ts";
 import { isAncestor, updateNodeProps, type DropPosition, type NodeTree, type Styles, type VNode } from "./tree.ts";
 
 type DragPreview = { label: string; moduleId: string };
@@ -133,15 +134,28 @@ export function zoomBy(factor: number, at?: { x: number; y: number }): void {
 	$zoom.set(next);
 }
 
-/** The site's own stylesheets (from its home page), so the canvas looks like the site. Local site only. */
-let themeHead: Promise<string> | undefined;
+/**
+ * What the canvas copies from the site's home page so it looks like the site: its stylesheets, the `<html>`/`<body>`
+ * attributes (classes, data-theme) and its inline head scripts (dark-mode switches set classes at load). Local site only.
+ */
+interface SiteHead {
+	head: string;
+	html: [string, string][];
+	body: [string, string][];
+	scripts: string[];
+}
+const NO_HEAD: SiteHead = { head: "", html: [], body: [], scripts: [] };
+let themeHead: Promise<SiteHead> | undefined;
 
 /** Drop the cached site CSS so the next canvas fetch sees a fresh Tailwind build. */
 export function refreshThemeHead(): void {
 	themeHead = undefined;
+	previews.clear();
 }
 
-function siteHead(): Promise<string> {
+const attrsOf = (el: Element): [string, string][] => [...el.attributes].map((a) => [a.name, a.value]);
+
+function siteHead(): Promise<SiteHead> {
 	themeHead ??=
 		apiSite() === "local"
 			? fetch("/", { credentials: "same-origin" })
@@ -156,7 +170,7 @@ function siteHead(): Promise<string> {
 						// In Vite dev the HTML <style> can be a stale snapshot; fetch the
 						// transformed CSS module directly so Tailwind's newest utilities
 						// show up in the canvas after a code save.
-						return (
+						const head = (
 							await Promise.all(
 								elements.map(async (el) => {
 									const id = el instanceof HTMLElement ? el.dataset.viteDevId : undefined;
@@ -176,16 +190,84 @@ function siteHead(): Promise<string> {
 								}),
 							)
 						).join("");
+						// Only classic inline scripts: module and src scripts are the dev client and the site's bundles.
+						const scripts = [...doc.head.querySelectorAll("script:not([src])")]
+							.filter((el) => !["module", "importmap", "application/ld+json"].includes(el.getAttribute("type") ?? ""))
+							.map((el) => el.textContent ?? "");
+						return { head, html: attrsOf(doc.documentElement), body: attrsOf(doc.body), scripts };
 					})
-					.catch(() => "")
-			: Promise.resolve("");
+					.catch(() => NO_HEAD)
+			: Promise.resolve(NO_HEAD);
 	return themeHead;
 }
 
-const CHROME_CSS = `html,body{margin:0}body{min-height:100vh}
-[data-node-id]{cursor:default}[data-empty]{min-height:48px;outline:1px dashed #94a3b8;outline-offset:-1px}
+const BLANK_CSS = "html,body{margin:0}body{min-height:100vh}";
+const CHROME_CSS = `astro-dev-toolbar{display:none!important}[data-node-id]{cursor:default}[data-empty]{min-height:48px;outline:1px dashed #94a3b8;outline-offset:-1px}
 [data-ve-hidden]{opacity:.35}[data-editing]{cursor:text;outline:2px solid #f59e0b!important;outline-offset:2px}
 [data-ve-instance]{outline:1px dashed #a855f7;outline-offset:-1px}`;
+const THEME_CSS =
+	"[data-wuppy-hover]{outline:1px dashed #3b82f6;outline-offset:-1px}[data-wuppy-picked]{outline:2px solid #3b82f6!important;outline-offset:-1px}";
+
+/** The theme's own markup around the entry's body on a live page: hover, pick, and double-click to edit its text. */
+function wireThemeElements(d: Document, root: HTMLElement | null) {
+	const theme = (t: EventTarget | null): HTMLElement | null => {
+		const node = t as Element | null;
+		if (!node?.closest || root?.contains(node)) return null; // the body's blocks are the canvas's own
+		return node.closest<HTMLElement>(SOURCE);
+	};
+	let hover: Element | null = null;
+	d.addEventListener("mouseover", (e) => {
+		const el = theme(e.target);
+		if (el === hover) return;
+		hover?.removeAttribute("data-wuppy-hover");
+		hover = el;
+		el?.setAttribute("data-wuppy-hover", "");
+	});
+	d.addEventListener(
+		"click",
+		(e) => {
+			const el = theme(e.target);
+			if (!el || el.isContentEditable) return;
+			e.preventDefault();
+			e.stopPropagation(); // the theme's own scripts (menus, search) must not run while picking
+			$selected.set(null);
+			$target.set(null);
+			$themeElement.set(describeElement(el));
+		},
+		true,
+	);
+	d.addEventListener(
+		"dblclick",
+		(e) => {
+			const el = theme(e.target);
+			if (!el || describeElement(el).text === null) return;
+			e.preventDefault();
+			e.stopPropagation();
+			const before = el.innerText;
+			el.contentEditable = "plaintext-only";
+			el.focus();
+			const key = (k: KeyboardEvent) => {
+				if (k.key === "Escape") el.innerText = before;
+				if (k.key === "Escape" || (k.key === "Enter" && !k.shiftKey)) {
+					k.preventDefault();
+					k.stopPropagation();
+					el.blur();
+				}
+			};
+			el.addEventListener("keydown", key);
+			el.addEventListener(
+				"blur",
+				() => {
+					el.removeEventListener("keydown", key);
+					el.removeAttribute("contenteditable");
+					if (el.innerText !== before) void editThemeElement({ action: "text", value: el.innerText });
+				},
+				{ once: true },
+			);
+		},
+		true,
+	);
+}
 
 /** CSS for every node with responsive or state styles, including the nodes inside component instances. */
 export function nodesCss(tree: NodeTree, visual: VisualData): string {
@@ -251,26 +333,135 @@ function renderModule(
 					.map((item, i) => <li key={i}>{item}</li>),
 			);
 		case "markdown":
-			return createElement(
-				"div",
-				{
-					...a,
-					style: { ...style, whiteSpace: "pre-wrap", borderLeft: "3px solid #94a3b8", paddingLeft: 8, opacity: 0.8 },
-				},
-				n.props.source,
-			);
+			return <MarkdownBlock attrs={a} style={style} source={n.props.source ?? ""} />;
 		case "component":
-			return createElement(
-				"div",
-				{ ...a, style: { ...style, border: "1px dashed #a855f7", padding: 8, borderRadius: 6 } },
-				<small style={{ color: "#a855f7" }}>{`<${n.props.name || "Component"}>`}</small>,
-				n.props.text ? <div>{lines(n.props.text)}</div> : null,
+			return (
+				<ComponentBlock attrs={a} style={style} name={n.props.name ?? ""}>
+					{children}
+				</ComponentBlock>
 			);
 		case "slot":
 			return createElement("div", { ...a, style: { ...style, display: "contents" } }, children);
 	}
 	if (def.container) return createElement(def.tag(n.props), a, children);
 	return createElement(def.tag(n.props), a, lines(n.props[def.text ?? ""] ?? ""));
+}
+
+const previews = new Map<string, Promise<string | null>>();
+
+/**
+ * An Astro component as the site renders it (without props): `/_wuppy/component/<name>` is a page the Wuppy integration
+ * generates in the running site. Managed sites and failed renders keep the labelled placeholder.
+ */
+function ComponentBlock({
+	attrs,
+	style,
+	name,
+	children,
+}: {
+	attrs: Record<string, unknown>;
+	style: CSSProperties;
+	name: string;
+	children: ReactNode;
+}) {
+	const [html, setHtml] = useState<string | null>(null);
+	useEffect(() => {
+		if (!name || apiSite() !== "local") return setHtml(null);
+		let live = true;
+		let job = previews.get(name);
+		if (!job) {
+			job = fetch(`/_wuppy/component/${encodeURIComponent(name)}`, { credentials: "same-origin" }).then(
+				(r) => (r.ok ? r.text() : null),
+				() => null,
+			);
+			previews.set(name, job);
+		}
+		void job.then((h) => live && setHtml(h));
+		return () => {
+			live = false;
+		};
+	}, [name]);
+	return createElement(
+		"div",
+		{
+			...attrs,
+			"data-astro-component": name,
+			style: {
+				...style,
+				position: "relative",
+				// Keeps `position: fixed` parts (a back-to-top button) inside the block instead of the frame's corner.
+				transform: "translateZ(0)",
+				minHeight: 40,
+				outline: "1px dashed #a78bfa",
+				outlineOffset: -1,
+			},
+		},
+		createElement(
+			"span",
+			{
+				style: {
+					position: "absolute",
+					top: 0,
+					right: 0,
+					zIndex: 1,
+					padding: "1px 6px",
+					background: "#7c3aed",
+					color: "#fff",
+					font: "11px ui-sans-serif, system-ui, sans-serif",
+					borderBottomLeftRadius: 4,
+					pointerEvents: "none",
+				},
+			},
+			`◇ ${name || "Component"}`,
+		),
+		// The component threw without props (the site renders it as this comment too): say so instead of an empty box.
+		html?.includes(`<!-- wuppy: <${name}> could not render -->`)
+			? createElement(
+					"div",
+					{ style: { padding: "12px 16px", color: "#7c3aed", font: "13px ui-sans-serif, system-ui, sans-serif" } },
+					`${name} needs props to render. Set them in the Code view; until then the site leaves it out.`,
+				)
+			: // Theme code's own output, the same HTML the public page shows; scripts in it do not run here.
+				html === null
+				? null
+				: createElement("div", { dangerouslySetInnerHTML: { __html: html } }),
+		children,
+	);
+}
+
+const rendered = new Map<string, Promise<string>>();
+
+/** A Markdown block as the site renders it (the server checks it like a save); the source shows until then or on error. */
+function MarkdownBlock({
+	attrs,
+	style,
+	source,
+}: {
+	attrs: Record<string, unknown>;
+	style: CSSProperties;
+	source: string;
+}) {
+	const [html, setHtml] = useState<string | null>(null);
+	useEffect(() => {
+		let live = true;
+		let job = rendered.get(source);
+		if (!job) {
+			job = apiData<{ html: string }>("POST", "/api/editor/markdown", { source }).then((r) => r.html);
+			// A failed render is retried next time instead of being cached.
+			job.catch(() => rendered.delete(source));
+			rendered.set(source, job);
+		}
+		job.then(
+			(h) => live && setHtml(h),
+			() => live && setHtml(null),
+		);
+		return () => {
+			live = false;
+		};
+	}, [source]);
+	if (html === null)
+		return createElement("div", { ...attrs, style: { ...style, whiteSpace: "pre-wrap", opacity: 0.6 } }, source);
+	return createElement("div", { ...attrs, style, dangerouslySetInnerHTML: { __html: html } });
 }
 
 const classOf = (props: Record<string, string>, key?: string, responsive?: boolean) =>
@@ -305,7 +496,19 @@ function JsonView({
 	);
 }
 
-function NodeView({ tree, id, editing }: { tree: NodeTree; id: string; editing: string | null }): ReactNode {
+function NodeView({
+	tree,
+	id,
+	editing,
+	whole,
+}: {
+	tree: NodeTree;
+	id: string;
+	editing: string | null;
+	/** The root is the whole page (blank canvas). Inside a live page it must not take the viewport's height: the frame
+	 * grows to fit its page, which would grow the root again without end. */
+	whole?: boolean;
+}): ReactNode {
 	const visual = useStore($visual);
 	const node = tree.nodes[id];
 	if (!node) return null;
@@ -317,7 +520,7 @@ function NodeView({ tree, id, editing }: { tree: NodeTree; id: string; editing: 
 		className: classOf(node.props, node.key, Object.keys(node.overrides).length > 0),
 		draggable: !isRoot && !node.locked && id !== editing,
 		...(node.hidden ? { "data-ve-hidden": "" } : {}),
-		...(isRoot ? { style: { minHeight: "100vh", display: "flow-root" } } : {}),
+		...(isRoot ? { style: { minHeight: whole ? "100vh" : undefined, display: "flow-root" } } : {}),
 	};
 	const children = node.children.map((c) => <NodeView key={c} tree={tree} id={c} editing={editing} />);
 	if (node.moduleId === "ref") {
@@ -457,6 +660,30 @@ function uiCss(tree: NodeTree, selected: string | null, hovered: string | null, 
 }
 
 /**
+ * The live page's entry body (between the `<!--wuppy:body-->` comments the integration puts around `<Content />`)
+ * replaced by an empty element the editor renders into, so the blocks sit inside the theme's own layout. Null when the
+ * page has no marked body (a page not built from an entry, an unsaved entry, a remote site).
+ */
+export function liveBodyRoot(d: Document): HTMLElement | null {
+	const walker = d.createTreeWalker(d.body, NodeFilter.SHOW_COMMENT);
+	let start: Node | null = null;
+	for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+		if (!start) {
+			if (n.nodeValue === "wuppy:body") start = n;
+			continue;
+		}
+		if (n.nodeValue !== "/wuppy:body") continue;
+		if (n.parentNode !== start.parentNode) return null;
+		while (start.nextSibling && start.nextSibling !== n) start.nextSibling.remove();
+		const root = d.createElement("div");
+		root.style.display = "contents";
+		n.parentNode?.insertBefore(root, n);
+		return root;
+	}
+	return null;
+}
+
+/**
  * One page frame: an iframe at a breakpoint's width so the site's media queries apply exactly, with the site theme,
  * the visual CSS and the editor chrome injected (Instatic's frame CSS injection).
  */
@@ -466,7 +693,11 @@ function Frame({
 	fill,
 	onKey,
 	onWheel,
+	page,
+	preview,
 }: {
+	page?: string;
+	preview?: boolean;
 	width: number | null;
 	context: string;
 	fill: boolean;
@@ -485,6 +716,10 @@ function Frame({
 	const frame = useRef<HTMLIFrameElement>(null);
 	const [body, setBody] = useState<HTMLElement | null>(null);
 	const [height, setHeight] = useState(900);
+	const [blank, setBlank] = useState(false);
+	const [loads, setLoads] = useState(0);
+	const picked = useStore($themeElement);
+	const live = page && apiSite() === "local" && !blank ? page : undefined;
 	const [editing, setEditing] = useState<string | null>(null);
 	const original = useRef("");
 	const cancelled = useRef(false);
@@ -552,11 +787,49 @@ function Frame({
 		if (text !== node.props[key]) mutate((d) => updateNodeProps(d, node.id, { [key]: text }));
 	};
 
+	// Outline the picked theme element (every copy, e.g. each item of a list) again after each reload of the page.
+	useEffect(() => {
+		const d = frame.current?.contentDocument;
+		if (!d || !loads) return;
+		for (const el of d.querySelectorAll("[data-wuppy-picked]")) el.removeAttribute("data-wuppy-picked");
+		for (const el of picked ? d.querySelectorAll(SOURCE) : [])
+			if (el.getAttribute("data-wuppy-file") === picked?.file && el.getAttribute("data-wuppy-loc") === picked.loc)
+				el.setAttribute("data-wuppy-picked", "");
+	}, [picked, loads]);
+
 	const onLoad = async () => {
 		const d = frame.current?.contentDocument;
 		if (!d) return;
+		if (live) {
+			const root = liveBodyRoot(d);
+			if (!root && !preview) return setBlank(true);
+			d.head.insertAdjacentHTML(
+				"beforeend",
+				`<style>${CHROME_CSS}${THEME_CSS}</style><span id="ve-fonts" hidden></span><style id="ve-site"></style><style id="ve-nodes"></style><style id="ve-ui"></style>`,
+			);
+			// The theme's own links and forms must not leave the page being edited.
+			d.addEventListener(
+				"click",
+				(e) => (e.target as Element | null)?.closest?.("a[href]") && e.preventDefault(),
+				true,
+			);
+			d.addEventListener("submit", (e) => e.preventDefault(), true);
+			wireThemeElements(d, root);
+			setLoads((n) => n + 1);
+			// shortcut: a preview has no editable body, so keys and design-mode height are not wired to it; add if needed.
+			if (root) setBody(root);
+			return;
+		}
 		const theme = await siteHead();
-		d.head.innerHTML = `<meta charset="utf-8"><style>${CHROME_CSS}</style>${theme}<span id="ve-fonts" hidden></span><style id="ve-site"></style><style id="ve-nodes"></style><style id="ve-ui"></style>`;
+		for (const [name, value] of theme.html) d.documentElement.setAttribute(name, value);
+		for (const [name, value] of theme.body) d.body.setAttribute(name, value);
+		d.head.innerHTML = `<meta charset="utf-8"><style>${BLANK_CSS}${CHROME_CSS}</style>${theme.head}<span id="ve-fonts" hidden></span><style id="ve-site"></style><style id="ve-nodes"></style><style id="ve-ui"></style>`;
+		// Run like the site does (same origin, so the visitor's saved light/dark choice applies too).
+		for (const code of theme.scripts) {
+			const script = d.createElement("script");
+			script.textContent = code;
+			d.head.append(script);
+		}
 		setBody(d.body);
 	};
 
@@ -565,8 +838,10 @@ function Frame({
 		<>
 			<iframe
 				ref={frame}
+				key={live ?? "blank"}
 				title={`Page canvas${context ? ` (${context})` : ""}`}
-				srcDoc="<!doctype html><html><head></head><body></body></html>"
+				src={live}
+				srcDoc={live ? undefined : "<!doctype html><html><head></head><body></body></html>"}
 				onLoad={() => void onLoad()}
 				className={`block bg-white ${fill ? "h-full" : ""}`}
 				style={{ width: width ?? "100%", height: fill ? "100%" : height, maxWidth: fill ? "100%" : undefined }}
@@ -591,7 +866,7 @@ function Frame({
 							const id = idAt(e.target);
 							const node = id ? tree.nodes[id] : undefined;
 							if (node?.moduleId === "ref") return editComponent(node.props.ref ?? "");
-							if (node && !node.locked && MODULES[node.moduleId]?.text && node.moduleId !== "component") setEditing(id);
+							if (node && !node.locked && MODULES[node.moduleId]?.text) setEditing(id);
 						}}
 						onContextMenu={(e) => {
 							const id = idAt(e.target);
@@ -653,7 +928,7 @@ function Frame({
 						}}
 						onDragEnd={endDrag}
 					>
-						<NodeView tree={tree} id={tree.rootNodeId} editing={editing} />
+						<NodeView tree={tree} id={tree.rootNodeId} editing={editing} whole={!live} />
 						{active && selectedNode && selectedNode.id !== tree.rootNodeId && !editing && (
 							<Toolbar doc={body.ownerDocument} node={selectedNode} scale={scale} />
 						)}
@@ -698,7 +973,19 @@ function ContextSelector() {
  * The canvas. Design mode: every breakpoint side by side on a pannable, zoomable stage (wheel pans, Ctrl+wheel
  * zooms, drag the background to pan). Live mode: one real-size frame for the active breakpoint.
  */
-export function Canvas({ onKey, chrome = true }: { onKey: (e: KeyboardEvent) => void; chrome?: boolean }) {
+export function Canvas({
+	onKey,
+	chrome = true,
+	page,
+	preview,
+}: {
+	onKey: (e: KeyboardEvent) => void;
+	chrome?: boolean;
+	/** The entry's live URL: the canvas edits the entry inside the theme's real page when it can. */
+	page?: string;
+	/** Without body markers (e.g. a theme `.astro` page whose theme is not running here) show the page as it is. */
+	preview?: boolean;
+}) {
 	const mode = useStore($mode);
 	const visual = useStore($visual);
 	const context = useStore($context);
@@ -735,7 +1022,7 @@ export function Canvas({ onKey, chrome = true }: { onKey: (e: KeyboardEvent) => 
 					className="h-full max-w-full overflow-hidden rounded-md shadow-lg"
 					style={{ width: bp ? bp.width : "100%" }}
 				>
-					<Frame width={null} context={bp ? bp.id : ""} fill onKey={onKey} />
+					<Frame width={null} context={bp ? bp.id : ""} fill onKey={onKey} page={page} preview={preview} />
 				</div>
 			</div>
 		);
@@ -781,7 +1068,15 @@ export function Canvas({ onKey, chrome = true }: { onKey: (e: KeyboardEvent) => 
 								className={`rounded-sm ${active ? "ring-blue-500" : "ring-transparent"}`}
 								style={{ boxShadow: active ? `0 0 0 ${1 / zoom}px #7ddc3f` : undefined }}
 							>
-								<Frame width={f.width} context={f.id} fill={false} onKey={onKey} onWheel={frameWheel} />
+								<Frame
+									width={f.width}
+									context={f.id}
+									fill={false}
+									onKey={onKey}
+									onWheel={frameWheel}
+									page={page}
+									preview={preview}
+								/>
 							</div>
 						</div>
 					);

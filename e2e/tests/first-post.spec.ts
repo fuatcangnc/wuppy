@@ -33,7 +33,7 @@ test("owner sets up the site, writes a post, edits it and undoes the edit", asyn
 
 	// Collections -> posts -> new entry.
 	await page.getByRole("link", { name: "posts", exact: true }).click();
-	await expect(page.getByRole("button", { name: "Open Hello world", exact: true })).toBeVisible();
+	await expect(page.getByRole("button", { name: "Open Hello World", exact: true })).toBeVisible();
 	await page.getByRole("button", { name: "Create post", exact: true }).click();
 	const createPost = page.getByRole("dialog", { name: "New post" });
 	await createPost.getByLabel("Title").fill("My first post");
@@ -472,7 +472,7 @@ test("the visual editor adds blocks, edits text in place and saves them to the l
 	await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
 
 	await page.goto("/admin/c/posts");
-	await page.getByRole("button", { name: "Open Hello world", exact: true }).click();
+	await page.getByRole("button", { name: "Open Hello World", exact: true }).click();
 	await page.getByRole("button", { name: "Edit with Visual" }).click();
 	await expect(page.getByRole("tree", { name: "Layers" })).toBeVisible();
 	await expect(page.getByText(/Site styles:/)).toHaveCount(0);
@@ -487,7 +487,7 @@ test("the visual editor adds blocks, edits text in place and saves them to the l
 	await page.keyboard.press("ControlOrMeta+a");
 	await page.keyboard.type("Made *visually*");
 	await page.keyboard.press("Enter");
-	await expect(canvas.locator("h2")).toHaveText("Made *visually*");
+	await expect(canvas.locator("h2").last()).toHaveText("Made *visually*");
 	await page.getByLabel("color", { exact: true }).fill("#c2410c");
 	await page.getByRole("button", { name: "Publish", exact: true }).click();
 	await expect(page.getByText("All changes saved")).toBeVisible();
@@ -495,7 +495,9 @@ test("the visual editor adds blocks, edits text in place and saves them to the l
 	const saved = await (await page.request.get("/api/content/posts/hello-world")).json();
 	expect(saved.data.body).toContain('<h2 data-ve="heading" style="color: #c2410c">Made &#42;visually&#42;</h2>');
 	const live = await (await page.request.get("/posts/hello-world")).text();
-	expect(live).toMatch(/<h2[^>]*>Made \*visually\*<\/h2>/);
+	// Markdown passes the raw HTML through, so the character references reach the browser as written.
+	expect(live).toMatch(/<h2[^>]*>Made &#42;visually&#42;<\/h2>/);
+	expect(live).not.toContain("<em>visually</em>");
 
 	// Undo works across the canvas; the classic editor shows the same body.
 	await page.getByRole("button", { name: "Undo (Ctrl+Z)" }).click();

@@ -2,11 +2,18 @@ import { execFile } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { existsSync, realpathSync } from "node:fs";
 import { lstat, mkdir, readdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
-import { extname, join, resolve, sep } from "node:path";
+import { extname, join, relative, resolve, sep } from "node:path";
 import type { DatabaseSync } from "node:sqlite";
 import { promisify } from "node:util";
+import { loadConfig } from "../config/index.ts";
 import { open, seal } from "../security/secret-box.ts";
 import { astroOnly, CONFIGS, init, NODE_ADAPTER, REPOS_QUERY, type GithubRepo } from "../cli/init.ts";
+import { themeBodyShift, themePageRel } from "../astro/theme-pages.ts";
+import { editAstroElement, type ElementEdit } from "./astro-edit.ts";
+import { importDemo, importPages } from "./site.ts";
+
+/** `"12:5"` moved by `n` lines. */
+const shiftLine = (loc: string, n: number) => loc.replace(/^\d+/, (line) => String(Number(line) + n));
 
 /**
  * A GitHub repository as this site's theme: the server clones it under `.wuppy/themes/`, wraps it (`wuppy init`),
@@ -48,7 +55,8 @@ export async function githubAstroRepos(token: string, fetchFn: typeof fetch = fe
 			body: JSON.stringify({ query: REPOS_QUERY, variables: { endCursor } }),
 			signal: AbortSignal.timeout(15_000),
 		});
-		if (!res.ok) throw new Error(`GitHub answered ${res.status}`);
+		// 401: the token was revoked on GitHub (or replaced by a newer sign-in); the caller asks to connect again.
+		if (!res.ok) throw Object.assign(new Error(`GitHub answered ${res.status}`), { status: res.status });
 		const body = (await res.json()) as {
 			errors?: { message: string }[];
 			data?: { viewer: { repositories: { pageInfo: { hasNextPage: boolean; endCursor: string }; nodes: Node[] } } };
@@ -151,18 +159,24 @@ export class GithubThemes {
 		if (this.job?.status === "running") throw new Error(`${this.job.repo} is still being installed`);
 		const job: ThemeJob = { repo, status: "running", step: "Cloning" };
 		this.job = job;
-		void this.build(job, token).then(
-			async () => {
-				job.status = "done";
-				job.step = "Done";
-				await this.activate(repo);
-			},
-			(e: Error & { stderr?: string }) => {
-				job.status = "failed";
-				// The last lines of npm/Astro output say what broke; the token never appears there (it is in the environment).
-				job.error = (e.stderr?.trim() || e.message).slice(-2000);
-			},
-		);
+		void this.build(job, token)
+			.then(() => {
+				// The theme's sample posts and pages become site content once; the site's own entries are kept.
+				job.step = "Importing sample content";
+				return importDemo(this.o.base, this.themeDir(repo));
+			})
+			.then(
+				async () => {
+					job.status = "done";
+					job.step = "Done";
+					await this.activate(repo);
+				},
+				(e: Error & { stderr?: string }) => {
+					job.status = "failed";
+					// The last lines of npm/Astro output say what broke; the token never appears there (it is in the environment).
+					job.error = (e.stderr?.trim() || e.message).slice(-2000);
+				},
+			);
 		return job;
 	}
 
@@ -171,7 +185,7 @@ export class GithubThemes {
 		const dir = this.themeDir(job.repo);
 		await mkdir(this.dir, { recursive: true });
 		// A theme that never built is cloned again, so a fix pushed to GitHub after a failed install is picked up.
-		// shortcut: a built theme is kept as is (it may hold content edits); pulling into it needs a merge, add when asked.
+		// shortcut: a built theme is kept as is (local code edits); pulling into it needs a merge, add when asked.
 		if (!(await this.installed()).includes(job.repo)) await rm(dir, { recursive: true, force: true });
 		if (!existsSync(join(dir, ".git"))) {
 			const auth = Buffer.from(`x-access-token:${token}`).toString("base64");
@@ -283,6 +297,12 @@ export class GithubThemes {
 	async sourceFiles(): Promise<{ repo: string; files: ThemeSourceFile[] } | null> {
 		const active = await this.activeTheme();
 		if (!active) return null;
+		// The theme's sample content lives in the site once installed (ADR-022), so its collection folders are hidden.
+		const contentDirs = new Set(
+			(await loadConfig(active.dir).catch(() => ({ collections: [] as { dir: string }[] }))).collections.map((c) =>
+				c.dir.replace(/^\.\/|\/$/g, ""),
+			),
+		);
 		const files: ThemeSourceFile[] = [];
 		let total = 0;
 		const walk = async (relativeDir: string): Promise<void> => {
@@ -294,7 +314,7 @@ export class GithubThemes {
 				if (entry.name.startsWith(".") && entry.name !== ".gitignore") continue;
 				const relativePath = relativeDir ? `${relativeDir}/${entry.name}` : entry.name;
 				if (entry.isDirectory()) {
-					if (!SOURCE_SKIP_DIRS.has(entry.name)) await walk(relativePath);
+					if (!SOURCE_SKIP_DIRS.has(entry.name) && !contentDirs.has(relativePath)) await walk(relativePath);
 					continue;
 				}
 				if (!entry.isFile() || SOURCE_SKIP_FILES.has(entry.name)) continue;
@@ -332,6 +352,24 @@ export class GithubThemes {
 		await writeFile(target, content);
 	}
 
+	/**
+	 * Edits one element of the active theme's `.astro` files in place (see astro-edit.ts). `file` and `loc` are what
+	 * Astro's dev server put on the element (`data-astro-source-file`, `data-astro-source-loc`); returns its new `loc`.
+	 */
+	async editElement(file: string, loc: string, edit: ElementEdit, tag?: string): Promise<{ loc?: string }> {
+		const active = await this.activeTheme();
+		if (!active) throw new Error("No active theme");
+		const root = resolve(active.dir);
+		const path = relative(root, resolve(root, file)).split(sep).join("/");
+		if (path.startsWith("..") || !path.endsWith(".astro")) throw new Error("Only the active theme's .astro files");
+		const source = await readFile(join(root, path), "utf8");
+		// A theme page's template lines move when its body slot cannot share the frontmatter's first line.
+		const shift = themePageRel(root, join(root, path)) ? themeBodyShift(source) : 0;
+		const out = editAstroElement(source, shiftLine(loc, -shift), edit, tag);
+		await this.writeSource(path, out.source);
+		return { loc: out.loc && shiftLine(out.loc, shift) };
+	}
+
 	/** Points the launcher at an installed theme (`null` = the built-in site) and restarts when possible. */
 	async activate(repo: string | null): Promise<{ restarting: boolean }> {
 		const file = join(this.dir, "active.json");
@@ -341,6 +379,8 @@ export class GithubThemes {
 			await mkdir(this.dir, { recursive: true });
 			const dir = this.themeDir(repo).slice(this.o.base.length + 1);
 			await writeFile(file, `${JSON.stringify({ repo, dir })}\n`);
+			// The theme's Markdown pages show up in the site's Pages (kept if the site already has them).
+			await importPages(this.o.base, this.themeDir(repo));
 		}
 		return { restarting: this.o.restart?.() ?? false };
 	}

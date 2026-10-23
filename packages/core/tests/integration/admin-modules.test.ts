@@ -113,14 +113,14 @@ describe("site data", () => {
 		expect(await readFile(join(root, ".wuppy/data/menus.json"), "utf8")).toContain('"main"');
 	});
 
-	it("checks section bodies as MDX: markup is saved, code is refused", async () => {
+	it("checks section bodies as Markdown: markup is saved, unsafe HTML and components are refused", async () => {
 		expect((await putSection('## Join us\n\n<div class="note">**Free**</div>')).status).toBe(200);
-		const bad = await putSection('<img src="x" onError="alert(1)" /> {process.env.WUPPY_SECRET}');
+		const bad = await putSection('<img src="x" onError="alert(1)" /> <Callout />');
 		expect(bad.status).toBe(422);
-		expect(JSON.stringify(await bad.json())).toMatch(/cta: onError.*cta: \{expression\}/);
+		expect(JSON.stringify(await bad.json())).toMatch(/cta: onError.*cta: Callout/);
 	});
 
-	it("checks widget bodies: custom ones as MDX, HTML ones for dangerous markup; text is left alone", async () => {
+	it("checks widget bodies: custom ones as Markdown, HTML ones for dangerous markup; text is left alone", async () => {
 		const ok = await putWidgets([
 			{ id: "a", type: "custom", body: "**Hello** <div>there</div>" },
 			{ id: "b", type: "html", body: "<p>Hi</p>" },
@@ -128,11 +128,11 @@ describe("site data", () => {
 		]);
 		expect(ok.status).toBe(200);
 		const bad = await putWidgets([
-			{ id: "a", type: "custom", body: "{process.env.WUPPY_SECRET}" },
+			{ id: "a", type: "custom", body: "<script>alert(1)</script>" },
 			{ id: "b", type: "html", body: '<img src="x" onerror="alert(1)">' },
 		]);
 		expect(bad.status).toBe(422);
-		expect(JSON.stringify(await bad.json())).toMatch(/a: \{expression\}/);
+		expect(JSON.stringify(await bad.json())).toMatch(/a: script/);
 		const html = await putWidgets([{ id: "b", type: "html", body: '<a href="javascript:alert(1)">x</a>' }]);
 		expect(JSON.stringify(await html.json())).toMatch(/b: javascript:/);
 	});

@@ -12,7 +12,7 @@ describe("markdown <-> lexical", () => {
 		expect(roundTrip(md)).toBe(md);
 	});
 
-	it("does not lose MDX imports/JSX it cannot edit", () => {
+	it("does not lose text it cannot edit (imports or components pasted from MDX)", () => {
 		const md = 'import Chart from "../Chart.astro";\n\n<Chart data={[1,2]} />\n\nText.';
 		expect(roundTrip(md)).toContain("<Chart data={[1,2]} />");
 		expect(roundTrip(md)).toContain('import Chart from "../Chart.astro";');

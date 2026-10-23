@@ -163,6 +163,7 @@ describe("wuppy init", () => {
 				name: "posts",
 				dir: "src/content/posts",
 				format: "mdx",
+				map: { pubDate: "date", heroImage: "cover" },
 				route: "/blog/{slug}",
 				fields: {
 					title: { type: "string", multiple: false, required: true },
@@ -177,24 +178,38 @@ describe("wuppy init", () => {
 		const astro = await readFile(join(root, "astro.config.mjs"), "utf8");
 		expect(astro).toContain('import wuppy from "wuppy/astro";');
 		expect(astro).toContain("integrations: [wuppy({ robots: false }), mdx(), sitemap()]");
-		expect(astro).toContain('import mdx from "@astrojs/mdx";');
-		// Existing .md files stay; the glob now loads the .mdx entries Wuppy writes. Data globs are untouched.
-		const content = await readFile(join(root, "src/content.config.ts"), "utf8");
-		expect(content).toContain('pattern: "**/*.{md,mdx}"');
-		expect(content).toContain('pattern: "**/*.json"');
+		expect(astro).toContain("@astrojs/mdx");
 		expect(astro).toContain('adapter: node({ mode: "standalone" })');
 		const pkg = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
 		expect(pkg.dependencies).toMatchObject({
 			astro: "^5",
 			wuppy: "latest",
 			"@astrojs/node": expect.any(String),
-			"@astrojs/mdx": expect.any(String),
 		});
+		expect(pkg.dependencies["@astrojs/mdx"]).toEqual(expect.any(String));
 		expect(await readFile(join(root, ".gitignore"), "utf8")).toContain("!.wuppy/data/");
 		expect(await readFile(join(root, ".env"), "utf8")).toMatch(/^WUPPY_SECRET=\S{40,}$/m);
 		// The written config is accepted by Wuppy itself.
 		const { loadConfig } = await import("../../src/config/index.ts");
 		expect((await loadConfig(root)).collections[0]?.route).toBe("/blog/{slug}");
+	});
+
+	it("maps a theme's blog and about collections to Posts and Pages", async () => {
+		await project();
+		const config = `const blog = defineCollection({ loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }) });\nconst about = defineCollection({ loader: glob({ pattern: "**/*.md", base: "./src/content/about" }) });\nexport const collections = { blog, about };\n`;
+		await writeFile(
+			join(root, "src/content.config.ts"),
+			`import { defineCollection } from "astro:content";\nimport { glob } from "astro/loaders";\n${config}`,
+		);
+		await rm(join(root, "src/content/posts"), { recursive: true });
+		await mkdir(join(root, "src/content/blog"), { recursive: true });
+		await mkdir(join(root, "src/content/about"), { recursive: true });
+		await writeFile(join(root, "src/content/blog/a.md"), "---\ntitle: A\npubDate: 2024-01-02\n---\nHi\n");
+		await writeFile(join(root, "src/content/about/me.md"), "---\ntitle: Me\n---\nHi\n");
+		const { planInit } = await import("../../src/cli/init.ts");
+		const kinds = (await planInit(root)).collections.map(({ name, kind }) => [name, kind]);
+		expect(Object.fromEntries(kinds)).toEqual({ blog: "posts", about: "pages" });
+		expect((await planInit(root)).collections.find((c) => c.name === "blog")?.map).toEqual({ pubDate: "date" });
 	});
 
 	it("refuses outside an Astro project and does not overwrite an existing config", async () => {
@@ -207,5 +222,23 @@ describe("wuppy init", () => {
 	it("import refuses option-like arguments", async () => {
 		expect((await run(["import", "--upload-pack=x", "dir"], root)).code).toBe(1);
 		expect((await run(["import", "url"], root)).stderr).toMatch(/usage/i);
+	});
+});
+
+describe("wuppy mdx-to-md", () => {
+	it("converts plain .mdx entries to .md and keeps the ones with components", async () => {
+		await mkdir(join(root, "content"), { recursive: true });
+		await writeFile(
+			join(root, "content/a.mdx"),
+			'---\ntitle: A\n---\nimport X from "./x";\n\n<p className="a">hi</p>\n',
+		);
+		await writeFile(join(root, "content/b.mdx"), "<Callout />\n");
+		const out = await run(["mdx-to-md", "content"], root);
+		expect(out.code).toBe(0);
+		expect(out.stdout).toMatch(/converted content\/a\.mdx/);
+		expect(out.stdout).toMatch(/kept\s+content\/b\.mdx: Callout/);
+		expect(await readFile(join(root, "content/a.md"), "utf8")).toBe('---\ntitle: A\n---\n<p class="a">hi</p>\n');
+		await expect(readFile(join(root, "content/a.mdx"), "utf8")).rejects.toThrow();
+		expect(await readFile(join(root, "content/b.mdx"), "utf8")).toBe("<Callout />\n");
 	});
 });

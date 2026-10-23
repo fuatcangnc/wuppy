@@ -8,7 +8,9 @@ import {
 	Sparkles,
 	Users,
 } from "@react-zero-ui/icon-sprite";
+import { useStore } from "@nanostores/react";
 import { Link, useRouterState } from "@tanstack/react-router";
+import { $collections, collectionOfKind } from "../../stores/content.ts";
 
 const itemClass = (on: boolean) =>
 	`flex shrink-0 items-center gap-1.5 rounded-[5px] px-2 py-1 transition-colors ${
@@ -18,6 +20,7 @@ const itemClass = (on: boolean) =>
 /** Compact Instatic-style studio navigation used by the full-screen Site and AI workspaces. */
 export function StudioBar({ active }: { active?: "site" | "ai" }) {
 	const pathname = useRouterState({ select: (state) => state.location.pathname });
+	const pages = collectionOfKind(useStore($collections), "pages") ?? "pages";
 	return (
 		<header className="flex h-9 shrink-0 items-center gap-1 border-b border-[#2a2a2d] bg-[#111113] px-2 text-[11px] text-[#d4d4d8]">
 			<span className="me-2 flex items-center gap-2 px-1">
@@ -35,8 +38,8 @@ export function StudioBar({ active }: { active?: "site" | "ai" }) {
 				</Link>
 				<Link
 					to="/c/$collection"
-					params={{ collection: "pages" }}
-					className={itemClass(active === undefined && pathname === "/c/pages")}
+					params={{ collection: pages }}
+					className={itemClass(active === undefined && pathname === `/c/${pages}`)}
 				>
 					<FileText size={13} /> Content
 				</Link>

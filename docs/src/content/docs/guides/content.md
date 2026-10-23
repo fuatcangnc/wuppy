@@ -18,7 +18,7 @@ The list has two layouts: **split** (list on the left, preview and details on th
 
 ## The editor
 
-- Fields come from the collection's schema; the body uses a Markdown editor that keeps MDX components intact.
+- Fields come from the collection's schema; the body uses a Markdown/MDX editor that keeps raw HTML and allowed components intact.
 - The **slug** is created from the title while you type, with Turkish characters and accents normalised.
   Edit the slug yourself and it stops following the title. A slug that already exists is refused.
 - Insert images (Wuppy asks for alt text) and the content components your site allows.

@@ -14,4 +14,4 @@ sidebar:
 
 Kullanılabilir alan tipleri [Yapılandırma](/tr/concepts/configuration/#alan-tipleri) sayfasında listelenir.
 
-Yeni içerik tipleri varsayılan olarak [MDX](/tr/guides/mdx/) olur.
+Her içerik tipinin girdileri, koleksiyonun `format` değerine göre [MDX veya Markdown](/tr/guides/markdown/) dosyalarıdır.

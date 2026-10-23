@@ -52,7 +52,8 @@ Gövde, Astro'nun kullandığı ayrıştırıcıyla denetlenir. Kod blokları i�
 - Starter'ın `astro.config.mjs` dosyasında `@astrojs/mdx` vardır ve `**/*.{md,mdx}` yüklenir. Mevcut bir Astro projesinde
   [`wuppy init`](/tr/guides/existing-astro-project/) aynısını yapar: `mdx()` ile `@astrojs/mdx`'i ekler ve
   `pattern: "**/*.md"` glob'larını `**/*.{md,mdx}` yapar.
-- Bir girdiyi gösterirken izinli bileşenleri verin: `<Content components={{ Callout }} />`.
+- Tema bileşenleri otomatik eşlenir: Wuppy, temanın sayfalarındaki `<Content />` öğesine bir `components` haritası ekler; böylece temanın `src/components/*.astro` dosyaları **Add → Components** üzerinden içe aktarma satırı olmadan eklenebilir.
+- Sitenin kendi bileşenleri için adlarını `wuppy.config.mjs` içindeki `components` listesine ekleyin ve bir girdiyi gösterirken verin: `<Content components={{ Callout }} />`.
 - Admin'de düzenlenen bir MDX girdisi build gerekmeden hemen görünür. Sitenin Markdown ayarlarıyla derlenir: başlıklar
   build'dekiyle aynı id'leri ve `headings` listesini, kod blokları aynı renklendirmeyi alır.
 - Bir bölüm (ya da custom widget) gövdesini `wuppy/mdx` içindeki `mdxContent` ile gösterin. Göstermeden önce aynı

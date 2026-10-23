@@ -26,7 +26,6 @@ Yeni bir site (paketler yayınlanınca): `npm create wuppy my-site`.
 export default {
 	site: { url: "https://example.com", name: "Example" },
 	locales: ["en", "tr"], // slug'ın ilk parçası dil: en/hello, tr/hello
-	components: ["Callout"], // içerikte kullanılabilecek bileşenler (başka JSX/import/script reddedilir)
 	collections: [
 		{
 			name: "posts",

@@ -22,10 +22,9 @@ describe("wuppy init helpers", () => {
 		const out = patchAstroConfig(bare, {})!;
 		expect(out).toContain("  integrations: [wuppy(), mdx()],");
 		expect(out).toContain('import node from "@astrojs/node";');
+		expect(out).toContain('import mdx from "@astrojs/mdx";');
 		const withAdapter = `import { defineConfig } from "astro/config";\nexport default defineConfig({ adapter: vercel(), integrations: [] });\n`;
 		expect(patchAstroConfig(withAdapter, { rss: false })).not.toContain("@astrojs/node");
-		const withMdx = `import mdx from "@astrojs/mdx";\nexport default defineConfig({ integrations: [mdx()] });\n`;
-		expect(patchAstroConfig(withMdx, {})).toContain("integrations: [wuppy(), mdx()]");
 		expect(patchAstroConfig(out, {})).toBe(out);
 		expect(patchAstroConfig("module.exports = {}", {})).toBeNull();
 	});

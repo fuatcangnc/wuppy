@@ -14,4 +14,4 @@ sidebar:
 
 The available field types are listed in [Configuration](/concepts/configuration/#field-types).
 
-New content types are [MDX](/guides/mdx/) by default.
+Entries of every content type are [MDX or Markdown](/guides/markdown/) files, chosen by the collection's `format`.

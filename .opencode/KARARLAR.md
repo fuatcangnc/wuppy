@@ -541,6 +541,8 @@ Kullanıcı (2026-10-21): "admin ui'da da seçim olabilmeli, Themes menüsünde 
 
 ## ADR-018 — MDX her yerde, güvenlik öncelikli
 
+> Durum: Yerini ADR-021 aldı.
+
 ### Bağlam
 
 Kullanıcı (2026-10-21): "content types, posts, pages, sections bunlarda mdx özelliği yoksa mutlaka eklemen lazım security öncelikli olarak". Önce starter posts/pages md'ydi (glob yalnız `*.md`, `@astrojs/mdx` yok), bölümler düz metindi, MDX gövdesi yalnız build'de güncelleniyordu.
@@ -600,6 +602,86 @@ Kullanıcı (2026-10-22): "edit with visual dediğinde visual editor moduna geç
 - Sınırlar: tuval sayfanın gerçek Astro çıktısını değil aynı HTML ağacını ve sitenin stylesheet'lerini gösterir; bazı Instatic modülleri (form/loop/outlet/SVG) ve eklenti runtime'ı yoktur. MDX gövdesindeki tek satır elle bozulursa blok Markdown olarak korunur.
 - Geri alma: `packages/visual-editor`, admin `visual-editor` klasörü, `/v` rotası, core `dataSchemas.visual`/`visual.css`/middleware, Pages/Posts "Edit with Visual" butonu; kaydedilmiş gövdeler düz HTML olduğu için editör kalksa da site render edilir.
 
+## ADR-021 — İçerik yalnız Markdown (`.md`), tasarım `.astro`'da; tema öncelikli geliştirme
+
+> Durum: Yerini ADR-023 aldı (2026-10-23). ADR-018'in yerini almıştı.
+
+### Bağlam
+
+Kullanıcı (2026-10-23): "mdx yerine … .md content dosyalarımız olsa .astro içine zaten content collections ile yazabiliyoruz bu mimari daha mantıklı tüm content özelliklerimiz için bunu yap" ve "themes varsa themes üzerinden olmalı". Code görünümünde sahte `src/pages/*.mdx` + `.wuppy` ağacı ile tema ağacı yan yana çıkıyordu; dev sunucusu (`astro dev` starter'da) aktif temayı yok sayıyordu.
+
+### Karar
+
+- Tüm içerik (post, page, içerik tipleri, sections, custom widget) düz `.md`. Koleksiyon `format` ve config `components` alanları kaldırıldı (eski config'ler zod non-strict olduğu için yüklenmeye devam eder). Dosya adaptörü yalnız `.md` listeler/yazar.
+- Denetim `packages/core/src/markdown/index.ts` `findDisallowed(body)`: satteri mdast; tehlikeli etiketler, `on*`/`formaction`/`srcdoc`, kod URL'leri ve PascalCase (bileşen) etiketleri reddedilir.
+- `wuppy/markdown` → `markdownContent(source)` `{ html, headings }` (Astro'nun Markdown renderer'ı). `wuppy/mdx`, `mdxContent`, `/api/editor/components`, editör component seçici ve görsel editör "component" modülü kaldırıldı.
+- Canlı içerik: `.md` istek anında render edilir; temanın kendi `.mdx` dosyaları yalnız derlemesinden sunulur (değişirse Rebuild).
+- `wuppy init` artık `mdx()`/`@astrojs/mdx` eklemez ve glob genişletmez; `.mdx` dosyaları için uyarır. `wuppy mdx-to-md [dir]` bileşensiz `.mdx`'leri `.md`'ye çevirir, bileşen/ifade içerenleri raporlar.
+- Tema öncelikli: `templates/starter/dev.mjs` (`pnpm dev`) aktif tema varsa `astro dev`'i tema klasöründe çalıştırır (`WUPPY_BASE_ROOT`, `WUPPY_AUTH_DB`, ana `.env`); `theme.mjs` serve.mjs ile ortak. Code görünümü dosyaları gerçek yollarında gösterir (sayfa `<koleksiyon dir>/<slug>.md`); sayfa tema içindeyse tek ağaç `theme: owner/repo`.
+
+### Sonuçlar
+
+- Editör kaydı derlemeyi bozamaz; tasarım/bileşen geliştiricinin `.astro` dosyalarında.
+- Kaybedilen: içerikte bileşen kullanımı. Gerekirse `.astro` sayfasında frontmatter alanıyla seçilir.
+- Ek (2026-10-23, kullanıcı: "burada posts page kalmalıydı"): koleksiyonlara isteğe bağlı `kind: "posts" | "pages"`. Tema koleksiyonları Astro adlarıyla kalır (`blog`, `about`; live-content bu adı kullanır), panel Posts/Pages bölümlerini `kind`'a (yoksa ada) göre gösterir: sidebar, StudioBar, Menus, Site. `wuppy init` tarih alanı olan ilk koleksiyonu `posts`, olmayan ilkini `pages` yapar.
+- Geri alma: `git revert`; `src/markdown` → `src/mdx`, `@astrojs/mdx` starter'a geri.
+
+## ADR-022 — İçerik sitenin, tema yalnız tasarım
+
+> Durum: Kabul edildi (2026-10-23). ADR-021'in "tema öncelikli" kısmının (içeriğin tema klasöründe tutulması) yerini alır.
+
+### Bağlam
+
+ADR-021 sonrası panel temanın `blog`/`about` koleksiyonlarını gösterdi ve yazılar temanın git klonuna (`.wuppy/themes/<sahip>__<ad>/src/content`) yazıldı. Bu klasör sitenin `.gitignore`'unda; içerik sitenin geçmişine girmiyordu, tema güncellemesi çakışıyor, tema değişince içerik kalıyordu. Kullanıcı: "burada posts page kalmalıydı", ardından önerilen yapı için "tamam bu dediklerini yap".
+
+### Karar
+
+- Sunucu, medya, veri, auth, redirect, sitemap/rss/robots, page cache ve görsel CSS her zaman sitenin klasörünü kullanır: `themes/site.ts` `siteRoot()` = `WUPPY_BASE_ROOT || cwd`. Tema yalnız Astro kodu (cwd) olarak çalışır.
+- Temanın `wuppy.config.mjs` koleksiyonları sitenin koleksiyonlarına bağlanır (`linkTheme`): `kind: posts/pages` → sitenin Posts/Pages'i; `kind` yoksa sitenin `content/<ad>` koleksiyonu (yoksa oluşur). `map` tema alan adı → site alan adı (`pubDate` → `date`). Site alan tanımları kazanır; yalnız temanın okuduğu alanlar eklenir; `route` temanınkidir.
+- Canlı içerik (live-runtime) tema koleksiyonunu sitenin klasöründen okur ve alanları temanın adlarına çevirir, sonra temanın şemasıyla doğrular.
+- Kurulumda (`install`) temanın `.md` ve `.mdx` örnek girdileri bir kez siteye kopyalanır (alan adları çevrilir), var olan dosyanın üzerine yazılmaz; `.mdx` içindeki bileşen importları temizlenir.
+- `wuppy init` `kind` ve bilinen adlar için `map` yazar (`pubDate`/`publishDate`… → `date`, `heroImage`/`image`… → `cover`).
+- Panel: Posts/Pages adları sabit; tema varken ayrı eşleme gerekmez (`kind` yalnız `wuppy init` ile sarılan sitelerde). Code görünümü iki kök: `site` ve `theme: owner/repo`.
+
+### Sonuçlar
+
+- İçerik tema değişiminde/güncellemesinde korunur ve sitenin Git'ine commit edilir.
+- Temanın zorunlu tuttuğu alanı eksik girdiler temada görünmez (konsola şema hatası yazılır) ta ki alan doldurulana kadar.
+- Göreli yollu örnek görseller (`../../assets/…`) içe aktarmada kırılır. Yeniden kurulum silinen örnek girdileri geri getirir.
+- Symlink kullanılmadı: canlı içerik zaten diskten okuduğu için gerek kalmadı.
+- Ek (2026-10-23, kullanıcı "temayı kaldır" seçti): Code görünümü yalnız `site` kökünü gösterir; tema kaynağı panelden düzenlenmez. `/api/themes/files`, `/api/themes/file`, `/api/themes/rebuild` ve `GithubThemes.sourceFiles/writeSource/rebuild` kaldırıldı; tema Themes sayfasından yeniden kurulur/derlenir.
+- Ek 2 (2026-10-23, kullanıcı "ayrı theme ağacı" seçti): üstteki ek geri alındı. Code görünümü iki kök: `site` (içerik/veri) ve `theme: owner/repo` (tema kodu, düzenlenebilir, Rebuild). Temanın koleksiyon klasörleri listelenmez (içerik sitede). Uç noktalar ve `sourceFiles/writeSource/rebuild` geri geldi.
+- Ek 3 (2026-10-24, kullanıcı "astro ile yapılan her temayı düzenleyebilmemiz lazım"): görsel editör tuvali artık boş iframe'e CSS kopyalamak yerine girdinin canlı sayfasını yükler; `themeComponentsPlugin` derlenmiş her `<Content />` çizimini `<!--wuppy:body-->…<!--/wuppy:body-->` yorumlarıyla sarar, admin bu aralığı boşaltıp blokları oraya çizer. Tema layout/CSS/script'i aynen çalışır; tema tarafında hiçbir sözleşme gerekmez. İşaret yoksa (yayımlanmamış girdi, uzak site, component düzenleme) eski boş çerçeveye düşülür. Bilinen sınır: sayfada birden çok `<Content />` varsa ilki kullanılır; ham kaynak dalı işaret eklemez.
+- Ek 4 (2026-10-24, kullanıcı "astro projelerinde pages varsa ... bizim pages'a gelmeli"): temanın statik Markdown sayfaları (`src/pages/**/*.md(x)`, `[param]` ve `_` hariç) etkinleştirmede sitenin Pages koleksiyonuna kopyalanır (`layout` hariç). `themePagesPlugin` bu sayfa modülünü değiştirir: tema dosyasının `layout`'u korunur, gövde her istekte sitedeki girdiden okunur (`themePage`, live-runtime), yoksa temanın kendi metni. wuppy.config Vite eklentisinde okunamadığı için (Astro config loader kapalı) Pages klasörü çalışma anında bulunur. `.astro` sayfaları kod olarak kalır (Code görünümü).
+- Ek 5 (2026-10-24, kullanıcı "pages altındaki .astro dosyalarını da bizim pages'e aktarmalı", seçim "Listele + aç"): temanın statik `.astro` sayfaları da (`[param]`, `_` ve `.js/.ts` uç noktaları hariç) Pages'a `<rel>.md` girdisi olarak eklenir: `title` yoldan türetilir (index → Home), `template: src/pages/<rel>.astro`, gövde boş. Kullanıcı eklediği blokların görünmesini isteyince: `themePagesPlugin` tema `.astro` sayfasının kaynağına (Astro derlemeden önce, transform order pre) `virtual:wuppy-theme-body/<rel>` bileşenini ekler ve `<main>` sonuna (yoksa son öğenin içine) `<WuppyThemeBody />` koyar; bu bileşen `themeBody` ile `template`'li girdinin gövdesini işaretçiler arasında çizer, böylece görsel editör yerinde düzenler. Edit ekranında gövde editörü ve "Open in Code view" birlikte durur. Tema modunda `theme-seo-middleware` HTML yanıtında `seoTitle`/`seoDescription`/`noindex`'i uygular; preview-link API'si `template` URL'sini kullanır. Aynı adlı site sayfası varsa dokunulmaz.
+
+- Ek 6 (2026-10-24, kullanıcı "tag.astro … temadaki tüm elementler de düzenlenebilir olmalı visual editor'de"): görsel editör tema `.astro` dosyalarının kendi öğelerini düzenler. Konum, Astro dev sunucusunun her öğeye koyduğu `data-astro-source-file/loc`'tan gelir; dev toolbar bunları sildiği için `visual-middleware` `data-wuppy-file/loc` kopyası ekler. `editAstroElement` dosyayı `@astrojs/compiler-rs` ile ayrıştırır, öğeyi Astro'nun konum kuralıyla (+ etiket adı) bulur ve yalnız onun aralığını değiştirir (metin, class/style, sil, çoğalt, kardeşle yer değiştir); `{...}` ile üretilen metin/öznitelik ve ifade içindeki öğeler reddedilir ("Code view"). `withThemeBody` import'u ön bilginin ilk satırına koyar ki satır numaraları kaymasın. Tema dosyaları düzenlenince sayfa yenilensin diye Vite watch yalnız projenin kendi `.wuppy/` klasörünü yok sayar (tema sitenin `.wuppy/` klasörü içinden çalışır). Yalnız dev; geri alma Git/Code view ile.
+- Ek 7 (2026-10-24, kullanıcı "instatic gibi elementin özelliklerinin hepsi bizde de olmalı … tailwind 4 olarak"): tema öğesinin Properties paneli Instatic'in `CLASS_STYLE_SECTIONS` listesini (blokların stil grupları da aynı listeye geçti, `style-props.ts`), etiket değiştirmeyi ve öznitelikleri içerir. Stiller Tailwind 4 class'ı olarak yazılır (`tailwind.ts`: özellik → utility tablosu, karşılığı yoksa `[prop:value]`; class'lar okunurken aynı tabloyla özelliğe eşlenir, tanınmayanlar ve başka variant'takiler korunur). Breakpoint (max-width) `max-[Npx]:`, state Tailwind variant'ı olur. Tema Tailwind 4 kullanmıyorsa (sayfada `tailwindcss v4` başlığı yok) class etkisiz kalacağı için aynı alanlar inline style'a yazılır. `editAstroElement` `attrs` artık her özniteliği alır (`null` siler) ve `tag` eylemi etiketi açılış/kapanışta değiştirir (bileşenler hariç).
+
+## ADR-023 — MDX geri geldi; tema `.astro` bileşenleri içerikte gerçek bileşen olarak kullanılır
+
+> Durum: Kabul edildi (2026-10-23). ADR-021'in "içerik yalnız Markdown" kararının yerini alır; ADR-022'nin tema/site ayrımı korunur.
+
+### Bağlam
+
+Kullanıcı önce Instatic benzeri editörde temanın `src/components/*.astro` dosyalarının Add → Components altında görünmesini, ardından seçildiğinde Code sayfasına yönlenmek yerine tuvale gerçek bileşen olarak eklenmesini istedi. ADR-021 içerikte bileşen kullanımını kaldırmıştı; kullanıcı "1. Gerçek Astro component desteği … bunu yap" diyerek MDX + güvenli allowlist + otomatik registry modelini seçti.
+
+### Karar
+
+- Koleksiyonlarda `format: "md" | "mdx"` yeniden var (varsayılan `md`; starter/content types yeni içerik için `mdx`). Aynı koleksiyonda `.md` ve `.mdx` yan yana yaşar; yeni girdi koleksiyonun formatını alır. Mevcut `.md` girdisi bileşen eklendiğinde aynı commit içinde `.mdx`'e yükseltilir (eski dosya silinir).
+- `components` config allowlist'i ve `findDisallowed(body, allowed, format)` yeniden var. MDX'te import/export, keyfi ifade, listede olmayan bileşen, spread, `on*`/direktifler ve tehlikeli URL'ler reddedilir; `.md` gövdeleri Markdown HTML kurallarıyla denetlenir (MDX koleksiyonundaki eski `.md` bileşen kullanmıyorsa `.md` kalır ve `<img>` gibi void HTML kabul eder).
+- Aktif temanın `src/components/*.astro` dosyaları otomatik allowlist'e girer. `@wuppy/astro` bir Vite transform'uyla `<Content />` çağrısına `components` haritası ekler; harita bileşenleri doğrudan import eder (sanal modül yok). Böylece tema sayfalarını elle düzenlemeden MDX içindeki `<Callout>` gerçek Astro bileşeni olarak render edilir. Site içi özel bileşenler yalnız `components` config'iyle açılır.
+- Canlı içerik: değişen `.mdx` girdileri `mdxContent` ile istek anında derlenir, `render()` built modülü kullanmaz; `.md` Markdown renderer'ıyla çizilir. Import satırları site içeriğinde temizlenir; bileşen haritası import'u sağlar.
+- Admin: `/api/editor/components` allowlist'i döndürür; Add → Components temanın `.astro` dosyalarını `ASTRO` rozeti ve kaynak yoluyla listeler, seçim `data-ve="component"` düğümü ekler. Tuval etiketli yer tutucu gösterir; gerçek çıktı site/rebuild sonrası görünür. `.md` sayfası bileşen eklendiğinde `.mdx`'e yükseltilir.
+- `wuppy init` yeniden `@astrojs/mdx` ekler, glob'ları genişletir, `.mdx` bileşenlerini allowlist'e alır; `wuppy mdx-to-md` bileşensiz içerik için geri dönüş aracı olarak kalır.
+
+### Sonuçlar
+
+- İçerikte gerçek Astro bileşeni kullanılabilir; bileşenlerin stilleri/scriptleri build'de normal Astro kurallarıyla çalışır.
+- Tuval Astro bileşenini çalıştırmaz (React iframe); placeholder gösterir. Bu, "MDX + rebuild" modelinin bilinçli sınırıdır.
+- Tema bileşeni eklemek/değiştirmek geliştirme sunucusunda restart, üretimde Rebuild gerektirir (harita kaynak taramasından üretilir).
+- Geri alma: ADR-021'deki `format`/`components` kaldırma değişikliklerini geri uygula; `src/mdx` yerine `src/markdown` kalabilir çünkü ayrıştırıcı aynı dosyada iki formatı destekler.
+
 ## Karar özeti
 
 | Katman | EmDash | Wuppy |
@@ -610,7 +692,7 @@ Kullanıcı (2026-10-22): "edit with visual dediğinde visual editor moduna geç
 | State | TanStack Query | **Nanostores** |
 | Router | TanStack Router | TanStack Router |
 | Editör | Tiptap 3 | **Lexical 0.52** |
-| İçerik | DB merkezli | **Dosya merkezli (MD/MDX) + Git** |
+| İçerik | DB merkezli | **Dosya merkezli (MDX/Markdown) + Git** |
 | Veri | Kysely + SQLite/PG/D1 | Kysely + SQLite/PG/D1 (opsiyonel) |
 
 ## Değişiklik süreci

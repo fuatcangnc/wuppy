@@ -11,11 +11,11 @@ The site is described in `wuppy.config.mjs` (or `.ts`) at the project root.
 export default {
 	site: { url: "https://example.com", name: "Example" },
 	locales: ["en", "tr"], // the first part of a slug is its language: en/hello, tr/hello
-	components: ["Callout"], // components allowed inside content
 	collections: [
 		{
 			name: "posts",
 			dir: "content/posts",
+			format: "mdx",
 			route: "/blog/{slug}",
 			fields: { title: "string", date: "date", draft: "boolean", publishAt: "date", tags: "list", cover: "image" },
 		},
@@ -45,10 +45,29 @@ Fields can be required, have a default and help text, and can be shown only when
 Collections can also be created and edited in the admin under **Content Types**; see
 [Content types](/guides/content-types/).
 
-## Content components
+## Posts and Pages
 
-Only components listed in `components` may appear inside content. Other JSX, imports and scripts are rejected on
-save, so editors cannot run code on your site.
+The admin's **Posts** and **Pages** sections show the collections named `posts` and `pages`. A theme that names
+them differently sets `kind` instead, and keeps its own name (Astro reads the collection by that name):
+
+```js
+collections: [
+	{ name: "blog", dir: "src/content/blog", kind: "posts", route: "/{slug}", fields: { title: "string", pubDate: "date" } },
+	{ name: "about", dir: "src/content/about", kind: "pages", fields: { title: "string" } },
+],
+```
+
+`wuppy init` sets `kind` for you: the first collection with a date field becomes Posts, the first without one becomes
+Pages. Other collections are listed under their own name. In a GitHub theme, `kind` and `map` link the theme to the
+site's content; see [Themes from GitHub](/guides/github-themes/#where-content-lives).
+
+## Content is MDX or Markdown
+
+Each collection has a `format`: `"mdx"` (new entries are `.mdx`, components allowed) or `"md"` (`.md`, Markdown only).
+Existing `.md` and `.mdx` files can live side by side; a `.md` entry is promoted to `.mdx` when a component is inserted.
+The `components` list allows extra Astro component names in MDX. The active theme's `src/components/*.astro` files are
+allowed automatically. Scripts, imports, expressions and unlisted components are rejected on save, so editors cannot
+run code on your site. See [MDX content](/guides/markdown/).
 
 ## Types for your templates
 

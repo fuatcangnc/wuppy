@@ -24,11 +24,13 @@ import { Link } from "@tanstack/react-router";
 import { overrideKey, safeStylesheet, type Styles } from "@wuppy/visual-editor";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { apiData } from "../../lib/api.ts";
+import { $collections } from "../../stores/content.ts";
 import { $doc } from "../../stores/editor.ts";
 import { Canvas, $zoom, fitView, refreshThemeHead, zoomBy } from "./Canvas.tsx";
-import { parse } from "./mdx.ts";
+import { parse } from "./markdown.ts";
 import { moduleOf, nodeName } from "./modules.ts";
 import {
+	$codeFile,
 	$context,
 	$mode,
 	$selected,
@@ -42,9 +44,18 @@ import {
 } from "./store.ts";
 import { toast } from "../../ui/index.tsx";
 
-type Language = "mdx" | "css" | "json" | "astro" | "ts" | "js" | "text";
+type Language = "md" | "css" | "json" | "astro" | "ts" | "js" | "text";
 type FileKind = "page" | "css" | "component" | "visual" | "theme";
 type ThemeSource = { repo: string; files: { path: string; content: string; size: number }[] };
+
+function languageOf(path: string): Language {
+	const ext = path.split(".").pop()?.toLowerCase() ?? "";
+	if (ext === "css" || ext === "json" || ext === "astro") return ext;
+	if (ext === "md" || ext === "mdx") return "md";
+	if (ext === "ts" || ext === "tsx") return "ts";
+	if (ext === "js" || ext === "jsx" || ext === "mjs" || ext === "cjs") return "js";
+	return "text";
+}
 
 interface WorkspaceFile {
 	id: string;
@@ -53,29 +64,17 @@ interface WorkspaceFile {
 	kind: FileKind;
 	language: Language;
 	content: string;
-	/** Active-theme relative path; present for theme source files. */
-	sourcePath?: string;
 	readOnly?: boolean;
 }
 
 type TreeEntry =
 	{ kind: "folder"; id: string; name: string; children: TreeEntry[] } | { kind: "file"; file: WorkspaceFile };
 
-function languageOf(path: string): Language {
-	const ext = path.split(".").pop()?.toLowerCase() ?? "";
-	if (ext === "css") return "css";
-	if (ext === "json") return "json";
-	if (ext === "astro") return "astro";
-	if (ext === "md" || ext === "mdx") return "mdx";
-	if (ext === "ts" || ext === "tsx") return "ts";
-	if (ext === "js" || ext === "jsx" || ext === "mjs" || ext === "cjs") return "js";
-	return "text";
-}
-
-function themeTree(repo: string, files: WorkspaceFile[]): TreeEntry {
-	const root = { kind: "folder" as const, id: "theme", name: `theme: ${repo}`, children: [] as TreeEntry[] };
+/** Folders from the files' real paths, under one root. */
+function folderTree(id: string, name: string, files: WorkspaceFile[]): TreeEntry {
+	const root = { kind: "folder" as const, id, name, children: [] as TreeEntry[] };
 	for (const file of files) {
-		const parts = (file.sourcePath ?? file.path).split("/");
+		const parts = file.path.split("/");
 		let children = root.children;
 		for (const [index, part] of parts.slice(0, -1).entries()) {
 			let folder = children.find(
@@ -84,7 +83,7 @@ function themeTree(repo: string, files: WorkspaceFile[]): TreeEntry {
 			if (!folder) {
 				folder = {
 					kind: "folder",
-					id: `theme:${repo}:${parts.slice(0, index + 1).join("/")}`,
+					id: `${id}:${parts.slice(0, index + 1).join("/")}`,
 					name: part,
 					children: [],
 				};
@@ -132,7 +131,7 @@ function token(key: string, text: string, className: string): ReactNode {
 	);
 }
 
-/** Small HTML/MDX tokeniser; comments, tags, attribute names and strings get editor colours. */
+/** Small HTML/Markdown tokeniser; comments, tags, attribute names and strings get editor colours. */
 function highlightTag(tag: string, prefix: string): ReactNode[] {
 	const out: ReactNode[] = [];
 	const re = /(<[/!]?|\/?>)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|([A-Za-z_:][\w:.-]*)|(=)/g;
@@ -310,7 +309,7 @@ function CodeEditor({
 
 function fileIcon(file: WorkspaceFile) {
 	if (file.language === "css" || file.language === "json" || file.kind === "theme") return FileCode;
-	if (file.language === "mdx") return FileText;
+	if (file.language === "md") return FileText;
 	return File;
 }
 
@@ -483,6 +482,7 @@ export function CodeWorkspace({
 	onDirtyChange?: (dirty: boolean) => void;
 }) {
 	const doc = useStore($doc);
+	const collections = useStore($collections);
 	const visual = useStore($visual);
 	const [query, setQuery] = useState("");
 	const [collapsed, setCollapsed] = useState<Set<string>>(() => new Set());
@@ -494,17 +494,16 @@ export function CodeWorkspace({
 	const [rebuilding, setRebuilding] = useState(false);
 	const [previewRevision, setPreviewRevision] = useState(0);
 	const [themeSource, setThemeSource] = useState<ThemeSource | null>(null);
+	const requestedFile = useStore($codeFile);
 	const q = query.trim().toLowerCase();
 
+	// The active theme's code (admins only); null when the built-in site is active.
 	useEffect(() => {
 		let cancelled = false;
-		void apiData<ThemeSource | null>("GET", "/api/themes/files")
-			.then((source) => {
-				if (!cancelled) setThemeSource(source);
-			})
-			.catch(() => {
-				// No active theme, or the current user cannot manage theme code.
-			});
+		void apiData<ThemeSource | null>("GET", "/api/themes/files").then(
+			(source) => !cancelled && setThemeSource(source),
+			() => !cancelled && setThemeSource(null),
+		);
 		return () => {
 			cancelled = true;
 		};
@@ -523,16 +522,17 @@ export function CodeWorkspace({
 
 	const pageFile = useMemo<WorkspaceFile | null>(() => {
 		if (!doc) return null;
-		const name = `${doc.slug.split("/").pop() || "page"}.mdx`;
+		// The entry's real file in the site, e.g. content/pages/about.md.
+		const dir = collections.find((c) => c.name === doc.collection)?.dir ?? doc.collection;
 		return {
 			id: "page",
-			name,
-			path: `src/pages/${doc.slug}.mdx`,
+			name: `${doc.slug.split("/").pop() || "page"}.md`,
+			path: `${dir}/${doc.slug}.md`,
 			kind: "page",
-			language: "mdx",
+			language: "md",
 			content: formatSource(doc.body),
 		};
-	}, [doc?.body, doc?.slug]);
+	}, [doc?.body, doc?.slug, doc?.collection, collections]);
 
 	const files = useMemo<WorkspaceFile[]>(() => {
 		const next: WorkspaceFile[] = [];
@@ -540,7 +540,8 @@ export function CodeWorkspace({
 		next.push({
 			id: "site-css",
 			name: "site.css",
-			path: "src/styles/site.css",
+			// Part of visual.json (its stylesheet), shown as a CSS file.
+			path: ".wuppy/data/visual/site.css",
 			kind: "css",
 			language: "css",
 			content: visual.stylesheet,
@@ -549,7 +550,7 @@ export function CodeWorkspace({
 			next.push({
 				id: `component:${component.id}`,
 				name: `${component.id}.json`,
-				path: `src/components/${component.id}.json`,
+				path: `.wuppy/data/visual/components/${component.id}.json`,
 				kind: "component",
 				language: "json",
 				content: JSON.stringify({ name: component.name, params: component.params, nodes: component.nodes }, null, 2),
@@ -569,51 +570,25 @@ export function CodeWorkspace({
 			next.push({
 				id: `theme:${file.path}`,
 				name: file.path.split("/").pop() ?? file.path,
-				path: `theme/${themeSource!.repo}/${file.path}`,
+				path: file.path,
 				kind: "theme",
 				language: languageOf(file.path),
 				content: file.content,
-				sourcePath: file.path,
 			});
 		}
 		return next;
-	}, [pageFile, themeSource, visual]);
+	}, [pageFile, visual, themeSource]);
 
+	// The site's content and data, then the active theme's code (its design) as a second root.
 	const tree = useMemo<TreeEntry[]>(() => {
-		const pages = pageFile ? [{ kind: "file" as const, file: pageFile }] : [];
-		const styles = files.filter((file) => file.kind === "css").map((file) => ({ kind: "file" as const, file }));
-		const components = files
-			.filter((file) => file.kind === "component")
-			.map((file) => ({ kind: "file" as const, file }));
-		const result: TreeEntry[] = [
-			{
-				kind: "folder",
-				id: "src",
-				name: "src",
-				children: [
-					{ kind: "folder", id: "pages", name: "pages", children: pages },
-					{ kind: "folder", id: "styles", name: "styles", children: styles },
-					{ kind: "folder", id: "components", name: "components", children: components },
-				],
-			},
-			{
-				kind: "folder",
-				id: ".wuppy",
-				name: ".wuppy",
-				children: [
-					{
-						kind: "folder",
-						id: "data",
-						name: "data",
-						children: files.filter((file) => file.kind === "visual").map((file) => ({ kind: "file" as const, file })),
-					},
-				],
-			},
-		];
-		const themeFiles = files.filter((file) => file.kind === "theme");
-		if (themeSource && themeFiles.length) result.push(themeTree(themeSource.repo, themeFiles));
-		return result;
-	}, [files, pageFile, themeSource]);
+		const site = folderTree(
+			"site",
+			"site",
+			files.filter((f) => f.kind !== "theme"),
+		);
+		const theme = files.filter((f) => f.kind === "theme");
+		return themeSource && theme.length ? [site, folderTree("theme", `theme: ${themeSource.repo}`, theme)] : [site];
+	}, [files, themeSource]);
 
 	const contentFor = (file: WorkspaceFile) => buffers[file.id] ?? file.content;
 	const dirtyFor = (file: WorkspaceFile) => contentFor(file) !== (saved[file.id] ?? file.content);
@@ -633,6 +608,19 @@ export function CodeWorkspace({
 		setOpenIds((previous) => (previous.includes(file.id) ? previous : [...previous, file.id]));
 		setActiveId(file.id);
 	};
+	useEffect(() => {
+		if (!requestedFile || !themeSource) return;
+		const id = `theme:${requestedFile}`;
+		const file = files.find((entry) => entry.id === id);
+		if (!file) {
+			$codeFile.set(null);
+			return;
+		}
+		setOpenIds((previous) => (previous.includes(id) ? previous : [...previous, id]));
+		setActiveId(id);
+		$codeFile.set(null);
+	}, [files, requestedFile, themeSource]);
+
 	const closeFile = (id: string) => {
 		const file = files.find((entry) => entry.id === id);
 		if (file && dirtyFor(file) && !confirm(`Discard unsaved changes to ${file.name}?`)) return;
@@ -655,8 +643,7 @@ export function CodeWorkspace({
 				if (!safeStylesheet(content)) throw new Error("Stylesheet is not valid or is unsafe.");
 				mutateVisual((draft) => void (draft.stylesheet = content));
 			} else if (activeFile.kind === "theme") {
-				if (!activeFile.sourcePath) throw new Error("Theme file path is missing");
-				await apiData("PUT", "/api/themes/file", { path: activeFile.sourcePath, content });
+				await apiData("PUT", "/api/themes/file", { path: activeFile.path, content });
 			} else {
 				return;
 			}
@@ -670,7 +657,10 @@ export function CodeWorkspace({
 				refreshThemeHead();
 				setPreviewRevision((revision) => revision + 1);
 			}
-			toast(activeFile.kind === "theme" ? "Theme file saved; rebuild the theme to apply it" : "Code saved", "info");
+			toast(
+				activeFile.kind === "theme" ? "Theme file saved; in production, rebuild the theme to apply it" : "Code saved",
+				"info",
+			);
 		} catch (error) {
 			toast((error as Error).message, "error");
 		} finally {
@@ -821,7 +811,7 @@ export function CodeWorkspace({
 					)}
 				</div>
 				<div className="border-t border-[#252528] px-3 py-2 font-mono text-[9px] text-[#5f5f66]">
-					MDX + theme source · Git workspace
+					Markdown + theme code · Git workspace
 				</div>
 			</aside>
 
@@ -905,19 +895,16 @@ export function CodeWorkspace({
 							{!activeFile.readOnly && <span>Ctrl+S save</span>}
 							{activeFile.kind === "page" && <span className="text-[#fbbf24]">Tailwind compiles on save</span>}
 							{activeFile.kind === "theme" && (
-								<>
-									<span className="text-[#fbbf24]">Rebuild theme to apply</span>
-									<button
-										type="button"
-										aria-label="Rebuild theme"
-										disabled={rebuilding}
-										onClick={() => void rebuildTheme()}
-										className="flex items-center gap-1 rounded px-1 text-[#a1a1aa] hover:bg-white/[0.06] hover:text-white disabled:opacity-40"
-									>
-										<RefreshCw size={9} className={rebuilding ? "animate-spin" : ""} />
-										{rebuilding ? "Starting…" : "Rebuild"}
-									</button>
-								</>
+								<button
+									type="button"
+									aria-label="Rebuild theme"
+									disabled={rebuilding}
+									onClick={() => void rebuildTheme()}
+									className="flex items-center gap-1 rounded px-1 text-[#a1a1aa] hover:bg-white/[0.06] hover:text-white disabled:opacity-40"
+								>
+									<RefreshCw size={9} className={rebuilding ? "animate-spin" : ""} />
+									{rebuilding ? "Starting…" : "Rebuild"}
+								</button>
 							)}
 							<span className="ml-auto">UTF-8</span>
 						</div>

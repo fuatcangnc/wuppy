@@ -21,7 +21,9 @@ async function visualData(root: string): Promise<Loaded | null> {
 	if (!info) return null;
 	if (loaded?.mtime === info.mtimeMs) return loaded;
 	// A broken file must not take the site down; the editor shows the parse error when it loads the data.
-	const raw: unknown = await readFile(path, "utf8").then(JSON.parse).catch(() => null);
+	const raw: unknown = await readFile(path, "utf8")
+		.then(JSON.parse)
+		.catch(() => null);
 	const parsed = visualDataSchema.safeParse(raw);
 	if (!parsed.success) return null;
 	const css = visualCss(parsed.data);
@@ -37,12 +39,21 @@ async function visualData(root: string): Promise<Loaded | null> {
  * Adds the visual editor's CSS to every HTML page: a link to the site-wide sheet (framework, selectors, user CSS),
  * the font stylesheets, and a `<style>` with the responsive/state styles of the visual nodes on this page.
  */
+/**
+ * Astro's dev server marks each element with the `.astro` file and spot it comes from, and its dev toolbar removes the
+ * marks once the page loads. The visual editor edits theme markup by them, so it gets a copy the toolbar leaves alone.
+ */
+export const withSourceCopy = (html: string): string =>
+	html.includes("data-astro-source-file")
+		? html.replace(/ data-astro-source-(file|loc)="([^"]*)"/g, ' data-astro-source-$1="$2" data-wuppy-$1="$2"')
+		: html;
+
 export function createVisualMiddleware(root: string) {
 	return async (ctx: { request: Request; url: URL }, next: () => Promise<Response>): Promise<Response> => {
 		if (ctx.request.method !== "GET" || SKIP_PATH.test(ctx.url.pathname)) return next();
 		const res = await next();
 		if (res.status !== 200 || !(res.headers.get("content-type") ?? "").includes("text/html")) return res;
-		const html = await res.text();
+		const html = withSourceCopy(await res.text());
 		const visual = await visualData(root);
 		const tags: string[] = [];
 		if (visual?.version) tags.push(`<link rel="stylesheet" href="/api/public/visual.css?v=${visual.version}">`);

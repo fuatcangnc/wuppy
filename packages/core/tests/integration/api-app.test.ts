@@ -42,6 +42,8 @@ const app = () =>
 		getUser: async () => user,
 	});
 const H = { "X-Wuppy-Request": "1", "Content-Type": "application/json" };
+const renderMarkdown = (source: string) =>
+	app().request("/api/editor/markdown", { method: "POST", headers: H, body: JSON.stringify({ source }) });
 const put = (slug: string, body: unknown, headers: Record<string, string> = H) =>
 	app().request(`/api/content/posts/${slug}`, { method: "PUT", headers, body: JSON.stringify(body) });
 const create = (body: unknown, headers: Record<string, string> = H) =>
@@ -58,7 +60,6 @@ beforeEach(async () => {
 		root,
 		[collectionSchema.parse({ name: "posts", dir: "content/posts", fields: { title: "string", draft: "boolean" } })],
 		git,
-		{ components: ["Callout"] },
 	);
 	user = ALL;
 });
@@ -181,12 +182,21 @@ describe("content API", () => {
 		]);
 	});
 
-	it("422 when the body contains disallowed MDX/HTML, 200 for allowed components", async () => {
+	it("422 when the body contains disallowed HTML or a component, 200 for plain HTML", async () => {
 		const bad = await put("x", { data: {}, body: "<script>alert(1)</script>" });
 		expect(bad.status).toBe(422);
 		expect(await bad.json()).toMatchObject({ error: { code: "DISALLOWED_CONTENT", details: ["script"] } });
-		expect((await put("y", { data: {}, body: '<Callout type="note">ok</Callout>' })).status).toBe(200);
+		expect((await put("y", { data: {}, body: '<aside class="note">ok</aside>' })).status).toBe(200);
 		expect((await put("z", { data: {}, body: "<Evil />" })).status).toBe(422);
+	});
+
+	it("renders a visual editor Markdown block, refusing what a save refuses", async () => {
+		const ok = await renderMarkdown('<section class="hero">\n\n## Hi\n\n</section>');
+		expect(ok.status).toBe(200);
+		const { data } = (await ok.json()) as { data: { html: string } };
+		expect(data.html).toContain('<section class="hero">');
+		expect(data.html).toContain("<h2");
+		expect((await renderMarkdown("<script>alert(1)</script>")).status).toBe(422);
 	});
 
 	it("audit log needs audit:read", async () => {

@@ -9,7 +9,7 @@ import {
 import { atom, computed } from "nanostores";
 import { api, apiData, slugPath } from "../../lib/api.ts";
 import { $dirty, $doc, save, setBody } from "../../stores/editor.ts";
-import { expandComponent, paramsOf, parse, serialize } from "./mdx.ts";
+import { expandComponent, paramsOf, parse, serialize } from "./markdown.ts";
 import { canHaveChildren, MODULES, type Preset } from "./modules.ts";
 import {
 	cloneTree,
@@ -63,6 +63,10 @@ export const $editingComponent = atom<{ id: string; page: NodeTree } | null>(nul
 export const $panel = atom<"explorer" | "framework" | "selectors">("explorer");
 export const $inserter = atom<{ at?: { overId: string; position: DropPosition } } | null>(null);
 export const $spotlight = atom(false);
+/** A theme source file requested from the component catalog; opened by the code workspace. */
+export const $codeFile = atom<string | null>(null);
+/** Astro components the server allows in MDX (theme source + `components` in wuppy.config). */
+export const $componentNames = atom<string[]>([]);
 export const $settings = atom(false);
 export const $menu = atom<{ x: number; y: number; id: string } | null>(null);
 

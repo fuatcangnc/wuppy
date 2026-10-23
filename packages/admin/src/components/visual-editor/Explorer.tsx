@@ -26,7 +26,7 @@ import { $entries, $media, loadEntries, loadMedia, uploadImage, type MediaItem }
 import { $doc } from "../../stores/editor.ts";
 import { Button, IconButton, Input, Tabs, Textarea, toast } from "../../ui/index.tsx";
 import { dropOn, endDrag, hideNativeDragImage, moveDragPreview, startDrag } from "./Canvas.tsx";
-import { parse } from "./mdx.ts";
+import { parse } from "./markdown.ts";
 import { MODULE_ICONS, MODULES, moduleOf, nodeName } from "./modules.ts";
 import {
 	$dragPreview,

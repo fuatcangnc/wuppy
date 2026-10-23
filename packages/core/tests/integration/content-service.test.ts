@@ -1,7 +1,7 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { NoopGit, RealGit } from "@wuppy/git";
+import { RealGit } from "@wuppy/git";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { collectionSchema } from "../../src/content-types/index.ts";
 import { ContentService } from "../../src/content/service.ts";
@@ -37,26 +37,48 @@ describe("ContentService", () => {
 		expect(await svc.listTrash()).toHaveLength(0);
 	});
 
-	it("an MDX collection keeps existing .md entries, writes new ones as .mdx and checks each by its format", async () => {
-		const mdx = new ContentService(
+	it("writes the collection format, lists .md and .mdx together and checks every body", async () => {
+		const notes = new ContentService(
 			root,
 			[collectionSchema.parse({ name: "notes", dir: "content/notes", format: "mdx" })],
 			await RealGit.init(root),
+			{ components: ["Callout"] },
 		);
 		await mkdir(join(root, "content/notes"), { recursive: true });
-		await writeFile(join(root, "content/notes/old.md"), "---\ntitle: Old\n---\nPlain {braces} are fine in Markdown\n");
-		await mdx.put("notes", "new", { data: {}, body: "# New\n" });
-		await mdx.put("notes", "old", { data: {}, body: "Still {Markdown}\n" });
-		expect(await readFile(join(root, "content/notes/new.mdx"), "utf8")).toContain("# New");
-		expect(await readFile(join(root, "content/notes/old.md"), "utf8")).toContain("Still {Markdown}");
-		expect((await mdx.listEntries("notes")).map((e) => e.slug)).toEqual(["new", "old"]);
-		// The same text is code in MDX: refused for the .mdx entry.
-		await expect(mdx.put("notes", "new", { data: {}, body: "{process.env.WUPPY_SECRET}" })).rejects.toThrow(
-			/expression/,
+		await writeFile(join(root, "content/notes/theme.mdx"), "---\ntitle: Theme\n---\n<Callout />\n");
+		await notes.put("notes", "new", { data: {}, body: "<Callout />\n" });
+		expect(await readFile(join(root, "content/notes/new.mdx"), "utf8")).toContain("<Callout");
+		expect(await notes.list("notes")).toEqual(["new", "theme"]);
+		await expect(notes.put("notes", "new", { data: {}, body: "<Evil />" })).rejects.toThrow(/Evil/);
+		await expect(notes.put("notes", "new", { data: {}, body: "Hi {name}" })).rejects.toThrow(/expression/);
+	});
+
+	it("keeps an existing HTML-only .md entry on Markdown rules in an MDX collection", async () => {
+		await mkdir(join(root, "content/posts"), { recursive: true });
+		await writeFile(join(root, "content/posts/hello.md"), "---\ntitle: A\n---\nOld\n");
+		const posts = new ContentService(
+			root,
+			[collectionSchema.parse({ name: "posts", dir: "content/posts", format: "mdx" })],
+			await RealGit.init(root),
 		);
-		// Trash commits the .md file it removed (a wrong path would make the commit fail).
-		await mdx.delete("notes", "old");
-		expect(await mdx.list("notes")).toEqual(["new"]);
+		await posts.put("posts", "hello", { data: { title: "A" }, body: '<img src="/a.png" alt="A">\n' });
+		expect(await readFile(join(root, "content/posts/hello.md"), "utf8")).toContain('<img src="/a.png"');
+		expect(await readFile(join(root, "content/posts/hello.mdx"), "utf8").catch(() => null)).toBeNull();
+	});
+
+	it("promotes an existing .md entry when a component is inserted", async () => {
+		await mkdir(join(root, "content/posts"), { recursive: true });
+		await writeFile(join(root, "content/posts/hello.md"), "---\ntitle: A\n---\nText\n");
+		const posts = new ContentService(
+			root,
+			[collectionSchema.parse({ name: "posts", dir: "content/posts", format: "mdx" })],
+			await RealGit.init(root),
+			{ components: ["Callout"] },
+		);
+		await posts.put("posts", "hello", { data: { title: "A" }, body: "Text\n\n<Callout />\n" });
+		expect(await posts.get("posts", "hello")).toMatchObject({ body: "Text\n\n<Callout />\n" });
+		expect(await readFile(join(root, "content/posts/hello.mdx"), "utf8")).toContain("<Callout");
+		expect(await readFile(join(root, "content/posts/hello.md"), "utf8").catch(() => null)).toBeNull();
 	});
 
 	it("revert restores previous content through a new commit", async () => {
@@ -83,15 +105,5 @@ describe("ContentService", () => {
 		await svc.put("posts", "same", { data: {}, body: "x\n" });
 		await svc.put("posts", "same", { data: {}, body: "x\n" });
 		expect(await svc.history("posts", "same")).toHaveLength(1);
-	});
-});
-
-describe("allowedComponents", () => {
-	it("lists the MDX components the site allows, none by default", () => {
-		const posts = collectionSchema.parse({ name: "posts", dir: "content/posts" });
-		expect(new ContentService("/tmp", [posts], new NoopGit()).allowedComponents).toEqual([]);
-		expect(new ContentService("/tmp", [posts], new NoopGit(), { components: ["Callout"] }).allowedComponents).toEqual([
-			"Callout",
-		]);
 	});
 });

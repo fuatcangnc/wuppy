@@ -39,12 +39,17 @@ import { RedirectService } from "./redirects/service.ts";
 import { ApiTokenService, bearerUser } from "./security/api-tokens.ts";
 import { SiteStore } from "./sites/store.ts";
 import { GITHUB_CLIENT_ID, GithubAccounts, GithubThemes } from "./themes/github.ts";
+import { linkTheme } from "./themes/site.ts";
+import { themeComponentNames } from "./themes/components.ts";
 import { renderEmail } from "./email/templates.ts";
 import { createEmailSender } from "./email/index.ts";
 import { settingsSchema } from "./data/schemas.ts";
 
 export interface ServerOptions {
+	/** The site's folder: content, media, data. */
 	root: string;
+	/** The running GitHub theme's folder; its collections are stored in the site (see themes/site.ts). */
+	theme?: string;
 	secret: string;
 	baseURL: string;
 	/** Plugin log sink (defaults to console). */
@@ -69,6 +74,7 @@ async function limitedFetch(url: string, init: { method: string; body?: string; 
 /** Wires config, content, Git and auth into one fetch-style app (mount it anywhere). */
 export async function createServer({
 	root,
+	theme,
 	secret,
 	baseURL,
 	log = console.log,
@@ -142,15 +148,20 @@ export async function createServer({
 	const redirects = new RedirectService(json, db, config.redirects);
 	const tokens = new ApiTokenService(db);
 	const extraTypes = (await json.read("content-types", [])) as typeof config.collections;
-	const collections = [...config.collections];
+	let collections = [...config.collections];
 	for (const type of extraTypes) {
 		const index = collections.findIndex((c) => c.name === type.name);
 		if (index === -1) collections.push(type);
 		else collections[index] = type;
 	}
+	if (theme) collections = linkTheme(collections, (await loadConfig(theme)).collections).collections;
+	// A theme's `.astro` components are trusted design code; allow them in MDX without repeating every name in config.
+	// A site's internal components are not exposed automatically: many require props and would break a page if inserted.
+	const autoComponents = theme ? await themeComponentNames(theme) : [];
+	const components = [...new Set([...config.components, ...autoComponents])];
 	// Plugins load after these services, so the before-hooks reach them through `plugins` at call time.
 	const service = new ContentService(root, collections, git, {
-		components: config.components,
+		components,
 		emit,
 		beforeSave: async (e) => {
 			const out = (await plugins?.beforeContentSave(e)) ?? e;
@@ -302,7 +313,7 @@ export async function createServer({
 				userCount: () => (db.prepare("SELECT COUNT(*) AS n FROM user").get() as { n: number }).n,
 				pluginManager: plugins,
 				themes: new GithubThemes({
-					base: process.env.WUPPY_BASE_ROOT || root,
+					base: root,
 					// Only serve.mjs restarts the process after an exit (Docker's restart policy); `astro dev` would just stop.
 					restart: () => {
 						if (process.env.WUPPY_RESTART !== "1") return false;

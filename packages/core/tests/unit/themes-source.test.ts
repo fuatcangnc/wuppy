@@ -22,11 +22,22 @@ describe("active theme source files", () => {
 		await writeFile(join(theme, "src", "styles.css"), "body { color: red; }\n");
 		await writeFile(join(theme, "node_modules", "pkg", "index.js"), "ignored");
 		await writeFile(join(theme, ".env"), "SECRET=nope");
+		// Sample content is imported into the site, so the theme's collection folder is not listed.
+		await mkdir(join(theme, "src", "content", "blog"), { recursive: true });
+		await writeFile(join(theme, "src", "content", "blog", "a.md"), "# a\n");
+		await writeFile(
+			join(theme, "wuppy.config.mjs"),
+			'export default { collections: [{ name: "blog", dir: "src/content/blog", fields: {} }] };\n',
+		);
 
 		const themes = new GithubThemes({ base });
 		const source = await themes.sourceFiles();
 		expect(source?.repo).toBe("acme/blog");
-		expect(source?.files.map((file) => file.path)).toEqual(["src/pages/index.astro", "src/styles.css"]);
+		expect(source?.files.map((file) => file.path)).toEqual([
+			"src/pages/index.astro",
+			"src/styles.css",
+			"wuppy.config.mjs",
+		]);
 		expect(source?.files[0]?.content).toContain("<h1>");
 		expect(source?.files.some((file) => file.path.includes(".env"))).toBe(false);
 		expect(source?.files.some((file) => file.path.includes("node_modules"))).toBe(false);
