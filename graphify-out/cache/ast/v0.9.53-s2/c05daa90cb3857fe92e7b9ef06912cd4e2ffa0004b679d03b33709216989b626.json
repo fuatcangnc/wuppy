@@ -1,0 +1,1 @@
+{"nodes": [{"id": "$graphify-root$_templates_starter_content_posts_test_md", "label": "test.md", "file_type": "document", "node_kind": "page", "source_file": "templates/starter/content/posts/test.md", "source_location": "L1", "frontmatter": {"title": "test"}}], "edges": [], "input_tokens": 0, "output_tokens": 0}

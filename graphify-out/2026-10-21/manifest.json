@@ -12,9 +12,9 @@
     "semantic_hash": ""
   },
   ".oxlintrc.json": {
-    "mtime": 1792448014.0996838,
-    "seen": 1792522351.1191952,
-    "ast_hash": "f2e2907ebf9518f38f4ca4999286b7a9",
+    "mtime": 1792601661.8135257,
+    "seen": 1792601768.9732542,
+    "ast_hash": "c1c5eae82874f7d7703d987670b32793",
     "semantic_hash": ""
   },
   "e2e/package.json": {
@@ -36,9 +36,9 @@
     "semantic_hash": ""
   },
   "e2e/tests/first-post.spec.ts": {
-    "mtime": 1792580622.7105732,
-    "seen": 1792580763.5132504,
-    "ast_hash": "90e5d8185f1b6773e1a244276b103ac7",
+    "mtime": 1792604756.712176,
+    "seen": 1792605152.2442038,
+    "ast_hash": "a926e308f29f32d5d4420ab5dded3801",
     "semantic_hash": ""
   },
   "e2e/tests/public-site.spec.ts": {
@@ -48,9 +48,9 @@
     "semantic_hash": ""
   },
   "e2e/utils/start-fixture.mjs": {
-    "mtime": 1792529778.8616097,
-    "seen": 1792529974.9375176,
-    "ast_hash": "20d9a7182c1a4b5199a887716f185f50",
+    "mtime": 1792584382.721088,
+    "seen": 1792592152.2308602,
+    "ast_hash": "d1ab99f9f8a9df1c743e7a168e6f2e00",
     "semantic_hash": ""
   },
   "e2e/utils/totp.ts": {
@@ -60,9 +60,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1792527773.2445564,
-    "seen": 1792528743.5706828,
-    "ast_hash": "b7f6257dd599bc5c4d04e28e13863b7d",
+    "mtime": 1792586013.9550586,
+    "seen": 1792592152.2308652,
+    "ast_hash": "d4ec690b6f6fa6d3fe6524137e096814",
     "semantic_hash": ""
   },
   "packages/admin/package.json": {
@@ -114,9 +114,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/content/AuditPage.tsx": {
-    "mtime": 1792530393.0052488,
-    "seen": 1792531374.0480602,
-    "ast_hash": "b043fb995ef7a20351fdca49870d85cf",
+    "mtime": 1792583611.1177757,
+    "seen": 1792592152.2308805,
+    "ast_hash": "105b0e42036e6185372de07fca325691",
     "semantic_hash": ""
   },
   "packages/admin/src/components/content/EditorPage.tsx": {
@@ -132,15 +132,15 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/content/FieldsForm.tsx": {
-    "mtime": 1792527773.2455564,
-    "seen": 1792528743.5706995,
-    "ast_hash": "b5ee31432be5778ce74492779b57b801",
+    "mtime": 1792584032.3506103,
+    "seen": 1792592152.230884,
+    "ast_hash": "434b45baf1c0c9a93746a59f48f92296",
     "semantic_hash": ""
   },
   "packages/admin/src/components/content/TransferPage.tsx": {
-    "mtime": 1792527773.2455564,
-    "seen": 1792528743.5707018,
-    "ast_hash": "63a3aadc883ffa1369ebe42585b8e642",
+    "mtime": 1792584008.1962807,
+    "seen": 1792592152.2308865,
+    "ast_hash": "93f6e346079d546578dd7feaf54a0f05",
     "semantic_hash": ""
   },
   "packages/admin/src/components/content/TranslatePanel.tsx": {
@@ -198,9 +198,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/import/ImportPage.tsx": {
-    "mtime": 1792527773.2455564,
-    "seen": 1792528743.5707164,
-    "ast_hash": "7894a0ad2ff5919530970f03380f8072",
+    "mtime": 1792584010.5622044,
+    "seen": 1792592152.2309067,
+    "ast_hash": "89156cd49a273ff6c6c32ff3bdf72986",
     "semantic_hash": ""
   },
   "packages/admin/src/components/media/MediaPage.tsx": {
@@ -228,9 +228,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/redirects/RedirectsPage.tsx": {
-    "mtime": 1792580771.064223,
-    "seen": 1792580817.537174,
-    "ast_hash": "3a306ab63273212725e485329e622725",
+    "mtime": 1792584008.1959903,
+    "seen": 1792592152.230928,
+    "ast_hash": "ae73802d9a589c664396658ce65b8aee",
     "semantic_hash": ""
   },
   "packages/admin/src/components/sections/SectionsPage.tsx": {
@@ -246,9 +246,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/settings/ThemesPage.tsx": {
-    "mtime": 1792490180.2021468,
-    "seen": 1792522351.1192353,
-    "ast_hash": "63543b56ca0c0eb678f97e8361f7e242",
+    "mtime": 1792608365.3787673,
+    "seen": 1792608384.2388847,
+    "ast_hash": "2d5e33bbd5b47f99e1e6e8277d542412",
     "semantic_hash": ""
   },
   "packages/admin/src/components/settings/WebhooksPage.tsx": {
@@ -378,9 +378,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/users/UsersPage.tsx": {
-    "mtime": 1792580771.7247148,
-    "seen": 1792580817.5372188,
-    "ast_hash": "ac35d7563d59544f0fa3b5e0aac12ec1",
+    "mtime": 1792583999.4012341,
+    "seen": 1792592152.230972,
+    "ast_hash": "494bb5843709c9fecd9a88b1bd82f978",
     "semantic_hash": ""
   },
   "packages/admin/src/components/users/types.ts": {
@@ -396,9 +396,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/lib/api.ts": {
-    "mtime": 1792527773.2475564,
-    "seen": 1792528743.5707676,
-    "ast_hash": "43a83c9c65d079fd008781b248317491",
+    "mtime": 1792591736.1487854,
+    "seen": 1792592152.2309775,
+    "ast_hash": "e426669a9beb9f51468f480fb760315b",
     "semantic_hash": ""
   },
   "packages/admin/src/lib/auth-client.ts": {
@@ -432,9 +432,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/routes/router.tsx": {
-    "mtime": 1792582240.6839447,
-    "seen": 1792582504.4816158,
-    "ast_hash": "9a18a7857fd7c029b708ff649ce13721",
+    "mtime": 1792591915.0055182,
+    "seen": 1792592152.2309885,
+    "ast_hash": "a8708dcee8c086fdc03549da71d1d85e",
     "semantic_hash": ""
   },
   "packages/admin/src/stores/comments.ts": {
@@ -594,15 +594,15 @@
     "semantic_hash": ""
   },
   "packages/auth/package.json": {
-    "mtime": 1792527773.2485564,
-    "seen": 1792528743.570817,
-    "ast_hash": "1cbfd4b47f9dd25800ede5335943129a",
+    "mtime": 1792603101.9344978,
+    "seen": 1792603539.622712,
+    "ast_hash": "9a3e89d9817b7b7e9037e4b2c06bc07b",
     "semantic_hash": ""
   },
   "packages/auth/src/config/index.ts": {
-    "mtime": 1792527773.2485564,
-    "seen": 1792528743.5708182,
-    "ast_hash": "94107e18b98b5d77368fd0448863cd3e",
+    "mtime": 1792606181.6318195,
+    "seen": 1792606890.9822736,
+    "ast_hash": "b6e88d8d4f79c212579dce62f0e2f73f",
     "semantic_hash": ""
   },
   "packages/auth/src/index.ts": {
@@ -624,9 +624,9 @@
     "semantic_hash": ""
   },
   "packages/auth/src/permissions/index.ts": {
-    "mtime": 1792488058.5958483,
-    "seen": 1792522351.1192944,
-    "ast_hash": "c6ad4f8d352aa0f35348a60851ade617",
+    "mtime": 1792583514.201357,
+    "seen": 1792592152.2310505,
+    "ast_hash": "07e74742296923fbd428565e0b31594f",
     "semantic_hash": ""
   },
   "packages/auth/tests/auth.test.ts": {
@@ -636,9 +636,9 @@
     "semantic_hash": ""
   },
   "packages/auth/tests/permissions.test.ts": {
-    "mtime": 1792488058.5964694,
-    "seen": 1792522351.1192963,
-    "ast_hash": "a250235e4c8ee3cafb44151603287060",
+    "mtime": 1792583520.2309973,
+    "seen": 1792592152.231053,
+    "ast_hash": "81647a2f56d1ed83c939847dd3c59e02",
     "semantic_hash": ""
   },
   "packages/auth/tests/two-factor.test.ts": {
@@ -672,9 +672,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/api/app.ts": {
-    "mtime": 1792575307.025754,
-    "seen": 1792576537.1018274,
-    "ast_hash": "9b8f12e93da564935536797d509db524",
+    "mtime": 1792608138.7383761,
+    "seen": 1792608384.2390342,
+    "ast_hash": "c21ad61a0436f965ab37603d7c276166",
     "semantic_hash": ""
   },
   "packages/core/src/api/errors.ts": {
@@ -684,9 +684,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/api/guards.ts": {
-    "mtime": 1792527773.2485564,
-    "seen": 1792528743.5708368,
-    "ast_hash": "e2951d7858ffedaa7a8400a407c69f59",
+    "mtime": 1792583698.1012974,
+    "seen": 1792592152.2310674,
+    "ast_hash": "3f413b540a394bfe95269a7b0c7cc0cb",
     "semantic_hash": ""
   },
   "packages/core/src/api/list.ts": {
@@ -696,9 +696,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/api/openapi.ts": {
-    "mtime": 1792527773.2485564,
-    "seen": 1792528743.5708387,
-    "ast_hash": "f3987dac17dcf460c0a7e2a16fd3461f",
+    "mtime": 1792606688.1962183,
+    "seen": 1792606890.9822984,
+    "ast_hash": "38c317b9f6f8a382f6e42f9bd613975b",
     "semantic_hash": ""
   },
   "packages/core/src/astro/admin.ts": {
@@ -708,9 +708,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/astro/integration.ts": {
-    "mtime": 1792527773.2485564,
-    "seen": 1792528743.5708408,
-    "ast_hash": "8802c07d14f3f8c1b8ff43a99f7fc401",
+    "mtime": 1792608752.44225,
+    "seen": 1792608808.2394037,
+    "ast_hash": "437ad7c60dc2d741a8607fd3bb83be88",
     "semantic_hash": ""
   },
   "packages/core/src/astro/redirect-middleware.ts": {
@@ -762,9 +762,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/audit/index.ts": {
-    "mtime": 1792488058.581333,
-    "seen": 1792522351.1193151,
-    "ast_hash": "7553f046844ea8a0534202afae92b653",
+    "mtime": 1792583608.041349,
+    "seen": 1792592152.2310858,
+    "ast_hash": "5f5a3a08ebf74d8782a3fe4765e59a20",
     "semantic_hash": ""
   },
   "packages/core/src/bylines/index.ts": {
@@ -774,9 +774,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/cli/index.ts": {
-    "mtime": 1792527773.2495563,
-    "seen": 1792528743.5708551,
-    "ast_hash": "2db51fa3dde9661ab15f6e2d3a7d0369",
+    "mtime": 1792605453.2962139,
+    "seen": 1792605586.2845669,
+    "ast_hash": "8a1087b87ea4416a066cd092246b39ca",
     "semantic_hash": ""
   },
   "packages/core/src/cli/main.ts": {
@@ -798,8 +798,8 @@
     "semantic_hash": ""
   },
   "packages/core/src/config/index.ts": {
-    "mtime": 1792527773.2495563,
-    "seen": 1792528743.5708604,
+    "mtime": 1792604226.0764956,
+    "seen": 1792605152.244441,
     "ast_hash": "a542960551a76883dde762817ee53bb3",
     "semantic_hash": ""
   },
@@ -870,9 +870,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/content/parsers/frontmatter.ts": {
-    "mtime": 1792488058.578362,
-    "seen": 1792522351.1193316,
-    "ast_hash": "1a509c5a41011696002efa6488c05b4b",
+    "mtime": 1792603296.3495746,
+    "seen": 1792603539.6227794,
+    "ast_hash": "77320848420ec6401510641c5b89534d",
     "semantic_hash": ""
   },
   "packages/core/src/content/service.ts": {
@@ -1014,9 +1014,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/security/api-tokens.ts": {
-    "mtime": 1792527773.2505565,
-    "seen": 1792528743.5709064,
-    "ast_hash": "0b195213210eff37dc09c67f8a0037d7",
+    "mtime": 1792584243.881823,
+    "seen": 1792592152.2311485,
+    "ast_hash": "b8e8deb2f110c9d7e6be02bba3cdac79",
     "semantic_hash": ""
   },
   "packages/core/src/security/redact.ts": {
@@ -1050,9 +1050,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/server.ts": {
-    "mtime": 1792527773.2505565,
-    "seen": 1792528743.5709124,
-    "ast_hash": "cd71671d1e0cb8a334c7b718014b7b31",
+    "mtime": 1792608138.7388375,
+    "seen": 1792608384.2391348,
+    "ast_hash": "01730da9c0b1d2d0870b6dcae223badd",
     "semantic_hash": ""
   },
   "packages/core/src/site/index.ts": {
@@ -1098,9 +1098,9 @@
     "semantic_hash": ""
   },
   "packages/core/tests/integration/api-app.test.ts": {
-    "mtime": 1792527773.2505565,
-    "seen": 1792528743.570921,
-    "ast_hash": "dcdef94f5724a03a3689b7ec645ae622",
+    "mtime": 1792608164.5806231,
+    "seen": 1792608384.239153,
+    "ast_hash": "c55d48c70e966f59b6c1400047d20a0c",
     "semantic_hash": ""
   },
   "packages/core/tests/integration/audit.test.ts": {
@@ -1122,9 +1122,9 @@
     "semantic_hash": ""
   },
   "packages/core/tests/integration/cli.test.ts": {
-    "mtime": 1792527773.2515564,
-    "seen": 1792528743.570927,
-    "ast_hash": "be30428687dd598496f31aecbbeb0d07",
+    "mtime": 1792604248.913064,
+    "seen": 1792605152.244523,
+    "ast_hash": "f649efb50fe41638641d9984ae19b7d9",
     "semantic_hash": ""
   },
   "packages/core/tests/integration/comments-extra.test.ts": {
@@ -1170,9 +1170,9 @@
     "semantic_hash": ""
   },
   "packages/core/tests/integration/permission-matrix.test.ts": {
-    "mtime": 1792527773.2515564,
-    "seen": 1792528743.570937,
-    "ast_hash": "62abff1a162dd3172a9662e38baf8677",
+    "mtime": 1792597185.2642965,
+    "seen": 1792597696.262239,
+    "ast_hash": "37b9cefdb7b13b449537461c1e208b32",
     "semantic_hash": ""
   },
   "packages/core/tests/integration/plugin-host.test.ts": {
@@ -1242,9 +1242,9 @@
     "semantic_hash": ""
   },
   "packages/core/tests/unit/content-parsers-frontmatter.test.ts": {
-    "mtime": 1792488058.582981,
-    "seen": 1792522351.1193895,
-    "ast_hash": "252025e4ba8b698199a493a37ed2335a",
+    "mtime": 1792603307.7981637,
+    "seen": 1792603539.622877,
+    "ast_hash": "feeedea06a957426ba09844865a187de",
     "semantic_hash": ""
   },
   "packages/core/tests/unit/content-types.test.ts": {
@@ -1356,9 +1356,9 @@
     "semantic_hash": ""
   },
   "packages/core/tsdown.config.ts": {
-    "mtime": 1792527773.2525563,
-    "seen": 1792528743.5709767,
-    "ast_hash": "88df5d7c73cfebd8b055cea724fbfd80",
+    "mtime": 1792604358.4069788,
+    "seen": 1792605152.244583,
+    "ast_hash": "fa30ca45cf2ccf79c485dca5cf31aaad",
     "semantic_hash": ""
   },
   "packages/create-wuppy/package.json": {
@@ -1374,15 +1374,15 @@
     "semantic_hash": ""
   },
   "packages/create-wuppy/src/index.ts": {
-    "mtime": 1792527773.2525563,
-    "seen": 1792528743.5709813,
-    "ast_hash": "7c882bbbda338e9153607d075eec5733",
+    "mtime": 1792602262.2795746,
+    "seen": 1792602430.3211343,
+    "ast_hash": "df516ebe5eab55f5eea640bd7b2980b9",
     "semantic_hash": ""
   },
   "packages/create-wuppy/tests/scaffold.test.ts": {
-    "mtime": 1792527773.2525563,
-    "seen": 1792528743.5709822,
-    "ast_hash": "c6c5016b36c88ab62b546636790cc3f8",
+    "mtime": 1792602250.4786835,
+    "seen": 1792602430.3211362,
+    "ast_hash": "5c7684dc959acbbbd72c0b9aacc6b874",
     "semantic_hash": ""
   },
   "packages/create-wuppy/tsconfig.json": {
@@ -1404,8 +1404,8 @@
     "semantic_hash": ""
   },
   "packages/git/src/adapters/real-git.ts": {
-    "mtime": 1792527773.2525563,
-    "seen": 1792528743.5709875,
+    "mtime": 1792604226.0760765,
+    "seen": 1792605152.2445943,
     "ast_hash": "91ddf0ba1373f3ee8c0232640069fb61",
     "semantic_hash": ""
   },
@@ -1422,8 +1422,8 @@
     "semantic_hash": ""
   },
   "packages/git/tests/integration/git-adapters-real-git.test.ts": {
-    "mtime": 1792527773.2525563,
-    "seen": 1792528743.5709908,
+    "mtime": 1792604768.1674953,
+    "seen": 1792605152.244598,
     "ast_hash": "bf8a22199d7a67ca7a757e25839078f6",
     "semantic_hash": ""
   },
@@ -1506,33 +1506,33 @@
     "semantic_hash": ""
   },
   "templates/starter/astro.config.mjs": {
-    "mtime": 1792447416.4820387,
-    "seen": 1792522351.1194289,
-    "ast_hash": "db5de3f276e6443721e0e28d3f919a36",
+    "mtime": 1792602099.581844,
+    "seen": 1792602430.3214104,
+    "ast_hash": "269dd2c3105e6205c754fd3b29ec6aef",
     "semantic_hash": ""
   },
   "templates/starter/package.json": {
-    "mtime": 1792448029.1204367,
-    "seen": 1792522351.1194296,
-    "ast_hash": "7e72d7a292fd8021329829f5f47b6679",
+    "mtime": 1792606231.1548653,
+    "seen": 1792606890.9827747,
+    "ast_hash": "ee72c4290c4a0ff48fda9962017de812",
     "semantic_hash": ""
   },
   "templates/starter/src/components/Comments.astro": {
-    "mtime": 1792486861.706555,
-    "seen": 1792522351.1194305,
-    "ast_hash": "589d3a85068c3addbe670cc37d1bdae2",
+    "mtime": 1792602143.4033453,
+    "seen": 1792602430.3214161,
+    "ast_hash": "16d690a4478eb2e3cc9ea4457bd97ce8",
     "semantic_hash": ""
   },
   "templates/starter/src/components/InlineTitle.astro": {
-    "mtime": 1792497385.7468984,
-    "seen": 1792522351.1194317,
-    "ast_hash": "d648896b7cc785bd65912efe88a4524a",
+    "mtime": 1792602143.4036067,
+    "seen": 1792602430.3214173,
+    "ast_hash": "7f4d1b39afab52dd3085ca732556020e",
     "semantic_hash": ""
   },
   "templates/starter/src/components/WidgetArea.astro": {
-    "mtime": 1792527773.2535565,
-    "seen": 1792528743.5710118,
-    "ast_hash": "f24d0e38a2948fa26b32c404757e0171",
+    "mtime": 1792601466.5202632,
+    "seen": 1792601768.9739175,
+    "ast_hash": "b5f92e981e47ac650ae3996f0767c49d",
     "semantic_hash": ""
   },
   "templates/starter/src/content.config.ts": {
@@ -1542,69 +1542,69 @@
     "semantic_hash": ""
   },
   "templates/starter/src/layouts/Base.astro": {
-    "mtime": 1792539840.933609,
-    "seen": 1792539897.1274831,
-    "ast_hash": "294079d15e8c27834f31f1799180f5dc",
+    "mtime": 1792602130.3992097,
+    "seen": 1792602430.321426,
+    "ast_hash": "c98eb4823fa67bc50f6cda0d74902104",
     "semantic_hash": ""
   },
   "templates/starter/src/pages/404.astro": {
-    "mtime": 1792527773.2535565,
-    "seen": 1792528743.571015,
-    "ast_hash": "0b77b92bca3e585f0c4c52a18495e927",
+    "mtime": 1792602143.4027352,
+    "seen": 1792602430.3214288,
+    "ast_hash": "4acb1e240d8db1dfdfb041449c6e889d",
     "semantic_hash": ""
   },
   "templates/starter/src/pages/[slug].astro": {
-    "mtime": 1792527773.2535565,
-    "seen": 1792528743.5710156,
-    "ast_hash": "3fb693e6866878d9e39c1f73cf95e922",
+    "mtime": 1792601479.9740975,
+    "seen": 1792601768.9739223,
+    "ast_hash": "4ff7b912b94a3d7b88c06444a0b2df94",
     "semantic_hash": ""
   },
   "templates/starter/src/pages/authors/[slug].astro": {
-    "mtime": 1792527773.2545564,
-    "seen": 1792528743.5710168,
-    "ast_hash": "b9ad59a55a14b8df35bb8fd46c90a0bf",
+    "mtime": 1792601491.1788256,
+    "seen": 1792601768.9739237,
+    "ast_hash": "45fe5dc0c420e30df5e23d14a3acb0d9",
     "semantic_hash": ""
   },
   "templates/starter/src/pages/categories/[slug].astro": {
-    "mtime": 1792527773.2545564,
-    "seen": 1792528743.571018,
-    "ast_hash": "e7c3d926ab62d62503ea82909fb46134",
+    "mtime": 1792601491.1786249,
+    "seen": 1792601768.9739249,
+    "ast_hash": "4e6813837df6f4a642e6bb872ad661b8",
     "semantic_hash": ""
   },
   "templates/starter/src/pages/index.astro": {
-    "mtime": 1792527773.2545564,
-    "seen": 1792528743.571019,
-    "ast_hash": "c1f3e3d875a1d41aae35689ddb1f74f8",
+    "mtime": 1792602143.4029288,
+    "seen": 1792602430.3214343,
+    "ast_hash": "68dfb107e8a7b4735428c94514b0dce6",
     "semantic_hash": ""
   },
   "templates/starter/src/pages/posts/[...slug].astro": {
-    "mtime": 1792527773.2545564,
-    "seen": 1792528743.5710201,
-    "ast_hash": "09917b68768517a0d036709b26e7f107",
+    "mtime": 1792601479.9742484,
+    "seen": 1792601768.9739273,
+    "ast_hash": "342a23e75ebd59c26d63e4b3281591f8",
     "semantic_hash": ""
   },
   "templates/starter/src/pages/posts/[slug].astro": {
-    "mtime": 1792527773.2545564,
-    "seen": 1792528743.571021,
-    "ast_hash": "988a3b7ceea53ac7f000937b2cf2fb34",
+    "mtime": 1792601479.9744263,
+    "seen": 1792601768.9739285,
+    "ast_hash": "2e79820f5aed87de046d3f929fef928f",
     "semantic_hash": ""
   },
   "templates/starter/src/pages/search.astro": {
-    "mtime": 1792517176.1904879,
-    "seen": 1792522351.1194417,
-    "ast_hash": "a49a5602e7ea207eb629ae3fbedf3b8f",
+    "mtime": 1792601452.6528654,
+    "seen": 1792601768.9739296,
+    "ast_hash": "db3dea2d7b1483a2362abea2a1cce4a9",
     "semantic_hash": ""
   },
   "templates/starter/src/pages/tags/[slug].astro": {
-    "mtime": 1792527773.2545564,
-    "seen": 1792528743.5710235,
-    "ast_hash": "ba024dbcf9c1440693891b99f480cfc1",
+    "mtime": 1792601491.1787286,
+    "seen": 1792601768.9739308,
+    "ast_hash": "fb9f4c081ac088a025d6ed1dc502f1d4",
     "semantic_hash": ""
   },
   "templates/starter/tsconfig.json": {
-    "mtime": 1792447416.4830675,
-    "seen": 1792522351.1194434,
-    "ast_hash": "9ae5fee979e8534fc19ee9e67d8ed2ab",
+    "mtime": 1792602099.5828662,
+    "seen": 1792602430.321454,
+    "ast_hash": "fae19ac845d3068421fb5469593ec1c8",
     "semantic_hash": ""
   },
   "templates/starter/wuppy.config.mjs": {
@@ -1842,15 +1842,15 @@
     "semantic_hash": ""
   },
   ".opencode/KARARLAR.md": {
-    "mtime": 1792527773.2263672,
-    "seen": 1792528743.5711012,
-    "ast_hash": "539ca7337cfcf2ace27f5f439356cac3",
+    "mtime": 1792608287.2966466,
+    "seen": 1792608384.2396555,
+    "ast_hash": "ea190d11251f7b1c2f2330871493c311",
     "semantic_hash": ""
   },
   ".opencode/PROJE-YAPISI.md": {
-    "mtime": 1792499185.5715218,
-    "seen": 1792522351.119482,
-    "ast_hash": "7bd3228933e806b50a817215d8b023d1",
+    "mtime": 1792599636.1038265,
+    "seen": 1792601768.9740279,
+    "ast_hash": "b96e14281dcd98b3dbba4d6023fb4e5b",
     "semantic_hash": ""
   },
   ".opencode/emdashcms-wuppy.md": {
@@ -2052,15 +2052,15 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1792483336.8673458,
-    "seen": 1792522351.1195166,
-    "ast_hash": "980dddd7beaabaaea050165c6cfb6f3f",
+    "mtime": 1792602419.7193723,
+    "seen": 1792602430.3215556,
+    "ast_hash": "56ea7802a83c152af27b18fb7ce42e9e",
     "semantic_hash": ""
   },
   "CONSTRAINTS.md": {
-    "mtime": 1792527773.2263672,
-    "seen": 1792528743.571148,
-    "ast_hash": "0d51783f0276dfee9c1a9d3ba3bb8dbc",
+    "mtime": 1792602419.7193465,
+    "seen": 1792602430.3215568,
+    "ast_hash": "fa5cff1121ff3992f5f974ed9f22cd6f",
     "semantic_hash": ""
   },
   "README.md": {
@@ -2088,9 +2088,9 @@
     "semantic_hash": ""
   },
   "pnpm-workspace.yaml": {
-    "mtime": 1792527773.2535565,
-    "seen": 1792528743.5711572,
-    "ast_hash": "62c2cd525e8fe6a85d9401059d231eb4",
+    "mtime": 1792602038.013725,
+    "seen": 1792602430.321643,
+    "ast_hash": "25a9dc9347d6f086549d8ff1450eaa6e",
     "semantic_hash": ""
   },
   "templates/starter/content/pages/about.md": {
@@ -2106,15 +2106,15 @@
     "semantic_hash": ""
   },
   "yap\u0131lacaklar.md": {
-    "mtime": 1792582492.336053,
-    "seen": 1792582504.482307,
-    "ast_hash": "5192f0478e314d86dcf879f46a63c44a",
+    "mtime": 1792608287.2958183,
+    "seen": 1792608384.2398858,
+    "ast_hash": "fb5533c1bdb2a4211857164ed3fc1a3f",
     "semantic_hash": ""
   },
   "packages/admin/public/icons.svg": {
-    "mtime": 1792582319.7679455,
-    "seen": 1792582504.4823093,
-    "ast_hash": "6a705049eacd56e65dc078263eef0db9",
+    "mtime": 1792608367.2328846,
+    "seen": 1792608384.2398875,
+    "ast_hash": "11102e52c5d9006b9cb499991fdc8386",
     "semantic_hash": ""
   },
   ".changeset/config.json": {
@@ -2136,15 +2136,15 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/content/SeoPreview.tsx": {
-    "mtime": 1792527773.2455564,
-    "seen": 1792528743.570701,
-    "ast_hash": "a00a22336b101da19257a40ac103e517",
+    "mtime": 1792584032.3507514,
+    "seen": 1792592152.2308853,
+    "ast_hash": "ad7b5a150d4ea8dbe4c6d1746802af12",
     "semantic_hash": ""
   },
   "packages/admin/src/components/editor/EditorToolbar.tsx": {
-    "mtime": 1792527773.2455564,
-    "seen": 1792528743.5707095,
-    "ast_hash": "b51ce2fff953fbe474bb2f31dc5ad747",
+    "mtime": 1792584032.3504434,
+    "seen": 1792592152.2308981,
+    "ast_hash": "b48b42bf994ba1a26994bf89bd2dbd75",
     "semantic_hash": ""
   },
   "packages/admin/src/components/editor/snippets.ts": {
@@ -2160,9 +2160,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/media/MediaPicker.tsx": {
-    "mtime": 1792527773.2455564,
-    "seen": 1792528743.570724,
-    "ast_hash": "8a98ebc6c045add94af804726f39f2e3",
+    "mtime": 1792584245.127824,
+    "seen": 1792592152.2309148,
+    "ast_hash": "c13affff6fe6a58c609fc82f34ba0ef4",
     "semantic_hash": ""
   },
   "packages/admin/src/components/media/UploadQueue.tsx": {
@@ -2196,9 +2196,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/lib/upload.ts": {
-    "mtime": 1792527773.2475564,
-    "seen": 1792528743.5707746,
-    "ast_hash": "828f47948192412d53fa725de92b66e8",
+    "mtime": 1792584008.1971483,
+    "seen": 1792592152.2309852,
+    "ast_hash": "36dacfc84ea6a6afc866dca106e72552",
     "semantic_hash": ""
   },
   "packages/admin/tests/calendar.test.tsx": {
@@ -2262,9 +2262,9 @@
     "semantic_hash": ""
   },
   "packages/auth/types/index.d.ts": {
-    "mtime": 1792527773.2485564,
-    "seen": 1792528743.570831,
-    "ast_hash": "710582e0f629162f06bdb92861dbaf66",
+    "mtime": 1792583608.0407372,
+    "seen": 1792592152.2310603,
+    "ast_hash": "c3439977e83fd1955be58b598cb1ea8b",
     "semantic_hash": ""
   },
   "packages/core/src/astro/page-cache-middleware.ts": {
@@ -2274,9 +2274,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/astro/page-cache.ts": {
-    "mtime": 1792527773.2485564,
-    "seen": 1792528743.570843,
-    "ast_hash": "072a9bea5640b9f80845f1f3d8f776dd",
+    "mtime": 1792604721.6977746,
+    "seen": 1792605152.2444203,
+    "ast_hash": "6324de0bacf4d9fcbe84c1140cc3ab2d",
     "semantic_hash": ""
   },
   "packages/core/src/cli/upgrade.ts": {
@@ -2298,9 +2298,9 @@
     "semantic_hash": ""
   },
   "packages/core/tests/integration/api-tokens.test.ts": {
-    "mtime": 1792527773.2505565,
-    "seen": 1792528743.5709221,
-    "ast_hash": "d7c19a648cfff65d1a08fe2d7a97e81f",
+    "mtime": 1792583834.1211865,
+    "seen": 1792592152.2311723,
+    "ast_hash": "ddc035ea741b6ec13c0aa45409df040c",
     "semantic_hash": ""
   },
   "packages/core/tests/integration/page-cache.test.ts": {
@@ -2346,9 +2346,9 @@
     "semantic_hash": ""
   },
   "scripts/verify-pack.mjs": {
-    "mtime": 1792527773.2535565,
-    "seen": 1792528743.5710063,
-    "ast_hash": "975e15f2e4467c11cc86fb85b4694e1c",
+    "mtime": 1792586007.9584181,
+    "seen": 1792592152.2312782,
+    "ast_hash": "a4ea9956a1e6a5a4310c2e69273e9ce6",
     "semantic_hash": ""
   },
   ".changeset/README.md": {
@@ -2370,21 +2370,15 @@
     "semantic_hash": ""
   },
   "docker-compose.yml": {
-    "mtime": 1792527773.2263672,
-    "seen": 1792528743.5711524,
-    "ast_hash": "6e4a95559366f10959b24302ac9cf97b",
+    "mtime": 1792587076.3879683,
+    "seen": 1792592152.2314134,
+    "ast_hash": "819a5eb7cf3c7cb64d981f3128cb70ed",
     "semantic_hash": ""
   },
   "docs/src/content/docs/deployment/docker.md": {
-    "mtime": 1792527773.2263672,
-    "seen": 1792528743.5711536,
-    "ast_hash": "b58103e195254cfbf0bc0b64f73edc34",
-    "semantic_hash": ""
-  },
-  "docs/src/content/docs/guides/upgrading.md": {
-    "mtime": 1792527773.2263672,
-    "seen": 1792528743.5711546,
-    "ast_hash": "32a1db544e818b70b885ca55f94ca240",
+    "mtime": 1792606757.7474346,
+    "seen": 1792606890.9829504,
+    "ast_hash": "758852bf864f63c134743ff93b9c2270",
     "semantic_hash": ""
   },
   "packages/admin/src/components/media/FocalPoint.tsx": {
@@ -2400,9 +2394,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/media/MediaDetailDialog.tsx": {
-    "mtime": 1792541691.808319,
-    "seen": 1792542125.9120052,
-    "ast_hash": "42dadf06f59cdfe1e1a01ec5f44b0d49",
+    "mtime": 1792584245.042824,
+    "seen": 1792592152.2309122,
+    "ast_hash": "f5a151f53e3dbc3af94f978487b874e6",
     "semantic_hash": ""
   },
   "packages/admin/src/components/media/UploadDialog.tsx": {
@@ -2490,9 +2484,9 @@
     "semantic_hash": ""
   },
   "packages/admin/tests/redirects.test.tsx": {
-    "mtime": 1792580021.021701,
-    "seen": 1792580763.513394,
-    "ast_hash": "6dae6999ee847d7562c0a42b54419530",
+    "mtime": 1792584246.065825,
+    "seen": 1792592152.2310195,
+    "ast_hash": "8778ad1382bf286b94b8587db2bdbb75",
     "semantic_hash": ""
   },
   "packages/admin/tests/resources.test.tsx": {
@@ -2508,9 +2502,4389 @@
     "semantic_hash": ""
   },
   "wuppy-multiple-managed-sites.md": {
-    "mtime": 1792581314.2034476,
-    "seen": 1792581591.1821086,
-    "ast_hash": "1390a9b098144517c11e9136200e5863",
+    "mtime": 1792584721.3719726,
+    "seen": 1792592152.231425,
+    "ast_hash": "2f8102857df548f317e7496236cbd47c",
+    "semantic_hash": ""
+  },
+  "e2e/tests-dev/managed-sites.spec.ts": {
+    "mtime": 1792585791.476466,
+    "seen": 1792592152.2308557,
+    "ast_hash": "647f5df49e6614c17c8d187660238dac",
+    "semantic_hash": ""
+  },
+  "packages/admin/src/components/assistant/AssistantPage.tsx": {
+    "mtime": 1792598303.2525818,
+    "seen": 1792598599.6525729,
+    "ast_hash": "8ef219a01326465ee734213c8524ba98",
+    "semantic_hash": ""
+  },
+  "packages/admin/src/components/sites/ContextNote.tsx": {
+    "mtime": 1792591838.8248286,
+    "seen": 1792592152.2309427,
+    "ast_hash": "4b1e0af33bb255566367a744504d27c3",
+    "semantic_hash": ""
+  },
+  "packages/admin/src/components/sites/SiteMembers.tsx": {
+    "mtime": 1792585718.529157,
+    "seen": 1792592152.230944,
+    "ast_hash": "4c7c76c1261296fa2c6fb2ce2f45efd9",
+    "semantic_hash": ""
+  },
+  "packages/admin/src/components/sites/SiteSwitcher.tsx": {
+    "mtime": 1792584078.5066724,
+    "seen": 1792592152.230945,
+    "ast_hash": "22674dea83c3f51d7fc32f6a4751a72c",
+    "semantic_hash": ""
+  },
+  "packages/admin/src/components/sites/SitesPage.tsx": {
+    "mtime": 1792597263.2765882,
+    "seen": 1792597696.2619834,
+    "ast_hash": "e58b825f4d5caad65f47da220fe598d1",
+    "semantic_hash": ""
+  },
+  "packages/admin/src/stores/sites.ts": {
+    "mtime": 1792584062.9054687,
+    "seen": 1792592152.2309988,
+    "ast_hash": "84a47d3273816ff6ef82bcdfdef0ecc5",
+    "semantic_hash": ""
+  },
+  "packages/admin/tests/sites.test.ts": {
+    "mtime": 1792584246.115825,
+    "seen": 1792592152.2310274,
+    "ast_hash": "183726bd1acc0d54f6737c1de04852ba",
+    "semantic_hash": ""
+  },
+  "packages/core/src/ai/chat.ts": {
+    "mtime": 1792597448.7422638,
+    "seen": 1792597696.2621186,
+    "ast_hash": "5dd663ecb7922cffb08163551c68978b",
+    "semantic_hash": ""
+  },
+  "packages/core/src/mcp/server.ts": {
+    "mtime": 1792591662.5077507,
+    "seen": 1792592152.2311327,
+    "ast_hash": "9812b9c24aea45eefef5e94d630dd64a",
+    "semantic_hash": ""
+  },
+  "packages/core/src/mcp/tools.ts": {
+    "mtime": 1792597118.323827,
+    "seen": 1792597696.2621825,
+    "ast_hash": "07deceeff19b67121493e3833a674100",
+    "semantic_hash": ""
+  },
+  "packages/core/src/security/secret-box.ts": {
+    "mtime": 1792584243.905823,
+    "seen": 1792592152.231152,
+    "ast_hash": "785c17c0936abe2c4569740058f40e5b",
+    "semantic_hash": ""
+  },
+  "packages/core/src/sites/connect.ts": {
+    "mtime": 1792584243.7998228,
+    "seen": 1792592152.2311592,
+    "ast_hash": "d1acd0c50c1b8ae4449ed45a5b0828e7",
+    "semantic_hash": ""
+  },
+  "packages/core/src/sites/proxy.ts": {
+    "mtime": 1792591923.5204844,
+    "seen": 1792592152.2311604,
+    "ast_hash": "f58da5cb730ac66974b21c84ec547e72",
+    "semantic_hash": ""
+  },
+  "packages/core/src/sites/store.ts": {
+    "mtime": 1792597045.7210784,
+    "seen": 1792597696.2622108,
+    "ast_hash": "f5aafc91472dc8940a7cb43b13b8337a",
+    "semantic_hash": ""
+  },
+  "packages/core/tests/integration/ai-agency.test.ts": {
+    "mtime": 1792597365.7084985,
+    "seen": 1792597696.2622194,
+    "ast_hash": "b407141c7a30cc83939573f73b3e75b2",
+    "semantic_hash": ""
+  },
+  "packages/core/tests/integration/managed-sites.test.ts": {
+    "mtime": 1792584683.264723,
+    "seen": 1792592152.2311847,
+    "ast_hash": "38a5d97e746f65257d9ebaa0b4a0e0bf",
+    "semantic_hash": ""
+  },
+  "packages/core/tests/unit/secret-box.test.ts": {
+    "mtime": 1792583545.8021832,
+    "seen": 1792592152.2312353,
+    "ast_hash": "137a378318d3a76bbee085b121738f06",
+    "semantic_hash": ""
+  },
+  "scripts/seed-sites.mjs": {
+    "mtime": 1792586007.9464183,
+    "seen": 1792592152.2312768,
+    "ast_hash": "6a6d57b905849ab3c16dbdcdddfae742",
+    "semantic_hash": ""
+  },
+  ".changeset/ai-agency-assistant.md": {
+    "mtime": 1792592135.0028305,
+    "seen": 1792592152.2313042,
+    "ast_hash": "2e79db6c0501ccb61f33bfc46cc592af",
+    "semantic_hash": ""
+  },
+  "wuppy-ai-agency.md": {
+    "mtime": 1792597490.6119466,
+    "seen": 1792597696.2624593,
+    "ast_hash": "7cb29fce1aff2b43b5f817974dec77a3",
+    "semantic_hash": ""
+  },
+  "packages/admin/src/components/sites/SiteCare.tsx": {
+    "mtime": 1792597343.4885054,
+    "seen": 1792597696.261975,
+    "ast_hash": "8b60827bf2ec9c02427b6db0ace44941",
+    "semantic_hash": ""
+  },
+  "packages/core/src/ai/history.ts": {
+    "mtime": 1792596973.3066583,
+    "seen": 1792597696.26212,
+    "ast_hash": "3f9b6a8284e575bf00b771737e27c24a",
+    "semantic_hash": ""
+  },
+  "packages/core/src/sites/care.ts": {
+    "mtime": 1792597365.3924985,
+    "seen": 1792597696.2622068,
+    "ast_hash": "040ea7b976597836414c1989278cbfc4",
+    "semantic_hash": ""
+  },
+  ".changeset/ai-site-care.md": {
+    "mtime": 1792597513.6614444,
+    "seen": 1792597696.2623477,
+    "ast_hash": "684e4ccfcb54ca4751f1d038b004f8fc",
+    "semantic_hash": ""
+  },
+  "docs/astro.config.mjs": {
+    "mtime": 1792599341.9222782,
+    "seen": 1792601768.9732566,
+    "ast_hash": "5af678075ecbc8ea25555fdeaf183646",
+    "semantic_hash": ""
+  },
+  "docs/package.json": {
+    "mtime": 1792599132.2515223,
+    "seen": 1792601768.973259,
+    "ast_hash": "e1367bbcb5953b0ae95e0dcedbadcdcf",
+    "semantic_hash": ""
+  },
+  "docs/scripts/check-locales.mjs": {
+    "mtime": 1792599543.2593563,
+    "seen": 1792601768.9732609,
+    "ast_hash": "b5c834bce668709047d1438fe43e5a4d",
+    "semantic_hash": ""
+  },
+  "docs/src/content.config.ts": {
+    "mtime": 1792599132.2542915,
+    "seen": 1792601768.9732623,
+    "ast_hash": "8f04e25da7cdad64264e817120a3fe32",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/.vscode/extensions.json": {
+    "mtime": 1792418940.0,
+    "seen": 1792601768.9736989,
+    "ast_hash": "3adedb22d082dbd1ebb00b75d21403aa",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/.vscode/launch.json": {
+    "mtime": 1792418940.0,
+    "seen": 1792601768.9737,
+    "ast_hash": "60493763dcbc2d109e57da86d997602a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/astro.config.mjs": {
+    "mtime": 1787170027.4165735,
+    "seen": 1792601768.9737015,
+    "ast_hash": "07b7c0a50ae9bb435eb90add9dc3b25b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/components.json": {
+    "mtime": 1786964273.5779748,
+    "seen": 1792601768.9737022,
+    "ast_hash": "0b0ff035d19850bf1913c642ff51aaf8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/package.json": {
+    "mtime": 1792422814.9922588,
+    "seen": 1792601768.9737031,
+    "ast_hash": "9d3d8a783663b34964619eb87092c3a9",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/scripts/motion-init.js": {
+    "mtime": 1792429218.5238183,
+    "seen": 1792601768.973704,
+    "ast_hash": "2d0457a6fdd21d2f5a312b900684c629",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/scripts/navigation-menu-init.js": {
+    "mtime": 1792429218.5408185,
+    "seen": 1792601768.9737055,
+    "ast_hash": "20b7e7fbe86634292d7245658bc46cbf",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/scripts/build-entries.mjs": {
+    "mtime": 1787102768.2813692,
+    "seen": 1792601768.9737065,
+    "ast_hash": "c84837ddc797b5e4645b0f11ce6627ec",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/scripts/convert-png-to-webp.mjs": {
+    "mtime": 1787041042.0330534,
+    "seen": 1792601768.9737074,
+    "ast_hash": "899c2d9e39b22d6595f60ecd4cebfdda",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/scripts/finalize-sitemap.mjs": {
+    "mtime": 1787141353.9387531,
+    "seen": 1792601768.9737086,
+    "ast_hash": "9187360c085c19b60dd6dc0ba7ceacfe",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/scripts/optimize-all-images.mjs": {
+    "mtime": 1787094531.9254823,
+    "seen": 1792601768.9737096,
+    "ast_hash": "1ee34b3d7f5d8dfe0f9eb4f50dbbcc68",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/BlogCard.astro": {
+    "mtime": 1787142125.3691638,
+    "seen": 1792601768.9737105,
+    "ast_hash": "dbb3b74793f3b4c89500c302a94e714c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/Brand.astro": {
+    "mtime": 1787145229.4409263,
+    "seen": 1792601768.9737122,
+    "ast_hash": "6094907b70cf644419b91798cfb67d31",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/CarBrandsMarquee.astro": {
+    "mtime": 1787249294.7013767,
+    "seen": 1792601768.9737134,
+    "ast_hash": "f4f2a90d2bea7c8fbc592cb8d3acf719",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/CourierDetail.astro": {
+    "mtime": 1787155017.1938794,
+    "seen": 1792601768.9737144,
+    "ast_hash": "903aa42706f698c1ae6785497b822506",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/CtaBanner.astro": {
+    "mtime": 1787159600.208574,
+    "seen": 1792601768.9737155,
+    "ast_hash": "5e5c5bdf4a3c19e6f3ab670604b448d8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/FloatingWhatsApp.astro": {
+    "mtime": 1787142125.3681638,
+    "seen": 1792601768.9737163,
+    "ast_hash": "6ccd6e541dc6eceee88eb464c8151c91",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/InteractiveTseProcess.astro": {
+    "mtime": 1787037404.3431334,
+    "seen": 1792601768.9737175,
+    "ast_hash": "34937470ae646a97bb57623a12401b55",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/InteractiveVehicleBlueprint.astro": {
+    "mtime": 1787142167.902205,
+    "seen": 1792601768.973719,
+    "ast_hash": "5ddc576a7e30b4a52c0ee5f36d9d305e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/InternalHero.astro": {
+    "mtime": 1787141948.0306525,
+    "seen": 1792601768.97372,
+    "ast_hash": "9925b24f3a865ff5f2debf60eb801a1c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/PolicyPage.astro": {
+    "mtime": 1786964624.2171853,
+    "seen": 1792601768.973721,
+    "ast_hash": "2b62b53bb9a3344ae2389d3b661873de",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/PostDetail.astro": {
+    "mtime": 1787142134.1661723,
+    "seen": 1792601768.9737222,
+    "ast_hash": "bfed5a1563ffeec2cd0cdd44988bb6a7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/ProjectForm.astro": {
+    "mtime": 1787079408.0050316,
+    "seen": 1792601768.9737232,
+    "ast_hash": "c9f62272bca4e5786189ea44976313be",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/ServiceArticleDetail.astro": {
+    "mtime": 1792423275.2085612,
+    "seen": 1792601768.9737241,
+    "ast_hash": "101dc6e5aa6dd32fbf0d7686cf4bba42",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/ServiceCard.astro": {
+    "mtime": 1787247555.252655,
+    "seen": 1792601768.973725,
+    "ast_hash": "0779bb3e044632c59bfd796bc9351ec4",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/ServiceCarousel.astro": {
+    "mtime": 1787145214.539037,
+    "seen": 1792601768.9737263,
+    "ast_hash": "17818458cfbd511d4ad1dabdbed3376e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/ServiceDetail.astro": {
+    "mtime": 1787142125.3701637,
+    "seen": 1792601768.9737272,
+    "ast_hash": "b582f0ab2e940cc5ae533a18d57ed88c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/ServiceHubLanding.astro": {
+    "mtime": 1787245030.8410847,
+    "seen": 1792601768.9737282,
+    "ast_hash": "8a516f4baded362f9b2cff024d74d73f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/SiteFooter.astro": {
+    "mtime": 1787250322.4991236,
+    "seen": 1792601768.9737294,
+    "ast_hash": "b52a6fb7412d62a7b57c4b72f0dc505e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/SiteHeader.astro": {
+    "mtime": 1792429207.9977436,
+    "seen": 1792601768.9737303,
+    "ast_hash": "60d72e41ed1330bfba30776a923b26c8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/SiteImage.astro": {
+    "mtime": 1787145363.0040176,
+    "seen": 1792601768.9737313,
+    "ast_hash": "7dc0f1a82b9ce72a3c35b6ea28fa7998",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/TseProcessInfographic.astro": {
+    "mtime": 1787142219.1522563,
+    "seen": 1792601768.9737322,
+    "ast_hash": "b3947166e6266c116a20a8ab33194a7c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/WhyChooseUs.astro": {
+    "mtime": 1787142134.1671722,
+    "seen": 1792601768.9737334,
+    "ast_hash": "57226dd07d72cdb3a5354cc3245d694e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/services/ConfiguredProjectService.astro": {
+    "mtime": 1792429185.087477,
+    "seen": 1792601768.9737344,
+    "ast_hash": "7859de92bae22d8c79f1dd76a89bf38a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/components/services/MotorChangeService.astro": {
+    "mtime": 1787142156.3741937,
+    "seen": 1792601768.9737353,
+    "ast_hash": "d77dd67f96fc303ce3c1e8f9745efc09",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content.config.ts": {
+    "mtime": 1786987609.4399588,
+    "seen": 1792601768.9737365,
+    "ast_hash": "110105fabe2a321a8ec90efbaec492df",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/acikinca-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.9800432,
+    "seen": 1792601768.9737375,
+    "ast_hash": "2d9146e763c469055fb9356e93849486",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/bi-sey-kurye-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737387,
+    "ast_hash": "76d1559a6efaeec0954f47716d338f83",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/dominos-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737399,
+    "ast_hash": "80a7b8b32eb21a8264cbc38a9126fb85",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/doyurunbeni-com-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737408,
+    "ast_hash": "5dbf2df8794034daf38670168be89ed9",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/getir-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.9790032,
+    "seen": 1792601768.973742,
+    "ast_hash": "d51b7cc8950af077489a12ed1c45858c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/hizir-paket-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737432,
+    "ast_hash": "704f28ed4c9a064e3a75d459b55fdb8b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/jetbee-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737442,
+    "ast_hash": "4053019b4373f70aa66e9ed73422b195",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/migros-kurye-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.973745,
+    "ast_hash": "3632512d0a90e6204c08873566bbc86c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/moto-kurye-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737465,
+    "ast_hash": "88e9354bc8a29c6d4527d7078a6bd6eb",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/paket-servis-motosiklet-canta-tasima-kutusu-ruhsata-isletme-rehberi.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737475,
+    "ast_hash": "b5cdb77c1aecfd798ff6b81f67897488",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/paket-taxi-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737484,
+    "ast_hash": "668b6340adac9fdbbab26a64d5323a49",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/rezzta-motosiklet-canta-tasima-kutusu-ruhsata-isletme-rehberi.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737499,
+    "ast_hash": "d4f796afe90155d40cb93d3bf8c8b9d6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/tikla-gelsin-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.9795234,
+    "seen": 1792601768.9737508,
+    "ast_hash": "041fc3b9029726c0695785172c3b726c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/trendyol-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.9793296,
+    "seen": 1792601768.973752,
+    "ast_hash": "f2226234119f9e02eb67d063d4c66d6e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/uber-eats-motosiklet-canta-tasima-kutusu-ruhsata-isletme-rehberi.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737535,
+    "ast_hash": "5f2a82317e4e5b88c8e32be434e486eb",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/vigo-motosiklet-canta-tasima-kutusu-ruhsata-isletme-rehberi.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737544,
+    "ast_hash": "665a0ffcd37581b744602d49056a0252",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/yemek-sepeti-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.9793296,
+    "seen": 1792601768.9737556,
+    "ast_hash": "8dd55a303ba9cdbf40e59262af158dc5",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/yemekumbara-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.980288,
+    "seen": 1792601768.9737568,
+    "ast_hash": "3532469aa5878e9b552f729834f4c04d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/yettim-motosiklet-canta-tasima-kutusu-ruhsata-isletme.json": {
+    "mtime": 1786989658.9801757,
+    "seen": 1792601768.973758,
+    "ast_hash": "76bbc4f64f3060fcb8171269a4772f7c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/couriers/zomato-motosiklet-canta-tasima-kutusu-ruhsata-isletme-rehberi.json": {
+    "mtime": 1786989658.9799547,
+    "seen": 1792601768.9737592,
+    "ast_hash": "66577dfebc47bb48a338a5273326089e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/acik-kasa-projesi.json": {
+    "mtime": 1787243302.045299,
+    "seen": 1792601768.9737604,
+    "ast_hash": "6383baaabf9894b423644b594a038de4",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/arac-hurda-belgesi-islemleri.json": {
+    "mtime": 1787243295.8021731,
+    "seen": 1792601768.9737613,
+    "ast_hash": "7df0238ac23c10b8430d5bf9d294cc76",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/arac-tescil-ve-ruhsat-islemleri.json": {
+    "mtime": 1787243308.8234346,
+    "seen": 1792601768.9737625,
+    "ast_hash": "b1e779a083204f32d4f76939edcbe50a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/brandali-sac-kasa-projesi-tse-onayli.json": {
+    "mtime": 1787243318.1396189,
+    "seen": 1792601768.9737635,
+    "ast_hash": "e26b1aa92411d00302ebc3de80116ab1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/ce-belgesi-islemleri.json": {
+    "mtime": 1787243286.6349862,
+    "seen": 1792601768.9737647,
+    "ast_hash": "c656c5bf05a28ca16de0875bda364f64",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/engelli-aparati-montaj-projesi.json": {
+    "mtime": 1787248470.8671474,
+    "seen": 1792601768.9737656,
+    "ast_hash": "d0a1f64d51b0f52f880514934d624444",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/engelli-debriyaj-aparati-hizmeti.json": {
+    "mtime": 1787248889.200276,
+    "seen": 1792601768.9737668,
+    "ast_hash": "a2b04967bbea33c2ec003842e17bdc4b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/engelli-gaz-fren-aparati-hizmeti.json": {
+    "mtime": 1787248889.200276,
+    "seen": 1792601768.973768,
+    "ast_hash": "6335b75c2b28a337f5d6abd1d90c364c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/engelli-gaz-pedali-yer-degisikligi-aparati-hizmeti.json": {
+    "mtime": 1787248889.200276,
+    "seen": 1792601768.9737694,
+    "ast_hash": "50a526b11709b538e4fa3e9000084a39",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/engelli-pedal-yukseltme-aparati-hizmeti.json": {
+    "mtime": 1787248889.200276,
+    "seen": 1792601768.9737704,
+    "ast_hash": "10ab92a5442d08b94d9b14c737eac9d2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/engelli-sag-el-vites-degistirme-aparati-hizmeti.json": {
+    "mtime": 1787248889.2012758,
+    "seen": 1792601768.9737718,
+    "ast_hash": "3859fd202e547549d52a9bd8845b603c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/engelli-sag-kol-vites-degistirme-aparati-hizmeti.json": {
+    "mtime": 1787248889.2012758,
+    "seen": 1792601768.973773,
+    "ast_hash": "a286597b80d4b52ee0d5ccdf47c6e2dd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/engelli-sagdan-direksiyon-alti-gaz-fren-aparati-hizmeti.json": {
+    "mtime": 1787248889.2012758,
+    "seen": 1792601768.9737742,
+    "ast_hash": "37c22bcb7fc22292dca5843fbe585607",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/engelli-soldan-direksiyon-alti-gaz-fren-aparati-hizmeti.json": {
+    "mtime": 1787248889.2012758,
+    "seen": 1792601768.9737763,
+    "ast_hash": "0c9fbf232dc321d1421e2938e87f2d4b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/engelli-soldan-vites-kolu-aparati-hizmeti.json": {
+    "mtime": 1787248889.2012758,
+    "seen": 1792601768.9737782,
+    "ast_hash": "fe053246d53c1ba375a7092f4d1928bd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/engelli-yerden-gaz-fren-aparati-hizmeti.json": {
+    "mtime": 1787248889.202276,
+    "seen": 1792601768.97378,
+    "ast_hash": "c16e577828ae5471dc0d4331772fa98c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/fiat-doblo-kamyonetten-otomobile-cevirme.json": {
+    "mtime": 1787243290.4240637,
+    "seen": 1792601768.9737818,
+    "ast_hash": "af29de3ea155d65dfcc40b9fb674f0a8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/fiat-fiorino-kamyonetten-otomobile-cevirme.json": {
+    "mtime": 1787243310.7194722,
+    "seen": 1792601768.973783,
+    "ast_hash": "e604db9aca641565568da855fe6a8dcf",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/ford-courier-kamyonetten-otomobile-cevirme.json": {
+    "mtime": 1787243328.7538257,
+    "seen": 1792601768.973784,
+    "ast_hash": "79094f564d06c768b02c80f30a5edf74",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/frigorifik-projesi-tse-onayli.json": {
+    "mtime": 1787243332.3888958,
+    "seen": 1792601768.9737854,
+    "ast_hash": "34521d5df38c8363a01f3bfb6f5f89b8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/hizmet-yeri-yeterlilik-belgesi-hizmeti.json": {
+    "mtime": 1787243302.893316,
+    "seen": 1792601768.9737864,
+    "ast_hash": "f88e2685eeff5abcd5c4f76518e67f57",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/ikinci-asama-imalatci-yetkisi-islemleri.json": {
+    "mtime": 1787331838.0590966,
+    "seen": 1792601768.9737875,
+    "ast_hash": "a1fd7fe04e27ce8dad5dfa3d201a30fb",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/imalat-yeterlilik-belgesi-hizmeti.json": {
+    "mtime": 1787243402.8271883,
+    "seen": 1792601768.9737887,
+    "ast_hash": "950e7395c7b90aa8a8d3f6197e08092d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/is-makineleri-tescil-islemleri.json": {
+    "mtime": 1787243414.2443864,
+    "seen": 1792601768.97379,
+    "ast_hash": "14210d3671fce4e325df2977204352aa",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/is-makinesi-uygunluk-belgesi-duzenleme-islemleri.json": {
+    "mtime": 1787243428.391628,
+    "seen": 1792601768.973791,
+    "ast_hash": "e573d7ad601394014092a86aa39a1586",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/iso-belgesi-islemleri.json": {
+    "mtime": 1787243386.9159071,
+    "seen": 1792601768.973792,
+    "ast_hash": "836cd03682f0fbd130d39ed7a6fdbed0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/kamyonet-kamyon-kasa-degisikligi-projesi-tse-onayli.json": {
+    "mtime": 1787243345.6751492,
+    "seen": 1792601768.9737933,
+    "ast_hash": "29551e1486b5e791cb1c49bb23411e07",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/kapasite-raporu-ve-kapasite-ekspertiz-raporu-hizmeti.json": {
+    "mtime": 1787243317.2416012,
+    "seen": 1792601768.9737945,
+    "ast_hash": "3772085b3669479f17567f3fcd53ad85",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/kayar-perde-brandali-sac-kasa-projesi.json": {
+    "mtime": 1787243358.0013802,
+    "seen": 1792601768.9737957,
+    "ast_hash": "6a8baf8c31a93dc74e5c8c346994a98e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/motor-numarasi-caktirma-islemleri.json": {
+    "mtime": 1787243323.5417244,
+    "seen": 1792601768.9737966,
+    "ast_hash": "89de05ca26563973c89a3db706f59714",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/motosiklet-tasima-kutusu-tadilati.json": {
+    "mtime": 1787331906.8625827,
+    "seen": 1792601768.9737976,
+    "ast_hash": "92bdd36a987165ae2f8acfc99441a5f6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/ozel-plaka-islemleri.json": {
+    "mtime": 1787243350.7392447,
+    "seen": 1792601768.973799,
+    "ast_hash": "716e1513b0f47ce68c42b65d9b96d93c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/perde-brandali-kasa-projesi-tse-onayli.json": {
+    "mtime": 1787243380.5157921,
+    "seen": 1792601768.9738,
+    "ast_hash": "3d17240e8a588062488c80d42ab141ee",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/sac-kasa-projesi.json": {
+    "mtime": 1787243392.7870116,
+    "seen": 1792601768.973801,
+    "ast_hash": "538a0c4008bcd60056167d199c4f1439",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/sanayi-sicil-belgesi-hizmeti.json": {
+    "mtime": 1787243331.0638702,
+    "seen": 1792601768.9738023,
+    "ast_hash": "e3d55c05bbe648518e8a2e8b07aae43a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/sase-numarasi-caktirma-islemleri.json": {
+    "mtime": 1787243363.6494849,
+    "seen": 1792601768.9738033,
+    "ast_hash": "d6e5771f03878fe588d6e2dbc586cc20",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/seri-tadilat-belgesi-hizmetleri.json": {
+    "mtime": 1787243346.012813,
+    "seen": 1792601768.9738042,
+    "ast_hash": "c809e82931c43f51a89459dc253a14b6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/teknik-servis-raporu-test-raporu-hizmetleri.json": {
+    "mtime": 1787331793.7740705,
+    "seen": 1792601768.973806,
+    "ast_hash": "8ef5d0cf472dc686f31cc6e918d2bba0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/tenteli-kasa-projesi-tse-onayli.json": {
+    "mtime": 1787243406.8582587,
+    "seen": 1792601768.9738069,
+    "ast_hash": "b7598f741fd1bdb8abee6ac8297b7715",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/tip-onay-belgesi-hizmetleri.json": {
+    "mtime": 1787331877.8002222,
+    "seen": 1792601768.973808,
+    "ast_hash": "95719e4aeff62cf5c1a8d198db51c954",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/tse-belgelendirme-islemleri-hizmeti.json": {
+    "mtime": 1787243360.8914337,
+    "seen": 1792601768.9738095,
+    "ast_hash": "c80a506972f4a2a83373a58a412cccb9",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/tuvturk-muayene-islemleri.json": {
+    "mtime": 1787243336.406973,
+    "seen": 1792601768.9738104,
+    "ast_hash": "939e1a14fa01e9a52b44a95e147843f6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/service-articles/yerli-mali-belgesi-hizmeti.json": {
+    "mtime": 1787243373.9986744,
+    "seen": 1792601768.9738116,
+    "ast_hash": "989cf3a811d2c9c4750ca0311a8e3a17",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/arac-motor-degisim-projesi.json": {
+    "mtime": 1787247224.521061,
+    "seen": 1792601768.973813,
+    "ast_hash": "0dc3ceced225813c90b28ca3c1f28840",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/ceki-demiri-projesi.json": {
+    "mtime": 1787247224.5220609,
+    "seen": 1792601768.9738138,
+    "ast_hash": "851040761f2708fe8bbdf4da7cde8ee0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/engelli-aparati-montaj-projesi.json": {
+    "mtime": 1787247224.5220609,
+    "seen": 1792601768.9738147,
+    "ast_hash": "c91df86721b639da5060770902cdab5c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/hasta-nakil-araci-donusum-projesi.json": {
+    "mtime": 1787247224.5220609,
+    "seen": 1792601768.9738162,
+    "ast_hash": "6cf7b0ba73201dcbb70b5c90c224bdb2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/hidrolik-ayak-projesi.json": {
+    "mtime": 1787247224.5230608,
+    "seen": 1792601768.973817,
+    "ast_hash": "e0d22bf94024600b0471badf6a06886f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/hidrolik-kapak-lift-projesi.json": {
+    "mtime": 1787247224.5230608,
+    "seen": 1792601768.973818,
+    "ast_hash": "b02a03d7d076bef79db0e18f61763ec2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/karavan-projesi.json": {
+    "mtime": 1787247224.5230608,
+    "seen": 1792601768.973819,
+    "ast_hash": "951d3d3dd40e9f605bd9c2c0b986a549",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/karayolu-uygunluk-belgesi.json": {
+    "mtime": 1787247224.524061,
+    "seen": 1792601768.9738204,
+    "ast_hash": "8f7053d803693dbf5e018a45ab6ad7a0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/koltuk-sokum-projesi.json": {
+    "mtime": 1787247224.5270607,
+    "seen": 1792601768.9738214,
+    "ast_hash": "1ebc519bb029bc13848f0917939db0cc",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/lpg-sistemi-sokum-tadilati.json": {
+    "mtime": 1787247224.531061,
+    "seen": 1792601768.9738224,
+    "ast_hash": "6a8e1da5210711f5f15e258edb71a717",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/lpg-sokum-projesi.json": {
+    "mtime": 1787248058.4372137,
+    "seen": 1792601768.9738235,
+    "ast_hash": "e4903af5757f0e66f1ae37b8193a06dd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/mobil-hizmet-ve-yol-yardim-araci-projesi.json": {
+    "mtime": 1787247224.531061,
+    "seen": 1792601768.9738247,
+    "ast_hash": "80cefb9cff99f505d46a4d5723b9a54c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/motosiklet-canta-ruhsata-isletme.json": {
+    "mtime": 1787247224.5320609,
+    "seen": 1792601768.973826,
+    "ast_hash": "ece76f9149f16fe79f687ae75e68b443",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/motosiklet-sase-degisim-projesi.json": {
+    "mtime": 1787247224.5320609,
+    "seen": 1792601768.9738271,
+    "ast_hash": "c0c931b7276eebe2199bd29c0b86791c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/okul-servisi-sokum-projesi.json": {
+    "mtime": 1787247224.5320609,
+    "seen": 1792601768.973828,
+    "ast_hash": "9d094536d79bc84c7f77f8f0c2958e60",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/pickup-camli-kabin-projesi.json": {
+    "mtime": 1787247224.5320609,
+    "seen": 1792601768.973829,
+    "ast_hash": "9eb0a0f9532a85eb0d5523876f4803ee",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/sari-tepe-lambali-eskort-araci-projesi.json": {
+    "mtime": 1787247224.5330608,
+    "seen": 1792601768.9738302,
+    "ast_hash": "1ca988473171859605c77e0fcf12ac09",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/services/surucu-kursu-araci-projesi.json": {
+    "mtime": 1787247224.5330608,
+    "seen": 1792601768.9738312,
+    "ast_hash": "9d3fd861c212c4becfbdfda9cf8c00a8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/data/couriers.json": {
+    "mtime": 1792429164.4601736,
+    "seen": 1792601768.9738321,
+    "ast_hash": "3066563d60b4b9867b97e2d4601cf8b2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/data/services.json": {
+    "mtime": 1787331927.9701178,
+    "seen": 1792601768.9738333,
+    "ast_hash": "5a591af2aec5809223891a91e387f834",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/data/site-settings.json": {
+    "mtime": 1787078392.4615839,
+    "seen": 1792601768.9738345,
+    "ast_hash": "39be0c8d45b4cc19a4408abce5c34be7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/data/site.ts": {
+    "mtime": 1787331937.2869127,
+    "seen": 1792601768.9738355,
+    "ast_hash": "006b9b283b15a15a65665fd97b774d3f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/env.d.ts": {
+    "mtime": 1792422815.018259,
+    "seen": 1792601768.9738367,
+    "ast_hash": "72c584e3bd8b5f007b2beb870517b437",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/layouts/Layout.astro": {
+    "mtime": 1787141470.1585574,
+    "seen": 1792601768.9738376,
+    "ast_hash": "2729e60ec5e95a162a5b8ab940daf06a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/lib/utils.ts": {
+    "mtime": 1786964263.2139237,
+    "seen": 1792601768.9738388,
+    "ast_hash": "5a6fd53fdcf2be529e9cc0b718fde352",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/404.astro": {
+    "mtime": 1787085676.2651334,
+    "seen": 1792601768.9738398,
+    "ast_hash": "0660d4fec1d9b5f85b4632d57f839b83",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/[slug].astro": {
+    "mtime": 1787243549.560526,
+    "seen": 1792601768.9738412,
+    "ast_hash": "05d844b82bda5edc2110d045a7ac9a53",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/araba-markalari/index.astro": {
+    "mtime": 1787142189.9502268,
+    "seen": 1792601768.9738424,
+    "ast_hash": "87aa39fdbc20c47bbf2a9192c73180f2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/arac-proje-hizmetlerimiz/index.astro": {
+    "mtime": 1787247544.2016551,
+    "seen": 1792601768.9738438,
+    "ast_hash": "f3969d87372a8e18bc576713a5a9c325",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/arac-tadilat-cozumleri/index.astro": {
+    "mtime": 1787247565.1236553,
+    "seen": 1792601768.973845,
+    "ast_hash": "51f0763d73d012ad5a1335dbfbbdab03",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/belgelerimiz/index.astro": {
+    "mtime": 1787142189.9492269,
+    "seen": 1792601768.973846,
+    "ast_hash": "ac397c33ff8a1e6c5212b4a57700c13d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/bilgi-guvenligi-politikasi/index.astro": {
+    "mtime": 1787126238.3772175,
+    "seen": 1792601768.9738474,
+    "ast_hash": "a2100bc7dfbffa339c8d1bafacc455ad",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/blog/index.astro": {
+    "mtime": 1787122706.3946428,
+    "seen": 1792601768.9738488,
+    "ast_hash": "4a14eec5b1465b0f1b6d47f83c48e1c0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/cerez-politikasi/index.astro": {
+    "mtime": 1787125361.8133519,
+    "seen": 1792601768.97385,
+    "ast_hash": "a2cf85ff5e632875557c126c7b1a5181",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/cevre-politikasi/index.astro": {
+    "mtime": 1787126074.0526035,
+    "seen": 1792601768.9738512,
+    "ast_hash": "083e8dd3a006800acfd01fe1efb49584",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/contact/index.astro": {
+    "mtime": 1786964647.5963125,
+    "seen": 1792601768.9738522,
+    "ast_hash": "eb2385faf23269109be0ab29d33c3084",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/engelli-aparatlari-cozumleri/index.astro": {
+    "mtime": 1787248662.1203175,
+    "seen": 1792601768.9738533,
+    "ast_hash": "252c77922b84bc9dcb501654b28b6f0c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/etik-ilkelerimiz/index.astro": {
+    "mtime": 1787126320.418915,
+    "seen": 1792601768.9738548,
+    "ast_hash": "7bf49c275373fa81ae11544f1cd600e1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/firma-belgelendirme-hizmetlerimiz/index.astro": {
+    "mtime": 1787245038.6831322,
+    "seen": 1792601768.9738557,
+    "ast_hash": "7829a88acf89c9ba3170bf160b79fe20",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/gizlilik-ve-kvkk-politikasi/index.astro": {
+    "mtime": 1787125351.7980127,
+    "seen": 1792601768.973857,
+    "ast_hash": "1eefed6f6563df6ccad62f88e7ee1313",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/hakkimizda/index.astro": {
+    "mtime": 1787142200.5622375,
+    "seen": 1792601768.973858,
+    "ast_hash": "27579fe43699237a9871c1223829dfa8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/hizmetler/index.astro": {
+    "mtime": 1786964601.2550585,
+    "seen": 1792601768.9738588,
+    "ast_hash": "aa41bbf65080210ceaf05dd23b0d143a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/iletisim/index.astro": {
+    "mtime": 1787085806.7011607,
+    "seen": 1792601768.9738598,
+    "ast_hash": "620bb192d1206fc56cd0eb0529d0463c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/ilgili-kisi-basvurusu/index.astro": {
+    "mtime": 1787125336.965521,
+    "seen": 1792601768.9738612,
+    "ast_hash": "4034feeae32300777cd7240ee7380d3b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/index.astro": {
+    "mtime": 1792429185.1124773,
+    "seen": 1792601768.9738622,
+    "ast_hash": "5ab621fe01ed6c5889f24857396e2310",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/is-sagligi-ve-guvenligi-politikasi/index.astro": {
+    "mtime": 1787125994.7466145,
+    "seen": 1792601768.9738634,
+    "ast_hash": "08b2a52464cc5a6ef095443b637e8045",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/kalite-politikasi/index.astro": {
+    "mtime": 1787126156.603914,
+    "seen": 1792601768.9738646,
+    "ast_hash": "e9bc5c2f0f0111b543403526451b02a3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/kamyon-kamyonet-kasa-projeleri/index.astro": {
+    "mtime": 1787245045.5651739,
+    "seen": 1792601768.9738655,
+    "ast_hash": "39db4c93f58ec0e4be906d9ec9d98025",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/kamyoneti-otomobile-cevirme/index.astro": {
+    "mtime": 1787245053.0822191,
+    "seen": 1792601768.9738665,
+    "ast_hash": "e69fef62114146f09f593abb5f2c68cf",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/kategori/[slug].astro": {
+    "mtime": 1787086047.3741162,
+    "seen": 1792601768.973868,
+    "ast_hash": "cc12a525daf0b35fb6be34ffb1eb7c7f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/kurye-firmalari/index.astro": {
+    "mtime": 1792429185.087477,
+    "seen": 1792601768.973869,
+    "ast_hash": "84ef5a46f732f54216d6b3b39c9c7a9e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/markalarimiz/index.astro": {
+    "mtime": 1787248889.205276,
+    "seen": 1792601768.97387,
+    "ast_hash": "1d9ab65548812050a4350289c34b1d88",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/motosiklet-markalari/index.astro": {
+    "mtime": 1787124584.3722453,
+    "seen": 1792601768.973871,
+    "ast_hash": "80a275b43f3e17025b7d63ee5e166864",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/posts/[slug].astro": {
+    "mtime": 1786964887.4325194,
+    "seen": 1792601768.9738724,
+    "ast_hash": "6f8265da1279ecb0d572c92db247adf6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/posts/index.astro": {
+    "mtime": 1787122718.6696532,
+    "seen": 1792601768.9738734,
+    "ast_hash": "9cd13ffabe5832a73af60cab6c44ad30",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/posts/page/[pageNumber].astro": {
+    "mtime": 1787086077.6633666,
+    "seen": 1792601768.9738743,
+    "ast_hash": "8091427d7eb1035fcac15fb9765441e1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/search/index.astro": {
+    "mtime": 1787086091.087478,
+    "seen": 1792601768.9738755,
+    "ast_hash": "ae0f40a2099816d9f13675c1b4f66dcf",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/tescil-ve-musavirlik/index.astro": {
+    "mtime": 1787245060.1452618,
+    "seen": 1792601768.9738765,
+    "ast_hash": "75c4c1725b63e486597439452966c675",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/pages/web-sitesi-ziyaretci-aydinlatma-metni/index.astro": {
+    "mtime": 1787125347.0848553,
+    "seen": 1792601768.9738774,
+    "ast_hash": "4f8652257df25f291b7f9716846eb6f3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/scripts/generate-couriers.mjs": {
+    "mtime": 1786989654.2278724,
+    "seen": 1792601768.9738789,
+    "ast_hash": "208e4ef8f27b1f2c23d0ea3297ed0b1c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/scripts/init.ts": {
+    "mtime": 1787102255.0168126,
+    "seen": 1792601768.97388,
+    "ast_hash": "d9833780f8527b47cff1c0b3315aae06",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/scripts/motion.ts": {
+    "mtime": 1786970664.1346128,
+    "seen": 1792601768.973881,
+    "ast_hash": "a10f337a557b8b93ac41cccc0b3d2ab3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/scripts/navigation-menu.ts": {
+    "mtime": 1787103877.129265,
+    "seen": 1792601768.9738822,
+    "ast_hash": "ae91e55d7d53a5147c3d5358567adeab",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/accordion/Accordion.astro": {
+    "mtime": 1787074160.7686558,
+    "seen": 1792601768.9738832,
+    "ast_hash": "61f28d3f779ce099d0bf92df55d9aab7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/accordion/AccordionContent.astro": {
+    "mtime": 1787074184.907047,
+    "seen": 1792601768.973884,
+    "ast_hash": "5728de39043d80fa918139c86b3808b3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/accordion/AccordionItem.astro": {
+    "mtime": 1787074168.061774,
+    "seen": 1792601768.9738853,
+    "ast_hash": "7b32bd733802c4560ae287d29cf3e539",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/accordion/AccordionTrigger.astro": {
+    "mtime": 1787074177.1629214,
+    "seen": 1792601768.9738863,
+    "ast_hash": "927c95aee10432d6809374d40ff69ce9",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/accordion/index.ts": {
+    "mtime": 1787074197.2052462,
+    "seen": 1792601768.9738872,
+    "ast_hash": "f6a63c3201e1179aa10eeb4ddc6a1255",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/button/Button.astro": {
+    "mtime": 1786964263.214118,
+    "seen": 1792601768.9738882,
+    "ast_hash": "fd763aca7c89cbf1a6303771c135059c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/button/index.ts": {
+    "mtime": 1786964263.214118,
+    "seen": 1792601768.9738896,
+    "ast_hash": "93041d3aced707b1920b056bcd761bab",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/carousel/Carousel.astro": {
+    "mtime": 1786978241.7210166,
+    "seen": 1792601768.9738905,
+    "ast_hash": "872180048bc91413523b5fe72d112d6b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/carousel/CarouselSlide.astro": {
+    "mtime": 1786978241.7236226,
+    "seen": 1792601768.9738915,
+    "ast_hash": "42ef52b82a5a6d11a736d3a0c3457b0a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/carousel/index.ts": {
+    "mtime": 1786978242.0546234,
+    "seen": 1792601768.973893,
+    "ast_hash": "51d29f6a967b2cd96eff973de7fc93a5",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/marquee/Marquee.astro": {
+    "mtime": 1787137414.1331997,
+    "seen": 1792601768.973894,
+    "ast_hash": "4f2dadfd4d01f30b7c8d67ef7d0796b2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/marquee/index.ts": {
+    "mtime": 1787041002.2724044,
+    "seen": 1792601768.9738946,
+    "ast_hash": "f95577fe573a050683734f2f16e06a7e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/navigation-menu/NavigationMenu.astro": {
+    "mtime": 1787103875.9342756,
+    "seen": 1792601768.973896,
+    "ast_hash": "e05c4c71d4ac10c26d75c335ed981416",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/navigation-menu/NavigationMenuContent.astro": {
+    "mtime": 1786970303.5413532,
+    "seen": 1792601768.973897,
+    "ast_hash": "0fca5ef3be5c645b5a0fdc0f8621a30e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/navigation-menu/NavigationMenuIndicator.astro": {
+    "mtime": 1786983602.8980255,
+    "seen": 1792601768.9738982,
+    "ast_hash": "652b866aea9b49bf1d5224234a33b935",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/navigation-menu/NavigationMenuItem.astro": {
+    "mtime": 1786970303.5463533,
+    "seen": 1792601768.9738994,
+    "ast_hash": "5a5253d36f08c4f5a27789abf542dfc0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/navigation-menu/NavigationMenuLink.astro": {
+    "mtime": 1786983412.5507414,
+    "seen": 1792601768.9739006,
+    "ast_hash": "4d52711ced26a30c03b0a1875118aac3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/navigation-menu/NavigationMenuList.astro": {
+    "mtime": 1786970303.5513535,
+    "seen": 1792601768.9739017,
+    "ast_hash": "30e04f4821a6a670889e8274bf0a7410",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/navigation-menu/NavigationMenuPositioner.astro": {
+    "mtime": 1787239458.7410896,
+    "seen": 1792601768.973903,
+    "ast_hash": "0cd05f57c65b4bc98034d3fda7476c63",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/navigation-menu/NavigationMenuTrigger.astro": {
+    "mtime": 1787124394.149658,
+    "seen": 1792601768.9739041,
+    "ast_hash": "e531ad139cfa81e2a5f6bfa4937549f2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/navigation-menu/NavigationMenuViewport.astro": {
+    "mtime": 1787239453.0740778,
+    "seen": 1792601768.973905,
+    "ast_hash": "c850c2217c47fe9fc0cd4e9f10e219b0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/ui/navigation-menu/index.ts": {
+    "mtime": 1786970303.9413538,
+    "seen": 1792601768.9739063,
+    "ast_hash": "d04b4cf983e42eff573fce3a14846815",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/utils/clientImageToWebp.ts": {
+    "mtime": 1787041080.4531448,
+    "seen": 1792601768.9739072,
+    "ast_hash": "37c7a50bdd6117a209205edc6aff9f4b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/tsconfig.json": {
+    "mtime": 1786987830.9127383,
+    "seen": 1792601768.9739084,
+    "ast_hash": "428221c23ee789473435a63dcdf9c54b",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/components/PageHero.astro": {
+    "mtime": 1792601436.0018349,
+    "seen": 1792601768.9739153,
+    "ast_hash": "7f7ea5aca98fa452b22d90e6d483ef6a",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/components/PostCard.astro": {
+    "mtime": 1792601436.0024378,
+    "seen": 1792601768.9739165,
+    "ast_hash": "49d14e84b23574c5fa79feb41e29e24a",
+    "semantic_hash": ""
+  },
+  ".changeset/starter-theme.md": {
+    "mtime": 1792602404.2261035,
+    "seen": 1792602430.3214612,
+    "ast_hash": "c3ea6d9b8e2e5438cf592ca8d30c0302",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/ai/api-mcp.md": {
+    "mtime": 1792599322.494897,
+    "seen": 1792601768.9740844,
+    "ast_hash": "f2c7f5248c70422a5819d08e80d8c50c",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/ai/assistant.md": {
+    "mtime": 1792599322.4934344,
+    "seen": 1792601768.9740856,
+    "ast_hash": "185dea50580bd3aca87b298f1a1659d0",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/ai/site-care.md": {
+    "mtime": 1792599322.4941552,
+    "seen": 1792601768.9740863,
+    "ast_hash": "3e7b7168ab85eb26e30e5f0e0b063601",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/concepts/configuration.md": {
+    "mtime": 1792599179.5557692,
+    "seen": 1792601768.974088,
+    "ast_hash": "80149d9a1db9df58c89234aabd73303d",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/concepts/how-it-works.md": {
+    "mtime": 1792599187.8834527,
+    "seen": 1792601768.974089,
+    "ast_hash": "27c2014795a057c8b889ab616bf1afc6",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/concepts/roles-permissions.md": {
+    "mtime": 1792599179.5565147,
+    "seen": 1792601768.97409,
+    "ast_hash": "cba2e3a2878a5cf2ca1f1d76a628953e",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/deployment/docs-site.md": {
+    "mtime": 1792599322.5102246,
+    "seen": 1792601768.9740925,
+    "ast_hash": "6d9780b93dc97275a233e794afb01d0a",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/deployment/upgrading.md": {
+    "mtime": 1792599245.5047915,
+    "seen": 1792601768.9740937,
+    "ast_hash": "af815f25d6672e61fa6b47edae46cfc6",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/getting-started.md": {
+    "mtime": 1792605529.2104077,
+    "seen": 1792605586.285159,
+    "ast_hash": "0dd5020cda0d451398b63507820e75ba",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/comments.md": {
+    "mtime": 1792599245.4956648,
+    "seen": 1792601768.974096,
+    "ast_hash": "a00b0c41ce8b21926b9495c1c8e432bf",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/content-types.md": {
+    "mtime": 1792599245.4986649,
+    "seen": 1792601768.9740975,
+    "ast_hash": "adfb5d87c4ac67b5ff22dc2d80d26f3e",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/content.md": {
+    "mtime": 1792599245.4926648,
+    "seen": 1792601768.9740987,
+    "ast_hash": "e63ac9dbcdddf322bcd8ad971d17dfae",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/dashboard.md": {
+    "mtime": 1792599245.4926634,
+    "seen": 1792601768.9740996,
+    "ast_hash": "f2495cfaf8f6fe58d4c3f5a44d3ff459",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/import-export.md": {
+    "mtime": 1792599245.503788,
+    "seen": 1792601768.974101,
+    "ast_hash": "5a31ed82c58e818ab860a288b3d2dfeb",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/media.md": {
+    "mtime": 1792599257.163561,
+    "seen": 1792601768.974102,
+    "ast_hash": "2f116f931bdbac7f3e317babfd6312c3",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/menus.md": {
+    "mtime": 1792599257.1633885,
+    "seen": 1792601768.974103,
+    "ast_hash": "1a1fa401925175549836c49ea6732ebf",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/redirects.md": {
+    "mtime": 1792599245.5017302,
+    "seen": 1792601768.9741042,
+    "ast_hash": "b522acd0ac6ad8da9ac239395002291d",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/revisions.md": {
+    "mtime": 1792599245.4936647,
+    "seen": 1792601768.9741051,
+    "ast_hash": "e06dd25fd0865b8855e1b2135a46cbb8",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/seo.md": {
+    "mtime": 1792599245.5006647,
+    "seen": 1792601768.974106,
+    "ast_hash": "7e03ec790923f091c401c5a20eacb663",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/settings.md": {
+    "mtime": 1792599245.5026648,
+    "seen": 1792601768.974107,
+    "ast_hash": "39c034fddefeaa9be8368322dd2fa505",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/starter-theme.md": {
+    "mtime": 1792602404.2253954,
+    "seen": 1792602430.3215883,
+    "ast_hash": "a036140254dfc2498a4d63a10a492595",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/taxonomies-bylines.md": {
+    "mtime": 1792599257.1637526,
+    "seen": 1792601768.9741092,
+    "ast_hash": "6927b6a157fd074ac4312429b0c94b8f",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/translations.md": {
+    "mtime": 1792599245.4996648,
+    "seen": 1792601768.9741101,
+    "ast_hash": "b0ba3c510440bb3eb15f05dba365a9ec",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/users-security.md": {
+    "mtime": 1792599245.5023992,
+    "seen": 1792601768.9741116,
+    "ast_hash": "63ea63d4ea5cb5661b6c0778eb5cadd5",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/widgets-sections.md": {
+    "mtime": 1792599257.1636593,
+    "seen": 1792601768.9741125,
+    "ast_hash": "31a370cc37535283b0b94ffafed35c0c",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/index.mdx": {
+    "mtime": 1792599179.552443,
+    "seen": 1792601768.9741135,
+    "ast_hash": "815ce68c00630350117d21dee7f0ca52",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/plugins/overview.md": {
+    "mtime": 1792599336.6358938,
+    "seen": 1792601768.9741147,
+    "ast_hash": "42c87de73e59255290709aad3d4aedcf",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/reference/api.md": {
+    "mtime": 1792599322.4977798,
+    "seen": 1792601768.9741156,
+    "ast_hash": "67ed4c96234e8bb5ce9627bff1d341ad",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/reference/cli.md": {
+    "mtime": 1792605513.3634953,
+    "seen": 1792605586.2851858,
+    "ast_hash": "52157a31a22509d76e3d7e9fea1f5147",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/reference/environment.md": {
+    "mtime": 1792608287.2919912,
+    "seen": 1792608384.2397513,
+    "ast_hash": "5e2c27dec2334c900c9f37404c101787",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/sites/managed-sites.md": {
+    "mtime": 1792599322.4926248,
+    "seen": 1792601768.974119,
+    "ast_hash": "1f823d527fb59a67566d304602cd6fe7",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/ai/api-mcp.md": {
+    "mtime": 1792599502.297982,
+    "seen": 1792601768.9741201,
+    "ast_hash": "92417bf6cb6af572b5cb556b8f1fbec8",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/ai/assistant.md": {
+    "mtime": 1792599502.296578,
+    "seen": 1792601768.9741213,
+    "ast_hash": "baab1a5c70be05ae5bb21fd065288036",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/ai/site-care.md": {
+    "mtime": 1792599502.2972918,
+    "seen": 1792601768.9741223,
+    "ast_hash": "045df671bbaf504353617b4e42ed3a39",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/concepts/configuration.md": {
+    "mtime": 1792599381.6967843,
+    "seen": 1792601768.9741235,
+    "ast_hash": "90686fddf352e02308aa78179c138353",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/concepts/how-it-works.md": {
+    "mtime": 1792599381.6966236,
+    "seen": 1792601768.9741244,
+    "ast_hash": "9b95b1ef5b27d442ff566272c377aa55",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/concepts/roles-permissions.md": {
+    "mtime": 1792599381.6977842,
+    "seen": 1792601768.9741256,
+    "ast_hash": "2d679abb12789fc28c8d6ec2fd2be8d8",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/deployment/docker.md": {
+    "mtime": 1792606764.6474595,
+    "seen": 1792606890.9829998,
+    "ast_hash": "e7451ca00511741157c08685e84e88d9",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/deployment/docs-site.md": {
+    "mtime": 1792599536.961765,
+    "seen": 1792601768.9741278,
+    "ast_hash": "c31a32f31c6b741d37a422f0c14f483f",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/deployment/upgrading.md": {
+    "mtime": 1792599536.9605114,
+    "seen": 1792601768.974129,
+    "ast_hash": "3244414ccb4c8fb94873a65108e916b2",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/getting-started.md": {
+    "mtime": 1792605525.510973,
+    "seen": 1792605586.2852,
+    "ast_hash": "8a0f0f881349af9c7c78ab5766f9e021",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/comments.md": {
+    "mtime": 1792599456.430393,
+    "seen": 1792601768.9741313,
+    "ast_hash": "fb548e247af41730ca03dbee298d2250",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/content-types.md": {
+    "mtime": 1792599456.4325836,
+    "seen": 1792601768.9741325,
+    "ast_hash": "7b583767e98cfa9d95945663f2cfbc56",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/content.md": {
+    "mtime": 1792599456.4275837,
+    "seen": 1792601768.9741335,
+    "ast_hash": "53335ce6e226b226675e2a24bb0b55fb",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/dashboard.md": {
+    "mtime": 1792599456.4265835,
+    "seen": 1792601768.9741344,
+    "ast_hash": "d31eb149ebbbb7a1a291e03dc1126ddc",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/import-export.md": {
+    "mtime": 1792599456.4375536,
+    "seen": 1792601768.9741359,
+    "ast_hash": "78197164258f854de43fefb54b9c67dc",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/media.md": {
+    "mtime": 1792599456.429732,
+    "seen": 1792601768.9741366,
+    "ast_hash": "9ef80310fe91f08bec79813a6c7e7946",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/menus.md": {
+    "mtime": 1792599456.4305837,
+    "seen": 1792601768.9741468,
+    "ast_hash": "c3df9603aecb2ab76528b42e9fe644ef",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/redirects.md": {
+    "mtime": 1792599456.4353628,
+    "seen": 1792601768.9741478,
+    "ast_hash": "94d8d688164f2f8cd2e3abb1c4e843dd",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/revisions.md": {
+    "mtime": 1792599456.4285836,
+    "seen": 1792601768.9741488,
+    "ast_hash": "54aa73040a6137152ef92a367feba29d",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/seo.md": {
+    "mtime": 1792599456.4346385,
+    "seen": 1792601768.97415,
+    "ast_hash": "141f1f881e83bfaa31f5635844104bd6",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/settings.md": {
+    "mtime": 1792599456.4368556,
+    "seen": 1792601768.9741507,
+    "ast_hash": "979b8ec4b76593b4785fa557648405d0",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/starter-theme.md": {
+    "mtime": 1792602404.2255163,
+    "seen": 1792602430.321628,
+    "ast_hash": "abf46ea8b6dd831a4cfaee7812ac214c",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/taxonomies-bylines.md": {
+    "mtime": 1792599456.4324942,
+    "seen": 1792601768.9741528,
+    "ast_hash": "96680c4201dfc387221861c79cef4d32",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/translations.md": {
+    "mtime": 1792599456.4338999,
+    "seen": 1792601768.9741538,
+    "ast_hash": "7ba3bd2e7cb1781c6c4a2eb141ace862",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/users-security.md": {
+    "mtime": 1792599456.4355836,
+    "seen": 1792601768.9741547,
+    "ast_hash": "b52bc080bc1eae6da74853a2d090570b",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/widgets-sections.md": {
+    "mtime": 1792599456.431707,
+    "seen": 1792601768.9741561,
+    "ast_hash": "c67856271d8416f7f79de765f30ffad9",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/index.mdx": {
+    "mtime": 1792599381.6937842,
+    "seen": 1792601768.974157,
+    "ast_hash": "c602262baa47cf72a055768b5d582619",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/plugins/overview.md": {
+    "mtime": 1792599502.2987204,
+    "seen": 1792601768.974158,
+    "ast_hash": "fe35d1918df88806f7ed42b41ddef149",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/reference/api.md": {
+    "mtime": 1792599536.963837,
+    "seen": 1792601768.974159,
+    "ast_hash": "fa8b60198a7fe09453804564d8ee362a",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/reference/cli.md": {
+    "mtime": 1792605513.363606,
+    "seen": 1792605586.2852259,
+    "ast_hash": "0801f69beacb6a5e0cb652783d773e65",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/reference/environment.md": {
+    "mtime": 1792608287.2926466,
+    "seen": 1792608384.2397985,
+    "ast_hash": "d0ab45e58e02174871b28cdaae3ec062",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/sites/managed-sites.md": {
+    "mtime": 1792599502.2958198,
+    "seen": 1792601768.9741626,
+    "ast_hash": "92e46d2994a38331505656fda7cf7ed2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/AGENTS.md": {
+    "mtime": 1792422518.6513844,
+    "seen": 1792601768.9741662,
+    "ast_hash": "4d944a80d98bf8891d5b10081a86d3e1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/README.md": {
+    "mtime": 1792429435.6416385,
+    "seen": 1792601768.9741676,
+    "ast_hash": "451505d9394518d08bac1a2b483ab233",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/124da6cd438441809eda0de0bc10389f.txt": {
+    "mtime": 1787173983.9357793,
+    "seen": 1792601768.9741685,
+    "ast_hash": "a5150fe8aa772cb4b3c469c3d0d56374",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/engelli-aparatlari-cozumleri/Engelli Aparat\u0131 Montaj Projesi | TSE Onayl\u0131.html": {
+    "mtime": 1787239642.1204572,
+    "seen": 1792601768.9741702,
+    "ast_hash": "53eee82f047383ba3f4850767de37ff6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/robots.txt": {
+    "mtime": 1787141353.9247532,
+    "seen": 1792601768.9741712,
+    "ast_hash": "0dc9f71b993edd5f04ccc95e66429de8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Engelli Aparatlar\u0131 \u00c7\u00f6z\u00fcmlerimiz/Engelli Aparat\u0131 Montaj Projesi | TSE Onayl\u0131.html": {
+    "mtime": 1787247617.0316663,
+    "seen": 1792601768.9741726,
+    "ast_hash": "68090790fcd01cd2e0bd152f389f3c43",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Engelli Aparatlar\u0131 \u00c7\u00f6z\u00fcmlerimiz/Engelli Debriyaj Aparat\u0131 Hizmeti.html": {
+    "mtime": 1787247798.9968078,
+    "seen": 1792601768.974174,
+    "ast_hash": "d3c3de0bfa531cb74b614892922062e6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Engelli Aparatlar\u0131 \u00c7\u00f6z\u00fcmlerimiz/Engelli Gaz Pedal\u0131 Yer De\u011fi\u015fikli\u011fi Aparat\u0131 Hizmeti.html": {
+    "mtime": 1787247938.4474728,
+    "seen": 1792601768.9741752,
+    "ast_hash": "435300844d804fd2b5e41cb24f7f0f08",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Engelli Aparatlar\u0131 \u00c7\u00f6z\u00fcmlerimiz/Engelli Gaz-Fren Aparat\u0131 Hizmeti.html": {
+    "mtime": 1787247733.20174,
+    "seen": 1792601768.9741764,
+    "ast_hash": "f6030a4bcf55f479e95a778a975339df",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Engelli Aparatlar\u0131 \u00c7\u00f6z\u00fcmlerimiz/Engelli Pedal Y\u00fckseltme Aparat\u0131 Hizmeti.html": {
+    "mtime": 1787247839.8618581,
+    "seen": 1792601768.9741776,
+    "ast_hash": "c9aa3286c45ddb495dd1201b3c4cf332",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Engelli Aparatlar\u0131 \u00c7\u00f6z\u00fcmlerimiz/Engelli Sa\u011f El Vites De\u011fi\u015ftirme Aparat\u0131 Hizmeti.html": {
+    "mtime": 1787247985.5800807,
+    "seen": 1792601768.9741788,
+    "ast_hash": "800391468570660471193e133b7a48c8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Engelli Aparatlar\u0131 \u00c7\u00f6z\u00fcmlerimiz/Engelli Sa\u011f Kol Vites De\u011fi\u015ftirme Aparat\u0131 Hizmeti.html": {
+    "mtime": 1787248021.9401455,
+    "seen": 1792601768.97418,
+    "ast_hash": "76fbe6d4b1f127f05b1e2d7394b87fb7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Engelli Aparatlar\u0131 \u00c7\u00f6z\u00fcmlerimiz/Engelli Sa\u011fdan Direksiyon Alt\u0131 Gaz-Fren Aparat\u0131 Hizmeti.html": {
+    "mtime": 1787247869.9098988,
+    "seen": 1792601768.9741812,
+    "ast_hash": "41c3ec96482ccb60cf75aea581296cfd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Engelli Aparatlar\u0131 \u00c7\u00f6z\u00fcmlerimiz/Engelli Soldan Direksiyon Alt\u0131 Gaz-Fren Aparat\u0131 Hizmeti.html": {
+    "mtime": 1787247899.3509414,
+    "seen": 1792601768.9741824,
+    "ast_hash": "36fd634088b06c6aeb8f3ee8bd12643d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Engelli Aparatlar\u0131 \u00c7\u00f6z\u00fcmlerimiz/Engelli Soldan Vites Kolu Aparat\u0131 Hizmeti.html": {
+    "mtime": 1787247776.1267824,
+    "seen": 1792601768.9741838,
+    "ast_hash": "bb7423da853b81b84cc20e9aac310deb",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Engelli Aparatlar\u0131 \u00c7\u00f6z\u00fcmlerimiz/Engelli Yerden Gaz-Fren Aparat\u0131 Hizmeti.html": {
+    "mtime": 1787247963.0140424,
+    "seen": 1792601768.9741852,
+    "ast_hash": "2b0020f3f367d5433957c9dbdc8b8081",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Firma Belgelendirme Hizmetlerimiz/CE Belgesi \u0130\u015flemleri.html": {
+    "mtime": 1787240729.485318,
+    "seen": 1792601768.9741864,
+    "ast_hash": "ebb240a003efcb667e60b8c8f4f7a5c2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Firma Belgelendirme Hizmetlerimiz/Hizmet Yeri Yeterlilik Belgesi Hizmeti.html": {
+    "mtime": 1787240639.5901735,
+    "seen": 1792601768.9741876,
+    "ast_hash": "e9cb5b122d6d6648f97901c573c9ee7f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Firma Belgelendirme Hizmetlerimiz/Kapasite Raporu ve Kapasite Ekspertiz Raporu Hizmeti.html": {
+    "mtime": 1787240701.0232723,
+    "seen": 1792601768.9741888,
+    "ast_hash": "a743178d581e170dcf8f808c709c5d16",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Firma Belgelendirme Hizmetlerimiz/Sanayi Sicil Belgesi Hizmeti.html": {
+    "mtime": 1787240655.5153875,
+    "seen": 1792601768.9741898,
+    "ast_hash": "fd5beb4674699c9870e39a39c5a4b5f4",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Firma Belgelendirme Hizmetlerimiz/Seri Tadilat Belgesi Hizmetleri.html": {
+    "mtime": 1787240610.3421264,
+    "seen": 1792601768.9741912,
+    "ast_hash": "3e22a4d4cb6c70d902c23a4b9aadc5dd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Firma Belgelendirme Hizmetlerimiz/TSE Belgelendirme \u0130\u015flemleri Hizmeti.html": {
+    "mtime": 1787240625.4381506,
+    "seen": 1792601768.9741921,
+    "ast_hash": "0d48dc2e4179862f0dca739b1cedc197",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Firma Belgelendirme Hizmetlerimiz/Yerli Mal\u0131 Belgesi Hizmeti.html": {
+    "mtime": 1787240672.107226,
+    "seen": 1792601768.9741933,
+    "ast_hash": "5ad11701259b111926da5a7a02f17af3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Firma Belgelendirme Hizmetlerimiz/\u0130SO Belgesi \u0130\u015flemleri.html": {
+    "mtime": 1787240715.6352956,
+    "seen": 1792601768.9741945,
+    "ast_hash": "9ccf97d9a975f3735fb8bd4aabb63ad8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Firma Belgelendirme Hizmetlerimiz/\u0130malat Yeterlilik Belgesi Hizmeti.html": {
+    "mtime": 1787240687.5852506,
+    "seen": 1792601768.9741955,
+    "ast_hash": "e8cca79ec457ec14d32e6f7d7349eefa",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Firma Belgelendirme Hizmetlerimiz/\u0130\u015f Makineleri Tescil \u0130\u015flemleri.html": {
+    "mtime": 1787240742.5925844,
+    "seen": 1792601768.9741964,
+    "ast_hash": "9f2ff8fdaf1ae982979f58429b30c160",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Firma Belgelendirme Hizmetlerimiz/\u0130\u015f Makinesi Uygunluk Belgesi D\u00fczenleme \u0130\u015flemleri.html": {
+    "mtime": 1787240763.288372,
+    "seen": 1792601768.9741979,
+    "ast_hash": "b17f46f9608946e850aeb2a392c84057",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Kamyon & Kamyonet Kasa Projeleri/A\u00e7\u0131k Kasa Projesi.html": {
+    "mtime": 1787240243.2095246,
+    "seen": 1792601768.974199,
+    "ast_hash": "88c0553952a0a3c1a6f9ddb14e30f2e1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Kamyon & Kamyonet Kasa Projeleri/Brandal\u0131 Sac Kasa Projesi | TSE Onayl\u0131.html": {
+    "mtime": 1787240263.0975578,
+    "seen": 1792601768.9742002,
+    "ast_hash": "523c85c96315ae69a6a74867665f3968",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Kamyon & Kamyonet Kasa Projeleri/Frigorifik Projesi | TSE Onayl\u0131.html": {
+    "mtime": 1787240280.3096561,
+    "seen": 1792601768.9742017,
+    "ast_hash": "781a74167ee1ac21fe5ad8ac5c16af7f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Kamyon & Kamyonet Kasa Projeleri/Kamyonet & Kamyon Kasa De\u011fi\u015fikli\u011fi Projesi | TSE Onayl\u0131.html": {
+    "mtime": 1787240296.233613,
+    "seen": 1792601768.9742026,
+    "ast_hash": "b0e450a29122f73c263c0143635ef437",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Kamyon & Kamyonet Kasa Projeleri/Kayar Perde Brandal\u0131 Sac Kasa Projesi.html": {
+    "mtime": 1787240311.286638,
+    "seen": 1792601768.9742036,
+    "ast_hash": "2efe1f422d96b0db834f302e6cd67ea9",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Kamyon & Kamyonet Kasa Projeleri/Perde Brandal\u0131 Kasa Projesi | TSE Onayl\u0131.html": {
+    "mtime": 1787240328.147666,
+    "seen": 1792601768.9742048,
+    "ast_hash": "bafe17659e2813bb6b3f69e0cfee45d0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Kamyon & Kamyonet Kasa Projeleri/Sac Kasa Projesi.html": {
+    "mtime": 1787240343.387691,
+    "seen": 1792601768.974206,
+    "ast_hash": "afca4f621e2925620d32e19629a60833",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Kamyon & Kamyonet Kasa Projeleri/Tenteli Kasa Projesi | TSE Onayl\u0131.html": {
+    "mtime": 1787240356.7497132,
+    "seen": 1792601768.974207,
+    "ast_hash": "c4d8d7f87d6ac48d0cb497bb91b567ec",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Kamyoneti Otomobile \u00c7evirme/Fiat Doblo Kamyonetten Otomobile \u00c7evirme.html": {
+    "mtime": 1787240451.838869,
+    "seen": 1792601768.974208,
+    "ast_hash": "a07b29838b1a49517712978ab27bc519",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Kamyoneti Otomobile \u00c7evirme/Fiat Fiorino Kamyonetten Otomobile \u00c7evirme.html": {
+    "mtime": 1787240435.871843,
+    "seen": 1792601768.9742093,
+    "ast_hash": "d6a3a43f3efebe032f954adc3008e84f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Kamyoneti Otomobile \u00c7evirme/Ford Courier Kamyonetten Otomobile \u00c7evirme.html": {
+    "mtime": 1787240469.599898,
+    "seen": 1792601768.9742103,
+    "ast_hash": "277e13465c4285a4b462cc073de7a226",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Tescil ve M\u00fc\u015favirlik/Ara\u00e7 Hurda Belgesi \u0130\u015flemleri.html": {
+    "mtime": 1787239792.3097396,
+    "seen": 1792601768.9742112,
+    "ast_hash": "68654de308cadb9f2ec705615c40e76f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Tescil ve M\u00fc\u015favirlik/Ara\u00e7 Tescil ve Ruhsat \u0130\u015flemleri.html": {
+    "mtime": 1787239807.882768,
+    "seen": 1792601768.9742126,
+    "ast_hash": "807f256bb0f2ae00f0ab9c3f7f3af785",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Tescil ve M\u00fc\u015favirlik/Motor Numaras\u0131 \u00c7akt\u0131rma \u0130\u015flemleri.html": {
+    "mtime": 1787239822.669795,
+    "seen": 1792601768.9742136,
+    "ast_hash": "0aa4559e04788bb8f899469d35dced87",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Tescil ve M\u00fc\u015favirlik/T\u00dcVT\u00dcRK Muayene \u0130\u015flemleri.html": {
+    "mtime": 1787239870.0948806,
+    "seen": 1792601768.9742146,
+    "ast_hash": "6cdf462b5868f5c5ed6da28604c7fdd1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Tescil ve M\u00fc\u015favirlik/\u00d6zel Plaka \u0130\u015flemleri.html": {
+    "mtime": 1787239838.125823,
+    "seen": 1792601768.9742157,
+    "ast_hash": "96f79a9e0d5cbc5fd137790a6b4b025d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/sayfalar/Tescil ve M\u00fc\u015favirlik/\u015ease Numaras\u0131 \u00c7akt\u0131rma \u0130\u015flemleri.html": {
+    "mtime": 1787239855.1968539,
+    "seen": 1792601768.9742167,
+    "ast_hash": "3c11d3f9c64b2fed06aa4b6593fba7f3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/pages/iletisim.md": {
+    "mtime": 1792423240.2210646,
+    "seen": 1792601768.9742177,
+    "ast_hash": "6c1014b24822fa81e579899fe8f0811e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/posts/arac-projesi-nedir.md": {
+    "mtime": 1787123518.8877985,
+    "seen": 1792601768.9742188,
+    "ast_hash": "18e058e308e2497743377ed322471b8b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/posts/karavan-projesi-oncesi-kontrol-listesi.md": {
+    "mtime": 1787123541.1128383,
+    "seen": 1792601768.9742198,
+    "ast_hash": "d2810c97bc90c8a204f273e9e1a7e1b9",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/content/posts/tse-onay-surecinde-dikkat-edilecekler.md": {
+    "mtime": 1787123568.7966607,
+    "seen": 1792601768.9742208,
+    "ast_hash": "548205ab9b4820fbbcbbce327b7ec1ee",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/apple-touch-icon.png": {
+    "mtime": 1787078454.0,
+    "seen": 1792601768.9742315,
+    "ast_hash": "f9d5fd88e9721deb7cd657ab0600ee99",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/arac-proje-cta.webp": {
+    "mtime": 1787094567.4417703,
+    "seen": 1792601768.974233,
+    "ast_hash": "b2211b7ee9eed0a40fb4366a9e0110de",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/arac-proje-hizmetleri-sik-sorulan-sorular.webp": {
+    "mtime": 1787094567.7627046,
+    "seen": 1792601768.9742339,
+    "ast_hash": "e2e018b8acdebd25b78a23dbeee3a9d4",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/bejamas.svg": {
+    "mtime": 1786964263.213257,
+    "seen": 1792601768.9742348,
+    "ast_hash": "45db4177029da37ba3a584ce9f64188c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/belgeler/iso-14001.webp": {
+    "mtime": 1786376074.6956773,
+    "seen": 1792601768.974236,
+    "ast_hash": "fd9627ab99e8bece06024cc04352a24c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/belgeler/iso-45001.webp": {
+    "mtime": 1786376074.6995935,
+    "seen": 1792601768.974237,
+    "ast_hash": "a6b8c5abd944d648329376533bd26388",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/belgeler/iso-9001.webp": {
+    "mtime": 1786376074.6825466,
+    "seen": 1792601768.9742382,
+    "ast_hash": "b63163a419fbe2a0c24c0b345ed78fb4",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/belgeler/tse.webp": {
+    "mtime": 1786376074.7124367,
+    "seen": 1792601768.9742389,
+    "ast_hash": "ccecc687e1a9cd5dbc30aae641d279f8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car-banner-1024x462.webp": {
+    "mtime": 1787094563.40264,
+    "seen": 1792601768.97424,
+    "ast_hash": "fa9c531becbc87e7d933c30429536d03",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/audi-96.webp": {
+    "mtime": 1787132684.824862,
+    "seen": 1792601768.9742408,
+    "ast_hash": "78ee9c70fc37a31f2e065a4ad3ded04a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/audi.png": {
+    "mtime": 1787040696.0,
+    "seen": 1792601768.9742422,
+    "ast_hash": "ed4b55e919018a833a53e0125a0a6415",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/audi.webp": {
+    "mtime": 1787093682.3386016,
+    "seen": 1792601768.9742434,
+    "ast_hash": "2509a9f86cca26c44d5a77e369aeaa5b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/bmw-96.webp": {
+    "mtime": 1787132685.0228636,
+    "seen": 1792601768.9742444,
+    "ast_hash": "e7a69f0c59719cb6b49ed3ff5bcb37a7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/bmw.png": {
+    "mtime": 1787040696.0,
+    "seen": 1792601768.9742453,
+    "ast_hash": "da449473db8effb09b070429586792e2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/bmw.webp": {
+    "mtime": 1787093683.0936093,
+    "seen": 1792601768.9742465,
+    "ast_hash": "8729dbeb872d559dbc7c1b43cd0aad97",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/citroen-logo-96.webp": {
+    "mtime": 1787132685.200865,
+    "seen": 1792601768.9742475,
+    "ast_hash": "6cf1694ad220a55a00ac48b998a92765",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/citroen-logo.webp": {
+    "mtime": 1787093683.4116125,
+    "seen": 1792601768.9742484,
+    "ast_hash": "5abca64e434f6cbce865766a26a52d08",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/dacia-logo-96.webp": {
+    "mtime": 1787132685.2668655,
+    "seen": 1792601768.9742494,
+    "ast_hash": "9bf2a68177aa8520453febe38cc8478b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/dacia-logo.webp": {
+    "mtime": 1787093683.5396137,
+    "seen": 1792601768.9742506,
+    "ast_hash": "9bb4718eb95ff7d57f2b6bde34f60762",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/ford-96.webp": {
+    "mtime": 1787132685.343866,
+    "seen": 1792601768.9742515,
+    "ast_hash": "d700263e3d6c8ff143b937a8249fe5de",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/ford.png": {
+    "mtime": 1787040696.0,
+    "seen": 1792601768.9742525,
+    "ast_hash": "8929c9eb3f3e946f7aedd3294473adca",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/ford.webp": {
+    "mtime": 1787093683.8576171,
+    "seen": 1792601768.9742537,
+    "ast_hash": "bd08594e1e49160e58973e24828491ab",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/honda-logo-96.webp": {
+    "mtime": 1787132685.5308676,
+    "seen": 1792601768.9742546,
+    "ast_hash": "de3be3ab7c443509642d5207717b6b7d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/honda-logo.webp": {
+    "mtime": 1787093684.2116206,
+    "seen": 1792601768.9742556,
+    "ast_hash": "590c5572dfa377622feb081277c5852e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/opel-96.webp": {
+    "mtime": 1787132685.7308693,
+    "seen": 1792601768.9742568,
+    "ast_hash": "ca030f4b7b8681639ca763d5f95d9af8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/opel.png": {
+    "mtime": 1787040696.0,
+    "seen": 1792601768.9742577,
+    "ast_hash": "dbaceab6d1ffe4a32b0b9f5bec75c657",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/opel.webp": {
+    "mtime": 1787093684.935628,
+    "seen": 1792601768.9742587,
+    "ast_hash": "3e70fd7b2613fcd501925ab2395c92e3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/peugeot-logo-96.webp": {
+    "mtime": 1787132685.8158698,
+    "seen": 1792601768.9742599,
+    "ast_hash": "675380ee36aa812a90967f368e5f058b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/peugeot-logo.webp": {
+    "mtime": 1787093685.0936296,
+    "seen": 1792601768.9742613,
+    "ast_hash": "f871a2744aa75df03d76ddab5a5d09f9",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/renault-logo-96.webp": {
+    "mtime": 1787132685.9348707,
+    "seen": 1792601768.974262,
+    "ast_hash": "58564a87518b6a5034c5dfcbc25b2b00",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/renault-logo.webp": {
+    "mtime": 1787093685.3016317,
+    "seen": 1792601768.9742632,
+    "ast_hash": "11de8dc02ef16146ada661d1ad558dcd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/skoda-logo-96.webp": {
+    "mtime": 1787132686.0278716,
+    "seen": 1792601768.9742644,
+    "ast_hash": "5e637e8279440b78f65bf17d3d4abf9c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/skoda-logo.webp": {
+    "mtime": 1787093685.4796333,
+    "seen": 1792601768.9742653,
+    "ast_hash": "c2f4c82a98bb15b3e31b0a49587797fd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/toyota-logo-96.webp": {
+    "mtime": 1787132686.2608733,
+    "seen": 1792601768.9742665,
+    "ast_hash": "8fff617240f55c3a5fb418d4b239e0a4",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/toyota-logo.webp": {
+    "mtime": 1787093685.9106379,
+    "seen": 1792601768.9742677,
+    "ast_hash": "41c66d7dca1c3ce3efe4b0860cad79ec",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/volkswagen-96.webp": {
+    "mtime": 1787132686.479875,
+    "seen": 1792601768.974269,
+    "ast_hash": "7d71207beeafa60e3f4cd331f19e6f5f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/volkswagen.png": {
+    "mtime": 1787040696.0,
+    "seen": 1792601768.9742699,
+    "ast_hash": "3af86de240d3b702c38693b385a7885d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/car/volkswagen.webp": {
+    "mtime": 1787093686.7806466,
+    "seen": 1792601768.974271,
+    "ast_hash": "72725800129b8d71f9d4a293c5e9d4ea",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/favicon-96x96.png": {
+    "mtime": 1787078454.0,
+    "seen": 1792601768.974272,
+    "ast_hash": "d1dac38130fe91907b763c4df50ceff0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/favicon.svg": {
+    "mtime": 1787078454.0,
+    "seen": 1792601768.9742727,
+    "ast_hash": "8b528d09476eaec0e338accd510fb484",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/google-1.webp": {
+    "mtime": 1786980041.5866277,
+    "seen": 1792601768.9742737,
+    "ast_hash": "8365307c71889e083c3ccbe4372fe4dc",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/google-icon.svg": {
+    "mtime": 1787078194.1293716,
+    "seen": 1792601768.974275,
+    "ast_hash": "026a085cb77d91a2dd1515e12c3c6dbd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/arac-motor-degisimi-projesi-tse-onayli-karakas-muhendislik-520.webp": {
+    "mtime": 1787094549.4725704,
+    "seen": 1792601768.9742763,
+    "ast_hash": "8e68e1a20538e82352e487c5d01b1645",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/arac-motor-degisimi-projesi-tse-onayli-karakas-muhendislik.webp": {
+    "mtime": 1787094549.2605693,
+    "seen": 1792601768.9742773,
+    "ast_hash": "76eccc4273db81c10a8922954f904329",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/ceki-demiri-projesi-520.webp": {
+    "mtime": 1787094550.0875735,
+    "seen": 1792601768.9742787,
+    "ast_hash": "c055d4bf816bd3760962a3313ffb402c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/ceki-demiri-projesi.webp": {
+    "mtime": 1787094549.8505723,
+    "seen": 1792601768.9742799,
+    "ast_hash": "b1e2e8eb6a98bd9b954626f993e2700e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/engelli-aparati-montaj-projesi-520.webp": {
+    "mtime": 1787094550.6905766,
+    "seen": 1792601768.974281,
+    "ast_hash": "908d07fbfd29c054318347e5b0618a6d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/engelli-aparati-montaj-projesi.webp": {
+    "mtime": 1787094550.4780147,
+    "seen": 1792601768.974282,
+    "ast_hash": "d335289358e4049db7cc21f924dcf4aa",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/hasta-nakil-araci-donusum-projesi-520.webp": {
+    "mtime": 1787094551.34858,
+    "seen": 1792601768.9742832,
+    "ast_hash": "90d8d1b9ec0b23b7cf1ce778d6880356",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/hasta-nakil-araci-donusum-projesi.webp": {
+    "mtime": 1787094551.0765786,
+    "seen": 1792601768.974284,
+    "ast_hash": "9652335fc647014ec2dbdcc42c65bea6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/hidrolik-ayak-projesi-520.webp": {
+    "mtime": 1787094551.974583,
+    "seen": 1792601768.9742851,
+    "ast_hash": "b586336a8e59db4c8da6cbecda06fcc3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/hidrolik-ayak-projesi.webp": {
+    "mtime": 1787094551.7455819,
+    "seen": 1792601768.9742863,
+    "ast_hash": "5ddfb95243dbe32b4fe63269c0084bf5",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/hidrolik-kapak-lift-projesi-520.webp": {
+    "mtime": 1787094552.7305868,
+    "seen": 1792601768.9742873,
+    "ast_hash": "465ca0ab4f4eb197ad3942e3d81c0048",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/hidrolik-kapak-lift-projesi.webp": {
+    "mtime": 1787094552.4889822,
+    "seen": 1792601768.9742885,
+    "ast_hash": "66f6517b893893fa1ba2b85181687042",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/karavan-projesi-520.webp": {
+    "mtime": 1787094553.3195896,
+    "seen": 1792601768.9742894,
+    "ast_hash": "1e4a850dc9a1821965a0877e08daf9ad",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/karavan-projesi.webp": {
+    "mtime": 1787094553.10791,
+    "seen": 1792601768.9742904,
+    "ast_hash": "c8cab543a08e9ea2c7412e3a89a06605",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/karayolu-uygunluk-belgesi-520.webp": {
+    "mtime": 1787094553.947593,
+    "seen": 1792601768.9742918,
+    "ast_hash": "69910b8d5f98b612d8c0561abd43311f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/karayolu-uygunluk-belgesi.webp": {
+    "mtime": 1787094553.7328866,
+    "seen": 1792601768.9742928,
+    "ast_hash": "5c65868c2f511904ee6db2e72f9c556b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/koltuk-sokum-projesi-520.webp": {
+    "mtime": 1787094554.5395958,
+    "seen": 1792601768.9742937,
+    "ast_hash": "372bf7108bc315fc7632568728404598",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/koltuk-sokum-projesi.webp": {
+    "mtime": 1787094554.3291247,
+    "seen": 1792601768.974295,
+    "ast_hash": "182b85adc54593b0dc3a29702c66198a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/lpg-sistemi-sokum-tadilati-520.webp": {
+    "mtime": 1787094555.1185987,
+    "seen": 1792601768.9742959,
+    "ast_hash": "066c212512910842ec6e6456018415c1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/lpg-sistemi-sokum-tadilati.webp": {
+    "mtime": 1787094554.9025977,
+    "seen": 1792601768.974297,
+    "ast_hash": "b00540685986452ea015d71badd16ae6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/lpg-sokum-projesi-520.webp": {
+    "mtime": 1787094555.6746016,
+    "seen": 1792601768.974298,
+    "ast_hash": "cfdf4ceb5490ea6896433a51c5fc213c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/lpg-sokum-projesi.webp": {
+    "mtime": 1787094555.4656005,
+    "seen": 1792601768.9742992,
+    "ast_hash": "54ab918564d82cb9c5dac2f0241a0fe5",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/mobil-hizmet-ve-yol-yardim-araci-projesi-520.webp": {
+    "mtime": 1787136785.900203,
+    "seen": 1792601768.9743001,
+    "ast_hash": "40686b4e62f57696ec82296cb8e1c7e3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/mobil-hizmet-ve-yol-yardim-araci-projesi.webp": {
+    "mtime": 1787131592.1232162,
+    "seen": 1792601768.9743013,
+    "ast_hash": "56575d18b7fc26c029afd0f8fc1bd6bc",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/motosiklet-arka-canta-projesi-520.webp": {
+    "mtime": 1787094556.2676408,
+    "seen": 1792601768.9743025,
+    "ast_hash": "e050311e00882bab9f8da991b7c70faa",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/motosiklet-arka-canta-projesi.webp": {
+    "mtime": 1787094556.0592892,
+    "seen": 1792601768.9743035,
+    "ast_hash": "e4d321c982182850a565b214c806ce94",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/motosiklet-sase-degisim-projesi-520.webp": {
+    "mtime": 1787094556.8606074,
+    "seen": 1792601768.9743047,
+    "ast_hash": "e32a5ae0bd17538cac98b03bd338bb0a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/motosiklet-sase-degisim-projesi.webp": {
+    "mtime": 1787094556.64529,
+    "seen": 1792601768.9743059,
+    "ast_hash": "7b700fe140e8366050108b634a2c162d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/okul-servisi-sokum-projesi-520.webp": {
+    "mtime": 1787094557.4656105,
+    "seen": 1792601768.9743068,
+    "ast_hash": "57a6f40e273bf88ea37eae863b6d0620",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/okul-servisi-sokum-projesi.webp": {
+    "mtime": 1787094557.2389019,
+    "seen": 1792601768.974308,
+    "ast_hash": "717cbb8d19c5f0c4e787731d4f9a5334",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/pickup-camli-kabin-520.webp": {
+    "mtime": 1787094558.6076162,
+    "seen": 1792601768.9743092,
+    "ast_hash": "3e5b0717c6320a4e93225c3c55aed8b7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/pickup-camli-kabin-projesi-520.webp": {
+    "mtime": 1787094558.0396132,
+    "seen": 1792601768.9743102,
+    "ast_hash": "3e5b0717c6320a4e93225c3c55aed8b7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/pickup-camli-kabin-projesi.webp": {
+    "mtime": 1787094557.8288946,
+    "seen": 1792601768.974311,
+    "ast_hash": "21a52c6064ec519ea08a5ce747b7853d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/pickup-camli-kabin.webp": {
+    "mtime": 1787094558.3983924,
+    "seen": 1792601768.9743123,
+    "ast_hash": "21a52c6064ec519ea08a5ce747b7853d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/sari-tepe-lambali-eskort-araci-projesi-520.webp": {
+    "mtime": 1787094559.174619,
+    "seen": 1792601768.9743135,
+    "ast_hash": "8cd9e9f8c509c37262bcfda68f6718bf",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/sari-tepe-lambali-eskort-araci-projesi.webp": {
+    "mtime": 1787094558.9722002,
+    "seen": 1792601768.9743147,
+    "ast_hash": "bd8ae7c74c3db328e139c5fb11bd8e99",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/surucu-kursu-araci-projesi-520.webp": {
+    "mtime": 1787094559.7546668,
+    "seen": 1792601768.9743161,
+    "ast_hash": "e1f0a266a32ff83b0eaf31634ef2052d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/hizmetler/surucu-kursu-araci-projesi.webp": {
+    "mtime": 1787094559.5432003,
+    "seen": 1792601768.974317,
+    "ast_hash": "4ded19ba3fc44d7374250372148620e2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/araba.webp": {
+    "mtime": 1786580186.6308167,
+    "seen": 1792601768.974318,
+    "ast_hash": "ce89d9198ee0f7954a5e36ddb21df402",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/araclar.webp": {
+    "mtime": 1785061690.0,
+    "seen": 1792601768.9743192,
+    "ast_hash": "f0300f76778e9e392920d1391f0a6775",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/auto-cart-light2.webp": {
+    "mtime": 1786580204.6463416,
+    "seen": 1792601768.97432,
+    "ast_hash": "196e5a54497a89c04f3dd4866dada53a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/electric-lights.webp": {
+    "mtime": 1786576477.7496946,
+    "seen": 1792601768.974321,
+    "ast_hash": "ebc44341bf029b8d6497ada35b0988d6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/faq.webp": {
+    "mtime": 1785061678.0,
+    "seen": 1792601768.974322,
+    "ast_hash": "bedf53fe22aebe94ea877ad2747ed719",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/hero-engineering.webp": {
+    "mtime": 1784579600.0,
+    "seen": 1792601768.9743233,
+    "ast_hash": "6062e80d0bc586a20fd4fafa90c921a1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/hero-workshop.jpg": {
+    "mtime": 1787000507.9230587,
+    "seen": 1792601768.9743242,
+    "ast_hash": "84ff94c17b5c0b44f322b7c262f879f7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/home-process-technical-review.webp": {
+    "mtime": 1786562434.0381866,
+    "seen": 1792601768.9743252,
+    "ast_hash": "dbbf2d6f423b97e09c99164850bb5995",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/card-1.png": {
+    "mtime": 1787003507.6703324,
+    "seen": 1792601768.9743264,
+    "ast_hash": "76a25d5b82ab988e79c1853b39751a59",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/card-1.webp": {
+    "mtime": 1787037145.8117433,
+    "seen": 1792601768.9743273,
+    "ast_hash": "ce3d231d0b857a6ddc3b04862713041f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/card-2.png": {
+    "mtime": 1787003507.8373353,
+    "seen": 1792601768.974328,
+    "ast_hash": "fe4c55f3ea5bb0363a21e0e0cfc06ade",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/card-2.webp": {
+    "mtime": 1787037145.9327433,
+    "seen": 1792601768.974329,
+    "ast_hash": "93903f39bc8b660317d5348315ed7cf0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/card-3.png": {
+    "mtime": 1787003508.0173385,
+    "seen": 1792601768.9743304,
+    "ast_hash": "71a66036b447084ae2beb95570868612",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/card-3.webp": {
+    "mtime": 1787037146.0877435,
+    "seen": 1792601768.9743314,
+    "ast_hash": "8eda73f5366e85f8a5c75655c96a1be2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/card-4.png": {
+    "mtime": 1787003508.1353407,
+    "seen": 1792601768.9743323,
+    "ast_hash": "a5518db800de822b245cd53799ca216a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/card-4.webp": {
+    "mtime": 1787037146.1747437,
+    "seen": 1792601768.9743335,
+    "ast_hash": "270b315e7cbb2edf001b04059a3ffd71",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/card-5.png": {
+    "mtime": 1787003508.2473426,
+    "seen": 1792601768.9743345,
+    "ast_hash": "7186faa662411b133f202a604e00ae37",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/card-5.webp": {
+    "mtime": 1787037146.2577436,
+    "seen": 1792601768.9743354,
+    "ast_hash": "78d95157ecdb702c4ec16f3d6efa171b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/clean-car.png": {
+    "mtime": 1787036963.540551,
+    "seen": 1792601768.9743369,
+    "ast_hash": "455ed1789ce898b15f3170e01bcd9d19",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/clean-card-1.png": {
+    "mtime": 1787037025.848607,
+    "seen": 1792601768.9743376,
+    "ast_hash": "4c2568a3b2e89f233885060c00e686cc",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/clean-card-1.webp": {
+    "mtime": 1787037026.2946074,
+    "seen": 1792601768.9743385,
+    "ast_hash": "439292f4e805b8d57f80f2f51abf1bd8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/clean-card-2.png": {
+    "mtime": 1787037025.9755335,
+    "seen": 1792601768.9743397,
+    "ast_hash": "b7ec1437f3e5ea9b916b2b372e168a1f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/clean-card-2.webp": {
+    "mtime": 1787037026.3326075,
+    "seen": 1792601768.974341,
+    "ast_hash": "93903f39bc8b660317d5348315ed7cf0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/clean-card-3.png": {
+    "mtime": 1787037026.0736072,
+    "seen": 1792601768.9743419,
+    "ast_hash": "0a16ab7a32db018d26d88321f33c3ab6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/clean-card-3.webp": {
+    "mtime": 1787037026.3764307,
+    "seen": 1792601768.974343,
+    "ast_hash": "8c2998ea485b1e86d89102003a67af58",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/clean-card-4.png": {
+    "mtime": 1787037026.1656072,
+    "seen": 1792601768.9743443,
+    "ast_hash": "3321e43c35969d5531591db29d0185df",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/clean-card-4.webp": {
+    "mtime": 1787037026.4196074,
+    "seen": 1792601768.9743452,
+    "ast_hash": "3b14c3e67d75fa99f2e93c1b48945222",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/clean-card-5.png": {
+    "mtime": 1787037026.2576075,
+    "seen": 1792601768.9743466,
+    "ast_hash": "25d6f64a1e05e002e62f88a116c62c25",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/clean-card-5.webp": {
+    "mtime": 1787037026.471957,
+    "seen": 1792601768.974348,
+    "ast_hash": "86a1eda47251dfcbf14c4ee248c58d75",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-car-base.png": {
+    "mtime": 1787003462.1535249,
+    "seen": 1792601768.974349,
+    "ast_hash": "08b9aced94368a5704dccacac9a5d788",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-car-base.webp": {
+    "mtime": 1787003467.9636278,
+    "seen": 1792601768.97435,
+    "ast_hash": "03a5e5dbd1c0314da1033242238f9590",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-card-1.png": {
+    "mtime": 1787003459.239473,
+    "seen": 1792601768.9743512,
+    "ast_hash": "70cc5cf1cb675038baa6d2a29e59a952",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-card-1.webp": {
+    "mtime": 1787003468.1136305,
+    "seen": 1792601768.9743521,
+    "ast_hash": "a9e742873efd7ab36bcec90c66037c7c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-card-2.png": {
+    "mtime": 1787003459.8074832,
+    "seen": 1792601768.974353,
+    "ast_hash": "1414a531edcfa669818681ad5d426d8a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-card-2.webp": {
+    "mtime": 1787003468.2496328,
+    "seen": 1792601768.9743543,
+    "ast_hash": "1cf1dfb59bd1ad0f9bf9f9204b1b29ff",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-card-3.png": {
+    "mtime": 1787003460.3884935,
+    "seen": 1792601768.9743555,
+    "ast_hash": "3e81ac3ad1823b1a71579db604ccc7bd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-card-3.webp": {
+    "mtime": 1787003468.3986356,
+    "seen": 1792601768.9743562,
+    "ast_hash": "a6885f1742c1df36ca2f3bce32c2bb74",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-card-4.png": {
+    "mtime": 1787003460.9855042,
+    "seen": 1792601768.9743576,
+    "ast_hash": "4defe193e6651f50a400ba77b414d527",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-card-4.webp": {
+    "mtime": 1787003468.539638,
+    "seen": 1792601768.9743588,
+    "ast_hash": "05c60076707c6f4093bc33bf36b99260",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-card-5.png": {
+    "mtime": 1787003461.5615144,
+    "seen": 1792601768.9743595,
+    "ast_hash": "25a1ec286146016c9393862c51360af6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/layer-card-5.webp": {
+    "mtime": 1787003468.6796405,
+    "seen": 1792601768.9743605,
+    "ast_hash": "90513237fa4c359ea93d183368e0c9b6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/step-1.png": {
+    "mtime": 1787003434.8210404,
+    "seen": 1792601768.974362,
+    "ast_hash": "5186c9a169932f68ff75c0fa5660e4f7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/step-2.png": {
+    "mtime": 1787003434.9260423,
+    "seen": 1792601768.9743629,
+    "ast_hash": "477b36991e83e58e1bab10ffd38fa21b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/step-3.png": {
+    "mtime": 1787003435.0391738,
+    "seen": 1792601768.9743638,
+    "ast_hash": "9a032bbb49cfc44e91972251385fd969",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/step-4.png": {
+    "mtime": 1787003435.1000452,
+    "seen": 1792601768.974365,
+    "ast_hash": "6e90722d231533237f8242ab589d8894",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/infographic/step-5.png": {
+    "mtime": 1787003435.1590464,
+    "seen": 1792601768.974366,
+    "ast_hash": "8a7454bde5ec07d66a4b53c0d9c9348c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/karakas-cta.webp": {
+    "mtime": 1785244532.0,
+    "seen": 1792601768.9743671,
+    "ast_hash": "85d898c494af52abe73a8f02d6a97ce8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/Dominos_pizza_logo.webp": {
+    "mtime": 1785256684.0,
+    "seen": 1792601768.9743683,
+    "ast_hash": "b3696acbfb6ac54f60ab5bd72fb8b5ac",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/Getir_wordmark.webp": {
+    "mtime": 1785256706.0,
+    "seen": 1792601768.9743693,
+    "ast_hash": "2ef57563b225ef1f030f85f56f7b72d1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/MOTO-KURYE.png": {
+    "mtime": 1785256762.0,
+    "seen": 1792601768.9743702,
+    "ast_hash": "56de642d2dacbe092967700ed39c998d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/MiGROS_Logo.webp": {
+    "mtime": 1785256756.0,
+    "seen": 1792601768.9743714,
+    "ast_hash": "0055cf436b88e5d0ed88bba4627be739",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/acikinca.png": {
+    "mtime": 1785256660.0,
+    "seen": 1792601768.9743724,
+    "ast_hash": "21bfe7ac656a037fa51e6eef216d8093",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/banabi.webp": {
+    "mtime": 1785256670.0,
+    "seen": 1792601768.9743733,
+    "ast_hash": "a44b587e96605911c30006ea6ef60cc7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/bi-sey.jpg": {
+    "mtime": 1785256678.0,
+    "seen": 1792601768.9743743,
+    "ast_hash": "e4b84f6a3d05e4516c5c16955fb15395",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/doyurun-beni.png": {
+    "mtime": 1785256690.0,
+    "seen": 1792601768.9743755,
+    "ast_hash": "104e0f6236c3557abcef27a543606685",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/fiyuu.png": {
+    "mtime": 1785256694.0,
+    "seen": 1792601768.9743764,
+    "ast_hash": "26ff59cb966823b2c8b7560466843bd2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/fuudy-w-logo.webp": {
+    "mtime": 1785256700.0,
+    "seen": 1792601768.9743774,
+    "ast_hash": "a5b1a6ea89253f82bcb11e2551ec9f45",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/hemen-yolda.png": {
+    "mtime": 1785256716.0,
+    "seen": 1792601768.974379,
+    "ast_hash": "fdcb9d5b4ae7781e9963d9f4783d2ef7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/hizir.png": {
+    "mtime": 1785256724.0,
+    "seen": 1792601768.97438,
+    "ast_hash": "a9ee819288bd941554912065862d0c49",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/jetbee-new-logo-white.webp": {
+    "mtime": 1785256730.0,
+    "seen": 1792601768.974381,
+    "ast_hash": "413958aba8caef1a82fe63970e36fd48",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/lalamove.webp": {
+    "mtime": 1785256736.0,
+    "seen": 1792601768.9743822,
+    "ast_hash": "5474b03579c53419de694e36dd85669c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/marti-kurye.png": {
+    "mtime": 1785256742.0,
+    "seen": 1792601768.974383,
+    "ast_hash": "65c34c69f11eef41d2196e5667585815",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/marti_140cl.png": {
+    "mtime": 1785256752.0,
+    "seen": 1792601768.974384,
+    "ast_hash": "b2493b057ad7c99a9760d46251aac3ed",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/mcdonalds.png": {
+    "mtime": 1785256778.0,
+    "seen": 1792601768.9743853,
+    "ast_hash": "b0dacbf6b82530895ff9653a4ef562f7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/paket-taxi_.png": {
+    "mtime": 1785256774.0,
+    "seen": 1792601768.9743865,
+    "ast_hash": "d9f514e701654802ac2ac08e80803392",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/rezzta.webp": {
+    "mtime": 1785256784.0,
+    "seen": 1792601768.9743874,
+    "ast_hash": "f80f7479e74f5a85e730bb6ff1cd6061",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/tikla-gelsin (1).webp": {
+    "mtime": 1785256798.0,
+    "seen": 1792601768.9743884,
+    "ast_hash": "7801deab280ab024a36920bafd12ed75",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/tikla-gelsin.webp": {
+    "mtime": 1785256790.0,
+    "seen": 1792601768.9743896,
+    "ast_hash": "7801deab280ab024a36920bafd12ed75",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/trendyol-go.png": {
+    "mtime": 1785256812.0,
+    "seen": 1792601768.9743903,
+    "ast_hash": "6345dee1c2e11d9efe22fca25e576216",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/trendyol.png": {
+    "mtime": 1785256814.0,
+    "seen": 1792601768.9743912,
+    "ast_hash": "2885f78ab1e9f7160331932d284ea774",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/uber-eats-motosiklet-canta-tasima-kutusu-ruhsata-isletme-rehberi.png": {
+    "mtime": 1785256820.0,
+    "seen": 1792601768.9743927,
+    "ast_hash": "b1d32351296942798475ff2110dfe809",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/vigo.png": {
+    "mtime": 1785256826.0,
+    "seen": 1792601768.9743936,
+    "ast_hash": "67dd1f818f872167373d710a7a2a7123",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/kurye/yemeksepeti.png": {
+    "mtime": 1785256832.0,
+    "seen": 1792601768.9743946,
+    "ast_hash": "aa7c273b8742dc34897038e7b3762d86",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/mask.webp": {
+    "mtime": 1785050402.0,
+    "seen": 1792601768.9743958,
+    "ast_hash": "cf3f983e45dd5082b829279c957267e8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/project-guidance.webp": {
+    "mtime": 1784579600.0,
+    "seen": 1792601768.9743967,
+    "ast_hash": "b9511bdf4fe03371e3c0e989742c1710",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/scooter-canta-ruhsata-isletme-520.webp": {
+    "mtime": 1787094560.806627,
+    "seen": 1792601768.9743977,
+    "ast_hash": "5933c3933de1894b92caff6532e38756",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/scooter-canta-ruhsata-isletme.webp": {
+    "mtime": 1787094560.547419,
+    "seen": 1792601768.9743986,
+    "ast_hash": "e000feeff7bf3e1f6f7b7b817df03194",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/truck.webp": {
+    "mtime": 1786576477.7645729,
+    "seen": 1792601768.9743998,
+    "ast_hash": "fddcf1d833ae6bc1f30bb091e8db49e4",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/tse-onayli-arac-projeleri.webp": {
+    "mtime": 1786580246.6084495,
+    "seen": 1792601768.9744008,
+    "ast_hash": "7253563b1cf8ed55f4d60f942bf62e8a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/vehicle-after-clean.png": {
+    "mtime": 1785055130.0,
+    "seen": 1792601768.9744017,
+    "ast_hash": "b48b2cf5f0f54516c908b746343a3bcf",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/vehicle-before-after.png": {
+    "mtime": 1785054708.0,
+    "seen": 1792601768.974403,
+    "ast_hash": "ced21f74e13c40938374e593dc8ecaa2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/vehicle-before-foamy.png": {
+    "mtime": 1785055184.0,
+    "seen": 1792601768.9744039,
+    "ast_hash": "c08faf1aaed9d27c2391c7f267a52597",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/images/vehicle-conversion.webp": {
+    "mtime": 1784579600.0,
+    "seen": 1792601768.9744048,
+    "ast_hash": "61478b928da712abd3f0649fda75389b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakas-muhendislik-arac-proje-hizmetleri-bg.webp": {
+    "mtime": 1787062348.6107213,
+    "seen": 1792601768.974406,
+    "ast_hash": "902ddabcf40ea992437f701720349b68",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakas-tse-surec-infografik-320.webp": {
+    "mtime": 1787137171.5057154,
+    "seen": 1792601768.974407,
+    "ast_hash": "52758711997e890971815529ff5492e6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakas-tse-surec-infografik-420.webp": {
+    "mtime": 1787093713.5259123,
+    "seen": 1792601768.974408,
+    "ast_hash": "6d68a82483ded321226418bc9a74bb97",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakas-tse-surec-infografik-520.webp": {
+    "mtime": 1787094548.8785675,
+    "seen": 1792601768.9744089,
+    "ast_hash": "e4589723e2d812dd3cfc227a1762ec42",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakas-tse-surec-infografik.png": {
+    "mtime": 1787003054.8523996,
+    "seen": 1792601768.97441,
+    "ast_hash": "570911d8dc4611f65ac7fae61aa03c66",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakas-tse-surec-infografik.svg": {
+    "mtime": 1787002868.7831392,
+    "seen": 1792601768.974411,
+    "ast_hash": "29913de2627510ec4ce6157416840a5a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakas-tse-surec-infografik.webp": {
+    "mtime": 1787133236.8301811,
+    "seen": 1792601768.974412,
+    "ast_hash": "9687b5a3b887e26760dc700d5a82a31f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakasmuhendisli-favicon.webp": {
+    "mtime": 1787089143.405634,
+    "seen": 1792601768.9744132,
+    "ast_hash": "5ad006be3944fd0d6688c7748f09eddb",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakasmuhendislik-160.webp": {
+    "mtime": 1787131592.1562166,
+    "seen": 1792601768.9744143,
+    "ast_hash": "98d7a762f8afa21581a8afe8f530a15f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakasmuhendislik-96.webp": {
+    "mtime": 1787131592.1872172,
+    "seen": 1792601768.9744153,
+    "ast_hash": "7335fc4db3afd3e485d3d09fb19a2392",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakasmuhendislik-logo-420.webp": {
+    "mtime": 1787093681.4205923,
+    "seen": 1792601768.9744165,
+    "ast_hash": "aa4342931275f38147dddd0f1ec33b96",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakasmuhendislik-logo-580.webp": {
+    "mtime": 1787093679.9375772,
+    "seen": 1792601768.9744174,
+    "ast_hash": "0b2490113ed74df9c41f076f0afc029b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakasmuhendislik-logo.webp": {
+    "mtime": 1787094571.5196803,
+    "seen": 1792601768.9744184,
+    "ast_hash": "1e8859e23146f9ea05866c247ddfc613",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/karakasmuhendislik.webp": {
+    "mtime": 1787131599.1793485,
+    "seen": 1792601768.9744194,
+    "ast_hash": "98d7a762f8afa21581a8afe8f530a15f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/media/cekidemiri-300x216.jpg": {
+    "mtime": 1785232350.0,
+    "seen": 1792601768.9744203,
+    "ast_hash": "e13dea6d7136aad9bd97ac1909b4e008",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/media/cekidemiri-500x500.jpg": {
+    "mtime": 1785232350.0,
+    "seen": 1792601768.9744213,
+    "ast_hash": "551d3cfd339cd28026572d988782d9e0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/media/cekidemiri-520.webp": {
+    "mtime": 1787094560.1086235,
+    "seen": 1792601768.9744222,
+    "ast_hash": "5dd8f6537a476f1927ca21c1b55792ef",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/media/cekidemiri-600x432.jpg": {
+    "mtime": 1785232350.0,
+    "seen": 1792601768.9744236,
+    "ast_hash": "2a5f8fff4dcbd134685c48d25c7bf0e9",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/media/cekidemiri.jpg": {
+    "mtime": 1787060301.1630385,
+    "seen": 1792601768.9744248,
+    "ast_hash": "2b40087255526ee2751b8b09b77afc16",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/media/cekidemiri.webp": {
+    "mtime": 1787094559.979623,
+    "seen": 1792601768.9744258,
+    "ast_hash": "29a86ffc5cc780b45ab61c3135cf2157",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/og-image.webp": {
+    "mtime": 1787141459.4537504,
+    "seen": 1792601768.974427,
+    "ast_hash": "cd87b7a265324df0da4ec34baa454296",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/volang.webp": {
+    "mtime": 1786986137.1594243,
+    "seen": 1792601768.9744277,
+    "ast_hash": "202b3571c630851de87ac6cd384cb7ff",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/web-app-manifest-192x192.png": {
+    "mtime": 1787078454.0,
+    "seen": 1792601768.974429,
+    "ast_hash": "23221820b6a76d88753d1a56094a9bbe",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/public/web-app-manifest-512x512.png": {
+    "mtime": 1787078454.0,
+    "seen": 1792601768.9744298,
+    "ast_hash": "1761e4b9fe4762701be4670725d622fc",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/apple-touch-icon.png": {
+    "mtime": 1787078454.0,
+    "seen": 1792601768.9744315,
+    "ast_hash": "f9d5fd88e9721deb7cd657ab0600ee99",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/arac-proje-cta-2.webp": {
+    "mtime": 1787094567.4417703,
+    "seen": 1792601768.9744325,
+    "ast_hash": "b2211b7ee9eed0a40fb4366a9e0110de",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/arac-proje-cta.webp": {
+    "mtime": 1787161121.4191234,
+    "seen": 1792601768.9744334,
+    "ast_hash": "810042301cb605879290fb8b3fead2a7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/arac-proje-hizmetleri-sik-sorulan-sorular.webp": {
+    "mtime": 1787094567.7627046,
+    "seen": 1792601768.9744349,
+    "ast_hash": "e2e018b8acdebd25b78a23dbeee3a9d4",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/belgeler/iso-14001.webp": {
+    "mtime": 1786376074.6956773,
+    "seen": 1792601768.974436,
+    "ast_hash": "fd9627ab99e8bece06024cc04352a24c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/belgeler/iso-45001.webp": {
+    "mtime": 1786376074.6995935,
+    "seen": 1792601768.9744372,
+    "ast_hash": "a6b8c5abd944d648329376533bd26388",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/belgeler/iso-9001.webp": {
+    "mtime": 1786376074.6825466,
+    "seen": 1792601768.9744382,
+    "ast_hash": "b63163a419fbe2a0c24c0b345ed78fb4",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/belgeler/tse.webp": {
+    "mtime": 1786376074.7124367,
+    "seen": 1792601768.9744391,
+    "ast_hash": "ccecc687e1a9cd5dbc30aae641d279f8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car-banner-1024x462.webp": {
+    "mtime": 1787094563.40264,
+    "seen": 1792601768.97444,
+    "ast_hash": "fa9c531becbc87e7d933c30429536d03",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/audi-96.webp": {
+    "mtime": 1787132684.824862,
+    "seen": 1792601768.9744413,
+    "ast_hash": "78ee9c70fc37a31f2e065a4ad3ded04a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/audi.png": {
+    "mtime": 1787040696.0,
+    "seen": 1792601768.9744425,
+    "ast_hash": "ed4b55e919018a833a53e0125a0a6415",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/audi.webp": {
+    "mtime": 1787093682.3386016,
+    "seen": 1792601768.9744434,
+    "ast_hash": "2509a9f86cca26c44d5a77e369aeaa5b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/bmw-96.webp": {
+    "mtime": 1787132685.0228636,
+    "seen": 1792601768.9744446,
+    "ast_hash": "e7a69f0c59719cb6b49ed3ff5bcb37a7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/bmw.png": {
+    "mtime": 1787040696.0,
+    "seen": 1792601768.9744458,
+    "ast_hash": "da449473db8effb09b070429586792e2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/bmw.webp": {
+    "mtime": 1787093683.0936093,
+    "seen": 1792601768.9744468,
+    "ast_hash": "8729dbeb872d559dbc7c1b43cd0aad97",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/citroen-logo-96.webp": {
+    "mtime": 1787132685.200865,
+    "seen": 1792601768.974448,
+    "ast_hash": "6cf1694ad220a55a00ac48b998a92765",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/citroen-logo.webp": {
+    "mtime": 1787093683.4116125,
+    "seen": 1792601768.974449,
+    "ast_hash": "5abca64e434f6cbce865766a26a52d08",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/dacia-logo-96.webp": {
+    "mtime": 1787132685.2668655,
+    "seen": 1792601768.97445,
+    "ast_hash": "9bf2a68177aa8520453febe38cc8478b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/dacia-logo.webp": {
+    "mtime": 1787093683.5396137,
+    "seen": 1792601768.9744513,
+    "ast_hash": "9bb4718eb95ff7d57f2b6bde34f60762",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/ford-96.webp": {
+    "mtime": 1787132685.343866,
+    "seen": 1792601768.9744523,
+    "ast_hash": "d700263e3d6c8ff143b937a8249fe5de",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/ford.png": {
+    "mtime": 1787040696.0,
+    "seen": 1792601768.9744532,
+    "ast_hash": "8929c9eb3f3e946f7aedd3294473adca",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/ford.webp": {
+    "mtime": 1787093683.8576171,
+    "seen": 1792601768.9744542,
+    "ast_hash": "bd08594e1e49160e58973e24828491ab",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/honda-logo-96.webp": {
+    "mtime": 1787132685.5308676,
+    "seen": 1792601768.9744554,
+    "ast_hash": "de3be3ab7c443509642d5207717b6b7d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/honda-logo.webp": {
+    "mtime": 1787093684.2116206,
+    "seen": 1792601768.9744563,
+    "ast_hash": "590c5572dfa377622feb081277c5852e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/opel-96.webp": {
+    "mtime": 1787132685.7308693,
+    "seen": 1792601768.9744573,
+    "ast_hash": "ca030f4b7b8681639ca763d5f95d9af8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/opel.png": {
+    "mtime": 1787040696.0,
+    "seen": 1792601768.9744585,
+    "ast_hash": "dbaceab6d1ffe4a32b0b9f5bec75c657",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/opel.webp": {
+    "mtime": 1787093684.935628,
+    "seen": 1792601768.9744594,
+    "ast_hash": "3e70fd7b2613fcd501925ab2395c92e3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/peugeot-logo-96.webp": {
+    "mtime": 1787132685.8158698,
+    "seen": 1792601768.9744606,
+    "ast_hash": "675380ee36aa812a90967f368e5f058b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/peugeot-logo.webp": {
+    "mtime": 1787093685.0936296,
+    "seen": 1792601768.9744618,
+    "ast_hash": "f871a2744aa75df03d76ddab5a5d09f9",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/renault-logo-96.webp": {
+    "mtime": 1787132685.9348707,
+    "seen": 1792601768.9744627,
+    "ast_hash": "58564a87518b6a5034c5dfcbc25b2b00",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/renault-logo.webp": {
+    "mtime": 1787093685.3016317,
+    "seen": 1792601768.9744637,
+    "ast_hash": "11de8dc02ef16146ada661d1ad558dcd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/skoda-logo-96.webp": {
+    "mtime": 1787132686.0278716,
+    "seen": 1792601768.9744647,
+    "ast_hash": "5e637e8279440b78f65bf17d3d4abf9c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/skoda-logo.webp": {
+    "mtime": 1787093685.4796333,
+    "seen": 1792601768.9744658,
+    "ast_hash": "c2f4c82a98bb15b3e31b0a49587797fd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/toyota-logo-96.webp": {
+    "mtime": 1787132686.2608733,
+    "seen": 1792601768.974467,
+    "ast_hash": "8fff617240f55c3a5fb418d4b239e0a4",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/toyota-logo.webp": {
+    "mtime": 1787093685.9106379,
+    "seen": 1792601768.974468,
+    "ast_hash": "41c66d7dca1c3ce3efe4b0860cad79ec",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/volkswagen-96.webp": {
+    "mtime": 1787132686.479875,
+    "seen": 1792601768.9744692,
+    "ast_hash": "7d71207beeafa60e3f4cd331f19e6f5f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/volkswagen.png": {
+    "mtime": 1787040696.0,
+    "seen": 1792601768.9744701,
+    "ast_hash": "3af86de240d3b702c38693b385a7885d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/car/volkswagen.webp": {
+    "mtime": 1787093686.7806466,
+    "seen": 1792601768.974471,
+    "ast_hash": "72725800129b8d71f9d4a293c5e9d4ea",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/favicon-96x96.png": {
+    "mtime": 1787078454.0,
+    "seen": 1792601768.9744723,
+    "ast_hash": "d1dac38130fe91907b763c4df50ceff0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/google-1.webp": {
+    "mtime": 1786980041.5866277,
+    "seen": 1792601768.9744735,
+    "ast_hash": "8365307c71889e083c3ccbe4372fe4dc",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/arac-motor-degisimi-projesi-tse-onayli-karakas-muhendislik-520.webp": {
+    "mtime": 1787094549.4725704,
+    "seen": 1792601768.974475,
+    "ast_hash": "8e68e1a20538e82352e487c5d01b1645",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/arac-motor-degisimi-projesi-tse-onayli-karakas-muhendislik.webp": {
+    "mtime": 1787094549.2605693,
+    "seen": 1792601768.9744763,
+    "ast_hash": "76eccc4273db81c10a8922954f904329",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/ceki-demiri-projesi-520.webp": {
+    "mtime": 1787094550.0875735,
+    "seen": 1792601768.9744773,
+    "ast_hash": "c055d4bf816bd3760962a3313ffb402c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/ceki-demiri-projesi.webp": {
+    "mtime": 1787094549.8505723,
+    "seen": 1792601768.9744782,
+    "ast_hash": "b1e2e8eb6a98bd9b954626f993e2700e",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/engelli-aparati-montaj-projesi-520.webp": {
+    "mtime": 1787094550.6905766,
+    "seen": 1792601768.9744797,
+    "ast_hash": "908d07fbfd29c054318347e5b0618a6d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/engelli-aparati-montaj-projesi.webp": {
+    "mtime": 1787094550.4780147,
+    "seen": 1792601768.9744806,
+    "ast_hash": "d335289358e4049db7cc21f924dcf4aa",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/hasta-nakil-araci-donusum-projesi-520.webp": {
+    "mtime": 1787094551.34858,
+    "seen": 1792601768.9744816,
+    "ast_hash": "90d8d1b9ec0b23b7cf1ce778d6880356",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/hasta-nakil-araci-donusum-projesi.webp": {
+    "mtime": 1787094551.0765786,
+    "seen": 1792601768.9744828,
+    "ast_hash": "9652335fc647014ec2dbdcc42c65bea6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/hidrolik-ayak-projesi-520.webp": {
+    "mtime": 1787094551.974583,
+    "seen": 1792601768.974484,
+    "ast_hash": "b586336a8e59db4c8da6cbecda06fcc3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/hidrolik-ayak-projesi.webp": {
+    "mtime": 1787094551.7455819,
+    "seen": 1792601768.974485,
+    "ast_hash": "5ddfb95243dbe32b4fe63269c0084bf5",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/hidrolik-kapak-lift-projesi-520.webp": {
+    "mtime": 1787094552.7305868,
+    "seen": 1792601768.9744864,
+    "ast_hash": "465ca0ab4f4eb197ad3942e3d81c0048",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/hidrolik-kapak-lift-projesi.webp": {
+    "mtime": 1787094552.4889822,
+    "seen": 1792601768.9744873,
+    "ast_hash": "66f6517b893893fa1ba2b85181687042",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/karavan-projesi-520.webp": {
+    "mtime": 1787094553.3195896,
+    "seen": 1792601768.9744883,
+    "ast_hash": "1e4a850dc9a1821965a0877e08daf9ad",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/karavan-projesi.webp": {
+    "mtime": 1787094553.10791,
+    "seen": 1792601768.9744895,
+    "ast_hash": "c8cab543a08e9ea2c7412e3a89a06605",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/karayolu-uygunluk-belgesi-520.webp": {
+    "mtime": 1787094553.947593,
+    "seen": 1792601768.9744904,
+    "ast_hash": "69910b8d5f98b612d8c0561abd43311f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/karayolu-uygunluk-belgesi.webp": {
+    "mtime": 1787094553.7328866,
+    "seen": 1792601768.9744916,
+    "ast_hash": "5c65868c2f511904ee6db2e72f9c556b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/koltuk-sokum-projesi-520.webp": {
+    "mtime": 1787094554.5395958,
+    "seen": 1792601768.9744928,
+    "ast_hash": "372bf7108bc315fc7632568728404598",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/koltuk-sokum-projesi.webp": {
+    "mtime": 1787094554.3291247,
+    "seen": 1792601768.974494,
+    "ast_hash": "182b85adc54593b0dc3a29702c66198a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/lpg-sistemi-sokum-tadilati-520.webp": {
+    "mtime": 1787094555.1185987,
+    "seen": 1792601768.974495,
+    "ast_hash": "066c212512910842ec6e6456018415c1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/lpg-sistemi-sokum-tadilati.webp": {
+    "mtime": 1787094554.9025977,
+    "seen": 1792601768.9744964,
+    "ast_hash": "b00540685986452ea015d71badd16ae6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/lpg-sokum-projesi-520.webp": {
+    "mtime": 1787094555.6746016,
+    "seen": 1792601768.9744973,
+    "ast_hash": "cfdf4ceb5490ea6896433a51c5fc213c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/lpg-sokum-projesi.webp": {
+    "mtime": 1787094555.4656005,
+    "seen": 1792601768.9744985,
+    "ast_hash": "54ab918564d82cb9c5dac2f0241a0fe5",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/mobil-hizmet-ve-yol-yardim-araci-projesi-520.webp": {
+    "mtime": 1787136785.900203,
+    "seen": 1792601768.9744997,
+    "ast_hash": "40686b4e62f57696ec82296cb8e1c7e3",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/mobil-hizmet-ve-yol-yardim-araci-projesi.webp": {
+    "mtime": 1787131592.1232162,
+    "seen": 1792601768.974501,
+    "ast_hash": "56575d18b7fc26c029afd0f8fc1bd6bc",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/motosiklet-arka-canta-projesi-520.webp": {
+    "mtime": 1787094556.2676408,
+    "seen": 1792601768.974502,
+    "ast_hash": "e050311e00882bab9f8da991b7c70faa",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/motosiklet-arka-canta-projesi.webp": {
+    "mtime": 1787094556.0592892,
+    "seen": 1792601768.9745033,
+    "ast_hash": "e4d321c982182850a565b214c806ce94",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/motosiklet-sase-degisim-projesi-520.webp": {
+    "mtime": 1787094556.8606074,
+    "seen": 1792601768.9745045,
+    "ast_hash": "e32a5ae0bd17538cac98b03bd338bb0a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/motosiklet-sase-degisim-projesi.webp": {
+    "mtime": 1787094556.64529,
+    "seen": 1792601768.9745054,
+    "ast_hash": "7b700fe140e8366050108b634a2c162d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/okul-servisi-sokum-projesi-520.webp": {
+    "mtime": 1787094557.4656105,
+    "seen": 1792601768.9745064,
+    "ast_hash": "57a6f40e273bf88ea37eae863b6d0620",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/okul-servisi-sokum-projesi.webp": {
+    "mtime": 1787094557.2389019,
+    "seen": 1792601768.9745076,
+    "ast_hash": "717cbb8d19c5f0c4e787731d4f9a5334",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/pickup-camli-kabin-520.webp": {
+    "mtime": 1787094558.6076162,
+    "seen": 1792601768.9745085,
+    "ast_hash": "3e5b0717c6320a4e93225c3c55aed8b7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/pickup-camli-kabin-projesi-520.webp": {
+    "mtime": 1787094558.0396132,
+    "seen": 1792601768.9745095,
+    "ast_hash": "3e5b0717c6320a4e93225c3c55aed8b7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/pickup-camli-kabin-projesi.webp": {
+    "mtime": 1787094557.8288946,
+    "seen": 1792601768.974511,
+    "ast_hash": "21a52c6064ec519ea08a5ce747b7853d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/pickup-camli-kabin.webp": {
+    "mtime": 1787094558.3983924,
+    "seen": 1792601768.9745119,
+    "ast_hash": "21a52c6064ec519ea08a5ce747b7853d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/sari-tepe-lambali-eskort-araci-projesi-520.webp": {
+    "mtime": 1787094559.174619,
+    "seen": 1792601768.974513,
+    "ast_hash": "8cd9e9f8c509c37262bcfda68f6718bf",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/sari-tepe-lambali-eskort-araci-projesi.webp": {
+    "mtime": 1787094558.9722002,
+    "seen": 1792601768.9745145,
+    "ast_hash": "bd8ae7c74c3db328e139c5fb11bd8e99",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/surucu-kursu-araci-projesi-520.webp": {
+    "mtime": 1787094559.7546668,
+    "seen": 1792601768.9745157,
+    "ast_hash": "e1f0a266a32ff83b0eaf31634ef2052d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/hizmetler/surucu-kursu-araci-projesi.webp": {
+    "mtime": 1787094559.5432003,
+    "seen": 1792601768.9745166,
+    "ast_hash": "4ded19ba3fc44d7374250372148620e2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/araba.webp": {
+    "mtime": 1786580186.6308167,
+    "seen": 1792601768.9745178,
+    "ast_hash": "ce89d9198ee0f7954a5e36ddb21df402",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/araclar.webp": {
+    "mtime": 1785061690.0,
+    "seen": 1792601768.974519,
+    "ast_hash": "f0300f76778e9e392920d1391f0a6775",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/auto-cart-light2.webp": {
+    "mtime": 1786580204.6463416,
+    "seen": 1792601768.97452,
+    "ast_hash": "196e5a54497a89c04f3dd4866dada53a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/electric-lights.webp": {
+    "mtime": 1786576477.7496946,
+    "seen": 1792601768.9745214,
+    "ast_hash": "ebc44341bf029b8d6497ada35b0988d6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/faq.webp": {
+    "mtime": 1785061678.0,
+    "seen": 1792601768.9745226,
+    "ast_hash": "bedf53fe22aebe94ea877ad2747ed719",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/hero-engineering.webp": {
+    "mtime": 1784579600.0,
+    "seen": 1792601768.9745235,
+    "ast_hash": "6062e80d0bc586a20fd4fafa90c921a1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/hero-workshop.jpg": {
+    "mtime": 1787000507.9230587,
+    "seen": 1792601768.974525,
+    "ast_hash": "84ff94c17b5c0b44f322b7c262f879f7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/home-process-technical-review.webp": {
+    "mtime": 1786562434.0381866,
+    "seen": 1792601768.974526,
+    "ast_hash": "dbbf2d6f423b97e09c99164850bb5995",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/card-1.png": {
+    "mtime": 1787003507.6703324,
+    "seen": 1792601768.9745271,
+    "ast_hash": "76a25d5b82ab988e79c1853b39751a59",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/card-1.webp": {
+    "mtime": 1787037145.8117433,
+    "seen": 1792601768.9745283,
+    "ast_hash": "ce3d231d0b857a6ddc3b04862713041f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/card-2.png": {
+    "mtime": 1787003507.8373353,
+    "seen": 1792601768.9745293,
+    "ast_hash": "fe4c55f3ea5bb0363a21e0e0cfc06ade",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/card-2.webp": {
+    "mtime": 1787037145.9327433,
+    "seen": 1792601768.9745302,
+    "ast_hash": "93903f39bc8b660317d5348315ed7cf0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/card-3.png": {
+    "mtime": 1787003508.0173385,
+    "seen": 1792601768.9745314,
+    "ast_hash": "71a66036b447084ae2beb95570868612",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/card-3.webp": {
+    "mtime": 1787037146.0877435,
+    "seen": 1792601768.9745324,
+    "ast_hash": "8eda73f5366e85f8a5c75655c96a1be2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/card-4.png": {
+    "mtime": 1787003508.1353407,
+    "seen": 1792601768.9745336,
+    "ast_hash": "a5518db800de822b245cd53799ca216a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/card-4.webp": {
+    "mtime": 1787037146.1747437,
+    "seen": 1792601768.974535,
+    "ast_hash": "270b315e7cbb2edf001b04059a3ffd71",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/card-5.png": {
+    "mtime": 1787003508.2473426,
+    "seen": 1792601768.974536,
+    "ast_hash": "7186faa662411b133f202a604e00ae37",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/card-5.webp": {
+    "mtime": 1787037146.2577436,
+    "seen": 1792601768.974537,
+    "ast_hash": "78d95157ecdb702c4ec16f3d6efa171b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/clean-car.png": {
+    "mtime": 1787036963.540551,
+    "seen": 1792601768.9745383,
+    "ast_hash": "455ed1789ce898b15f3170e01bcd9d19",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/clean-card-1.png": {
+    "mtime": 1787037025.848607,
+    "seen": 1792601768.9745395,
+    "ast_hash": "4c2568a3b2e89f233885060c00e686cc",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/clean-card-1.webp": {
+    "mtime": 1787037026.2946074,
+    "seen": 1792601768.9745405,
+    "ast_hash": "439292f4e805b8d57f80f2f51abf1bd8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/clean-card-2.png": {
+    "mtime": 1787037025.9755335,
+    "seen": 1792601768.9745417,
+    "ast_hash": "b7ec1437f3e5ea9b916b2b372e168a1f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/clean-card-2.webp": {
+    "mtime": 1787037026.3326075,
+    "seen": 1792601768.9745429,
+    "ast_hash": "93903f39bc8b660317d5348315ed7cf0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/clean-card-3.png": {
+    "mtime": 1787037026.0736072,
+    "seen": 1792601768.9745438,
+    "ast_hash": "0a16ab7a32db018d26d88321f33c3ab6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/clean-card-3.webp": {
+    "mtime": 1787037026.3764307,
+    "seen": 1792601768.9745452,
+    "ast_hash": "8c2998ea485b1e86d89102003a67af58",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/clean-card-4.png": {
+    "mtime": 1787037026.1656072,
+    "seen": 1792601768.9745462,
+    "ast_hash": "3321e43c35969d5531591db29d0185df",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/clean-card-4.webp": {
+    "mtime": 1787037026.4196074,
+    "seen": 1792601768.9745474,
+    "ast_hash": "3b14c3e67d75fa99f2e93c1b48945222",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/clean-card-5.png": {
+    "mtime": 1787037026.2576075,
+    "seen": 1792601768.9745488,
+    "ast_hash": "25d6f64a1e05e002e62f88a116c62c25",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/clean-card-5.webp": {
+    "mtime": 1787037026.471957,
+    "seen": 1792601768.9745498,
+    "ast_hash": "86a1eda47251dfcbf14c4ee248c58d75",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-car-base.png": {
+    "mtime": 1787003462.1535249,
+    "seen": 1792601768.9745507,
+    "ast_hash": "08b9aced94368a5704dccacac9a5d788",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-car-base.webp": {
+    "mtime": 1787003467.9636278,
+    "seen": 1792601768.9745522,
+    "ast_hash": "03a5e5dbd1c0314da1033242238f9590",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-card-1.png": {
+    "mtime": 1787003459.239473,
+    "seen": 1792601768.974553,
+    "ast_hash": "70cc5cf1cb675038baa6d2a29e59a952",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-card-1.webp": {
+    "mtime": 1787003468.1136305,
+    "seen": 1792601768.974554,
+    "ast_hash": "a9e742873efd7ab36bcec90c66037c7c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-card-2.png": {
+    "mtime": 1787003459.8074832,
+    "seen": 1792601768.9745553,
+    "ast_hash": "1414a531edcfa669818681ad5d426d8a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-card-2.webp": {
+    "mtime": 1787003468.2496328,
+    "seen": 1792601768.9745564,
+    "ast_hash": "1cf1dfb59bd1ad0f9bf9f9204b1b29ff",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-card-3.png": {
+    "mtime": 1787003460.3884935,
+    "seen": 1792601768.9745576,
+    "ast_hash": "3e81ac3ad1823b1a71579db604ccc7bd",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-card-3.webp": {
+    "mtime": 1787003468.3986356,
+    "seen": 1792601768.974559,
+    "ast_hash": "a6885f1742c1df36ca2f3bce32c2bb74",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-card-4.png": {
+    "mtime": 1787003460.9855042,
+    "seen": 1792601768.9745598,
+    "ast_hash": "4defe193e6651f50a400ba77b414d527",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-card-4.webp": {
+    "mtime": 1787003468.539638,
+    "seen": 1792601768.9745607,
+    "ast_hash": "05c60076707c6f4093bc33bf36b99260",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-card-5.png": {
+    "mtime": 1787003461.5615144,
+    "seen": 1792601768.9745617,
+    "ast_hash": "25a1ec286146016c9393862c51360af6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/layer-card-5.webp": {
+    "mtime": 1787003468.6796405,
+    "seen": 1792601768.974563,
+    "ast_hash": "90513237fa4c359ea93d183368e0c9b6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/step-1.png": {
+    "mtime": 1787003434.8210404,
+    "seen": 1792601768.9745638,
+    "ast_hash": "5186c9a169932f68ff75c0fa5660e4f7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/step-2.png": {
+    "mtime": 1787003434.9260423,
+    "seen": 1792601768.9745648,
+    "ast_hash": "477b36991e83e58e1bab10ffd38fa21b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/step-3.png": {
+    "mtime": 1787003435.0391738,
+    "seen": 1792601768.974566,
+    "ast_hash": "9a032bbb49cfc44e91972251385fd969",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/step-4.png": {
+    "mtime": 1787003435.1000452,
+    "seen": 1792601768.9745672,
+    "ast_hash": "6e90722d231533237f8242ab589d8894",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/infographic/step-5.png": {
+    "mtime": 1787003435.1590464,
+    "seen": 1792601768.9745681,
+    "ast_hash": "8a7454bde5ec07d66a4b53c0d9c9348c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/karakas-cta.webp": {
+    "mtime": 1785244532.0,
+    "seen": 1792601768.9745693,
+    "ast_hash": "85d898c494af52abe73a8f02d6a97ce8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/Dominos_pizza_logo.webp": {
+    "mtime": 1785256684.0,
+    "seen": 1792601768.9745703,
+    "ast_hash": "b3696acbfb6ac54f60ab5bd72fb8b5ac",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/Getir_wordmark.webp": {
+    "mtime": 1785256706.0,
+    "seen": 1792601768.9745715,
+    "ast_hash": "2ef57563b225ef1f030f85f56f7b72d1",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/MOTO-KURYE.png": {
+    "mtime": 1785256762.0,
+    "seen": 1792601768.974573,
+    "ast_hash": "56de642d2dacbe092967700ed39c998d",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/MiGROS_Logo.webp": {
+    "mtime": 1785256756.0,
+    "seen": 1792601768.9745739,
+    "ast_hash": "0055cf436b88e5d0ed88bba4627be739",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/acikinca.png": {
+    "mtime": 1785256660.0,
+    "seen": 1792601768.9745748,
+    "ast_hash": "21bfe7ac656a037fa51e6eef216d8093",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/banabi.webp": {
+    "mtime": 1785256670.0,
+    "seen": 1792601768.9745762,
+    "ast_hash": "a44b587e96605911c30006ea6ef60cc7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/bi-sey.jpg": {
+    "mtime": 1785256678.0,
+    "seen": 1792601768.9745772,
+    "ast_hash": "e4b84f6a3d05e4516c5c16955fb15395",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/doyurun-beni.png": {
+    "mtime": 1785256690.0,
+    "seen": 1792601768.9745781,
+    "ast_hash": "104e0f6236c3557abcef27a543606685",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/fiyuu.png": {
+    "mtime": 1785256694.0,
+    "seen": 1792601768.9745796,
+    "ast_hash": "26ff59cb966823b2c8b7560466843bd2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/fuudy-w-logo.webp": {
+    "mtime": 1785256700.0,
+    "seen": 1792601768.9745805,
+    "ast_hash": "a5b1a6ea89253f82bcb11e2551ec9f45",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/hemen-yolda.png": {
+    "mtime": 1785256716.0,
+    "seen": 1792601768.9745815,
+    "ast_hash": "fdcb9d5b4ae7781e9963d9f4783d2ef7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/hizir.png": {
+    "mtime": 1785256724.0,
+    "seen": 1792601768.9745831,
+    "ast_hash": "a9ee819288bd941554912065862d0c49",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/jetbee-new-logo-white.webp": {
+    "mtime": 1785256730.0,
+    "seen": 1792601768.974584,
+    "ast_hash": "413958aba8caef1a82fe63970e36fd48",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/lalamove.webp": {
+    "mtime": 1785256736.0,
+    "seen": 1792601768.974585,
+    "ast_hash": "5474b03579c53419de694e36dd85669c",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/marti-kurye.png": {
+    "mtime": 1785256742.0,
+    "seen": 1792601768.9745865,
+    "ast_hash": "65c34c69f11eef41d2196e5667585815",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/marti_140cl.png": {
+    "mtime": 1785256752.0,
+    "seen": 1792601768.9745874,
+    "ast_hash": "b2493b057ad7c99a9760d46251aac3ed",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/mcdonalds.png": {
+    "mtime": 1785256778.0,
+    "seen": 1792601768.9745882,
+    "ast_hash": "b0dacbf6b82530895ff9653a4ef562f7",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/paket-taxi_.png": {
+    "mtime": 1785256774.0,
+    "seen": 1792601768.974589,
+    "ast_hash": "d9f514e701654802ac2ac08e80803392",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/rezzta.webp": {
+    "mtime": 1785256784.0,
+    "seen": 1792601768.9745905,
+    "ast_hash": "f80f7479e74f5a85e730bb6ff1cd6061",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/tikla-gelsin (1).webp": {
+    "mtime": 1785256798.0,
+    "seen": 1792601768.9745915,
+    "ast_hash": "7801deab280ab024a36920bafd12ed75",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/tikla-gelsin.webp": {
+    "mtime": 1785256790.0,
+    "seen": 1792601768.9745927,
+    "ast_hash": "7801deab280ab024a36920bafd12ed75",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/trendyol-go.png": {
+    "mtime": 1785256812.0,
+    "seen": 1792601768.974594,
+    "ast_hash": "6345dee1c2e11d9efe22fca25e576216",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/trendyol.png": {
+    "mtime": 1785256814.0,
+    "seen": 1792601768.974595,
+    "ast_hash": "2885f78ab1e9f7160331932d284ea774",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/uber-eats-motosiklet-canta-tasima-kutusu-ruhsata-isletme-rehberi.png": {
+    "mtime": 1785256820.0,
+    "seen": 1792601768.974596,
+    "ast_hash": "b1d32351296942798475ff2110dfe809",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/vigo.png": {
+    "mtime": 1785256826.0,
+    "seen": 1792601768.9745975,
+    "ast_hash": "67dd1f818f872167373d710a7a2a7123",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/kurye/yemeksepeti.png": {
+    "mtime": 1785256832.0,
+    "seen": 1792601768.9745984,
+    "ast_hash": "aa7c273b8742dc34897038e7b3762d86",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/mask.webp": {
+    "mtime": 1785050402.0,
+    "seen": 1792601768.9745994,
+    "ast_hash": "cf3f983e45dd5082b829279c957267e8",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/project-guidance.webp": {
+    "mtime": 1784579600.0,
+    "seen": 1792601768.9746008,
+    "ast_hash": "b9511bdf4fe03371e3c0e989742c1710",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/scooter-canta-ruhsata-isletme-520.webp": {
+    "mtime": 1787094560.806627,
+    "seen": 1792601768.974602,
+    "ast_hash": "5933c3933de1894b92caff6532e38756",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/scooter-canta-ruhsata-isletme.webp": {
+    "mtime": 1787094560.547419,
+    "seen": 1792601768.974603,
+    "ast_hash": "e000feeff7bf3e1f6f7b7b817df03194",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/truck.webp": {
+    "mtime": 1786576477.7645729,
+    "seen": 1792601768.9746041,
+    "ast_hash": "fddcf1d833ae6bc1f30bb091e8db49e4",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/tse-onayli-arac-projeleri.webp": {
+    "mtime": 1786580246.6084495,
+    "seen": 1792601768.974605,
+    "ast_hash": "7253563b1cf8ed55f4d60f942bf62e8a",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/vehicle-after-clean.png": {
+    "mtime": 1785055130.0,
+    "seen": 1792601768.974606,
+    "ast_hash": "b48b2cf5f0f54516c908b746343a3bcf",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/vehicle-before-after.png": {
+    "mtime": 1785054708.0,
+    "seen": 1792601768.974607,
+    "ast_hash": "ced21f74e13c40938374e593dc8ecaa2",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/vehicle-before-foamy.png": {
+    "mtime": 1785055184.0,
+    "seen": 1792601768.9746084,
+    "ast_hash": "c08faf1aaed9d27c2391c7f267a52597",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/images/vehicle-conversion.webp": {
+    "mtime": 1784579600.0,
+    "seen": 1792601768.9746094,
+    "ast_hash": "61478b928da712abd3f0649fda75389b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakas-muhendislik-arac-proje-hizmetleri-bg.webp": {
+    "mtime": 1787062348.6107213,
+    "seen": 1792601768.9746108,
+    "ast_hash": "902ddabcf40ea992437f701720349b68",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakas-tse-surec-infografik-320.webp": {
+    "mtime": 1787137171.5057154,
+    "seen": 1792601768.9746118,
+    "ast_hash": "52758711997e890971815529ff5492e6",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakas-tse-surec-infografik-420.webp": {
+    "mtime": 1787093713.5259123,
+    "seen": 1792601768.9746127,
+    "ast_hash": "6d68a82483ded321226418bc9a74bb97",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakas-tse-surec-infografik-520.webp": {
+    "mtime": 1787094548.8785675,
+    "seen": 1792601768.974614,
+    "ast_hash": "e4589723e2d812dd3cfc227a1762ec42",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakas-tse-surec-infografik.png": {
+    "mtime": 1787003054.8523996,
+    "seen": 1792601768.974615,
+    "ast_hash": "570911d8dc4611f65ac7fae61aa03c66",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakas-tse-surec-infografik.webp": {
+    "mtime": 1787133236.8301811,
+    "seen": 1792601768.974616,
+    "ast_hash": "9687b5a3b887e26760dc700d5a82a31f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakasmuhendisli-favicon.webp": {
+    "mtime": 1787089143.405634,
+    "seen": 1792601768.9746175,
+    "ast_hash": "5ad006be3944fd0d6688c7748f09eddb",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakasmuhendislik-160.webp": {
+    "mtime": 1787131592.1562166,
+    "seen": 1792601768.974619,
+    "ast_hash": "98d7a762f8afa21581a8afe8f530a15f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakasmuhendislik-96.webp": {
+    "mtime": 1787131592.1872172,
+    "seen": 1792601768.97462,
+    "ast_hash": "7335fc4db3afd3e485d3d09fb19a2392",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakasmuhendislik-logo-420.webp": {
+    "mtime": 1787093681.4205923,
+    "seen": 1792601768.9746213,
+    "ast_hash": "aa4342931275f38147dddd0f1ec33b96",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakasmuhendislik-logo-580.webp": {
+    "mtime": 1787093679.9375772,
+    "seen": 1792601768.9746222,
+    "ast_hash": "0b2490113ed74df9c41f076f0afc029b",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakasmuhendislik-logo.webp": {
+    "mtime": 1787094571.5196803,
+    "seen": 1792601768.9746234,
+    "ast_hash": "1e8859e23146f9ea05866c247ddfc613",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/karakasmuhendislik.webp": {
+    "mtime": 1787131599.1793485,
+    "seen": 1792601768.9746244,
+    "ast_hash": "98d7a762f8afa21581a8afe8f530a15f",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/media/cekidemiri-300x216.jpg": {
+    "mtime": 1785232350.0,
+    "seen": 1792601768.9746256,
+    "ast_hash": "e13dea6d7136aad9bd97ac1909b4e008",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/media/cekidemiri-500x500.jpg": {
+    "mtime": 1785232350.0,
+    "seen": 1792601768.9746268,
+    "ast_hash": "551d3cfd339cd28026572d988782d9e0",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/media/cekidemiri-520.webp": {
+    "mtime": 1787094560.1086235,
+    "seen": 1792601768.9746277,
+    "ast_hash": "5dd8f6537a476f1927ca21c1b55792ef",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/media/cekidemiri-600x432.jpg": {
+    "mtime": 1785232350.0,
+    "seen": 1792601768.974629,
+    "ast_hash": "2a5f8fff4dcbd134685c48d25c7bf0e9",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/media/cekidemiri.jpg": {
+    "mtime": 1787060301.1630385,
+    "seen": 1792601768.97463,
+    "ast_hash": "2b40087255526ee2751b8b09b77afc16",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/media/cekidemiri.webp": {
+    "mtime": 1787094559.979623,
+    "seen": 1792601768.974631,
+    "ast_hash": "29a86ffc5cc780b45ab61c3135cf2157",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/og-image.webp": {
+    "mtime": 1787141459.4537504,
+    "seen": 1792601768.974632,
+    "ast_hash": "cd87b7a265324df0da4ec34baa454296",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/volang.webp": {
+    "mtime": 1786986137.1594243,
+    "seen": 1792601768.9746332,
+    "ast_hash": "202b3571c630851de87ac6cd384cb7ff",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/web-app-manifest-192x192.png": {
+    "mtime": 1787078454.0,
+    "seen": 1792601768.9746342,
+    "ast_hash": "23221820b6a76d88753d1a56094a9bbe",
+    "semantic_hash": ""
+  },
+  "templates/astrojs-boilerplate/src/assets/site-images/web-app-manifest-512x512.png": {
+    "mtime": 1787078454.0,
+    "seen": 1792601768.9746356,
+    "ast_hash": "1761e4b9fe4762701be4670725d622fc",
+    "semantic_hash": ""
+  },
+  "templates/starter/components.json": {
+    "mtime": 1792602043.7004085,
+    "seen": 1792602430.321412,
+    "ast_hash": "aaa3f20a8757ff6fbf54726423fa0c8d",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/components/Brand.astro": {
+    "mtime": 1792602120.6606278,
+    "seen": 1792602430.321415,
+    "ast_hash": "0657b8414efe62d90dda322270276367",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/components/SiteHeader.astro": {
+    "mtime": 1792602211.279838,
+    "seen": 1792602430.3214219,
+    "ast_hash": "7f4005c41df968c17ff32c0bdfef05ca",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/lib/utils.ts": {
+    "mtime": 1792602043.6978254,
+    "seen": 1792602430.3214278,
+    "ast_hash": "5a6fd53fdcf2be529e9cc0b718fde352",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/button/Button.astro": {
+    "mtime": 1792602043.697588,
+    "seen": 1792602430.3214405,
+    "ast_hash": "fd763aca7c89cbf1a6303771c135059c",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/button/index.ts": {
+    "mtime": 1792602043.697588,
+    "seen": 1792602430.321442,
+    "ast_hash": "93041d3aced707b1920b056bcd761bab",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/navigation-menu/NavigationMenu.astro": {
+    "mtime": 1792602049.7409062,
+    "seen": 1792602430.3214428,
+    "ast_hash": "87435246bae9b3b67c1fa375921ad2b3",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/navigation-menu/NavigationMenuContent.astro": {
+    "mtime": 1792602043.6976604,
+    "seen": 1792602430.321444,
+    "ast_hash": "0fca5ef3be5c645b5a0fdc0f8621a30e",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/navigation-menu/NavigationMenuIndicator.astro": {
+    "mtime": 1792602043.6976604,
+    "seen": 1792602430.3214452,
+    "ast_hash": "652b866aea9b49bf1d5224234a33b935",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/navigation-menu/NavigationMenuItem.astro": {
+    "mtime": 1792602043.6976604,
+    "seen": 1792602430.3214464,
+    "ast_hash": "5a5253d36f08c4f5a27789abf542dfc0",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/navigation-menu/NavigationMenuLink.astro": {
+    "mtime": 1792602043.6976604,
+    "seen": 1792602430.3214471,
+    "ast_hash": "4d52711ced26a30c03b0a1875118aac3",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/navigation-menu/NavigationMenuList.astro": {
+    "mtime": 1792602043.6976604,
+    "seen": 1792602430.321448,
+    "ast_hash": "30e04f4821a6a670889e8274bf0a7410",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/navigation-menu/NavigationMenuPositioner.astro": {
+    "mtime": 1792602043.6976604,
+    "seen": 1792602430.3214495,
+    "ast_hash": "0cd05f57c65b4bc98034d3fda7476c63",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/navigation-menu/NavigationMenuTrigger.astro": {
+    "mtime": 1792602043.6976604,
+    "seen": 1792602430.3214505,
+    "ast_hash": "e531ad139cfa81e2a5f6bfa4937549f2",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/navigation-menu/NavigationMenuViewport.astro": {
+    "mtime": 1792602043.6976604,
+    "seen": 1792602430.3214514,
+    "ast_hash": "c850c2217c47fe9fc0cd4e9f10e219b0",
+    "semantic_hash": ""
+  },
+  "templates/starter/src/ui/navigation-menu/index.ts": {
+    "mtime": 1792602043.6978254,
+    "seen": 1792602430.3214526,
+    "ast_hash": "d04b4cf983e42eff573fce3a14846815",
+    "semantic_hash": ""
+  },
+  "packages/core/src/cli/init.ts": {
+    "mtime": 1792606437.5146382,
+    "seen": 1792606890.9823225,
+    "ast_hash": "8f1f18af522464f013b14092e349321e",
+    "semantic_hash": ""
+  },
+  "packages/core/tests/unit/cli-init.test.ts": {
+    "mtime": 1792605592.209074,
+    "seen": 1792606890.9824517,
+    "ast_hash": "870a3d592245104fd5262f00d0c03250",
+    "semantic_hash": ""
+  },
+  ".changeset/wrap-existing-astro.md": {
+    "mtime": 1792605521.9563954,
+    "seen": 1792605586.2850485,
+    "ast_hash": "486727525831217e78bb6f1edac34d39",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/existing-astro-project.md": {
+    "mtime": 1792606771.7853618,
+    "seen": 1792606890.982961,
+    "ast_hash": "bb794ede5fcc8011a8ef10b5a92db3ab",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/existing-astro-project.md": {
+    "mtime": 1792606771.785577,
+    "seen": 1792606890.9830105,
+    "ast_hash": "ef8019fade7c23713b77bf1fca366fa8",
+    "semantic_hash": ""
+  },
+  "packages/core/src/astro/live-content.ts": {
+    "mtime": 1792604802.9008412,
+    "seen": 1792605152.2444162,
+    "ast_hash": "e1e028b9ca67df609c5d234f197d4687",
+    "semantic_hash": ""
+  },
+  "packages/core/src/astro/live-runtime.ts": {
+    "mtime": 1792604802.295273,
+    "seen": 1792605152.244418,
+    "ast_hash": "57774809986b6a3f1e17b1e5c20ed518",
+    "semantic_hash": ""
+  },
+  "packages/core/tests/unit/astro-live.test.ts": {
+    "mtime": 1792604802.2954404,
+    "seen": 1792605152.2445521,
+    "ast_hash": "f91ffdd13f8558a59e5aafc0461116b8",
+    "semantic_hash": ""
+  },
+  "packages/core/src/themes/github.ts": {
+    "mtime": 1792614172.2106578,
+    "seen": 1792614218.6427865,
+    "ast_hash": "eba06a54146ca9cf8a9b3fc120697afb",
+    "semantic_hash": ""
+  },
+  "packages/core/tests/unit/themes-github.test.ts": {
+    "mtime": 1792614172.2108812,
+    "seen": 1792614218.6428633,
+    "ast_hash": "612cd06692d8d52c6b21fba0f07f570c",
+    "semantic_hash": ""
+  },
+  "templates/starter/serve.mjs": {
+    "mtime": 1792606228.5952728,
+    "seen": 1792606890.9827762,
+    "ast_hash": "ddcef7c2cd69ec9ce5f42bc39bde00a7",
+    "semantic_hash": ""
+  },
+  ".changeset/github-themes.md": {
+    "mtime": 1792608287.2937214,
+    "seen": 1792608384.2396,
+    "ast_hash": "9e623786b1b2b400ae9696719bd87d95",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/guides/github-themes.md": {
+    "mtime": 1792608597.9205709,
+    "seen": 1792608616.160136,
+    "ast_hash": "14328a8382ff5eee294586ee7ebd0fe4",
+    "semantic_hash": ""
+  },
+  "docs/src/content/docs/tr/guides/github-themes.md": {
+    "mtime": 1792608597.9213922,
+    "seen": 1792608616.1601827,
+    "ast_hash": "0bfd0842b5a03dc62e1c58747db128d5",
     "semantic_hash": ""
   }
 }
