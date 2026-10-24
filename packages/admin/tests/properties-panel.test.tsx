@@ -1,5 +1,7 @@
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
+import { chooseSelect } from "./utils/select.ts";
 import { PropertiesPanel } from "../src/components/visual-editor/Properties.tsx";
 import { PRESETS } from "../src/components/visual-editor/modules.ts";
 import { $context, $selected, $state, $tree, $visual, addPreset, load } from "../src/components/visual-editor/store.ts";
@@ -25,7 +27,7 @@ beforeEach(() => {
 	addPreset(textPreset);
 });
 
-describe("PropertiesPanel", { timeout: 15_000 }, () => {
+describe("PropertiesPanel", { timeout: 30_000 }, () => {
 	it("shows Instatic's Styles/Attributes tabs, class picker, sections and right-side style rail", () => {
 		renderPanel();
 		const panel = screen.getByLabelText("Properties");
@@ -72,6 +74,61 @@ describe("PropertiesPanel", { timeout: 15_000 }, () => {
 		expect(within(panel).queryByText("Width", { exact: true })).not.toBeInTheDocument();
 	});
 
+	it("edits flex layout, position offsets, linked spacing and radius corners", async () => {
+		const user = userEvent.setup();
+		renderPanel();
+		const panel = screen.getByLabelText("Properties");
+		fireEvent.click(within(panel).getByRole("button", { name: "Flex" }));
+		const selected = $selected.get()!;
+		expect($tree.get().nodes[selected]!.styles.display).toBe("flex");
+
+		fireEvent.click(within(panel).getByRole("button", { name: "Column" }));
+		fireEvent.click(within(panel).getByRole("button", { name: "Wrap" }));
+		fireEvent.click(within(panel).getByRole("button", { name: "Align center" }));
+		await chooseSelect(user, "Distribute", "Space between");
+		const gap = within(panel).getByLabelText("Gap");
+		fireEvent.change(gap, { target: { value: "24px" } });
+		fireEvent.blur(gap);
+		expect($tree.get().nodes[selected]!.styles).toMatchObject({
+			display: "flex",
+			"flex-direction": "column",
+			"flex-wrap": "wrap",
+			"align-items": "center",
+			"justify-content": "space-between",
+			gap: "24px",
+		});
+
+		await chooseSelect(user, "Position", "Absolute");
+		const top = within(panel).getByLabelText("Top offset");
+		fireEvent.change(top, { target: { value: "12px" } });
+		fireEvent.blur(top);
+		expect($tree.get().nodes[selected]!.styles).toMatchObject({ position: "absolute", top: "12px" });
+
+		const padding = within(panel).getByLabelText("Padding all sides");
+		fireEvent.change(padding, { target: { value: "16px" } });
+		fireEvent.blur(padding);
+		expect($tree.get().nodes[selected]!.styles).toMatchObject({
+			"padding-top": "16px",
+			"padding-right": "16px",
+			"padding-bottom": "16px",
+			"padding-left": "16px",
+		});
+		fireEvent.click(within(panel).getByRole("button", { name: "Edit top padding" }));
+		const topPadding = within(panel).getByLabelText("Padding top");
+		fireEvent.change(topPadding, { target: { value: "24px" } });
+		fireEvent.blur(topPadding);
+		expect($tree.get().nodes[selected]!.styles).toMatchObject({ "padding-top": "24px", "padding-left": "16px" });
+
+		const radius = within(panel).getByLabelText("Border radius all corners");
+		fireEvent.change(radius, { target: { value: "8px" } });
+		fireEvent.blur(radius);
+		fireEvent.click(within(panel).getByRole("button", { name: "Edit Top Left radius corner" }));
+		const corner = within(panel).getByLabelText("Top Left border radius");
+		fireEvent.change(corner, { target: { value: "12px" } });
+		fireEvent.blur(corner);
+		expect($tree.get().nodes[selected]!.styles["border-radius"]).toBe("12px 8px 8px 8px");
+	});
+
 	it("reveals the context controls from the right rail when needed", () => {
 		renderPanel();
 		const panel = screen.getByLabelText("Properties");
@@ -88,7 +145,7 @@ describe("PropertiesPanel", { timeout: 15_000 }, () => {
 			loc: "12:3",
 			tag: "h1",
 			text: "Hello",
-			cls: "text-4xl font-bold",
+			cls: "text-4xl flex font-bold rounded-lg",
 			style: "",
 			attrs: { id: "hero" },
 			computed: {},
@@ -103,6 +160,9 @@ describe("PropertiesPanel", { timeout: 15_000 }, () => {
 		const rail = within(panel).getByRole("toolbar", { name: "Style categories" });
 		expect(within(rail).getByRole("button", { name: "Show Layout styles" })).toBeInTheDocument();
 		expect(within(rail).getByRole("button", { name: "Context and state" })).toBeInTheDocument();
+		expect(within(panel).getByRole("button", { name: "Column" })).toBeInTheDocument();
+		expect(within(panel).getByLabelText("Padding all sides")).toBeInTheDocument();
+		expect(within(panel).getByLabelText("Border radius all corners")).toHaveValue("0.5rem");
 		fireEvent.change(within(panel).getByRole("textbox", { name: "Search styles" }), {
 			target: { value: "overflow" },
 		});

@@ -303,11 +303,19 @@ export function paste(): boolean {
 
 /** Styles of the current target (selected node or library selector) in the current context and state. */
 export function setStyle(prop: string, value: string | undefined): void {
+	setStyles({ [prop]: value });
+}
+
+/** Several styles at once, so linked sides (padding, margin) make one undo step. */
+export function setStyles(values: Record<string, string | undefined>): void {
 	const key = overrideKey($context.get(), $state.get());
+	const props = Object.keys(values).join(",");
 	const patch = (styles: Styles) => {
 		const out = { ...styles };
-		if (value === undefined || !value.trim()) delete out[prop];
-		else out[prop] = value;
+		for (const [prop, value] of Object.entries(values)) {
+			if (value === undefined || !value.trim()) delete out[prop];
+			else out[prop] = value;
+		}
 		return out;
 	};
 	const target = $target.get();
@@ -320,13 +328,12 @@ export function setStyle(prop: string, value: string | undefined): void {
 				s.overrides[key] = patch(s.overrides[key] ?? {});
 				if (!Object.keys(s.overrides[key]).length) delete s.overrides[key];
 			}
-		}, `sel:${target}:${key}:${prop}`);
+		}, `sel:${target}:${key}:${props}`);
 	const node = selectedNode();
 	if (!node) return;
 	mutate(
-		(d) =>
-			key ? updateNodeOverrides(d, node.id, key, { [prop]: value }) : updateNodeStyles(d, node.id, { [prop]: value }),
-		`${node.id}:${key}:${prop}`,
+		(d) => (key ? updateNodeOverrides(d, node.id, key, values) : updateNodeStyles(d, node.id, values)),
+		`${node.id}:${key}:${props}`,
 	);
 }
 

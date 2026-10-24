@@ -1,6 +1,12 @@
 import {
+	AlignCenterVertical,
+	AlignEndVertical,
+	AlignStartVertical,
 	ArrowDown,
+	ArrowLeft,
+	ArrowRight,
 	ArrowUp,
+	Baseline,
 	Box,
 	ChevronDown,
 	ChevronsDown,
@@ -15,6 +21,7 @@ import {
 	Layout,
 	Link,
 	Move,
+	MoveVertical,
 	PaintBucket,
 	Pencil,
 	Pilcrow,
@@ -62,6 +69,7 @@ import {
 	removeSelected,
 	setClasses,
 	setStyle,
+	setStyles,
 	wrapSelected,
 } from "./store.ts";
 import { updateNodeProps, type VNode } from "./tree.ts";
@@ -82,9 +90,6 @@ const listFor = (prop: string): string | undefined =>
 					? "ve-space"
 					: undefined;
 
-const setDisplay = (next: string) => setStyle("display", next);
-const setPosition = (next: string) => setStyle("position", next);
-
 const styleLabel = (prop: string): string => {
 	const words = prop.split("-");
 	return words.map((word, i) => (i === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word)).join(" ");
@@ -101,18 +106,6 @@ const GROUP_META: Record<string, { id: string; icon: Icon }> = {
 	Effects: { id: "effects", icon: Sparkles },
 	Interaction: { id: "interaction", icon: Pointer },
 };
-
-const LAYOUT_KEYS = [
-	"align-self",
-	"justify-self",
-	"flex",
-	"grid-column",
-	"grid-row",
-	"overflow",
-	"overflow-x",
-	"overflow-y",
-];
-const POSITION_KEYS = ["z-index"];
 
 function PropertyLabel({ children, htmlFor }: { children: ReactNode; htmlFor?: string }) {
 	return (
@@ -172,6 +165,272 @@ function StyleInput({ prop, value, inherited }: { prop: string; value: string; i
 				)}
 			</div>
 			{bad && <p className="text-[10px] text-destructive">Not allowed</p>}
+		</div>
+	);
+}
+
+const SIDES = ["top", "right", "bottom", "left"] as const;
+type Side = (typeof SIDES)[number];
+const CORNERS = ["top-left", "top-right", "bottom-right", "bottom-left"] as const;
+type Corner = (typeof CORNERS)[number];
+
+const sideName = (side: Side) => side.charAt(0).toUpperCase() + side.slice(1);
+const cornerName = (corner: Corner) =>
+	corner
+		.split("-")
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(" ");
+
+/** A value field that writes on blur or Enter, so linked sides save in one change. */
+function DraftInput({
+	value,
+	placeholder,
+	ariaLabel,
+	onCommit,
+	list,
+	suffix,
+	className = "",
+}: {
+	value: string;
+	placeholder?: string;
+	ariaLabel: string;
+	onCommit: (value: string) => void;
+	list?: string;
+	suffix?: string;
+	className?: string;
+}) {
+	const [draft, setDraft] = useState(value);
+	useEffect(() => setDraft(value), [value]);
+	const commit = () => {
+		const next = draft.trim();
+		if (next !== value) onCommit(next);
+	};
+	return (
+		<div className={`relative min-w-0 ${className}`}>
+			<input
+				aria-label={ariaLabel}
+				value={draft}
+				placeholder={placeholder}
+				list={list}
+				onChange={(e) => setDraft(e.target.value)}
+				onBlur={commit}
+				onKeyDown={(e) => {
+					if (e.key !== "Enter") return;
+					e.preventDefault();
+					e.currentTarget.blur();
+				}}
+				className={`h-8 w-full min-w-0 rounded-md border border-[#34343a] bg-[#19191c] px-2 text-xs text-[#e4e4e7] outline-none placeholder:text-[#71717a] focus:border-[#6d5bd0] ${suffix ? "pr-5" : ""}`}
+			/>
+			{suffix && (
+				<span className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-[9px] text-[#71717a]">
+					{suffix}
+				</span>
+			)}
+		</div>
+	);
+}
+
+/** Instatic's compact label + control row. */
+function ControlRow({ label, children }: { label: string; children: ReactNode }) {
+	return (
+		<div className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-2">
+			<PropertyLabel>{label}</PropertyLabel>
+			<div className="min-w-0">{children}</div>
+		</div>
+	);
+}
+
+function LabeledSelect({
+	label,
+	ariaLabel,
+	value,
+	options,
+	onChange,
+}: {
+	label: string;
+	ariaLabel?: string;
+	value: string;
+	options: readonly { value: string; label: string }[];
+	onChange: (value: string) => void;
+}) {
+	return (
+		<ControlRow label={label}>
+			<Select
+				size="sm"
+				value={value}
+				aria-label={ariaLabel ?? label}
+				onChange={(e) => onChange(e.target.value)}
+				className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+			>
+				{options.map((option) => (
+					<option key={option.value} value={option.value}>
+						{option.label}
+					</option>
+				))}
+			</Select>
+		</ControlRow>
+	);
+}
+
+interface SegmentOption {
+	value: string;
+	label?: string;
+	icon?: Icon;
+	ariaLabel?: string;
+	title?: string;
+}
+
+function IconSegmented({
+	label,
+	groupLabel,
+	value,
+	options,
+	onChange,
+}: {
+	label: string;
+	groupLabel?: string;
+	value: string;
+	options: readonly SegmentOption[];
+	onChange: (value: string) => void;
+}) {
+	return (
+		<ControlRow label={label}>
+			<div
+				role="group"
+				aria-label={groupLabel ?? label}
+				className="flex h-8 items-stretch gap-1 rounded-md border border-[#34343a] bg-[#19191c] p-1"
+			>
+				{options.map((option) => {
+					const SegmentIcon = option.icon;
+					const selected = value === option.value;
+					return (
+						<button
+							key={option.value}
+							type="button"
+							aria-pressed={selected}
+							aria-label={option.ariaLabel}
+							title={option.title ?? option.ariaLabel}
+							onClick={() => onChange(option.value)}
+							className={`flex min-w-0 flex-1 items-center justify-center gap-1 rounded text-[11px] font-medium transition-colors ${selected ? "bg-[#2c2c31] text-white" : "text-[#9b9ba3] hover:text-white"}`}
+						>
+							{SegmentIcon && <SegmentIcon size={13} className="shrink-0" aria-hidden="true" />}
+							{option.label && <span className="truncate">{option.label}</span>}
+						</button>
+					);
+				})}
+			</div>
+		</ControlRow>
+	);
+}
+
+function BoxSidePicker({
+	name,
+	active,
+	onSelect,
+}: {
+	name: string;
+	active: "all" | Side;
+	onSelect: (side: "all" | Side) => void;
+}) {
+	const lower = name.toLowerCase();
+	const edges: { side: Side; hit: string; line: string }[] = [
+		{ side: "top", hit: "top-0 left-1 right-1 h-2.5", line: "top-[3px] left-0 right-0 h-[3px]" },
+		{ side: "right", hit: "right-0 top-1 bottom-1 w-2.5", line: "right-[3px] top-0 bottom-0 w-[3px]" },
+		{ side: "bottom", hit: "bottom-0 left-1 right-1 h-2.5", line: "bottom-[3px] left-0 right-0 h-[3px]" },
+		{ side: "left", hit: "left-0 top-1 bottom-1 w-2.5", line: "left-[3px] top-0 bottom-0 w-[3px]" },
+	];
+	return (
+		<div
+			role="group"
+			aria-label={`${name} sides`}
+			className="relative size-7 shrink-0 rounded-md border border-[#34343a] bg-[#141416]"
+		>
+			{edges.map(({ side, hit, line }) => {
+				const selected = active === "all" || active === side;
+				return (
+					<button
+						key={side}
+						type="button"
+						aria-label={`Edit ${side} ${lower}`}
+						aria-pressed={selected}
+						title={`Edit ${side} ${lower}`}
+						onClick={() => onSelect(side)}
+						className={`group absolute ${hit}`}
+					>
+						<span
+							className={`pointer-events-none absolute rounded-full transition-colors ${line} ${selected ? "bg-[#d4d4d8]" : "bg-[#3f3f46] group-hover:bg-[#71717a]"}`}
+						/>
+					</button>
+				);
+			})}
+			<button
+				type="button"
+				aria-label={`Edit all ${lower} sides`}
+				aria-pressed={active === "all"}
+				title={`Edit all ${lower} sides`}
+				onClick={() => onSelect("all")}
+				className={`absolute inset-[9px] rounded-sm border transition-colors ${active === "all" ? "border-[#a1a1aa] bg-[#2c2c31]" : "border-[#3f3f46] bg-transparent hover:border-[#71717a]"}`}
+			/>
+		</div>
+	);
+}
+
+function BoxCornerPicker({
+	name,
+	active,
+	onSelect,
+}: {
+	name: string;
+	active: "all" | Corner;
+	onSelect: (corner: "all" | Corner) => void;
+}) {
+	const lower = name.toLowerCase();
+	const corners: { corner: Corner; hit: string; mark: string }[] = [
+		{ corner: "top-left", hit: "top-0 left-0", mark: "top-[3px] left-[3px] rounded-tl-[3px] border-t-2 border-l-2" },
+		{ corner: "top-right", hit: "top-0 right-0", mark: "top-[3px] right-[3px] rounded-tr-[3px] border-t-2 border-r-2" },
+		{
+			corner: "bottom-right",
+			hit: "bottom-0 right-0",
+			mark: "right-[3px] bottom-[3px] rounded-br-[3px] border-r-2 border-b-2",
+		},
+		{
+			corner: "bottom-left",
+			hit: "bottom-0 left-0",
+			mark: "bottom-[3px] left-[3px] rounded-bl-[3px] border-b-2 border-l-2",
+		},
+	];
+	return (
+		<div
+			role="group"
+			aria-label={`${name} corners`}
+			className="relative size-7 shrink-0 rounded-md border border-[#34343a] bg-[#141416]"
+		>
+			{corners.map(({ corner, hit, mark }) => {
+				const selected = active === "all" || active === corner;
+				return (
+					<button
+						key={corner}
+						type="button"
+						aria-label={`Edit ${cornerName(corner)} ${lower} corner`}
+						aria-pressed={selected}
+						title={`Edit ${cornerName(corner)} ${lower} corner`}
+						onClick={() => onSelect(corner)}
+						className={`group absolute size-3 ${hit}`}
+					>
+						<span
+							className={`pointer-events-none absolute size-2 border-[#52525b] transition-colors ${mark} ${selected ? "border-[#d4d4d8]" : "group-hover:border-[#a1a1aa]"}`}
+						/>
+					</button>
+				);
+			})}
+			<button
+				type="button"
+				aria-label={`Edit all ${lower} corners`}
+				aria-pressed={active === "all"}
+				title={`Edit all ${lower} corners`}
+				onClick={() => onSelect("all")}
+				className={`absolute inset-[10px] rounded-sm border transition-colors ${active === "all" ? "border-[#a1a1aa] bg-[#2c2c31]" : "border-[#3f3f46] bg-transparent hover:border-[#71717a]"}`}
+			/>
 		</div>
 	);
 }
@@ -448,31 +707,360 @@ function ContextBar() {
 	);
 }
 
-function DisplayToggle({ value }: { value: string }) {
-	const isFlex = value === "flex" || value === "inline-flex";
-	const isGrid = value === "grid" || value === "inline-grid";
+interface StyleControlProps {
+	keys: readonly string[];
+	query: string;
+	valueOf: (prop: string) => string;
+	inherited: (prop: string) => string | undefined;
+	commit: (patch: Record<string, string>) => void;
+	renderInput: (prop: string) => ReactNode;
+}
+
+const ALIGN_OPTIONS: readonly SegmentOption[] = [
+	{ value: "flex-start", icon: AlignStartVertical, ariaLabel: "Align start", title: "align-items: flex-start" },
+	{ value: "center", icon: AlignCenterVertical, ariaLabel: "Align center", title: "align-items: center" },
+	{ value: "flex-end", icon: AlignEndVertical, ariaLabel: "Align end", title: "align-items: flex-end" },
+	{ value: "stretch", icon: MoveVertical, ariaLabel: "Align stretch", title: "align-items: stretch" },
+	{ value: "baseline", icon: Baseline, ariaLabel: "Align baseline", title: "align-items: baseline" },
+];
+
+const JUSTIFY_OPTIONS: readonly SegmentOption[] = [
+	{ value: "start", icon: AlignStartVertical, ariaLabel: "Justify start", title: "justify-items: start" },
+	{ value: "center", icon: AlignCenterVertical, ariaLabel: "Justify center", title: "justify-items: center" },
+	{ value: "end", icon: AlignEndVertical, ariaLabel: "Justify end", title: "justify-items: end" },
+	{ value: "stretch", icon: MoveVertical, ariaLabel: "Justify stretch", title: "justify-items: stretch" },
+];
+
+const DIRECTION_OPTIONS: readonly SegmentOption[] = [
+	{ value: "row", icon: ArrowRight, ariaLabel: "Row", title: "flex-direction: row" },
+	{ value: "column", icon: ArrowDown, ariaLabel: "Column", title: "flex-direction: column" },
+	{ value: "row-reverse", icon: ArrowLeft, ariaLabel: "Row reverse", title: "flex-direction: row-reverse" },
+	{ value: "column-reverse", icon: ArrowUp, ariaLabel: "Column reverse", title: "flex-direction: column-reverse" },
+];
+
+const WRAP_OPTIONS: readonly SegmentOption[] = [
+	{ value: "nowrap", label: "No", ariaLabel: "No wrap", title: "flex-wrap: nowrap" },
+	{ value: "wrap", label: "Yes", ariaLabel: "Wrap", title: "flex-wrap: wrap" },
+	{ value: "wrap-reverse", label: "Rev", ariaLabel: "Wrap reverse", title: "flex-wrap: wrap-reverse" },
+];
+
+function matchesStyle(key: string, query: string, group: string): boolean {
+	const q = query.trim().toLowerCase();
+	return !q || key.includes(q) || styleLabel(key).toLowerCase().includes(q) || group.includes(q);
+}
+
+const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+
+function PositionOffsetBox({
+	valueOf,
+	inherited,
+	onCommit,
+}: {
+	valueOf: (prop: string) => string;
+	inherited: (prop: string) => string | undefined;
+	onCommit: (patch: Record<string, string>) => void;
+}) {
+	const input = (side: Side, className: string) => (
+		<DraftInput
+			key={side}
+			ariaLabel={`${sideName(side)} offset`}
+			value={valueOf(side)}
+			placeholder={inherited(side) || "auto"}
+			suffix={side.charAt(0).toUpperCase()}
+			onCommit={(value) => onCommit({ [side]: value })}
+			className={className}
+		/>
+	);
 	return (
-		<div className="grid gap-1">
-			<PropertyLabel>Display</PropertyLabel>
-			<div className="grid grid-cols-2 gap-1 rounded-md border border-[#34343a] bg-[#19191c] p-1">
-				<button
-					type="button"
-					aria-pressed={isFlex}
-					onClick={() => setDisplay("flex")}
-					className={`flex h-7 items-center justify-center gap-1.5 rounded text-[11px] font-medium ${isFlex ? "bg-[#2c2c31] text-white" : "text-[#9b9ba3] hover:text-white"}`}
-				>
-					<Rows3 size={12} /> Flex
-				</button>
-				<button
-					type="button"
-					aria-pressed={isGrid}
-					onClick={() => setDisplay("grid")}
-					className={`flex h-7 items-center justify-center gap-1.5 rounded text-[11px] font-medium ${isGrid ? "bg-[#2c2c31] text-white" : "text-[#9b9ba3] hover:text-white"}`}
-				>
-					<Grid2x2 size={12} /> Grid
-				</button>
+		<div className="grid gap-1 py-0.5">
+			<div className="flex justify-center">{input("top", "w-20")}</div>
+			<div className="grid grid-cols-[1fr_40px_1fr] items-center gap-1">
+				{input("left", "w-20 justify-self-end")}
+				<div className="size-10 justify-self-center rounded-md border border-[#34343a] bg-[#1b1b1f]" />
+				{input("right", "w-20 justify-self-start")}
 			</div>
+			<div className="flex justify-center">{input("bottom", "w-20")}</div>
 		</div>
+	);
+}
+
+function PositionEditor({ keys, query, valueOf, inherited, commit, renderInput }: StyleControlProps) {
+	const position = valueOf("position");
+	const showType = keys.includes("position") && matchesStyle("position", query, "position");
+	const offsetsVisible = SIDES.some((side) => keys.includes(side) && matchesStyle(side, query, "position"));
+	const positioned = ["relative", "absolute", "fixed", "sticky"].includes(position);
+	const hasOffset = SIDES.some((side) => valueOf(side) !== "");
+	const q = query.trim().toLowerCase();
+	const showOffsets = offsetsVisible && (positioned || hasOffset || !!q);
+	const showZ = keys.includes("z-index") && matchesStyle("z-index", query, "position");
+	return (
+		<>
+			{showOffsets && <PositionOffsetBox valueOf={valueOf} inherited={inherited} onCommit={commit} />}
+			{showType && (
+				<LabeledSelect
+					label="Type"
+					ariaLabel="Position"
+					value={position}
+					options={(SELECTS.position ?? []).map((value) => ({
+						value,
+						label: value ? capitalize(value) : "Default",
+					}))}
+					onChange={(value) => commit({ position: value })}
+				/>
+			)}
+			{showZ && renderInput("z-index")}
+		</>
+	);
+}
+
+function SpacingRow({
+	box,
+	valueOf,
+	inherited,
+	onCommit,
+}: {
+	box: "padding" | "margin";
+	valueOf: (prop: string) => string;
+	inherited: (prop: string) => string | undefined;
+	onCommit: (patch: Record<string, string>) => void;
+}) {
+	const [active, setActive] = useState<"all" | Side>("all");
+	const name = capitalize(box);
+	const keys = SIDES.map((side) => `${box}-${side}`);
+	const values = keys.map(valueOf);
+	const uniform = values.every((value) => value === values[0]);
+	const index = active === "all" ? -1 : SIDES.indexOf(active);
+	const value = active === "all" ? (uniform ? values[0]! : "") : values[index]!;
+	const inheritedValues = keys.map((key) => inherited(key) ?? "");
+	const inheritedUniform = inheritedValues.every((v) => v === inheritedValues[0]) ? inheritedValues[0] : "";
+	const placeholder = active === "all" ? (uniform ? inheritedUniform || "0" : "Mixed") : inheritedValues[index] || "0";
+	const commit = (next: string) => {
+		if (active === "all") onCommit(Object.fromEntries(keys.map((key) => [key, next])));
+		else onCommit({ [`${box}-${active}`]: next });
+	};
+	return (
+		<ControlRow label={name}>
+			<div className="flex items-center gap-1.5">
+				<DraftInput
+					ariaLabel={active === "all" ? `${name} all sides` : `${name} ${active}`}
+					value={value}
+					placeholder={placeholder}
+					list="ve-space"
+					onCommit={commit}
+					className="flex-1"
+				/>
+				<BoxSidePicker name={name} active={active} onSelect={setActive} />
+			</div>
+		</ControlRow>
+	);
+}
+
+function SpacingEditor({ keys, query, valueOf, inherited, commit }: StyleControlProps) {
+	return (
+		<>
+			{(["padding", "margin"] as const).map((box) => {
+				const visible = SIDES.some(
+					(side) => keys.includes(`${box}-${side}`) && matchesStyle(`${box}-${side}`, query, "spacing"),
+				);
+				return visible ? (
+					<SpacingRow key={box} box={box} valueOf={valueOf} inherited={inherited} onCommit={commit} />
+				) : null;
+			})}
+		</>
+	);
+}
+
+/** Tailwind's named radii are lengths; a corner edit must not leave `lg` inside a CSS shorthand. */
+const RADIUS_TOKENS: Record<string, string> = {
+	none: "0",
+	xs: "0.125rem",
+	sm: "0.25rem",
+	md: "0.375rem",
+	lg: "0.5rem",
+	xl: "0.75rem",
+	"2xl": "1rem",
+	"3xl": "1.5rem",
+	"4xl": "2rem",
+	full: "9999px",
+};
+
+function parseRadius(value: string): [string, string, string, string] {
+	const clean = value.trim();
+	if (!clean) return ["", "", "", ""];
+	if (clean.includes("/")) return [clean, clean, clean, clean];
+	const parts = clean
+		.split(/\s+/)
+		.filter(Boolean)
+		.map((part) => RADIUS_TOKENS[part] ?? part);
+	if (parts.length === 1) return [parts[0]!, parts[0]!, parts[0]!, parts[0]!];
+	if (parts.length === 2) return [parts[0]!, parts[1]!, parts[0]!, parts[1]!];
+	if (parts.length === 3) return [parts[0]!, parts[1]!, parts[2]!, parts[1]!];
+	return [parts[0]!, parts[1]!, parts[2]!, parts[3]!];
+}
+
+const printRadius = (values: readonly string[]): string =>
+	values.every((value) => value === values[0]) ? values[0]! : values.join(" ");
+
+function RadiusRow({
+	value,
+	placeholder,
+	onCommit,
+}: {
+	value: string;
+	placeholder?: string;
+	onCommit: (patch: Record<string, string>) => void;
+}) {
+	const [active, setActive] = useState<"all" | Corner>("all");
+	const corners = parseRadius(value);
+	const inheritedCorners = parseRadius(placeholder ?? "");
+	const uniform = corners.every((corner) => corner === corners[0]);
+	const index = active === "all" ? -1 : CORNERS.indexOf(active);
+	const current = active === "all" ? (uniform ? corners[0]! : "") : corners[index]!;
+	const inheritedUniform = inheritedCorners.every((corner) => corner === inheritedCorners[0])
+		? inheritedCorners[0]
+		: "";
+	const inheritedCurrent =
+		active === "all" ? (uniform ? inheritedUniform || "0" : "Mixed") : inheritedCorners[index] || "0";
+	const commit = (next: string) => {
+		if (active === "all") {
+			onCommit({ "border-radius": next });
+			return;
+		}
+		const values = corners.map((corner, i) => (i === index ? next || "0" : corner || "0"));
+		onCommit({ "border-radius": printRadius(values) });
+	};
+	return (
+		<ControlRow label="Radius">
+			<div className="flex items-center gap-1.5">
+				<DraftInput
+					ariaLabel={active === "all" ? "Border radius all corners" : `${cornerName(active)} border radius`}
+					value={current}
+					placeholder={inheritedCurrent}
+					list="ve-space"
+					onCommit={commit}
+					className="flex-1"
+				/>
+				<BoxCornerPicker name="radius" active={active} onSelect={setActive} />
+			</div>
+		</ControlRow>
+	);
+}
+
+function BorderEditor({ keys, query, valueOf, inherited, commit, renderInput }: StyleControlProps) {
+	const showRadius = keys.includes("border-radius") && matchesStyle("border-radius", query, "border");
+	const others = keys.filter((key) => key !== "border-radius" && matchesStyle(key, query, "border"));
+	return (
+		<>
+			{showRadius && (
+				<RadiusRow value={valueOf("border-radius")} placeholder={inherited("border-radius")} onCommit={commit} />
+			)}
+			{others.map((key) => renderInput(key))}
+		</>
+	);
+}
+
+function LayoutEditor({ keys, query, valueOf, inherited, commit, renderInput }: StyleControlProps) {
+	const q = query.trim().toLowerCase();
+	const display = valueOf("display");
+	const isFlex = display === "flex" || display === "inline-flex";
+	const isGrid = display === "grid" || display === "inline-grid";
+	const flexControlKeys = ["display", "flex-direction", "flex-wrap", "align-items", "justify-content", "gap"];
+	const gridControlKeys = ["display", "align-items", "justify-items", "gap"];
+	const handled = new Set<string>();
+	if (isFlex) for (const key of flexControlKeys) handled.add(key);
+	if (isGrid) for (const key of gridControlKeys) handled.add(key);
+	const typeVisible =
+		keys.includes("display") &&
+		(matchesStyle("display", query, "layout") ||
+			(q !== "" && ("flex".includes(q) || "grid".includes(q) || q.includes("flex") || q.includes("grid"))));
+	const directionVisible = isFlex && keys.includes("flex-direction") && matchesStyle("flex-direction", query, "layout");
+	const distributeVisible =
+		isFlex && keys.includes("justify-content") && matchesStyle("justify-content", query, "layout");
+	const alignVisible =
+		(isFlex || isGrid) && keys.includes("align-items") && matchesStyle("align-items", query, "layout");
+	const justifyVisible = isGrid && keys.includes("justify-items") && matchesStyle("justify-items", query, "layout");
+	const wrapVisible = isFlex && keys.includes("flex-wrap") && matchesStyle("flex-wrap", query, "layout");
+	const gapVisible = (isFlex || isGrid) && keys.includes("gap") && matchesStyle("gap", query, "layout");
+	const extra = keys.filter((key) => !handled.has(key) && matchesStyle(key, query, "layout"));
+	const justifyDefault = inherited("justify-content");
+	return (
+		<>
+			{typeVisible && (
+				<IconSegmented
+					label="Type"
+					value={isFlex ? "flex" : isGrid ? "grid" : ""}
+					options={[
+						{ value: "flex", label: "Flex", icon: Rows3, title: "Flex layout" },
+						{ value: "grid", label: "Grid", icon: Grid2x2, title: "Grid layout" },
+					]}
+					onChange={(value) => commit({ display: value })}
+				/>
+			)}
+			{directionVisible && (
+				<IconSegmented
+					label="Direction"
+					value={valueOf("flex-direction")}
+					options={DIRECTION_OPTIONS}
+					onChange={(value) => commit({ "flex-direction": value })}
+				/>
+			)}
+			{distributeVisible && (
+				<LabeledSelect
+					label="Distribute"
+					value={valueOf("justify-content")}
+					options={(SELECTS["justify-content"] ?? []).map((value) => ({
+						value,
+						label: value
+							? capitalize(value.replace("-", " "))
+							: justifyDefault
+								? `Default (${justifyDefault})`
+								: "Default",
+					}))}
+					onChange={(value) => commit({ "justify-content": value })}
+				/>
+			)}
+			{alignVisible && (
+				<IconSegmented
+					label="Align"
+					value={valueOf("align-items")}
+					options={ALIGN_OPTIONS}
+					onChange={(value) => commit({ "align-items": value })}
+				/>
+			)}
+			{justifyVisible && (
+				<IconSegmented
+					label="Justify"
+					value={valueOf("justify-items")}
+					options={JUSTIFY_OPTIONS}
+					onChange={(value) => commit({ "justify-items": value })}
+				/>
+			)}
+			{wrapVisible && (
+				<IconSegmented
+					label="Wrap"
+					value={valueOf("flex-wrap")}
+					options={WRAP_OPTIONS}
+					onChange={(value) => commit({ "flex-wrap": value })}
+				/>
+			)}
+			{gapVisible && (
+				<ControlRow label="Gap">
+					<DraftInput
+						ariaLabel="Gap"
+						value={valueOf("gap")}
+						placeholder={inherited("gap") || "0"}
+						list="ve-space"
+						onCommit={(value) => commit({ gap: value })}
+					/>
+				</ControlRow>
+			)}
+			{extra.length > 0 && (
+				<details open={q !== ""} className="text-[11px] text-[#8b8b93]">
+					<summary className="cursor-pointer select-none py-1 hover:text-white">Advanced layout</summary>
+					<div className="grid gap-2 pt-1">{extra.map((key) => renderInput(key))}</div>
+				</details>
+			)}
+		</>
 	);
 }
 
@@ -487,46 +1075,15 @@ function LayoutControls({
 	query: string;
 	inherit: (key: string) => string | undefined;
 }) {
-	const q = query.trim().toLowerCase();
-	const matches = (key: string) =>
-		!q || key.includes(q) || styleLabel(key).toLowerCase().includes(q) || "layout".includes(q);
-	const extra = keys.filter((key) => key !== "display" && !LAYOUT_KEYS.includes(key) && matches(key));
 	return (
-		<>
-			{(!q || "display".includes(q)) && <DisplayToggle value={styles.display ?? ""} />}
-			{LAYOUT_KEYS.filter(matches)
-				.filter((key) => keys.includes(key))
-				.map((key) => (
-					<StyleInput key={key} prop={key} value={styles[key] ?? ""} inherited={inherit(key)} />
-				))}
-			{extra.length > 0 && (
-				<details className="text-[11px] text-[#8b8b93]">
-					<summary className="cursor-pointer select-none py-1 hover:text-white">Advanced layout</summary>
-					<div className="grid gap-2 pt-1">
-						{keys.includes("display") && (
-							<div className="grid gap-1">
-								<PropertyLabel>Display</PropertyLabel>
-								<Select
-									size="sm"
-									value={styles.display ?? ""}
-									onChange={(e) => setStyle("display", e.target.value)}
-									className="h-8 border-[#34343a] bg-[#19191c] text-xs"
-								>
-									{(SELECTS.display ?? []).map((option) => (
-										<option key={option} value={option}>
-											{option || "auto"}
-										</option>
-									))}
-								</Select>
-							</div>
-						)}
-						{extra.map((key) => (
-							<StyleInput key={key} prop={key} value={styles[key] ?? ""} inherited={inherit(key)} />
-						))}
-					</div>
-				</details>
-			)}
-		</>
+		<LayoutEditor
+			keys={keys}
+			query={query}
+			valueOf={(key) => styles[key] ?? ""}
+			inherited={inherit}
+			commit={(patch) => setStyles(patch)}
+			renderInput={(key) => <StyleInput key={key} prop={key} value={styles[key] ?? ""} inherited={inherit(key)} />}
+		/>
 	);
 }
 
@@ -541,69 +1098,61 @@ function PositionControls({
 	query: string;
 	inherit: (key: string) => string | undefined;
 }) {
-	const q = query.trim().toLowerCase();
-	const matches = (key: string) =>
-		!q || key.includes(q) || styleLabel(key).toLowerCase().includes(q) || "position".includes(q);
-	const position = styles.position ?? "";
-	const extra = keys.filter((key) => key !== "position" && !POSITION_KEYS.includes(key) && matches(key));
 	return (
-		<>
-			{(!q || "position".includes(q)) && (
-				<div className="grid gap-1">
-					<PropertyLabel>Position</PropertyLabel>
-					<div className="grid grid-cols-2 gap-1 rounded-md border border-[#34343a] bg-[#19191c] p-1">
-						<button
-							type="button"
-							aria-pressed={position === "relative"}
-							onClick={() => setPosition("relative")}
-							className={`h-7 rounded text-[11px] font-medium ${position === "relative" ? "bg-[#2c2c31] text-white" : "text-[#9b9ba3] hover:text-white"}`}
-						>
-							Relative
-						</button>
-						<button
-							type="button"
-							aria-pressed={position === "absolute"}
-							onClick={() => setPosition("absolute")}
-							className={`h-7 rounded text-[11px] font-medium ${position === "absolute" ? "bg-[#2c2c31] text-white" : "text-[#9b9ba3] hover:text-white"}`}
-						>
-							Absolute
-						</button>
-					</div>
-				</div>
-			)}
-			{POSITION_KEYS.filter(matches)
-				.filter((key) => keys.includes(key))
-				.map((key) => (
-					<StyleInput key={key} prop={key} value={styles[key] ?? ""} inherited={inherit(key)} />
-				))}
-			{extra.length > 0 && (
-				<details className="text-[11px] text-[#8b8b93]">
-					<summary className="cursor-pointer select-none py-1 hover:text-white">Advanced position</summary>
-					<div className="grid gap-2 pt-1">
-						{keys.includes("position") && (
-							<div className="grid gap-1">
-								<PropertyLabel>Position</PropertyLabel>
-								<Select
-									size="sm"
-									value={position}
-									onChange={(e) => setPosition(e.target.value)}
-									className="h-8 border-[#34343a] bg-[#19191c] text-xs"
-								>
-									{(SELECTS.position ?? []).map((option) => (
-										<option key={option} value={option}>
-											{option || "static"}
-										</option>
-									))}
-								</Select>
-							</div>
-						)}
-						{extra.map((key) => (
-							<StyleInput key={key} prop={key} value={styles[key] ?? ""} inherited={inherit(key)} />
-						))}
-					</div>
-				</details>
-			)}
-		</>
+		<PositionEditor
+			keys={keys}
+			query={query}
+			valueOf={(key) => styles[key] ?? ""}
+			inherited={inherit}
+			commit={(patch) => setStyles(patch)}
+			renderInput={(key) => <StyleInput key={key} prop={key} value={styles[key] ?? ""} inherited={inherit(key)} />}
+		/>
+	);
+}
+
+function SpacingControls({
+	styles,
+	keys,
+	query,
+	inherit,
+}: {
+	styles: Styles;
+	keys: readonly string[];
+	query: string;
+	inherit: (key: string) => string | undefined;
+}) {
+	return (
+		<SpacingEditor
+			keys={keys}
+			query={query}
+			valueOf={(key) => styles[key] ?? ""}
+			inherited={inherit}
+			commit={(patch) => setStyles(patch)}
+			renderInput={() => null}
+		/>
+	);
+}
+
+function BorderControls({
+	styles,
+	keys,
+	query,
+	inherit,
+}: {
+	styles: Styles;
+	keys: readonly string[];
+	query: string;
+	inherit: (key: string) => string | undefined;
+}) {
+	return (
+		<BorderEditor
+			keys={keys}
+			query={query}
+			valueOf={(key) => styles[key] ?? ""}
+			inherited={inherit}
+			commit={(patch) => setStyles(patch)}
+			renderInput={(key) => <StyleInput key={key} prop={key} value={styles[key] ?? ""} inherited={inherit(key)} />}
+		/>
 	);
 }
 
@@ -666,6 +1215,20 @@ function StyleEditor({
 							<PositionControls
 								styles={styles}
 								keys={STYLE_GROUPS.find(([name]) => name === "Position")?.[1] ?? []}
+								query={q}
+								inherit={inherit}
+							/>
+						) : group === "Spacing" ? (
+							<SpacingControls
+								styles={styles}
+								keys={STYLE_GROUPS.find(([name]) => name === "Spacing")?.[1] ?? []}
+								query={q}
+								inherit={inherit}
+							/>
+						) : group === "Border" ? (
+							<BorderControls
+								styles={styles}
+								keys={STYLE_GROUPS.find(([name]) => name === "Border")?.[1] ?? []}
 								query={q}
 								inherit={inherit}
 							/>
@@ -1332,193 +1895,6 @@ function ThemeStyleInput({
 	);
 }
 
-function ThemeSegmented({
-	label,
-	value,
-	options,
-	onChange,
-}: {
-	label: string;
-	value: string;
-	options: readonly { value: string; label: ReactNode }[];
-	onChange: (value: string) => void;
-}) {
-	return (
-		<div className="grid gap-1">
-			<PropertyLabel>{label}</PropertyLabel>
-			<div className="grid grid-cols-2 gap-1 rounded-md border border-[#34343a] bg-[#19191c] p-1">
-				{options.map((option) => (
-					<button
-						key={option.value}
-						type="button"
-						aria-pressed={value === option.value}
-						onClick={() => onChange(option.value)}
-						className={`flex h-7 items-center justify-center gap-1.5 rounded text-[11px] font-medium ${value === option.value ? "bg-[#2c2c31] text-white" : "text-[#9b9ba3] hover:text-white"}`}
-					>
-						{option.label}
-					</button>
-				))}
-			</div>
-		</div>
-	);
-}
-
-/** Layout rows for a theme element: the same Flex/Grid switch as a page block, written as Tailwind classes. */
-function ThemeLayoutControls({
-	keys,
-	query,
-	valueOf,
-	inherited,
-	commit,
-}: {
-	keys: readonly string[];
-	query: string;
-	valueOf: (prop: string) => string;
-	inherited: (prop: string) => string | undefined;
-	commit: (prop: string, value: string) => void;
-}) {
-	const displayId = useId();
-	const q = query.trim().toLowerCase();
-	const visible = (key: string) =>
-		!q || key.includes(q) || styleLabel(key).toLowerCase().includes(q) || "layout".includes(q);
-	const showDisplay = keys.includes("display") && visible("display");
-	return (
-		<>
-			{showDisplay && (
-				<ThemeSegmented
-					label="Display"
-					value={valueOf("display")}
-					options={[
-						{
-							value: "flex",
-							label: (
-								<>
-									<Rows3 size={12} /> Flex
-								</>
-							),
-						},
-						{
-							value: "grid",
-							label: (
-								<>
-									<Grid2x2 size={12} /> Grid
-								</>
-							),
-						},
-					]}
-					onChange={(v) => commit("display", v)}
-				/>
-			)}
-			{keys
-				.filter((key) => key !== "display" && visible(key))
-				.map((key) => (
-					<ThemeStyleInput
-						key={`${key}:${valueOf(key)}`}
-						prop={key}
-						value={valueOf(key)}
-						placeholder={inherited(key)}
-						onCommit={(v) => commit(key, v)}
-					/>
-				))}
-			{showDisplay && (
-				<details className="text-[11px] text-[#8b8b93]">
-					<summary className="cursor-pointer select-none py-1 hover:text-white">Advanced display</summary>
-					<div className="grid gap-2 pt-1">
-						<div className="grid gap-1">
-							<PropertyLabel htmlFor={displayId}>Display</PropertyLabel>
-							<Select
-								id={displayId}
-								size="sm"
-								value={valueOf("display")}
-								aria-label="Display"
-								onChange={(e) => commit("display", e.target.value)}
-								className="h-8 border-[#34343a] bg-[#19191c] text-xs"
-							>
-								{(SELECTS.display ?? []).map((option) => (
-									<option key={option} value={option}>
-										{option || "auto"}
-									</option>
-								))}
-							</Select>
-						</div>
-					</div>
-				</details>
-			)}
-		</>
-	);
-}
-
-/** Position rows for a theme element, with the Relative/Absolute switch of the block inspector. */
-function ThemePositionControls({
-	keys,
-	query,
-	valueOf,
-	inherited,
-	commit,
-}: {
-	keys: readonly string[];
-	query: string;
-	valueOf: (prop: string) => string;
-	inherited: (prop: string) => string | undefined;
-	commit: (prop: string, value: string) => void;
-}) {
-	const positionId = useId();
-	const q = query.trim().toLowerCase();
-	const visible = (key: string) =>
-		!q || key.includes(q) || styleLabel(key).toLowerCase().includes(q) || "position".includes(q);
-	const showPosition = keys.includes("position") && visible("position");
-	return (
-		<>
-			{showPosition && (
-				<ThemeSegmented
-					label="Position"
-					value={valueOf("position")}
-					options={[
-						{ value: "relative", label: "Relative" },
-						{ value: "absolute", label: "Absolute" },
-					]}
-					onChange={(v) => commit("position", v)}
-				/>
-			)}
-			{keys
-				.filter((key) => key !== "position" && visible(key))
-				.map((key) => (
-					<ThemeStyleInput
-						key={`${key}:${valueOf(key)}`}
-						prop={key}
-						value={valueOf(key)}
-						placeholder={inherited(key)}
-						onCommit={(v) => commit(key, v)}
-					/>
-				))}
-			{showPosition && (
-				<details className="text-[11px] text-[#8b8b93]">
-					<summary className="cursor-pointer select-none py-1 hover:text-white">Advanced position</summary>
-					<div className="grid gap-2 pt-1">
-						<div className="grid gap-1">
-							<PropertyLabel htmlFor={positionId}>Position</PropertyLabel>
-							<Select
-								id={positionId}
-								size="sm"
-								value={valueOf("position")}
-								aria-label="Position"
-								onChange={(e) => commit("position", e.target.value)}
-								className="h-8 border-[#34343a] bg-[#19191c] text-xs"
-							>
-								{(SELECTS.position ?? []).map((option) => (
-									<option key={option} value={option}>
-										{option || "static"}
-									</option>
-								))}
-							</Select>
-						</div>
-					</div>
-				</details>
-			)}
-		</>
-	);
-}
-
 /** The theme element's Tailwind breakpoint and state, kept apart from the page block context. */
 function ThemeContextBar({
 	breakpoint,
@@ -1832,19 +2208,27 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 		const base = el.tailwind ? classValue(classes, prop, "") : styles[prop];
 		return base || el.computed[prop];
 	};
-	const commit = (prop: string, v: string) =>
-		void editThemeElement({
-			action: "attrs",
-			attrs: el.tailwind
-				? { class: withClassValue(classes, prop, variant, v).join(" ") || null }
-				: { style: printStyle({ ...styles, [prop]: v }) || null },
-		});
+	const commitMany = (patch: Record<string, string>) => {
+		if (el.tailwind) {
+			let next = classes;
+			for (const [prop, value] of Object.entries(patch)) next = withClassValue(next, prop, variant, value);
+			void editThemeElement({ action: "attrs", attrs: { class: next.join(" ") || null } });
+			return;
+		}
+		const next = { ...styles };
+		for (const [prop, value] of Object.entries(patch)) {
+			if (value.trim()) next[prop] = value;
+			else delete next[prop];
+		}
+		void editThemeElement({ action: "attrs", attrs: { style: printStyle(next) || null } });
+	};
+	const commit = (prop: string, v: string) => commitMany({ [prop]: v });
 	const q = query.trim().toLowerCase();
 	const matches = (key: string) => !q || key.includes(q) || styleLabel(key).toLowerCase().includes(q);
 	const groups = STYLE_GROUPS.map(([group, keys]) => {
 		const groupHit = !q || group.toLowerCase().includes(q);
 		const visibleKeys = groupHit ? keys : keys.filter(matches);
-		return { group, keys: visibleKeys, show: !q || groupHit || visibleKeys.length > 0 };
+		return { group, keys: visibleKeys, allKeys: keys, show: !q || groupHit || visibleKeys.length > 0 };
 	}).filter(({ show }) => show);
 	const extra = el.tailwind ? [] : Object.keys(styles).filter((key) => !GROUPED.has(key) && matches(key));
 	const classLabel = classes[0];
@@ -1974,36 +2358,57 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 									/>
 								</PanelSection>
 							)}
-							{groups.map(({ group, keys }) => {
+							{groups.map(({ group, keys, allKeys }) => {
 								const meta = GROUP_META[group];
+								const renderInput = (key: string) => (
+									<ThemeStyleInput
+										key={`${key}:${variant}:${valueOf(key)}`}
+										prop={key}
+										value={valueOf(key)}
+										placeholder={inherited(key)}
+										onCommit={(v) => commit(key, v)}
+									/>
+								);
 								return (
 									<PanelSection key={group} id={meta?.id ?? group.toLowerCase()} title={group} icon={meta?.icon}>
 										{group === "Layout" ? (
-											<ThemeLayoutControls
-												keys={keys}
+											<LayoutEditor
+												keys={allKeys}
 												query={q}
 												valueOf={valueOf}
 												inherited={inherited}
-												commit={commit}
+												commit={commitMany}
+												renderInput={renderInput}
 											/>
 										) : group === "Position" ? (
-											<ThemePositionControls
-												keys={keys}
+											<PositionEditor
+												keys={allKeys}
 												query={q}
 												valueOf={valueOf}
 												inherited={inherited}
-												commit={commit}
+												commit={commitMany}
+												renderInput={renderInput}
+											/>
+										) : group === "Spacing" ? (
+											<SpacingEditor
+												keys={allKeys}
+												query={q}
+												valueOf={valueOf}
+												inherited={inherited}
+												commit={commitMany}
+												renderInput={renderInput}
+											/>
+										) : group === "Border" ? (
+											<BorderEditor
+												keys={allKeys}
+												query={q}
+												valueOf={valueOf}
+												inherited={inherited}
+												commit={commitMany}
+												renderInput={renderInput}
 											/>
 										) : (
-											keys.map((key) => (
-												<ThemeStyleInput
-													key={`${key}:${variant}:${valueOf(key)}`}
-													prop={key}
-													value={valueOf(key)}
-													placeholder={inherited(key)}
-													onCommit={(v) => commit(key, v)}
-												/>
-											))
+											keys.map(renderInput)
 										)}
 									</PanelSection>
 								);

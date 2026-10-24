@@ -53,10 +53,13 @@ actions, component/layout model, panels and drop rules, built on Wuppy's file-ba
   (`{...}`, items of a `.map()`) are edited in Code view; an element in a shared component such as `Footer.astro`
   changes on every page.
 - A theme element has the same inspector as Instatic's: text, tag (`p`, `h2`, `section`…), every style group
-  (Layout, Position, Size, Spacing, Typography, Background, Border, Effects, Interaction) and its HTML attributes. When
-  the theme uses Tailwind 4, styles are saved as classes: `align-self: center` becomes `self-center`, `320px` width
-  `w-[320px]`, and properties without a utility an arbitrary property (`[filter:blur(4px)]`). Type Tailwind values
-  (`4`, `full`, `red-500`) or CSS (`320px`, `#fff`). A breakpoint and a state write the class under `max-[768px]:` and
+  (Layout, Position, Size, Spacing, Typography, Background, Border, Effects, Interaction) and its HTML attributes. Its
+  Layout, Position, Spacing and Border groups use the same icon controls as a page block: Flex/Grid type,
+  direction/distribute/align/wrap/gap, a T/R/B/L offset box, four-side padding/margin pickers and a four-corner radius
+  picker. When the theme uses Tailwind 4, styles are saved as classes: `align-self: center` becomes `self-center`,
+  `320px` width `w-[320px]`, and properties without a utility an arbitrary property (`[filter:blur(4px)]`). Type
+  Tailwind values (`4`, `full`, `red-500`) or CSS (`320px`, `#fff`). A breakpoint and a state write the class under
+  `max-[768px]:` and
   `hover:`; classes under other variants are kept. A theme without Tailwind gets the styles as inline style. Empty
   fields show the browser's value. The panel uses the same **Styles / Attributes** tabs, class pills, section cards,
   right style rail and **Search styles** footer as a page block; its context controls live behind the rail's
@@ -107,8 +110,10 @@ selected block, or inside it when it is a container.
 - **Styles / Attributes** tabs. Styles edits the block and its class; Attributes edits its text, tag and element fields.
 - **Selector picker:** “Add or create selector…” with colored class pills and **Componentize** beside the input.
 - **Section cards** with icons: Text, Layout, Position, Size, Spacing, Typography, Background, Border, Effects and
-  Interaction. Layout has a Flex/Grid toggle, Align self, Justify self, Flex, Grid column/row and Overflow; Position
-  has Relative/Absolute and Z index.
+  Interaction. Layout has an icon Type switch (Flex/Grid), Direction, Distribute, Align, Wrap and Gap; Position has a
+  T/R/B/L offset box plus Type and Z index; Spacing has padding/margin rows with a four-side picker; Border has a
+  four-corner radius picker. The picker's centre edits all sides or corners, an edge edits one, and linked sides save
+  as one change.
 - **Right style rail:** module icon plus one icon per style group. It stays at the panel edge, scrolls the matching
   section into view and marks groups that already have values.
 - **Search styles in .class...** at the bottom filters the style rows. Context and state open from the rail when a
