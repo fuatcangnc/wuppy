@@ -278,7 +278,7 @@ export function VisualEditorPage() {
 						{panel === "explorer" ? <ExplorerPanel /> : panel === "framework" ? <FrameworkPanel /> : <SelectorsPanel />}
 					</aside>
 					<div className="relative flex min-w-0 flex-1 flex-col">
-						<div className="flex h-10 shrink-0 items-center gap-2 border-b border-[#2a2a2d] bg-[#19191b] px-3">
+						<div className="flex h-10 min-w-0 shrink-0 items-center gap-2 overflow-x-auto overflow-y-hidden border-b border-[#2a2a2d] bg-[#19191b] px-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 							<Link to="/c/$collection" params={{ collection }} aria-label="Back" className="contents">
 								<IconButton label="Back to the list">
 									<ArrowLeft size={16} />
@@ -308,11 +308,16 @@ export function VisualEditorPage() {
 								<Grid2x2Plus size={17} />
 							</IconButton>
 							<span className="mx-1 h-5 w-px bg-[#2f2f31]" />
-							<IconButton label="Search layers and commands (Ctrl+K)" onClick={() => $spotlight.set(true)}>
+							<IconButton
+								label="Search layers and commands (Ctrl+K)"
+								className="max-[1700px]:hidden"
+								onClick={() => $spotlight.set(true)}
+							>
 								<Search size={16} />
 							</IconButton>
 							<IconButton
 								label={$mode.get() === "live" ? "Switch to design mode" : "Preview live"}
+								className="max-[1700px]:hidden"
 								onClick={() => $mode.set($mode.get() === "live" ? "design" : "live")}
 							>
 								<Eye size={16} />
@@ -326,11 +331,13 @@ export function VisualEditorPage() {
 								<CodeIcon size={13} />
 								Code
 							</button>
-							<span className="mx-auto truncate text-xs text-[#a1a1aa]">{String(doc.data.title ?? slug)}</span>
+							<span className="mx-auto max-[1700px]:hidden truncate text-xs text-[#a1a1aa]">
+								{String(doc.data.title ?? slug)}
+							</span>
 							<IconButton label="Editor settings" onClick={() => $settings.set(true)}>
 								<SettingsIcon size={16} />
 							</IconButton>
-							<span role="status" aria-live="polite" className="text-xs text-[#a1a1aa]">
+							<span role="status" aria-live="polite" className="shrink-0 text-xs text-[#a1a1aa]">
 								{lockedBy
 									? `${lockedBy.name} is editing`
 									: saving
@@ -349,20 +356,22 @@ export function VisualEditorPage() {
 									Classic editor
 								</Button>
 							</Link>
-							<Button
-								size="sm"
-								className="rounded-full bg-white text-[#18181b] hover:bg-[#e4e4e7]"
-								disabled={!unsaved || saving || !!lockedBy}
-								onClick={doSave}
-							>
-								{saving ? "Saving…" : unsaved ? "Publish" : "Published"}
-							</Button>
+							<div className="sticky right-0 z-10 flex shrink-0 items-center bg-[#19191b] pl-2">
+								<Button
+									size="sm"
+									className="rounded-full bg-white text-[#18181b] hover:bg-[#e4e4e7]"
+									disabled={!unsaved || saving || !!lockedBy}
+									onClick={doSave}
+								>
+									{saving ? "Saving…" : unsaved ? "Publish" : "Published"}
+								</Button>
+							</div>
 						</div>
 						<Canvas onKey={onKey} page={editing ? undefined : livePath} preview={!!template} />
 						<Notch />
 					</div>
 					<aside
-						className="w-[360px] shrink-0 overflow-y-auto border-l border-[#2a2a2d] bg-[#111113]"
+						className="w-[376px] shrink-0 overflow-hidden border-l border-[#2a2a2d] bg-[#111113]"
 						aria-label="Properties"
 					>
 						<PropertiesPanel />

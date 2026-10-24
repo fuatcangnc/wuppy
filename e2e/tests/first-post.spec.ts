@@ -261,7 +261,7 @@ async function mediaJourney(page: Page) {
 	};
 	await page.request.put("/api/content/pages/about", {
 		headers: { "X-Wuppy-Request": "1" },
-		data: { data: about.data.data, body: `<img src="${barn.url}" alt="Barn">`, message: "link media to about" },
+		data: { data: about.data.data, body: `<img src="${barn.url}" alt="Barn" />`, message: "link media to about" },
 	});
 
 	await page.keyboard.press("Escape"); // close the cropped-copy dialog
@@ -482,12 +482,19 @@ test("the visual editor adds blocks, edits text in place and saves them to the l
 	const inserter = page.getByRole("dialog", { name: "Add to canvas" });
 	await inserter.getByRole("button", { name: /^Heading/ }).click();
 	const canvas = page.frameLocator('iframe[title="Page canvas"]');
+	const properties = page.getByLabel("Properties");
+	await expect(properties.getByRole("tab", { name: "Styles" })).toBeVisible();
+	await expect(properties.getByRole("toolbar", { name: "Style categories" })).toBeVisible();
+	await expect(properties.getByPlaceholder(/Search styles/)).toBeVisible();
+	await properties.getByRole("tab", { name: "Attributes" }).click();
+	await expect(properties.getByRole("toolbar", { name: "Style categories" })).toHaveCount(0);
+	await properties.getByRole("tab", { name: "Styles" }).click();
 	const heading = canvas.locator("h2", { hasText: "Heading" });
 	await heading.dblclick();
 	await page.keyboard.press("ControlOrMeta+a");
 	await page.keyboard.type("Made *visually*");
 	await page.keyboard.press("Enter");
-	await expect(canvas.locator("h2").last()).toHaveText("Made *visually*");
+	await expect(canvas.getByRole("heading", { name: "Made *visually*" })).toBeVisible();
 	await page.getByLabel("color", { exact: true }).fill("#c2410c");
 	await page.getByRole("button", { name: "Publish", exact: true }).click();
 	await expect(page.getByText("All changes saved")).toBeVisible();

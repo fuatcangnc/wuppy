@@ -63,7 +63,7 @@ describe("visual editor body format", () => {
 		);
 		const back = parse(out);
 		const text = back.nodes[back.nodes[back.rootNodeId]!.children[0]!]!;
-		expect(text.props).toEqual({ text: 'a {x} <b> *y* _z_ `c` [l](u) "q"\nline 2', class: 'c" onload="x' });
+		expect(text.props).toEqual({ tag: "p", text: 'a {x} <b> *y* _z_ `c` [l](u) "q"\nline 2', class: 'c" onload="x' });
 	});
 
 	it("drops CSS that could break out of the declaration or load code", () => {

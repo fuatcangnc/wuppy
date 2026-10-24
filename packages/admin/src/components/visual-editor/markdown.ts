@@ -197,7 +197,7 @@ function fromElement(tree: NodeTree, el: Element, parentId: string): void {
 	const cls = classes.filter((c) => c !== `ve-${key}`).join(" ");
 	if (cls) node.props.class = cls;
 	for (const k of def.attrs ?? []) node.props[k] = el.getAttribute(k) ?? "";
-	if (moduleId === "container") node.props.tag = tag;
+	if (moduleId === "container" || moduleId === "text") node.props.tag = tag;
 	if (moduleId === "heading") node.props.level = tag;
 	if (moduleId === "component") node.props.name = el.getAttribute("data-ve-name") ?? "";
 	if (moduleId === "ref") {

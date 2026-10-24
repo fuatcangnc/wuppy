@@ -102,14 +102,16 @@ selected block, or inside it when it is a container.
 
 ### Properties
 
-- **Fields** of the block (table above).
-- **Classes:** class pills. Add a class, or click one to style that class's selector instead of this block.
-- **Context:** the breakpoint (Base, Tablet, Mobile or your own) or condition the styles apply to, and a **state**:
-  `:hover`, `:focus`, `:focus-visible`, `:focus-within`, `:active`, `:visited`, `:disabled`, `:first-child`,
-  `:last-child`, `:nth-child(odd/even)`, `::before`, `::after`, `::placeholder`, `::marker`.
-- **Styles** in groups: Layout (display, flex, gap, grid columns), Position, Spacing, Size, Typography, Background,
-  Border and Effects (transition, transform). Inputs suggest framework tokens (`--v-*`); other CSS properties can be
-  added too.
+- **Styles / Attributes** tabs. Styles edits the block and its class; Attributes edits its text, tag and element fields.
+- **Selector picker:** “Add or create selector…” with colored class pills and **Componentize** beside the input.
+- **Section cards** with icons: Text, Layout, Position, Size, Spacing, Typography, Background, Border, Effects and
+  Interaction. Layout has a Flex/Grid toggle, Align self, Justify self, Flex, Grid column/row and Overflow; Position
+  has Relative/Absolute and Z index.
+- **Right style rail:** module icon plus one icon per style group. It stays at the panel edge, scrolls the matching
+  section into view and marks groups that already have values.
+- **Search styles in .class...** at the bottom filters the style rows. Context and state open from the rail when a
+  breakpoint, condition or `:hover`-style override is needed.
+- Inputs suggest framework tokens (`--v-*`); other CSS properties can be added under Other styles.
 - **Componentize**, and for an instance its parameters, **Edit component** and **Detach**.
 
 ### Framework

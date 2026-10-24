@@ -54,9 +54,12 @@ Screenshots: `acceptance/instatic-ui/screenshots/`.
 
 ### Properties
 
-- Header `Body`/selected layer with **Styles** and **Attributes** tabs.
-- Selector picker: “Add or create selector…”, class pills, Add class, Style inline.
-- Property rows: Display, Flex direction, Flex wrap, Align items, Justify content, and more groups; responsive/state context.
+- **Styles / Attributes** tabs at the top of the right-hand panel.
+- Selector picker: “Add or create selector…”, colored class pills with icons, **Componentize** beside the input.
+- Section cards with icons: Text, Layout, Position, Size, Spacing, Typography, Background, Border, Effects and Interaction.
+- Layout uses Flex/Grid segmented control, Align self, Justify self, Flex, Grid column/row and Overflow; Position uses Relative/Absolute and Z index.
+- A right-edge **style category icon rail** (module + every style group) scrolls to its section and marks categories with stored values.
+- Pinned **Search styles in .class...** footer filters property rows; hidden Context & state opens from its rail icon.
 - Componentize/component editing when a layer is selected.
 
 ### Other Site tools
@@ -141,4 +144,4 @@ Screenshots: `acceptance/instatic-ui/screenshots/`.
   `wuppy-drag-inside-easy.png`, `wuppy-site-panel.png`, `wuppy-media-panel.png`, `wuppy-media-grid.png`,
   `wuppy-design-toolbar-code-button.png`, `wuppy-code-view.png`, `wuppy-code-view-saved.png`,
   `wuppy-code-tailwind.png`, `wuppy-code-theme-files.png`, `wuppy-add-astro-components.png`,
-  `wuppy-add-astro-component-inserted.png`, `wuppy-ai-final2.png`, `wuppy-ai-defaults.png`, `wuppy-ai-mcp.png`.
+  `wuppy-add-astro-component-inserted.png`, `wuppy-properties-panel.png`, `wuppy-ai-final2.png`, `wuppy-ai-defaults.png`, `wuppy-ai-mcp.png`.

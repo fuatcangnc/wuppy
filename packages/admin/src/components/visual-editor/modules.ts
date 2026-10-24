@@ -35,6 +35,8 @@ export interface ModuleDef {
 	text?: string;
 	/** Props written as HTML attributes. */
 	attrs?: readonly string[];
+	/** Friendlier option labels for a select field (the value stays the HTML tag). */
+	labels?: Record<string, string>;
 	fields: readonly Field[];
 	defaults?: Record<string, string>;
 	styles?: Styles;
@@ -42,6 +44,7 @@ export interface ModuleDef {
 
 const CONTAINER_TAGS = ["section", "div", "header", "footer", "article", "aside", "main", "nav"] as const;
 const LEVELS = ["h1", "h2", "h3", "h4", "h5", "h6"] as const;
+const TEXT_TAGS = ["p", "span", "div", "label"] as const;
 const classField: Field = { key: "class", label: "CSS classes", type: "text" };
 
 const defs: ModuleDef[] = [
@@ -66,10 +69,11 @@ const defs: ModuleDef[] = [
 	{
 		id: "text",
 		label: "Text",
-		tag: () => "p",
+		tag: (p) => ((TEXT_TAGS as readonly string[]).includes(p.tag ?? "") ? p.tag! : "p"),
 		text: "text",
-		fields: [classField],
-		defaults: { text: "Write something here." },
+		labels: { p: "Paragraph", span: "Span", div: "Div", label: "Label" },
+		fields: [{ key: "tag", label: "Tag", type: "select", options: TEXT_TAGS }, classField],
+		defaults: { tag: "p", text: "Write something here." },
 	},
 	{
 		id: "button",

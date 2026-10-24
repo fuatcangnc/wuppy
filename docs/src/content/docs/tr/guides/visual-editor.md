@@ -102,15 +102,16 @@ bloğun arkasına, seçili blok container ise içine eklenir.
 
 ### Properties
 
-- Bloğun **alanları** (yukarıdaki tablo).
-- **Sınıflar:** sınıf etiketleri. Sınıf ekleyin ya da birine tıklayarak bu blok yerine o sınıfın seçicisini
-  stillendirin.
-- **Bağlam:** stillerin uygulandığı breakpoint (Base, Tablet, Mobile veya sizinkiler) ya da koşul ve bir **durum**:
-  `:hover`, `:focus`, `:focus-visible`, `:focus-within`, `:active`, `:visited`, `:disabled`, `:first-child`,
-  `:last-child`, `:nth-child(odd/even)`, `::before`, `::after`, `::placeholder`, `::marker`.
-- Gruplu **stiller:** Layout (display, flex, gap, grid sütunları), Position, Spacing, Size, Typography, Background,
-  Border ve Effects (transition, transform). Girişler framework token'larını (`--v-*`) önerir; başka CSS özellikleri de
-  eklenebilir.
+- **Styles / Attributes** sekmeleri. Styles bloğu ve sınıfını, Attributes ise metni, tag'i ve öğe alanlarını düzenler.
+- **Seçici alanı:** “Add or create selector…” yazısı, renkli sınıf etiketleri ve yanında **Componentize**.
+- **İkonlu bölüm kartları:** Text, Layout, Position, Size, Spacing, Typography, Background, Border, Effects ve
+  Interaction. Layout'ta Flex/Grid geçişi, Align self, Justify self, Flex, Grid column/row ve Overflow; Position'ta
+  Relative/Absolute ve Z index bulunur.
+- **Sağ stil rayı:** modül ikonu ve her stil grubu için bir ikon. Panelin sağında sabit kalır, ilgili bölüme kaydırır ve
+  değeri olan grupları işaretler.
+- Alttaki **Search styles in .class...** alanı stil satırlarını filtreler. Breakpoint, koşul veya `:hover` gibi bir
+  override gerekince bağlam ve durum, ray üzerindeki ikondan açılır.
+- Girişler framework token'larını (`--v-*`) önerir; başka CSS özellikleri Other styles altında eklenebilir.
 - **Componentize**; bir instance için parametreleri, **Edit component** ve **Detach**.
 
 ### Framework
