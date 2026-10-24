@@ -54,9 +54,10 @@ component/layout modeli, paneller ve bırakma kuralları; Wuppy'nin dosya tabanl
   her sayfada değişir.
 - Tema öğesinin denetçisi Instatic'inkiyle aynıdır: metin, etiket (`p`, `h2`, `section`…), tüm stil grupları (Layout,
   Position, Size, Spacing, Typography, Background, Border, Effects, Interaction) ve HTML öznitelikleri. Layout, Position,
-  Size, Spacing, Typography ve Border grupları sayfa bloğuyla aynı ikonlu kontrolleri kullanır: Flex/Grid türü,
-  direction/distribute/align/wrap/gap, T/R/B/L offset kutusu, dört kenarlı padding/margin seçicileri, dört köşeli
-  radius seçicisi, ikonlu size alanları ve Align/Decor/Capitalize ikon satırları. Tema Tailwind 4 kullanıyorsa stiller
+  Size, Spacing, Typography, Background ve Border grupları sayfa bloğuyla aynı ikonlu kontrolleri kullanır: Flex/Grid
+  türü, direction/distribute/align/wrap/gap, T/R/B/L offset kutusu, dört kenarlı padding/margin seçicileri, dört köşeli
+  radius seçicisi, ikonlu size alanları, Align/Decor/Capitalize ve Background Size/Position/Tile/Fixed ikon satırları.
+  Tema Tailwind 4 kullanıyorsa stiller
   class olarak kaydedilir: `align-self: center` `self-center`, `320px` genişlik `w-[320px]` olur; karşılığı olmayan
   özellikler arbitrary property olarak yazılır (`[filter:blur(4px)]`). Tailwind değeri (`4`, `full`, `red-500`) ya da
   CSS (`320px`, `#fff`) yazılabilir. Breakpoint ve state seçilince class `max-[768px]:` ve `hover:` altında yazılır;
@@ -113,8 +114,9 @@ bloğun arkasına, seçili blok container ise içine eklenir.
   Interaction. Layout'ta ikonlu Type geçişi (Flex/Grid), Direction, Distribute, Align, Wrap ve Gap; Position'ta
   T/R/B/L offset kutusu ile Type ve Z index; Spacing'te dört kenar seçicili padding/margin satırları; Size'da ikonlu
   width/height/min/max alanları ve ikonlu box-sizing seçici; Typography'de Align, Decor ve Capitalize ikon satırları;
-  Border'da dört köşe seçicili radius bulunur. Seçicinin ortası tüm kenarları/köşeleri, kenarı tek tarafı düzenler;
-  bağlı kenarlar tek değişiklik olarak kaydedilir.
+  Background'da Size, Position, Tile ve Fixed ikon satırları; Border'da dört köşe seçicili radius bulunur. Seçicinin
+  ortası tüm kenarları/köşeleri, kenarı tek tarafı düzenler; bağlı kenarlar tek değişiklik olarak kaydedilir. Enum
+  özellikleri dropdown yerine satır içi ikon/metin seçenekleri kullanır; böylece tüm seçenekler görünür.
 - **Sağ stil rayı:** modül ikonu ve her stil grubu için bir ikon. Panelin sağında sabit kalır, ilgili bölüme kaydırır ve
   değeri olan grupları işaretler.
 - Alttaki **Search styles in .class...** alanı stil satırlarını filtreler. Breakpoint, koşul veya `:hover` gibi bir

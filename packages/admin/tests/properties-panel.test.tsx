@@ -1,7 +1,5 @@
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it } from "vitest";
-import { chooseSelect } from "./utils/select.ts";
 import { PropertiesPanel } from "../src/components/visual-editor/Properties.tsx";
 import { PRESETS } from "../src/components/visual-editor/modules.ts";
 import { $context, $selected, $state, $tree, $visual, addPreset, load } from "../src/components/visual-editor/store.ts";
@@ -75,7 +73,6 @@ describe("PropertiesPanel", { timeout: 60_000 }, () => {
 	});
 
 	it("edits flex layout, position offsets, linked spacing and radius corners", async () => {
-		const user = userEvent.setup({ delay: null });
 		renderPanel();
 		const panel = screen.getByLabelText("Properties");
 		fireEvent.click(within(panel).getByRole("button", { name: "Flex" }));
@@ -85,7 +82,7 @@ describe("PropertiesPanel", { timeout: 60_000 }, () => {
 		fireEvent.click(within(panel).getByRole("button", { name: "Column" }));
 		fireEvent.click(within(panel).getByRole("button", { name: "Wrap" }));
 		fireEvent.click(within(panel).getByRole("button", { name: "Align center" }));
-		await chooseSelect(user, "Distribute", "Space between");
+		fireEvent.click(within(panel).getByRole("button", { name: "Space between" }));
 		const gap = within(panel).getByLabelText("Gap");
 		fireEvent.change(gap, { target: { value: "24px" } });
 		fireEvent.blur(gap);
@@ -98,7 +95,7 @@ describe("PropertiesPanel", { timeout: 60_000 }, () => {
 			gap: "24px",
 		});
 
-		await chooseSelect(user, "Position", "Absolute");
+		fireEvent.click(within(panel).getByRole("button", { name: "Absolute" }));
 		const top = within(panel).getByLabelText("Top offset");
 		fireEvent.change(top, { target: { value: "12px" } });
 		fireEvent.blur(top);
@@ -149,6 +146,28 @@ describe("PropertiesPanel", { timeout: 60_000 }, () => {
 		fireEvent.click(within(panel).getByRole("button", { name: "Content box" }));
 		expect($tree.get().nodes[selected]!.styles["box-sizing"]).toBe("content-box");
 		expect(within(panel).getByRole("group", { name: "Box sizing" })).toBeInTheDocument();
+	});
+
+	it("uses inline icon pickers for background controls and styles", () => {
+		renderPanel();
+		const panel = screen.getByLabelText("Properties");
+		expect(within(panel).queryByRole("combobox", { name: "font-style" })).not.toBeInTheDocument();
+		expect(within(panel).getByRole("group", { name: "font-style" })).toBeInTheDocument();
+		fireEvent.click(within(panel).getByRole("button", { name: "Cover" }));
+		fireEvent.click(within(panel).getByRole("button", { name: "Background position 0% 0%" }));
+		fireEvent.click(within(panel).getByRole("button", { name: "No repeat" }));
+		fireEvent.click(
+			within(within(panel).getByRole("group", { name: "Background attachment" })).getByRole("button", {
+				name: "Fixed",
+			}),
+		);
+		const selected = $selected.get()!;
+		expect($tree.get().nodes[selected]!.styles).toMatchObject({
+			"background-size": "cover",
+			"background-position": "0% 0%",
+			"background-repeat": "no-repeat",
+			"background-attachment": "fixed",
+		});
 	});
 
 	it("reveals the context controls from the right rail when needed", () => {

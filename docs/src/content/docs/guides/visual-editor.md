@@ -54,9 +54,10 @@ actions, component/layout model, panels and drop rules, built on Wuppy's file-ba
   changes on every page.
 - A theme element has the same inspector as Instatic's: text, tag (`p`, `h2`, `section`…), every style group
   (Layout, Position, Size, Spacing, Typography, Background, Border, Effects, Interaction) and its HTML attributes. Its
-  Layout, Position, Size, Spacing, Typography and Border groups use the same icon controls as a page block: Flex/Grid
-  type, direction/distribute/align/wrap/gap, a T/R/B/L offset box, four-side padding/margin pickers, a four-corner
-  radius picker, icon-labelled size fields and icon rows for Align, Decor and Capitalize. When the theme uses Tailwind
+  Layout, Position, Size, Spacing, Typography, Background and Border groups use the same icon controls as a page block:
+  Flex/Grid type, direction/distribute/align/wrap/gap, a T/R/B/L offset box, four-side padding/margin pickers, a
+  four-corner radius picker, icon-labelled size fields and icon rows for Align, Decor, Capitalize, Background Size,
+  Position, Tile and Fixed. When the theme uses Tailwind
   4, styles are saved as classes: `align-self: center` becomes `self-center`, `320px` width `w-[320px]`, and properties
   without a utility an arbitrary property (`[filter:blur(4px)]`). Type Tailwind values (`4`, `full`, `red-500`) or CSS
   (`320px`, `#fff`). A breakpoint and a state write the class under `max-[768px]:` and `hover:`; classes under other
@@ -113,8 +114,9 @@ selected block, or inside it when it is a container.
   Interaction. Layout has an icon Type switch (Flex/Grid), Direction, Distribute, Align, Wrap and Gap; Position has a
   T/R/B/L offset box plus Type and Z index; Spacing has padding/margin rows with a four-side picker; Size labels
   width/height/min/max fields with icons and has an icon box-sizing picker; Typography has icon rows for Align, Decor
-  and Capitalize; Border has a four-corner radius picker. The picker's centre edits all sides or corners, an edge edits
-  one, and linked sides save as one change.
+  and Capitalize; Background has icon rows for Size, Position, Tile and Fixed; Border has a four-corner radius picker.
+  The picker's centre edits all sides or corners, an edge edits one, and linked sides save as one change. Enum
+  properties use inline icon/text rows instead of dropdowns, so every choice is visible.
 - **Right style rail:** module icon plus one icon per style group. It stays at the panel edge, scrolls the matching
   section into view and marks groups that already have values.
 - **Search styles in .class...** at the bottom filters the style rows. Context and state open from the rail when a

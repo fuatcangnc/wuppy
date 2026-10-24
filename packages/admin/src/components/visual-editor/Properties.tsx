@@ -1,10 +1,16 @@
 import {
 	AlignCenter,
+	AlignCenterHorizontal,
 	AlignCenterVertical,
+	AlignEndHorizontal,
 	AlignEndVertical,
+	AlignHorizontalDistributeCenter,
+	AlignHorizontalSpaceAround,
+	AlignHorizontalSpaceBetween,
 	AlignJustify,
 	AlignLeft,
 	AlignRight,
+	AlignStartHorizontal,
 	AlignStartVertical,
 	ArrowDown,
 	ArrowLeft,
@@ -14,6 +20,7 @@ import {
 	Box,
 	ChevronDown,
 	ChevronsDown,
+	Columns3,
 	Component as ComponentIcon,
 	Copy,
 	EllipsisVertical,
@@ -24,6 +31,8 @@ import {
 	IconArrowAutofitHeight,
 	IconArrowAutofitWidth,
 	IconArrowsHorizontal,
+	IconArrowsMaximize,
+	IconArrowsMinimize,
 	IconArrowsVertical,
 	IconAspectRatio,
 	IconOverline,
@@ -134,23 +143,14 @@ function StyleInput({ prop, value, inherited }: { prop: string; value: string; i
 	const label = styleLabel(prop);
 	if (SELECTS[prop])
 		return (
-			<div className="grid gap-1">
-				<PropertyLabel htmlFor={inputId}>{label}</PropertyLabel>
-				<Select
-					id={inputId}
-					size="sm"
-					value={value}
-					aria-label={prop}
-					onChange={(e) => set(e.target.value)}
-					className="h-8 border-[#34343a] bg-[#19191c] text-xs"
-				>
-					{SELECTS[prop].map((o) => (
-						<option key={o} value={o}>
-							{o || inherited || "auto"}
-						</option>
-					))}
-				</Select>
-			</div>
+			<EnumControl
+				prop={prop}
+				label={label}
+				value={value}
+				options={SELECTS[prop]}
+				inherited={inherited}
+				onChange={set}
+			/>
 		);
 	return (
 		<div className="grid gap-1">
@@ -257,38 +257,6 @@ function ControlRow({ label, icon: RowIcon, children }: { label: string; icon?: 
 	);
 }
 
-function LabeledSelect({
-	label,
-	ariaLabel,
-	value,
-	options,
-	onChange,
-}: {
-	label: string;
-	ariaLabel?: string;
-	value: string;
-	options: readonly { value: string; label: string }[];
-	onChange: (value: string) => void;
-}) {
-	return (
-		<ControlRow label={label}>
-			<Select
-				size="sm"
-				value={value}
-				aria-label={ariaLabel ?? label}
-				onChange={(e) => onChange(e.target.value)}
-				className="h-8 border-[#34343a] bg-[#19191c] text-xs"
-			>
-				{options.map((option) => (
-					<option key={option.value} value={option.value}>
-						{option.label}
-					</option>
-				))}
-			</Select>
-		</ControlRow>
-	);
-}
-
 interface SegmentOption {
 	value: string;
 	label?: string;
@@ -302,12 +270,14 @@ function IconSegmented({
 	groupLabel,
 	value,
 	options,
+	columns,
 	onChange,
 }: {
 	label: string;
 	groupLabel?: string;
 	value: string;
 	options: readonly SegmentOption[];
+	columns?: number;
 	onChange: (value: string) => void;
 }) {
 	return (
@@ -315,7 +285,8 @@ function IconSegmented({
 			<div
 				role="group"
 				aria-label={groupLabel ?? label}
-				className="flex h-8 items-stretch gap-1 rounded-md border border-[#34343a] bg-[#19191c] p-1"
+				className={`min-h-8 rounded-md border border-[#34343a] bg-[#19191c] p-0.5 ${columns ? "grid gap-0.5" : "flex items-stretch gap-1"}`}
+				style={columns ? { gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` } : undefined}
 			>
 				{options.map((option) => {
 					const SegmentIcon = option.icon;
@@ -328,10 +299,64 @@ function IconSegmented({
 							aria-label={option.ariaLabel}
 							title={option.title ?? option.ariaLabel}
 							onClick={() => onChange(option.value)}
-							className={`flex min-w-0 flex-1 items-center justify-center gap-1 rounded text-[11px] font-medium transition-colors ${selected ? "bg-[#2c2c31] text-white" : "text-[#9b9ba3] hover:text-white"}`}
+							className={`flex h-6 min-w-0 flex-1 items-center justify-center gap-1 rounded px-0.5 text-[11px] font-medium transition-colors ${selected ? "bg-[#2c2c31] text-white" : "text-[#9b9ba3] hover:text-white"}`}
 						>
 							{SegmentIcon && <SegmentIcon size={13} className="shrink-0" aria-hidden="true" />}
 							{option.label && <span className="truncate">{option.label}</span>}
+						</button>
+					);
+				})}
+			</div>
+		</ControlRow>
+	);
+}
+
+/** An inline enum picker: no native dropdown, so every choice is visible and one click away. */
+function EnumControl({
+	prop,
+	label,
+	value,
+	options,
+	inherited,
+	onChange,
+}: {
+	prop: string;
+	label: string;
+	value: string;
+	options: readonly string[];
+	inherited?: string;
+	onChange: (value: string) => void;
+}) {
+	const list = [...new Set([...options, ...(value && !options.includes(value) ? [value] : [])])];
+	const longest = Math.max(...list.map((option) => option.length));
+	const columns = list.length <= 3 ? list.length : longest > 4 ? 2 : Math.min(list.length, 5);
+	return (
+		<ControlRow label={label}>
+			<div
+				role="group"
+				aria-label={prop}
+				className="grid gap-0.5 rounded-md border border-[#34343a] bg-[#19191c] p-0.5"
+				style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
+			>
+				{list.map((option, index) => {
+					const selected = value === option;
+					const OptionIcon = ENUM_ICONS[prop]?.[option];
+					const text = option || "—";
+					return (
+						<button
+							key={`${option}:${index}`}
+							type="button"
+							aria-label={`${label}: ${option || "Default"}`}
+							aria-pressed={selected}
+							title={option ? option : inherited ? `Default (${inherited})` : "Default"}
+							onClick={() => onChange(option)}
+							className={`flex h-6 min-w-0 items-center justify-center gap-1 rounded px-1 text-[10px] font-medium transition-colors ${selected ? "bg-[#2c2c31] text-white" : "text-[#9b9ba3] hover:text-white"}`}
+						>
+							{OptionIcon ? (
+								<OptionIcon size={12} className="shrink-0" aria-hidden="true" />
+							) : (
+								<span className="truncate">{text}</span>
+							)}
 						</button>
 					);
 				})}
@@ -350,20 +375,36 @@ function BoxSidePicker({
 	onSelect: (side: "all" | Side) => void;
 }) {
 	const lower = name.toLowerCase();
-	const edges: { side: Side; hit: string; line: string }[] = [
-		{ side: "top", hit: "top-0 left-1 right-1 h-2.5", line: "top-[3px] left-0 right-0 h-[3px]" },
-		{ side: "right", hit: "right-0 top-1 bottom-1 w-2.5", line: "right-[3px] top-0 bottom-0 w-[3px]" },
-		{ side: "bottom", hit: "bottom-0 left-1 right-1 h-2.5", line: "bottom-[3px] left-0 right-0 h-[3px]" },
-		{ side: "left", hit: "left-0 top-1 bottom-1 w-2.5", line: "left-[3px] top-0 bottom-0 w-[3px]" },
+	const edges: { side: Side; hit: string; mark: string }[] = [
+		{
+			side: "top",
+			hit: "top-0 left-1 right-1 h-[9px]",
+			mark: "top-[3px] left-[3px] right-[3px] h-[5px] rounded-t-[2px] border-t-[1.5px] border-r-[1.5px] border-l-[1.5px]",
+		},
+		{
+			side: "right",
+			hit: "right-0 top-1 bottom-1 w-[9px]",
+			mark: "right-[3px] top-[3px] bottom-[3px] w-[5px] rounded-r-[2px] border-t-[1.5px] border-r-[1.5px] border-b-[1.5px]",
+		},
+		{
+			side: "bottom",
+			hit: "bottom-0 left-1 right-1 h-[9px]",
+			mark: "bottom-[3px] left-[3px] right-[3px] h-[5px] rounded-b-[2px] border-r-[1.5px] border-b-[1.5px] border-l-[1.5px]",
+		},
+		{
+			side: "left",
+			hit: "left-0 top-1 bottom-1 w-[9px]",
+			mark: "left-[3px] top-[3px] bottom-[3px] w-[5px] rounded-l-[2px] border-t-[1.5px] border-b-[1.5px] border-l-[1.5px]",
+		},
 	];
 	return (
 		<div
 			role="group"
 			aria-label={`${name} sides`}
-			className="relative size-7 shrink-0 rounded-md border border-[#34343a] bg-[#141416]"
+			className="relative size-9 shrink-0 rounded-md border border-[#34343a] bg-[#141416]"
 		>
-			{edges.map(({ side, hit, line }) => {
-				const selected = active === "all" || active === side;
+			{edges.map(({ side, hit, mark }) => {
+				const selected = active === side;
 				return (
 					<button
 						key={side}
@@ -375,7 +416,7 @@ function BoxSidePicker({
 						className={`group absolute ${hit}`}
 					>
 						<span
-							className={`pointer-events-none absolute rounded-full transition-colors ${line} ${selected ? "bg-[#d4d4d8]" : "bg-[#3f3f46] group-hover:bg-[#71717a]"}`}
+							className={`pointer-events-none absolute border-[#71717a] transition-colors ${mark} ${selected ? "border-[#f4f4f5]" : "group-hover:border-[#a1a1aa]"}`}
 						/>
 					</button>
 				);
@@ -386,8 +427,12 @@ function BoxSidePicker({
 				aria-pressed={active === "all"}
 				title={`Edit all ${lower} sides`}
 				onClick={() => onSelect("all")}
-				className={`absolute inset-[9px] rounded-sm border transition-colors ${active === "all" ? "border-[#a1a1aa] bg-[#2c2c31]" : "border-[#3f3f46] bg-transparent hover:border-[#71717a]"}`}
-			/>
+				className={`absolute inset-[10px] grid place-items-center rounded-[3px] border-[1.5px] transition-colors ${active === "all" ? "border-[#f4f4f5] bg-[#2c2c31]" : "border-[#71717a] hover:border-[#a1a1aa]"}`}
+			>
+				<span
+					className={`size-2 rounded-[1px] border transition-colors ${active === "all" ? "border-[#f4f4f5]" : "border-[#71717a]"}`}
+				/>
+			</button>
 		</div>
 	);
 }
@@ -403,27 +448,35 @@ function BoxCornerPicker({
 }) {
 	const lower = name.toLowerCase();
 	const corners: { corner: Corner; hit: string; mark: string }[] = [
-		{ corner: "top-left", hit: "top-0 left-0", mark: "top-[3px] left-[3px] rounded-tl-[3px] border-t-2 border-l-2" },
-		{ corner: "top-right", hit: "top-0 right-0", mark: "top-[3px] right-[3px] rounded-tr-[3px] border-t-2 border-r-2" },
+		{
+			corner: "top-left",
+			hit: "top-0 left-0",
+			mark: "top-[3px] left-[3px] rounded-tl-[2px] border-t-[1.5px] border-l-[1.5px]",
+		},
+		{
+			corner: "top-right",
+			hit: "top-0 right-0",
+			mark: "top-[3px] right-[3px] rounded-tr-[2px] border-t-[1.5px] border-r-[1.5px]",
+		},
 		{
 			corner: "bottom-right",
 			hit: "bottom-0 right-0",
-			mark: "right-[3px] bottom-[3px] rounded-br-[3px] border-r-2 border-b-2",
+			mark: "right-[3px] bottom-[3px] rounded-br-[2px] border-r-[1.5px] border-b-[1.5px]",
 		},
 		{
 			corner: "bottom-left",
 			hit: "bottom-0 left-0",
-			mark: "bottom-[3px] left-[3px] rounded-bl-[3px] border-b-2 border-l-2",
+			mark: "bottom-[3px] left-[3px] rounded-bl-[2px] border-b-[1.5px] border-l-[1.5px]",
 		},
 	];
 	return (
 		<div
 			role="group"
 			aria-label={`${name} corners`}
-			className="relative size-7 shrink-0 rounded-md border border-[#34343a] bg-[#141416]"
+			className="relative size-9 shrink-0 rounded-md border border-[#34343a] bg-[#141416]"
 		>
 			{corners.map(({ corner, hit, mark }) => {
-				const selected = active === "all" || active === corner;
+				const selected = active === corner;
 				return (
 					<button
 						key={corner}
@@ -432,10 +485,10 @@ function BoxCornerPicker({
 						aria-pressed={selected}
 						title={`Edit ${cornerName(corner)} ${lower} corner`}
 						onClick={() => onSelect(corner)}
-						className={`group absolute size-3 ${hit}`}
+						className={`group absolute size-3.5 ${hit}`}
 					>
 						<span
-							className={`pointer-events-none absolute size-2 border-[#52525b] transition-colors ${mark} ${selected ? "border-[#d4d4d8]" : "group-hover:border-[#a1a1aa]"}`}
+							className={`pointer-events-none absolute size-[7px] border-[#71717a] transition-colors ${mark} ${selected ? "border-[#f4f4f5]" : "group-hover:border-[#a1a1aa]"}`}
 						/>
 					</button>
 				);
@@ -446,8 +499,12 @@ function BoxCornerPicker({
 				aria-pressed={active === "all"}
 				title={`Edit all ${lower} corners`}
 				onClick={() => onSelect("all")}
-				className={`absolute inset-[10px] rounded-sm border transition-colors ${active === "all" ? "border-[#a1a1aa] bg-[#2c2c31]" : "border-[#3f3f46] bg-transparent hover:border-[#71717a]"}`}
-			/>
+				className={`absolute inset-[10px] grid place-items-center rounded-[3px] border-[1.5px] transition-colors ${active === "all" ? "border-[#f4f4f5] bg-[#2c2c31]" : "border-[#71717a] hover:border-[#a1a1aa]"}`}
+			>
+				<span
+					className={`size-2 rounded-[1px] border transition-colors ${active === "all" ? "border-[#f4f4f5]" : "border-[#71717a]"}`}
+				/>
+			</button>
 		</div>
 	);
 }
@@ -748,6 +805,55 @@ const JUSTIFY_OPTIONS: readonly SegmentOption[] = [
 	{ value: "stretch", icon: MoveVertical, ariaLabel: "Justify stretch", title: "justify-items: stretch" },
 ];
 
+const JUSTIFY_CONTENT_OPTIONS: readonly SegmentOption[] = [
+	{
+		value: "flex-start",
+		icon: AlignStartHorizontal,
+		ariaLabel: "Distribute start",
+		title: "justify-content: flex-start",
+	},
+	{
+		value: "center",
+		icon: AlignCenterHorizontal,
+		ariaLabel: "Distribute center",
+		title: "justify-content: center",
+	},
+	{ value: "flex-end", icon: AlignEndHorizontal, ariaLabel: "Distribute end", title: "justify-content: flex-end" },
+	{
+		value: "space-between",
+		icon: AlignHorizontalSpaceBetween,
+		ariaLabel: "Space between",
+		title: "justify-content: space-between",
+	},
+	{
+		value: "space-around",
+		icon: AlignHorizontalSpaceAround,
+		ariaLabel: "Space around",
+		title: "justify-content: space-around",
+	},
+	{
+		value: "space-evenly",
+		icon: AlignHorizontalDistributeCenter,
+		ariaLabel: "Space evenly",
+		title: "justify-content: space-evenly",
+	},
+];
+
+const ENUM_ICONS: Record<string, Record<string, Icon>> = {
+	"background-repeat": { repeat: Grid2x2, "repeat-x": Rows3, "repeat-y": Columns3, "no-repeat": X },
+	"object-fit": {
+		cover: IconArrowsMaximize,
+		contain: IconArrowsMinimize,
+		fill: Square,
+		none: X,
+		"scale-down": IconArrowsMinimize,
+	},
+	"pointer-events": { auto: Pointer, none: X },
+	"scroll-behavior": { smooth: Move },
+	appearance: { none: X },
+	"font-style": { normal: X, italic: Type },
+};
+
 const DIRECTION_OPTIONS: readonly SegmentOption[] = [
 	{ value: "row", icon: ArrowRight, ariaLabel: "Row", title: "flex-direction: row" },
 	{ value: "column", icon: ArrowDown, ariaLabel: "Column", title: "flex-direction: column" },
@@ -859,13 +965,16 @@ function PositionEditor({ keys, query, valueOf, inherited, commit, renderInput }
 		<>
 			{showOffsets && <PositionOffsetBox valueOf={valueOf} inherited={inherited} onCommit={commit} />}
 			{showType && (
-				<LabeledSelect
+				<IconSegmented
 					label="Type"
-					ariaLabel="Position"
+					groupLabel="Position type"
+					columns={4}
 					value={position}
 					options={(SELECTS.position ?? []).map((value) => ({
 						value,
 						label: value ? capitalize(value) : "Default",
+						ariaLabel: value ? capitalize(value) : "Default",
+						title: value ? `position: ${value}` : "position: static",
 					}))}
 					onChange={(value) => commit({ position: value })}
 				/>
@@ -1017,6 +1126,215 @@ function TypographyEditor({ keys, query, valueOf, commit, renderInput }: StyleCo
 	);
 }
 
+const BACKGROUND_CONTROL_KEYS = new Set([
+	"background-size",
+	"background-position",
+	"background-repeat",
+	"background-attachment",
+]);
+
+const BACKGROUND_REPEAT_OPTIONS: readonly SegmentOption[] = [
+	{ value: "repeat", icon: Grid2x2, ariaLabel: "Repeat both", title: "background-repeat: repeat" },
+	{ value: "repeat-x", icon: Rows3, ariaLabel: "Repeat horizontally", title: "background-repeat: repeat-x" },
+	{ value: "repeat-y", icon: Columns3, ariaLabel: "Repeat vertically", title: "background-repeat: repeat-y" },
+	{ value: "no-repeat", icon: X, ariaLabel: "No repeat", title: "background-repeat: no-repeat" },
+];
+
+const BACKGROUND_SIZE_OPTIONS: readonly SegmentOption[] = [
+	{ value: "custom", label: "Custom", ariaLabel: "Custom size", title: "Custom background size" },
+	{ value: "cover", label: "Cover", ariaLabel: "Cover", title: "background-size: cover" },
+	{ value: "contain", label: "Contain", ariaLabel: "Contain", title: "background-size: contain" },
+];
+
+const BACKGROUND_ATTACHMENT_OPTIONS: readonly SegmentOption[] = [
+	{ value: "fixed", label: "Fixed", ariaLabel: "Fixed", title: "background-attachment: fixed" },
+	{ value: "scroll", label: "Not fixed", ariaLabel: "Not fixed", title: "background-attachment: scroll" },
+];
+
+const POSITION_PERCENT: Record<string, string> = {
+	left: "0%",
+	right: "100%",
+	top: "0%",
+	bottom: "100%",
+	center: "50%",
+};
+
+function parseBackgroundSize(value: string): { mode: string; width: string; height: string } {
+	const clean = value.trim().toLowerCase();
+	if (clean === "cover" || clean === "contain") return { mode: clean, width: "auto", height: "auto" };
+	if (!clean) return { mode: "custom", width: "auto", height: "auto" };
+	const [width = "auto", height = "auto"] = clean.split(/\s+/).filter(Boolean);
+	return { mode: "custom", width, height };
+}
+
+function parseBackgroundPosition(value: string): { x: string; y: string } {
+	const clean = value.trim().toLowerCase();
+	if (!clean) return { x: "50%", y: "50%" };
+	const parts = clean.split(/\s+/).filter(Boolean);
+	if (parts.length === 1) {
+		const part = POSITION_PERCENT[parts[0]!] ?? parts[0]!;
+		return parts[0] === "top" || parts[0] === "bottom" ? { x: "50%", y: part } : { x: part, y: "50%" };
+	}
+	return { x: POSITION_PERCENT[parts[0]!] ?? parts[0]!, y: POSITION_PERCENT[parts[1]!] ?? parts[1]! };
+}
+
+function positionPercent(token: string): number | null {
+	const clean = token.trim().toLowerCase();
+	if (clean.endsWith("%")) {
+		const n = Number.parseFloat(clean);
+		return Number.isFinite(n) ? n : null;
+	}
+	const keyword = POSITION_PERCENT[clean];
+	if (keyword?.endsWith("%")) return Number.parseFloat(keyword);
+	return null;
+}
+
+function positionLabel(token: string): { value: string; suffix?: string } {
+	const percent = positionPercent(token);
+	if (percent === null) return { value: token };
+	return { value: String(percent), suffix: "%" };
+}
+
+function positionValue(raw: string, fallback: string): string {
+	const clean = raw.trim();
+	if (!clean) return fallback;
+	return /^-?\d+(?:\.\d+)?$/.test(clean) ? `${clean}%` : clean;
+}
+
+function BackgroundEditor({ keys, query, valueOf, commit, renderInput }: StyleControlProps) {
+	const visible = (key: string) => keys.includes(key) && matchesStyle(key, query, "background");
+	const repeat = valueOf("background-repeat") || "repeat";
+	const size = parseBackgroundSize(valueOf("background-size"));
+	const position = parseBackgroundPosition(valueOf("background-position"));
+	const left = positionLabel(position.x);
+	const top = positionLabel(position.y);
+	const commitPosition = (x: string, y: string) => commit({ "background-position": `${x} ${y}` });
+	return (
+		<>
+			{visible("background-size") && (
+				<>
+					<IconSegmented
+						label="Size"
+						groupLabel="Background size"
+						value={size.mode}
+						options={BACKGROUND_SIZE_OPTIONS}
+						onChange={(value) => commit({ "background-size": value === "custom" ? "auto auto" : value })}
+					/>
+					{size.mode === "custom" && (
+						<>
+							<div className="grid grid-cols-[80px_minmax(0,1fr)] items-center gap-2">
+								<span aria-hidden="true" />
+								<div className="grid grid-cols-2 gap-1">
+									<DraftInput
+										ariaLabel="Background width"
+										value={size.width === "auto" ? "" : size.width}
+										placeholder="auto"
+										onCommit={(value) => {
+											const width = value || "auto";
+											commit({ "background-size": `${width} ${size.height || "auto"}` });
+										}}
+									/>
+									<DraftInput
+										ariaLabel="Background height"
+										value={size.height === "auto" ? "" : size.height}
+										placeholder="auto"
+										onCommit={(value) => {
+											const height = value || "auto";
+											commit({ "background-size": `${size.width || "auto"} ${height}` });
+										}}
+									/>
+								</div>
+							</div>
+							<div className="grid grid-cols-[80px_minmax(0,1fr)] gap-2">
+								<span aria-hidden="true" />
+								<div className="grid grid-cols-2 gap-1 text-center text-[10px] text-[#71717a]">
+									<span>Width</span>
+									<span>Height</span>
+								</div>
+							</div>
+						</>
+					)}
+				</>
+			)}
+			{visible("background-position") && (
+				<ControlRow label="Position">
+					<div className="flex items-center gap-2">
+						<div
+							role="group"
+							aria-label="Background position"
+							className="grid shrink-0 grid-cols-3 gap-0.5 rounded-md border border-[#34343a] bg-[#19191c] p-1"
+						>
+							{[0, 50, 100].map((y) =>
+								[0, 50, 100].map((x) => {
+									const selected = positionPercent(position.x) === x && positionPercent(position.y) === y;
+									return (
+										<button
+											key={`${x}:${y}`}
+											type="button"
+											aria-label={`Background position ${x}% ${y}%`}
+											aria-pressed={selected}
+											title={`${x}% ${y}%`}
+											onClick={() => commitPosition(`${x}%`, `${y}%`)}
+											className={`grid size-5 place-items-center rounded-sm transition-colors ${selected ? "bg-[#2c2c31]" : "hover:bg-[#1f1f23]"}`}
+										>
+											<span
+												className={`rounded-full transition-colors ${selected ? "size-1.5 bg-[#e4e4e7]" : "size-1 bg-[#52525b]"}`}
+											/>
+										</button>
+									);
+								}),
+							)}
+						</div>
+						<div className="grid min-w-0 flex-1 gap-1">
+							<div className="grid grid-cols-[30px_minmax(0,1fr)] items-center gap-1">
+								<span className="text-[10px] text-[#9b9ba3]">Left</span>
+								<DraftInput
+									ariaLabel="Background position left"
+									value={left.value}
+									placeholder="50"
+									suffix={left.suffix}
+									onCommit={(value) => commitPosition(positionValue(value, "50%"), position.y)}
+								/>
+							</div>
+							<div className="grid grid-cols-[30px_minmax(0,1fr)] items-center gap-1">
+								<span className="text-[10px] text-[#9b9ba3]">Top</span>
+								<DraftInput
+									ariaLabel="Background position top"
+									value={top.value}
+									placeholder="50"
+									suffix={top.suffix}
+									onCommit={(value) => commitPosition(position.x, positionValue(value, "50%"))}
+								/>
+							</div>
+						</div>
+					</div>
+				</ControlRow>
+			)}
+			{visible("background-repeat") && (
+				<IconSegmented
+					label="Tile"
+					groupLabel="Background repeat"
+					value={repeat}
+					options={BACKGROUND_REPEAT_OPTIONS}
+					onChange={(value) => commit({ "background-repeat": value })}
+				/>
+			)}
+			{visible("background-attachment") && (
+				<IconSegmented
+					label="Fixed"
+					groupLabel="Background attachment"
+					value={valueOf("background-attachment") === "fixed" ? "fixed" : "scroll"}
+					options={BACKGROUND_ATTACHMENT_OPTIONS}
+					onChange={(value) => commit({ "background-attachment": value })}
+				/>
+			)}
+			{keys
+				.filter((key) => !BACKGROUND_CONTROL_KEYS.has(key) && matchesStyle(key, query, "background"))
+				.map((key) => renderInput(key))}
+		</>
+	);
+}
+
 /** Tailwind's named radii are lengths; a corner edit must not leave `lg` inside a CSS shorthand. */
 const RADIUS_TOKENS: Record<string, string> = {
 	none: "0",
@@ -1129,7 +1447,6 @@ function LayoutEditor({ keys, query, valueOf, inherited, commit, renderInput }: 
 	const wrapVisible = isFlex && keys.includes("flex-wrap") && matchesStyle("flex-wrap", query, "layout");
 	const gapVisible = (isFlex || isGrid) && keys.includes("gap") && matchesStyle("gap", query, "layout");
 	const extra = keys.filter((key) => !handled.has(key) && matchesStyle(key, query, "layout"));
-	const justifyDefault = inherited("justify-content");
 	return (
 		<>
 			{typeVisible && (
@@ -1152,17 +1469,11 @@ function LayoutEditor({ keys, query, valueOf, inherited, commit, renderInput }: 
 				/>
 			)}
 			{distributeVisible && (
-				<LabeledSelect
+				<IconSegmented
 					label="Distribute"
+					groupLabel="Justify content"
 					value={valueOf("justify-content")}
-					options={(SELECTS["justify-content"] ?? []).map((value) => ({
-						value,
-						label: value
-							? capitalize(value.replace("-", " "))
-							: justifyDefault
-								? `Default (${justifyDefault})`
-								: "Default",
-					}))}
+					options={JUSTIFY_CONTENT_OPTIONS}
 					onChange={(value) => commit({ "justify-content": value })}
 				/>
 			)}
@@ -1326,6 +1637,29 @@ function TypographyControls({
 	);
 }
 
+function BackgroundControls({
+	styles,
+	keys,
+	query,
+	inherit,
+}: {
+	styles: Styles;
+	keys: readonly string[];
+	query: string;
+	inherit: (key: string) => string | undefined;
+}) {
+	return (
+		<BackgroundEditor
+			keys={keys}
+			query={query}
+			valueOf={(key) => styles[key] ?? ""}
+			inherited={inherit}
+			commit={(patch) => setStyles(patch)}
+			renderInput={(key) => <StyleInput key={key} prop={key} value={styles[key] ?? ""} inherited={inherit(key)} />}
+		/>
+	);
+}
+
 function BorderControls({
 	styles,
 	keys,
@@ -1429,6 +1763,13 @@ function StyleEditor({
 							<TypographyControls
 								styles={styles}
 								keys={STYLE_GROUPS.find(([name]) => name === "Typography")?.[1] ?? []}
+								query={q}
+								inherit={inherit}
+							/>
+						) : group === "Background" ? (
+							<BackgroundControls
+								styles={styles}
+								keys={STYLE_GROUPS.find(([name]) => name === "Background")?.[1] ?? []}
 								query={q}
 								inherit={inherit}
 							/>
@@ -2052,23 +2393,14 @@ function ThemeStyleInput({
 	const commit = (v: string) => v !== value && onCommit(v);
 	if (SELECTS[prop])
 		return (
-			<div className="grid gap-1">
-				<PropertyLabel htmlFor={inputId}>{label}</PropertyLabel>
-				<Select
-					id={inputId}
-					size="sm"
-					value={value}
-					aria-label={prop}
-					onChange={(e) => commit(e.target.value)}
-					className="h-8 border-[#34343a] bg-[#19191c] text-xs"
-				>
-					{[...new Set([...SELECTS[prop], value])].map((o) => (
-						<option key={o} value={o}>
-							{o || (placeholder ? `— (${placeholder})` : "—")}
-						</option>
-					))}
-				</Select>
-			</div>
+			<EnumControl
+				prop={prop}
+				label={label}
+				value={value}
+				options={SELECTS[prop]}
+				inherited={placeholder}
+				onChange={commit}
+			/>
 		);
 	return (
 		<div className="grid gap-1">
@@ -2616,6 +2948,15 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 											/>
 										) : group === "Typography" ? (
 											<TypographyEditor
+												keys={allKeys}
+												query={q}
+												valueOf={valueOf}
+												inherited={inherited}
+												commit={commitMany}
+												renderInput={renderInput}
+											/>
+										) : group === "Background" ? (
+											<BackgroundEditor
 												keys={allKeys}
 												query={q}
 												valueOf={valueOf}
