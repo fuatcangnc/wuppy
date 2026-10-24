@@ -1800,9 +1800,9 @@
     "semantic_hash": ""
   },
   ".opencode/KARARLAR.md": {
-    "mtime": 1792869490.3642464,
-    "seen": 1792869516.153866,
-    "ast_hash": "2758dfca55b95229836ef60d6222e977",
+    "mtime": 1792879535.7871315,
+    "seen": 1792879548.620249,
+    "ast_hash": "1fb279d4c144c8f75a08549a09b0e3a5",
     "semantic_hash": ""
   },
   ".opencode/PROJE-YAPISI.md": {
@@ -2058,9 +2058,9 @@
     "semantic_hash": ""
   },
   "yap\u0131lacaklar.md": {
-    "mtime": 1792869490.3742464,
-    "seen": 1792869516.154277,
-    "ast_hash": "5366a51652552fd0794b029e1a3d8c44",
+    "mtime": 1792881419.950514,
+    "seen": 1792881433.2251687,
+    "ast_hash": "10597e6e9f1b277e151f10c0ac332966",
     "semantic_hash": ""
   },
   "packages/admin/public/icons.svg": {
@@ -2076,9 +2076,9 @@
     "semantic_hash": ""
   },
   "knip.json": {
-    "mtime": 1792864724.993495,
-    "seen": 1792866224.3254774,
-    "ast_hash": "77ef6d682ff8fdfba0b7f62d06bb6308",
+    "mtime": 1792879108.1651523,
+    "seen": 1792879548.6193688,
+    "ast_hash": "597fa0ea968e4311e13284b4ed7737f1",
     "semantic_hash": ""
   },
   "packages/admin/src/components/calendar/dates.ts": {
@@ -2316,9 +2316,9 @@
     "semantic_hash": ""
   },
   "docs/src/content/docs/deployment/docker.md": {
-    "mtime": 1792606757.7474346,
-    "seen": 1792606890.9829504,
-    "ast_hash": "758852bf864f63c134743ff93b9c2270",
+    "mtime": 1792880969.040608,
+    "seen": 1792881433.2249084,
+    "ast_hash": "05c8e10562742ac7ea24fa7e52006306",
     "semantic_hash": ""
   },
   "packages/admin/src/components/media/FocalPoint.tsx": {
@@ -3774,9 +3774,9 @@
     "semantic_hash": ""
   },
   "docs/src/content/docs/deployment/docs-site.md": {
-    "mtime": 1792869453.1353219,
-    "seen": 1792869516.1539435,
-    "ast_hash": "afdbb977a6ab2c6af6b1679fd720e6fe",
+    "mtime": 1792880592.2738016,
+    "seen": 1792880899.7593527,
+    "ast_hash": "23d7a8bbe4a78ac31e4c5095a50d335e",
     "semantic_hash": ""
   },
   "docs/src/content/docs/deployment/upgrading.md": {
@@ -3960,15 +3960,15 @@
     "semantic_hash": ""
   },
   "docs/src/content/docs/tr/deployment/docker.md": {
-    "mtime": 1792606764.6474595,
-    "seen": 1792606890.9829998,
-    "ast_hash": "e7451ca00511741157c08685e84e88d9",
+    "mtime": 1792880969.0407512,
+    "seen": 1792881433.224953,
+    "ast_hash": "28f6267be880ab71a7f1d3550cfb6c38",
     "semantic_hash": ""
   },
   "docs/src/content/docs/tr/deployment/docs-site.md": {
-    "mtime": 1792869453.1354353,
-    "seen": 1792869516.1540194,
-    "ast_hash": "5fddd2d236e6971ea1e6dc9eb5a9b4ab",
+    "mtime": 1792880592.274358,
+    "seen": 1792880899.759417,
+    "ast_hash": "f52e817c0c0dca71afab534a74e66e1a",
     "semantic_hash": ""
   },
   "docs/src/content/docs/tr/deployment/upgrading.md": {
@@ -6726,27 +6726,27 @@
     "semantic_hash": ""
   },
   "packages/core/src/cli/init.ts": {
-    "mtime": 1792865322.5568347,
-    "seen": 1792866224.3258197,
-    "ast_hash": "3dab6f2af904c74d47e1924227d629be",
+    "mtime": 1792881065.069211,
+    "seen": 1792881433.224278,
+    "ast_hash": "af98e88d01689262eb2e9c79e1b83480",
     "semantic_hash": ""
   },
   "packages/core/tests/unit/cli-init.test.ts": {
-    "mtime": 1792865322.5093775,
-    "seen": 1792866224.3259609,
-    "ast_hash": "1d0a558375bc468335d3e7e62fa35588",
+    "mtime": 1792881065.091211,
+    "seen": 1792881433.2244143,
+    "ast_hash": "f2d65a4cd69c6574d5ad4310b9f663f1",
     "semantic_hash": ""
   },
   "docs/src/content/docs/guides/existing-astro-project.md": {
-    "mtime": 1792865339.1306207,
-    "seen": 1792866224.326514,
-    "ast_hash": "3ab828bb01209a528adebc32f6e38682",
+    "mtime": 1792881090.2749312,
+    "seen": 1792881433.2249193,
+    "ast_hash": "30df9236520849c4837cf86cec4b8c92",
     "semantic_hash": ""
   },
   "docs/src/content/docs/tr/guides/existing-astro-project.md": {
-    "mtime": 1792865339.1310928,
-    "seen": 1792866224.3265612,
-    "ast_hash": "5a1a67f6c1306066c8a654bb319015ce",
+    "mtime": 1792881090.2752478,
+    "seen": 1792881433.2249625,
+    "ast_hash": "7487612946127574dedaf1452cf12b96",
     "semantic_hash": ""
   },
   "packages/core/src/astro/live-content.ts": {
@@ -6768,9 +6768,9 @@
     "semantic_hash": ""
   },
   "packages/core/src/themes/github.ts": {
-    "mtime": 1792865339.1327431,
-    "seen": 1792866224.325906,
-    "ast_hash": "f6bef8f03309d55a65110c3116b6398a",
+    "mtime": 1792878980.6656077,
+    "seen": 1792879548.6197577,
+    "ast_hash": "cbbe9c7e946335ded3248f3f4ff4fdbf",
     "semantic_hash": ""
   },
   "packages/core/tests/unit/themes-github.test.ts": {
@@ -6786,15 +6786,15 @@
     "semantic_hash": ""
   },
   "docs/src/content/docs/guides/github-themes.md": {
-    "mtime": 1792865322.2415342,
-    "seen": 1792866224.3265154,
-    "ast_hash": "a3bf32808c519e8ebccca26900663b04",
+    "mtime": 1792881090.274143,
+    "seen": 1792881433.2249203,
+    "ast_hash": "4b933d76c97d726ef889835a0229ebbf",
     "semantic_hash": ""
   },
   "docs/src/content/docs/tr/guides/github-themes.md": {
-    "mtime": 1792865322.250461,
-    "seen": 1792866224.3265626,
-    "ast_hash": "7e67a92cba678698d197c85cf0b4b899",
+    "mtime": 1792881090.2745228,
+    "seen": 1792881433.2249637,
+    "ast_hash": "abcdee381a667eac5548d758ee9acdec",
     "semantic_hash": ""
   },
   "templates/starter/content/posts/test.md": {
@@ -7770,9 +7770,9 @@
     "semantic_hash": ""
   },
   "landing/astro.config.mjs": {
-    "mtime": 1792861210.0817797,
-    "seen": 1792861399.6244628,
-    "ast_hash": "70027ce4d9daea475f9672204c977b4f",
+    "mtime": 1792878888.2338407,
+    "seen": 1792879548.6193712,
+    "ast_hash": "9f0c53b517b802c4541d56e60035f566",
     "semantic_hash": ""
   },
   "landing/components.json": {
@@ -7782,15 +7782,15 @@
     "semantic_hash": ""
   },
   "landing/package.json": {
-    "mtime": 1792864724.993601,
-    "seen": 1792866224.3254821,
-    "ast_hash": "dbba80a71442d7a041660eab604dfb87",
+    "mtime": 1792878904.9148138,
+    "seen": 1792879548.6193748,
+    "ast_hash": "c93ae6c4f652cc23b4e9127984056eaa",
     "semantic_hash": ""
   },
   "landing/src/components/Landing.astro": {
-    "mtime": 1792869453.1350236,
-    "seen": 1792869516.1528876,
-    "ast_hash": "642757976ade17b8c2cfb84ec58b899a",
+    "mtime": 1792878896.1912146,
+    "seen": 1792879548.6193767,
+    "ast_hash": "34b8bc6231b271bae415f16e1564b3d6",
     "semantic_hash": ""
   },
   "landing/src/lib/utils.ts": {
@@ -7800,15 +7800,15 @@
     "semantic_hash": ""
   },
   "landing/src/pages/index.astro": {
-    "mtime": 1792861251.4020174,
-    "seen": 1792861399.6244707,
-    "ast_hash": "8a2594155d4aa8f458d5046e4e388837",
+    "mtime": 1792878888.2363782,
+    "seen": 1792879548.619382,
+    "ast_hash": "de73ed2e8b8119b13f6c2da9eddb557a",
     "semantic_hash": ""
   },
   "landing/src/pages/tr/index.astro": {
-    "mtime": 1792861251.4020174,
-    "seen": 1792861399.6244721,
-    "ast_hash": "742060d09286902c8b0094a640f702c8",
+    "mtime": 1792878888.2348406,
+    "seen": 1792879548.6193833,
+    "ast_hash": "51de03d3479fc93cba51d07fa6191c52",
     "semantic_hash": ""
   },
   "landing/src/ui/button/Button.astro": {
@@ -8127,6 +8127,42 @@
     "mtime": 1792869482.1071408,
     "seen": 1792869516.1538625,
     "ast_hash": "583b7bac305dba52b1e0c02f990a0fcb",
+    "semantic_hash": ""
+  },
+  "landing/src/content.config.ts": {
+    "mtime": 1792878888.2335048,
+    "seen": 1792879548.6193788,
+    "ast_hash": "fe51af305a5020905e7108646104690c",
+    "semantic_hash": ""
+  },
+  "landing/wuppy.config.mjs": {
+    "mtime": 1792878888.2327957,
+    "seen": 1792879548.619392,
+    "ast_hash": "37db196fa5f290e9b75861bd99a1526c",
+    "semantic_hash": ""
+  },
+  ".changeset/lazy-astro-compiler.md": {
+    "mtime": 1792879535.7861314,
+    "seen": 1792879548.6201992,
+    "ast_hash": "bd129b4081045f723dd9ca88119446c5",
+    "semantic_hash": ""
+  },
+  "landing/content/landing/en.md": {
+    "mtime": 1792878877.5218258,
+    "seen": 1792879548.620429,
+    "ast_hash": "6bff3e4c55da4d83b6d0562318d324ab",
+    "semantic_hash": ""
+  },
+  "landing/content/landing/tr.md": {
+    "mtime": 1792878877.522685,
+    "seen": 1792879548.6204302,
+    "ast_hash": "94b369f676beb32a2353ca70823d234f",
+    "semantic_hash": ""
+  },
+  ".changeset/init-without-collections.md": {
+    "mtime": 1792881090.278504,
+    "seen": 1792881433.224795,
+    "ast_hash": "a2f47103d3f95812bba7a09900d8f4c6",
     "semantic_hash": ""
   }
 }

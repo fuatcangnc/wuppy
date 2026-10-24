@@ -853,3 +853,7 @@ temel → uzak taraf → hub → proxy → UI → client → test.
 + [x] npm paketlerine README, açıklama, anahtar kelime, homepage/repository/bugs (0.2.2); admin ve visual-editor README'lerinde Instatic MIT bildirimi
 + [x] Instatic adı README/docs/kod/test/CHANGELOG’lardan kaldırıldı; MIT metni THIRD-PARTY-NOTICES.md (admin, visual-editor) içinde, 0.2.3
 + [x] Açık kaynak kurulum app. → test.wuppycms.com (DNS, Caddy, WUPPY_URL, siteUrl); app. Cloud için ayrıldı (302); landing "Demo" bağlantıları, docs adres tablosu; .opencode/CLOUD.md planı
++ [x] wuppycms.com WuppyCMS ile çalışıyor: landing/ WuppyCMS sitesi, admin wuppycms.com/admin, metinler landing koleksiyonunda; core: Astro derleyicisi tembel yükleniyor (pnpm bundle native binding hatası)
++ [x] GitHub OAuth (giriş + tema bağlantısı) sunucuda wuppycms.com ve test.wuppycms.com için açıldı (.env, .env.landing)
++ [x] Docker imajına ca-certificates eklendi (GitHub tema klonlama TLS hatası); wuppycms.com landing servisi starter serve.mjs ile çalışıyor (tema seçimi destekli)
++ [x] wuppycms init / GitHub tema kurulumu Markdown koleksiyonu olmayan sitelerde de çalışıyor (collections: [] + uyarı); Docker dokümanına git + ca-certificates notu

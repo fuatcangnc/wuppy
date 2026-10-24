@@ -726,3 +726,11 @@ Kullanıcı: "app altındaki wuppy kurmak yerine test altına kur… app olan ü
 kurulumumuz `test.wuppycms.com`'da (Route 53 A kaydı, Caddy, `WUPPY_URL` ve `siteUrl`). `app.wuppycms.com` ücretli
 WuppyCMS Cloud kontrol paneline ayrıldı; açılana kadar `test.`'e 302 (geçici). Cloud'a özel kod bu repoya girmez,
 açık kaynak pakete özellik kilidi eklenmez. Ayrıntı ve aşamalar: `.opencode/CLOUD.md`.
+
+## Ek 19 — wuppycms.com WuppyCMS ile çalışır (2026-10-25)
+
+Kullanıcı: "wuppycms.com ana şey de wuppycms'de çalışmalı". `landing/` artık WuppyCMS sitesi (server + node adapter +
+`wuppycms()`); metinler `landing/content/landing/{en,tr}.md` (`landing` koleksiyonu, kind pages, repeater alanlar),
+arayüz etiketleri kodda. Sunucuda aynı imajın `landing` servisi (kendi `.env.landing`, ayrı `WUPPY_SECRET`, 4 volume),
+Caddy `wuppycms.com` → `landing:4321`; admin `wuppycms.com/admin`. İlk admin sunucuda oluşturuldu (kayıt kapalı),
+geçici parola yalnızca `/opt/wuppy/landing-admin-password.txt` (root, 600). Statik `/srv/landing` artık kullanılmıyor.

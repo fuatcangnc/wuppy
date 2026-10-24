@@ -12,6 +12,9 @@
 		"packages/core": {
 			"ignoreDependencies": ["@wuppycms/admin"]
 		},
+		"landing": {
+			"entry": ["wuppy.config.mjs"]
+		},
 		"templates/starter": {
 			"ignore": ["content/**"],
 			"ignoreDependencies": ["zod"]

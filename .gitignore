@@ -16,6 +16,7 @@ acceptance/runs
 
 # Runtime uploads in the starter (E2E copies the site without them)
 templates/starter/public/uploads/
+landing/public/uploads/
 
 # Local databases
 *.db

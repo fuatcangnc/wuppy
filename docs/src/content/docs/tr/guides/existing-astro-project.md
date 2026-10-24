@@ -38,6 +38,7 @@ Bu, [GitHub CLI](https://cli.github.com/) kullanır; özel depolar kendi girişi
 `wuppycms init` şunları yapar:
 
 - `src/content.config.ts` (ya da `src/content/config.ts`) dosyasını okur ve `.md` dosyası olan her koleksiyonu alır. Koleksiyonun adı `export const collections` içindeki anahtarıdır (`post: postCollection` → `post`). JSON/YAML veri koleksiyonları, uzak loader'lar ve küçük harf, rakam ve tire dışında karakter içeren adlar (`blogPosts`) "atlandı" diye listelenir, dokunulmaz. İçerik ayarı olmayan projelerde `src/content/<ad>/` klasörleri okunur.
+- Markdown koleksiyonu olmayan bir proje de `collections: []` ve bir uyarıyla sarılır: admin, medya, menüler, ayarlar ve görsel editör çalışır; yazı veya sayfa yönetmek için sonradan koleksiyon eklenebilir.
 - Her alanı dosyalardaki frontmatter'dan tahmin eder: tarih, boolean, sayı, metin listesi, görsel (anahtar adından ya da dosya uzantısından), uzun metin ve düz metin. Her dosyada bulunan alan zorunlu olur. Tanımadığı anahtarlar kayıtta yine korunur.
 - Her koleksiyonun public adresini `getCollection("<ad>")` çağıran `[slug]` ya da `[...slug]` sayfasından bulur.
 - `wuppy.config.mjs` dosyasını yazar, `astro.config` içindeki `integrations`'a `wuppycms()` ekler, adapter yoksa Node adapter'ı ekler.

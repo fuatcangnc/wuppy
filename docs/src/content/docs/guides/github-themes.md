@@ -80,7 +80,7 @@ A site page with the same name is kept and the theme page is not listed for it. 
 
 - The server must be started with `node serve.mjs` (the Docker image does this) and a process manager that starts it again after it exits, such as Docker's `restart: unless-stopped`. In development, `pnpm dev` (`node dev.mjs`) runs `astro dev` inside the active theme with the site's content, so the preview is the theme; switching themes in the admin restarts it in the new theme by itself.
 - `git` and `npm` on the server, and network access to GitHub and the npm registry.
-- The repository must be an Astro 7 site with Markdown/MDX content collections. Its `.md` and `.mdx` sample entries are imported; component imports in `.mdx` are removed because the theme's components map is provided automatically. An entry the active theme cannot render (a component it does not have, such as another theme's `<Callout>`, or an import from a package) is shown without its body, and the server log names the file; the rest of the page still renders.
+- The repository must be an Astro 7 site. Markdown/MDX content collections are optional: without them the theme still installs, and its pages are edited in the visual editor. Its `.md` and `.mdx` sample entries are imported; component imports in `.mdx` are removed because the theme's components map is provided automatically. An entry the active theme cannot render (a component it does not have, such as another theme's `<Callout>`, or an import from a package) is shown without its body, and the server log names the file; the rest of the page still renders.
 
 ## What to know
 

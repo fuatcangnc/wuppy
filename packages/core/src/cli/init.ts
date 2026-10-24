@@ -302,8 +302,11 @@ export async function init(
 		return { code: 1, stdout: "", stderr: "wuppy.config.mjs already exists (use --force to replace it)." };
 
 	const plan = await planInit(root);
+	// A site without Markdown content still gets the admin: settings, media, menus and the visual editor on its pages.
 	if (plan.collections.length === 0)
-		return { code: 1, stdout: "", stderr: `No Markdown/MDX content collections found.\n${plan.skipped.join("\n")}` };
+		plan.warnings.push(
+			"no Markdown/MDX content collections found; add one to wuppy.config.mjs to manage posts or pages",
+		);
 
 	const pkgPath = join(root, "package.json");
 	const pkg = JSON.parse((await read(pkgPath)) ?? "{}") as { name?: string; dependencies?: Record<string, string> };

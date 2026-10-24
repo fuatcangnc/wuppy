@@ -10,7 +10,7 @@ import { open, seal } from "../security/secret-box.ts";
 import { astroOnly, CONFIGS, init, NODE_ADAPTER, REPOS_QUERY, type GithubRepo } from "../cli/init.ts";
 import { quietNextChange } from "../astro/quiet-hmr.ts";
 import { themeBodyShift, themePageRel } from "../astro/theme-pages.ts";
-import { editAstroElement, type ElementEdit } from "./astro-edit.ts";
+import type { ElementEdit } from "./astro-edit.ts";
 import { importDemo, importPages } from "./site.ts";
 
 /** `"12:5"` moved by `n` lines. */
@@ -398,6 +398,8 @@ export class GithubThemes {
 		const source = await readFile(join(root, path), "utf8");
 		// A theme page's template lines move when its body slot cannot share the frontmatter's first line.
 		const shift = themePageRel(root, join(root, path)) ? themeBodyShift(source) : 0;
+		// Loaded on use: the Astro compiler is a native module that a bundled production server may not resolve.
+		const { editAstroElement } = await import("./astro-edit.ts");
 		const out = editAstroElement(source, shiftLine(loc, -shift), edit, tag);
 		const reload = !(live && out.quiet);
 		if (!reload) quietNextChange(join(root, path));

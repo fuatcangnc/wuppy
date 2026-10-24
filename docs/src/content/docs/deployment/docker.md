@@ -19,6 +19,8 @@ docker compose up --build
   database, site data). Back them up, or use Settings → Backups.
 - The container runs as the unprivileged `node` user and has a health check on `/api/setup`.
 - It starts with `node serve.mjs`, which runs the theme picked in [Themes from GitHub](/guides/github-themes/) when there is one. Keep `restart: unless-stopped`: switching themes exits the server so Docker starts it again. Themes are built into the `state` volume.
+- Building your own image? It needs `git` and `ca-certificates` (slim Node images have neither): without the
+  certificates, installing a GitHub theme fails with `server certificate verification failed`.
 - Put a reverse proxy in front for TLS and set `WUPPY_TRUSTED_PROXIES` to its address so rate limits use the real client IP.
 
 ## HTTPS with Caddy

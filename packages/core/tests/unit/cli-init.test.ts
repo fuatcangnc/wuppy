@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { mkdtemp } from "node:fs/promises";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { astroRepos, importRepo, inferField, patchAstroConfig } from "../../src/cli/init.ts";
+import { astroRepos, importRepo, inferField, init, patchAstroConfig } from "../../src/cli/init.ts";
 
 const line = (repo: string, pkg: string) => JSON.stringify({ repo, private: repo.endsWith("b"), description: "", pkg });
 
@@ -27,6 +27,19 @@ describe("wuppycms init helpers", () => {
 		expect(patchAstroConfig(withAdapter, { rss: false })).not.toContain("@astrojs/node");
 		expect(patchAstroConfig(out, {})).toBe(out);
 		expect(patchAstroConfig("module.exports = {}", {})).toBeNull();
+	});
+
+	it("wraps a site that has no Markdown content collections", async () => {
+		const root = await mkdtemp(join(tmpdir(), "wuppy-init-"));
+		await writeFile(
+			join(root, "astro.config.mjs"),
+			`import { defineConfig } from "astro/config";\nexport default defineConfig({});\n`,
+		);
+		await writeFile(join(root, "package.json"), '{"name":"site"}');
+		const r = await init(root);
+		expect(r.code).toBe(0);
+		expect(r.stdout).toContain("no Markdown/MDX content collections found");
+		expect(await readFile(join(root, "wuppy.config.mjs"), "utf8")).toContain('"collections": []');
 	});
 
 	it("lists only Astro repos from GitHub and clones the picked one with gh", async () => {

@@ -38,6 +38,7 @@ This uses the [GitHub CLI](https://cli.github.com/), so private repositories wor
 `wuppycms init` does the following:
 
 - Reads `src/content.config.ts` (or `src/content/config.ts`) and keeps every collection that holds `.md` files. A collection is named by its key in `export const collections` (`post: postCollection` → `post`). JSON/YAML data collections, remote loaders and names that are not lowercase letters, digits and dashes (`blogPosts`) are listed as skipped and left alone. Projects without a content config are read from `src/content/<name>/`.
+- A project with no Markdown collection is wrapped too, with `collections: []` and a warning: the admin, media, menus, settings and the visual editor work; add a collection later to manage posts or pages.
 - Guesses each field from the frontmatter already in the files: dates, booleans, numbers, string lists, images (by key name or file extension), long text and plain strings. A field present in every file becomes required. Keys it does not know are still kept when an entry is saved.
 - Finds the public URL of each collection from the `[slug]` or `[...slug]` page that calls `getCollection("<name>")`.
 - Writes `wuppy.config.mjs`, adds `wuppycms()` to `integrations` in `astro.config`, and adds the Node adapter if there is no adapter yet.

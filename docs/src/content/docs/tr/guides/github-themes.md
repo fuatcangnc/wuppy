@@ -80,7 +80,7 @@ Sitede aynı adla bir sayfa varsa o korunur ve tema sayfası onun için listelen
 
 - Sunucu `node serve.mjs` ile başlatılmalı (Docker imajı bunu yapar) ve kapanınca onu yeniden başlatan bir süreç yöneticisi olmalı; örneğin Docker'ın `restart: unless-stopped` ayarı. Geliştirmede `pnpm dev` (`node dev.mjs`) `astro dev`'i etkin temanın içinde sitenin içeriğiyle çalıştırır; önizleme temadır. Admin'de tema değiştirince yeni temayla kendiliğinden yeniden başlar.
 - Sunucuda `git` ve `npm`, GitHub'a ve npm kayıt deposuna ağ erişimi.
-- Depo, Markdown içerik koleksiyonları olan bir Astro 7 sitesi olmalı. `.mdx` örnek girdileri içe aktarılmaz. Etkin temanın gösteremediği bir girdi (başka bir temanın `<Callout>`'u gibi sahip olmadığı bir bileşen ya da bir paketten import) gövdesi olmadan gösterilir ve sunucu günlüğü dosyayı adlandırır; sayfanın geri kalanı yine çalışır.
+- Depo bir Astro 7 sitesi olmalı. Markdown/MDX içerik koleksiyonları isteğe bağlıdır: yoksa da tema kurulur ve sayfaları görsel editörde düzenlenir. `.mdx` örnek girdileri içe aktarılmaz. Etkin temanın gösteremediği bir girdi (başka bir temanın `<Callout>`'u gibi sahip olmadığı bir bileşen ya da bir paketten import) gövdesi olmadan gösterilir ve sunucu günlüğü dosyayı adlandırır; sayfanın geri kalanı yine çalışır.
 
 ## Bilinmesi gerekenler
 

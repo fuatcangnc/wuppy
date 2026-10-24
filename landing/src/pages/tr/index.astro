@@ -1,5 +1,9 @@
 ---
+import { getEntry } from "astro:content";
 import Landing from "@/components/Landing.astro";
+
+const page = await getEntry("landing", "tr");
+if (!page) throw new Error("content/landing/tr.md is missing");
 ---
 
-<Landing lang="tr" />
+<Landing lang="tr" page={page.data} />

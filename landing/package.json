@@ -5,16 +5,19 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build",
-		"preview": "astro preview"
+		"preview": "astro preview",
+		"start": "node dist/server/entry.mjs"
 	},
 	"dependencies": {
+		"@astrojs/node": "catalog:",
 		"@tailwindcss/vite": "catalog:",
 		"astro": "catalog:",
 		"class-variance-authority": "catalog:",
 		"clsx": "catalog:",
 		"tailwind-merge": "catalog:",
 		"tailwindcss": "catalog:",
-		"tw-animate-css": "catalog:"
+		"tw-animate-css": "catalog:",
+		"wuppycms": "workspace:*"
 	},
 	"devDependencies": {
 		"bejamas": "catalog:"

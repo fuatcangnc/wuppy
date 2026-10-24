@@ -33,17 +33,21 @@ docs.example.com {
 
 | Address | What it serves |
 | --- | --- |
-| `wuppycms.com` | The landing page that introduces WuppyCMS (English at `/`, Turkish at `/tr/`). `www` redirects here. |
+| `wuppycms.com` | The landing page that introduces WuppyCMS (English at `/`, Turkish at `/tr/`). It runs on WuppyCMS: edit it at `/admin`. `www` redirects here. |
 | `docs.wuppycms.com` | These docs. |
 | `test.wuppycms.com` | Our own install of open-source WuppyCMS; sign in at `/admin`. |
 | `app.wuppycms.com` | Reserved for WuppyCMS Cloud, the paid hosted service; until it opens, it redirects to `test`. |
 
-The landing page is the `landing/` package of the repository, a static Astro site (Tailwind CSS 4 + bejamas/ui) whose
-address is set by `LANDING_SITE`:
+The landing page is the `landing/` package of the repository, an Astro site (Tailwind CSS 4 + bejamas/ui) that runs
+on WuppyCMS itself. Its copy (headline, features, steps) is the `landing` collection in `landing/content/landing/`, one
+entry per language (`en`, `tr`); sign in at `wuppycms.com/admin` and edit it under Pages. A save shows on the site at
+once and is a Git commit. Button labels and links stay in `src/components/Landing.astro`.
 
 ```sh
 pnpm --filter @wuppycms/landing dev
-LANDING_SITE=https://wuppycms.com pnpm --filter @wuppycms/landing build   # static HTML in landing/dist
+LANDING_SITE=https://wuppycms.com pnpm --filter @wuppycms/landing build   # Node server in landing/dist
 ```
 
-Caddy serves `landing/dist` the same way as the docs, from its own folder (`root * /srv/landing`).
+On the server it is the `landing` service of the same Docker image as a site (`working_dir: /app/landing`,
+`command: node /app/templates/starter/serve.mjs`, which also runs a theme picked in Admin → Themes) with its own `.env`, `WUPPY_URL=https://wuppycms.com` and volumes for content,
+uploads, Git history and `.wuppy`. Caddy proxies `wuppycms.com` to it.

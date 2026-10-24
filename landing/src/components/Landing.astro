@@ -2,83 +2,36 @@
 import "@/styles/theme.css";
 import { Button } from "@/ui/button";
 
+import type { CollectionEntry } from "astro:content";
+
 interface Props {
 	lang: "en" | "tr";
+	page: CollectionEntry<"landing">["data"];
 }
-const { lang } = Astro.props;
+const { lang, page } = Astro.props;
 
 const DOCS = "https://docs.wuppycms.com";
 // Our own open-source install; app.wuppycms.com is reserved for WuppyCMS Cloud.
 const APP = "https://test.wuppycms.com/admin";
 
-const copy = {
+// Interface labels stay in code; the page copy comes from content/landing (edited at /admin).
+const ui = {
 	en: {
-		title: "WuppyCMS — the file-based CMS for Astro",
-		description:
-			"WuppyCMS adds an admin panel to your Astro site. Content stays in Markdown files, every save is a Git commit, and editors get a visual editor.",
 		nav: { features: "Features", how: "How it works", docs: "Docs", app: "Demo" },
-		eyebrow: "CMS for Astro",
-		headline: "Your Astro site, with an admin your clients can use.",
-		lead: "WuppyCMS keeps content in Markdown and MDX files in your repository. Editors work in a clean admin with a visual editor; you keep plain files, Git history and your own Astro code.",
 		start: "Read the docs",
 		open: "Try the demo",
 		docs: `${DOCS}/`,
-		featuresTitle: "Everything a site needs, nothing it does not own",
-		features: [
-			["Content is files", "Markdown and MDX in your repo. Remove WuppyCMS and every page still reads."],
-			["Every save is a commit", "See what changed, compare versions and undo. History is never lost."],
-			["Visual editor", "Edit blocks and your theme's own markup on the page, per device, with live preview."],
-			["GitHub themes", "Install any Astro repository as a theme; its pages and content come with it."],
-			["Users and roles", "Admin, editor, author and viewer, with two-factor sign-in, passkeys and a security log."],
-			["Safe plugins", "Plugins run in a WebAssembly sandbox with only the capabilities you approve."],
-			["Media and SEO", "Uploads with focal points and crops, redirects, sitemaps and social previews."],
-			["Many sites, one hub", "Manage client sites from one place and publish to any of them."],
-		],
-		howTitle: "How it works",
-		steps: [
-			["Create", "npm create wuppycms my-site", "A new Astro site with WuppyCMS, or add the wuppycms() integration to an existing one."],
-			["Describe", "wuppy.config.mjs", "List your collections and fields; WuppyCMS builds the forms from them."],
-			["Edit", "/admin", "Sign in, invite your team and publish. Node.js is all it needs."],
-		],
-		ctaTitle: "Try WuppyCMS on your next Astro site",
-		ctaText: "Start with the guides, or sign in to the hosted app.",
 		other: { href: "/tr/", label: "Türkçe" },
-		footer: "File-based CMS for Astro.",
 	},
 	tr: {
-		title: "WuppyCMS — Astro için dosya tabanlı CMS",
-		description:
-			"WuppyCMS Astro sitenize bir yönetim paneli ekler. İçerik Markdown dosyalarında kalır, her kayıt bir Git commit'idir ve editörler görsel editörle çalışır.",
 		nav: { features: "Özellikler", how: "Nasıl çalışır", docs: "Dokümanlar", app: "Demo" },
-		eyebrow: "Astro için CMS",
-		headline: "Astro siteniz, müşterilerinizin kullanabileceği bir panelle.",
-		lead: "WuppyCMS içeriği deponuzdaki Markdown ve MDX dosyalarında tutar. Editörler görsel editörlü sade bir panelde çalışır; siz düz dosyaları, Git geçmişini ve kendi Astro kodunuzu korursunuz.",
 		start: "Dokümanları okuyun",
 		open: "Demoyu deneyin",
 		docs: `${DOCS}/tr/`,
-		featuresTitle: "Bir sitenin ihtiyacı olan her şey, size ait olmayan hiçbir şey",
-		features: [
-			["İçerik dosyadır", "Deponuzda Markdown ve MDX. WuppyCMS'i kaldırsanız da her sayfa okunur kalır."],
-			["Her kayıt bir commit", "Neyin değiştiğini görün, sürümleri karşılaştırın, geri alın. Geçmiş silinmez."],
-			["Görsel editör", "Blokları ve temanızın kendi işaretlemesini sayfada, cihaz cihaz, canlı önizlemeyle düzenleyin."],
-			["GitHub temaları", "Herhangi bir Astro deposunu tema olarak kurun; sayfaları ve içeriğiyle gelir."],
-			["Kullanıcılar ve roller", "Admin, editor, author ve viewer; iki faktörlü giriş, passkey ve güvenlik günlüğü."],
-			["Güvenli eklentiler", "Eklentiler WebAssembly kum havuzunda, yalnızca onayladığınız yeteneklerle çalışır."],
-			["Medya ve SEO", "Odak noktası ve kırpmalı yüklemeler, yönlendirmeler, site haritası ve sosyal önizlemeler."],
-			["Çok site, tek merkez", "Müşteri sitelerini tek yerden yönetin, herhangi birine yayınlayın."],
-		],
-		howTitle: "Nasıl çalışır",
-		steps: [
-			["Oluşturun", "npm create wuppycms my-site", "WuppyCMS'li yeni bir Astro sitesi; ya da var olan sitenize wuppycms() entegrasyonunu ekleyin."],
-			["Tanımlayın", "wuppy.config.mjs", "Koleksiyonlarınızı ve alanlarınızı yazın; WuppyCMS formları bunlardan kurar."],
-			["Düzenleyin", "/admin", "Giriş yapın, ekibinizi davet edin ve yayınlayın. Tek ihtiyacı Node.js."],
-		],
-		ctaTitle: "Bir sonraki Astro sitenizde WuppyCMS'i deneyin",
-		ctaText: "Rehberlerle başlayın ya da barındırılan uygulamaya giriş yapın.",
 		other: { href: "/", label: "English" },
-		footer: "Astro için dosya tabanlı CMS.",
 	},
 }[lang];
+const copy = { ...ui, ...page };
 ---
 
 <!doctype html>
@@ -136,7 +89,7 @@ const copy = {
 				<h2 class="max-w-2xl text-3xl font-bold tracking-tight text-balance md:text-4xl">{copy.featuresTitle}</h2>
 				<ul class="mt-12 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
 					{
-						copy.features.map(([title, text]) => (
+						copy.features.map(({ title, text }) => (
 							<li class="bg-background p-6">
 								<h3 class="font-bold">{title}</h3>
 								<p class="mt-2 text-sm text-muted-foreground">{text}</p>
@@ -151,7 +104,7 @@ const copy = {
 					<h2 class="text-3xl font-bold tracking-tight md:text-4xl">{copy.howTitle}</h2>
 					<ol class="mt-12 grid gap-8 md:grid-cols-3">
 						{
-							copy.steps.map(([title, code, text], i) => (
+							copy.steps.map(({ title, code, text }, i) => (
 								<li>
 									<span class="font-mono text-sm font-bold text-primary">0{i + 1}</span>
 									<h3 class="mt-2 text-xl font-bold">{title}</h3>

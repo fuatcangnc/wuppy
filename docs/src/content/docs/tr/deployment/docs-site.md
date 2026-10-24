@@ -33,17 +33,21 @@ docs.example.com {
 
 | Adres | Ne sunar |
 | --- | --- |
-| `wuppycms.com` | WuppyCMS'i tanıtan giriş sayfası (`/` İngilizce, `/tr/` Türkçe). `www` buraya yönlenir. |
+| `wuppycms.com` | WuppyCMS'i tanıtan giriş sayfası (`/` İngilizce, `/tr/` Türkçe). WuppyCMS ile çalışır: `/admin` adresinden düzenlenir. `www` buraya yönlenir. |
 | `docs.wuppycms.com` | Bu dokümanlar. |
 | `test.wuppycms.com` | Açık kaynak WuppyCMS'in kendi kurulumumuz; giriş `/admin` adresinde. |
 | `app.wuppycms.com` | Ücretli barındırılan hizmet WuppyCMS Cloud için ayrıldı; açılana kadar `test` adresine yönlendirir. |
 
-Giriş sayfası deponun `landing/` paketidir: adresi `LANDING_SITE` ile belirlenen statik bir Astro sitesi
-(Tailwind CSS 4 + bejamas/ui).
+Giriş sayfası deponun `landing/` paketidir: WuppyCMS'in kendisiyle çalışan bir Astro sitesi (Tailwind CSS 4 +
+bejamas/ui). Metinleri (başlık, özellikler, adımlar) `landing/content/landing/` içindeki `landing` koleksiyonudur, her
+dil için bir kayıt (`en`, `tr`); `wuppycms.com/admin` adresinden giriş yapıp Pages altında düzenlenir. Kayıt sitede
+hemen görünür ve bir Git commit'idir. Buton etiketleri ve bağlantılar `src/components/Landing.astro` içinde kalır.
 
 ```sh
 pnpm --filter @wuppycms/landing dev
-LANDING_SITE=https://wuppycms.com pnpm --filter @wuppycms/landing build   # landing/dist içinde statik HTML
+LANDING_SITE=https://wuppycms.com pnpm --filter @wuppycms/landing build   # landing/dist içinde Node sunucusu
 ```
 
-Caddy `landing/dist`'i dokümanlar gibi kendi klasöründen sunar (`root * /srv/landing`).
+Sunucuda bir siteyle aynı Docker imajının `landing` servisidir (`working_dir: /app/landing`,
+`command: node /app/templates/starter/serve.mjs`; Admin → Themes'te seçilen temayı da çalıştırır); kendi `.env`'i, `WUPPY_URL=https://wuppycms.com` ve içerik, yüklemeler, Git
+geçmişi ve `.wuppy` için volume'ları vardır. Caddy `wuppycms.com`'u ona yönlendirir.

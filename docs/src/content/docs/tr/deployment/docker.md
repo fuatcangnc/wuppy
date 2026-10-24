@@ -20,6 +20,8 @@ docker compose up --build
   (`.wuppy`: kimlik veritabanı, site verileri). Bunları yedekleyin veya Settings → Backups'ı kullanın.
 - Konteyner yetkisiz `node` kullanıcısıyla çalışır ve `/api/setup` üzerinde sağlık kontrolü vardır.
 - `node serve.mjs` ile başlar; [GitHub'dan temalar](/tr/guides/github-themes/) ile seçilmiş bir tema varsa onu çalıştırır. `restart: unless-stopped` ayarını koruyun: tema değişince sunucu kapanır, Docker onu yeniden başlatır. Temalar `state` volume'una derlenir.
+- Kendi imajınızı mı kuruyorsunuz? `git` ve `ca-certificates` gerekir (slim Node imajlarında ikisi de yoktur):
+  sertifikalar olmadan GitHub teması kurmak `server certificate verification failed` hatasıyla biter.
 - TLS için önüne bir ters proxy koyun ve hız sınırlarının gerçek istemci IP'sini kullanması için
   `WUPPY_TRUSTED_PROXIES` değerini onun adresine ayarlayın.
 
