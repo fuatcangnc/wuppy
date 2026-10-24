@@ -2094,9 +2094,9 @@
     "semantic_hash": ""
   },
   "packages/admin/public/icons.svg": {
-    "mtime": 1792817008.4826527,
-    "seen": 1792817249.125446,
-    "ast_hash": "cdde5512ca612cffbbc9a44e5958df95",
+    "mtime": 1792831634.8446062,
+    "seen": 1792831680.367874,
+    "ast_hash": "ed10c86bc22dd63036506086d9c21c0c",
     "semantic_hash": ""
   },
   ".changeset/config.json": {
@@ -6948,15 +6948,15 @@
     "semantic_hash": ""
   },
   "docs/src/content/docs/guides/visual-editor.md": {
-    "mtime": 1792802160.458527,
-    "seen": 1792802286.1791182,
-    "ast_hash": "bb1edc5a3f8a5938885fb52f9a19969b",
+    "mtime": 1792830475.409528,
+    "seen": 1792831680.367668,
+    "ast_hash": "63d467ab1a9ac53c7d582771a3805347",
     "semantic_hash": ""
   },
   "docs/src/content/docs/tr/guides/visual-editor.md": {
-    "mtime": 1792802160.4588904,
-    "seen": 1792802286.1791613,
-    "ast_hash": "93451fb34a4dec7686af38f6d7772dc1",
+    "mtime": 1792830485.4528668,
+    "seen": 1792831680.3677137,
+    "ast_hash": "1b3f9771102bb222aec53942aba608da",
     "semantic_hash": ""
   },
   "packages/admin/src/components/visual-editor/Explorer.tsx": {
@@ -6978,9 +6978,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/visual-editor/Properties.tsx": {
-    "mtime": 1792816721.6929576,
-    "seen": 1792817249.124361,
-    "ast_hash": "03764bf2bb762a646031d4efbace5935",
+    "mtime": 1792831516.0552344,
+    "seen": 1792831680.3668485,
+    "ast_hash": "c058f9b02b84e573ecfd2e12fa55594a",
     "semantic_hash": ""
   },
   "packages/admin/src/components/visual-editor/Selectors.tsx": {
@@ -7086,9 +7086,9 @@
     "semantic_hash": ""
   },
   "acceptance/instatic-ui/instatic-ui-features.md": {
-    "mtime": 1792802145.2200599,
-    "seen": 1792802286.1790745,
-    "ast_hash": "20512787f3c40840b6fb28bcf26c417c",
+    "mtime": 1792830492.1650946,
+    "seen": 1792831680.3676288,
+    "ast_hash": "5d88b6b70e19e029d5a40bd696362b39",
     "semantic_hash": ""
   },
   "acceptance/instatic-ui/screenshots/ai-defaults.png": {
@@ -7572,9 +7572,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/visual-editor/theme-element.ts": {
-    "mtime": 1792798346.8480814,
-    "seen": 1792798552.034992,
-    "ast_hash": "dfa7770f16f045d3c8c85b93fa1013e0",
+    "mtime": 1792830711.9794817,
+    "seen": 1792831680.3668623,
+    "ast_hash": "1891aafd4d0de9ca68b6e248a8f933e6",
     "semantic_hash": ""
   },
   "packages/core/src/themes/astro-edit.ts": {
@@ -7644,15 +7644,15 @@
     "semantic_hash": ""
   },
   "packages/admin/tests/properties-panel.test.tsx": {
-    "mtime": 1792800535.8237755,
-    "seen": 1792802286.1783712,
-    "ast_hash": "bf9de4e68d49458f18c315d0256b287b",
+    "mtime": 1792830995.8970354,
+    "seen": 1792831680.3669138,
+    "ast_hash": "1cc87e3bd046c8b0fdb92fb5a191edfb",
     "semantic_hash": ""
   },
   ".changeset/properties-panel-inst.md": {
-    "mtime": 1792802174.6792846,
-    "seen": 1792802286.1789696,
-    "ast_hash": "452984fcc67a5bf240414ae2a2a38207",
+    "mtime": 1792830504.258508,
+    "seen": 1792831680.367519,
+    "ast_hash": "165ae02b197f664513401069b7e16c56",
     "semantic_hash": ""
   },
   ".changeset/theme-install-activation.md": {
@@ -7665,6 +7665,12 @@
     "mtime": 1792816828.8960865,
     "seen": 1792817249.1254406,
     "ast_hash": "a1f288c390981671eca52358a93ba10a",
+    "semantic_hash": ""
+  },
+  "acceptance/instatic-ui/screenshots/wuppy-theme-element-panel.png": {
+    "mtime": 1792831649.9300401,
+    "seen": 1792831680.367871,
+    "ast_hash": "c3324539ac284b233463a87ebfaeff76",
     "semantic_hash": ""
   }
 }

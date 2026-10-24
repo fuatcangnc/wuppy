@@ -1418,7 +1418,7 @@
       "file_type": "code",
       "norm_label": "category",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L209"
+      "source_location": "L212"
     },
     {
       "id": "packages_admin_src_components_visual_editor_modules_field",
@@ -1457,7 +1457,7 @@
       "file_type": "code",
       "norm_label": "preset",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L211"
+      "source_location": "L214"
     },
     {
       "id": "packages_admin_src_components_visual_editor_overlays_item",
@@ -6203,7 +6203,7 @@
       "file_type": "code",
       "norm_label": "moduleof()",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L185"
+      "source_location": "L188"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_classpicker",
@@ -6215,7 +6215,7 @@
       "file_type": "code",
       "norm_label": "classpicker()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L301"
+      "source_location": "L303"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_componentparams",
@@ -6227,7 +6227,7 @@
       "file_type": "code",
       "norm_label": "componentparams()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1021"
+      "source_location": "L1031"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_contextbar",
@@ -6239,7 +6239,7 @@
       "file_type": "code",
       "norm_label": "contextbar()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L389"
+      "source_location": "L398"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_displaytoggle",
@@ -6251,7 +6251,7 @@
       "file_type": "code",
       "norm_label": "displaytoggle()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L438"
+      "source_location": "L447"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_fieldinput",
@@ -6275,7 +6275,7 @@
       "file_type": "code",
       "norm_label": "layoutcontrols()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L466"
+      "source_location": "L475"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_listfor",
@@ -6299,7 +6299,7 @@
       "file_type": "code",
       "norm_label": "moduleiconfor()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1113"
+      "source_location": "L1123"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_nodeactions",
@@ -6311,7 +6311,7 @@
       "file_type": "code",
       "norm_label": "nodeactions()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L771"
+      "source_location": "L781"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_nodefields",
@@ -6323,7 +6323,7 @@
       "file_type": "code",
       "norm_label": "nodefields()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L735"
+      "source_location": "L744"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_nodeinspector",
@@ -6335,7 +6335,7 @@
       "file_type": "code",
       "norm_label": "nodeinspector()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L891"
+      "source_location": "L901"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_panelsection",
@@ -6347,7 +6347,7 @@
       "file_type": "code",
       "norm_label": "panelsection()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L255"
+      "source_location": "L257"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_paramseditor",
@@ -6359,7 +6359,7 @@
       "file_type": "code",
       "norm_label": "paramseditor()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1117"
+      "source_location": "L1127"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_positioncontrols",
@@ -6371,7 +6371,7 @@
       "file_type": "code",
       "norm_label": "positioncontrols()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L520"
+      "source_location": "L529"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_propertiespanel",
@@ -6383,7 +6383,7 @@
       "file_type": "code",
       "norm_label": "propertiespanel()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1044"
+      "source_location": "L1054"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_propertylabel",
@@ -6407,7 +6407,7 @@
       "file_type": "code",
       "norm_label": "selectorproperties()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L712"
+      "source_location": "L721"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_setdisplay",
@@ -6443,7 +6443,7 @@
       "file_type": "code",
       "norm_label": "styleeditor()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L597"
+      "source_location": "L606"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_styleinput",
@@ -6479,7 +6479,7 @@
       "file_type": "code",
       "norm_label": "stylerail()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L795"
+      "source_location": "L805"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_stylesearch",
@@ -6491,7 +6491,7 @@
       "file_type": "code",
       "norm_label": "stylesearch()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L866"
+      "source_location": "L876"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_themestyleinput",
@@ -6503,7 +6503,7 @@
       "file_type": "code",
       "norm_label": "themestyleinput()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1205"
+      "source_location": "L1215"
     },
     {
       "id": "packages_admin_src_components_visual_editor_store_ensureselector",
@@ -7859,7 +7859,7 @@
       "file_type": "code",
       "norm_label": "nodename()",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L288"
+      "source_location": "L291"
     },
     {
       "id": "packages_admin_src_components_visual_editor_overlays_contextmenu",
@@ -7883,7 +7883,7 @@
       "file_type": "code",
       "norm_label": "setattr()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1254"
+      "source_location": "L1264"
     },
     {
       "id": "packages_admin_src_components_visual_editor_properties_themeattributes",
@@ -7895,7 +7895,7 @@
       "file_type": "code",
       "norm_label": "themeattributes()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1257"
+      "source_location": "L1267"
     },
     {
       "id": "packages_admin_src_components_visual_editor_store_copyselected",
@@ -10907,7 +10907,7 @@
       "file_type": "code",
       "norm_label": "grid()",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L221"
+      "source_location": "L224"
     },
     {
       "id": "templates_astrojs_boilerplate_public_scripts_motion_init_addvalue",
@@ -23051,7 +23051,7 @@
       "file_type": "code",
       "norm_label": "themeelementproperties()",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1308"
+      "source_location": "L1318"
     },
     {
       "id": "packages_admin_src_components_visual_editor_tailwind_classvalue",
@@ -23459,7 +23459,7 @@
       "file_type": "code",
       "norm_label": "canhavechildren()",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L186"
+      "source_location": "L189"
     },
     {
       "id": "packages_admin_src_components_visual_editor_store_addjson",
@@ -25436,7 +25436,7 @@
       "file_type": "code",
       "norm_label": "tags",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1174"
+      "source_location": "L1184"
     },
     {
       "id": "packages_admin_src_components_visual_editor_style_props",
@@ -32628,7 +32628,7 @@
       "file_type": "code",
       "norm_label": "presets",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L230"
+      "source_location": "L233"
     },
     {
       "id": "packages_admin_src_components_visual_editor_overlays",
@@ -38443,7 +38443,7 @@
       "file_type": "code",
       "norm_label": "classfield",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L46"
+      "source_location": "L48"
     },
     {
       "id": "packages_admin_src_components_visual_editor_modules_column",
@@ -38454,7 +38454,7 @@
       "file_type": "code",
       "norm_label": "column",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L220"
+      "source_location": "L223"
     },
     {
       "id": "packages_admin_src_components_visual_editor_modules_container_tags",
@@ -38465,7 +38465,7 @@
       "file_type": "code",
       "norm_label": "container_tags",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L43"
+      "source_location": "L45"
     },
     {
       "id": "packages_admin_src_components_visual_editor_modules_defs",
@@ -38476,7 +38476,7 @@
       "file_type": "code",
       "norm_label": "defs",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L48"
+      "source_location": "L50"
     },
     {
       "id": "packages_admin_src_components_visual_editor_modules_levels",
@@ -38487,7 +38487,7 @@
       "file_type": "code",
       "norm_label": "levels",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L44"
+      "source_location": "L46"
     },
     {
       "id": "packages_admin_src_components_visual_editor_modules_module_icons",
@@ -38498,7 +38498,7 @@
       "file_type": "code",
       "norm_label": "module_icons",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L189"
+      "source_location": "L192"
     },
     {
       "id": "packages_admin_src_components_visual_editor_modules_modules",
@@ -38509,7 +38509,7 @@
       "file_type": "code",
       "norm_label": "modules",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L184"
+      "source_location": "L187"
     },
     {
       "id": "packages_admin_src_components_visual_editor_modules_text_tags",
@@ -38520,7 +38520,7 @@
       "file_type": "code",
       "norm_label": "text_tags",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L45"
+      "source_location": "L47"
     },
     {
       "id": "packages_admin_src_components_calendar_calendarpage",
@@ -85947,7 +85947,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L291",
+      "source_location": "L294",
       "weight": 1.0
     },
     {
@@ -86331,7 +86331,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L307",
+      "source_location": "L309",
       "weight": 1.0
     },
     {
@@ -86343,7 +86343,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L335",
+      "source_location": "L344",
       "weight": 1.0
     },
     {
@@ -86355,7 +86355,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L354",
+      "source_location": "L363",
       "weight": 1.0
     },
     {
@@ -86367,7 +86367,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L381",
+      "source_location": "L390",
       "weight": 1.0
     },
     {
@@ -86379,7 +86379,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1034",
+      "source_location": "L1044",
       "weight": 1.0
     },
     {
@@ -86391,7 +86391,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1034",
+      "source_location": "L1044",
       "weight": 1.0
     },
     {
@@ -86403,7 +86403,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L448",
+      "source_location": "L457",
       "weight": 1.0
     },
     {
@@ -86415,7 +86415,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L187",
+      "source_location": "L189",
       "weight": 1.0
     },
     {
@@ -86427,7 +86427,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L187",
+      "source_location": "L189",
       "weight": 1.0
     },
     {
@@ -86439,7 +86439,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L244",
+      "source_location": "L246",
       "weight": 1.0
     },
     {
@@ -86451,7 +86451,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L246",
+      "source_location": "L248",
       "weight": 1.0
     },
     {
@@ -86463,7 +86463,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L479",
+      "source_location": "L488",
       "weight": 1.0
     },
     {
@@ -86475,7 +86475,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L499",
+      "source_location": "L508",
       "weight": 1.0
     },
     {
@@ -86487,7 +86487,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L774",
+      "source_location": "L784",
       "weight": 1.0
     },
     {
@@ -86499,7 +86499,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L736",
+      "source_location": "L745",
       "weight": 1.0
     },
     {
@@ -86511,7 +86511,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L746",
+      "source_location": "L755",
       "weight": 1.0
     },
     {
@@ -86523,7 +86523,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L746",
+      "source_location": "L755",
       "weight": 1.0
     },
     {
@@ -86535,7 +86535,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L914",
+      "source_location": "L924",
       "weight": 1.0
     },
     {
@@ -86547,7 +86547,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L915",
+      "source_location": "L925",
       "weight": 1.0
     },
     {
@@ -86559,7 +86559,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L983",
+      "source_location": "L993",
       "weight": 1.0
     },
     {
@@ -86571,7 +86571,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1123",
+      "source_location": "L1133",
       "weight": 1.0
     },
     {
@@ -86583,7 +86583,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L533",
+      "source_location": "L542",
       "weight": 1.0
     },
     {
@@ -86595,7 +86595,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L545",
+      "source_location": "L554",
       "weight": 1.0
     },
     {
@@ -86607,7 +86607,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1084",
+      "source_location": "L1094",
       "weight": 1.0
     },
     {
@@ -86619,7 +86619,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1084",
+      "source_location": "L1094",
       "weight": 1.0
     },
     {
@@ -86631,7 +86631,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L718",
+      "source_location": "L727",
       "weight": 1.0
     },
     {
@@ -86643,7 +86643,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1254",
+      "source_location": "L1264",
       "weight": 1.0
     },
     {
@@ -86679,7 +86679,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L612",
+      "source_location": "L621",
       "weight": 1.0
     },
     {
@@ -86691,7 +86691,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L615",
+      "source_location": "L624",
       "weight": 1.0
     },
     {
@@ -86703,7 +86703,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L618",
+      "source_location": "L627",
       "weight": 1.0
     },
     {
@@ -86715,7 +86715,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L636",
+      "source_location": "L645",
       "weight": 1.0
     },
     {
@@ -86775,7 +86775,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1267",
+      "source_location": "L1277",
       "weight": 1.0
     },
     {
@@ -86787,7 +86787,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1315",
+      "source_location": "L1325",
       "weight": 1.0
     },
     {
@@ -86799,7 +86799,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1318",
+      "source_location": "L1328",
       "weight": 1.0
     },
     {
@@ -86811,7 +86811,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1319",
+      "source_location": "L1329",
       "weight": 1.0
     },
     {
@@ -86823,7 +86823,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1320",
+      "source_location": "L1330",
       "weight": 1.0
     },
     {
@@ -86835,7 +86835,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1322",
+      "source_location": "L1332",
       "weight": 1.0
     },
     {
@@ -86847,7 +86847,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1325",
+      "source_location": "L1335",
       "weight": 1.0
     },
     {
@@ -86859,7 +86859,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1326",
+      "source_location": "L1336",
       "weight": 1.0
     },
     {
@@ -86871,7 +86871,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1447",
+      "source_location": "L1457",
       "weight": 1.0
     },
     {
@@ -86883,7 +86883,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1220",
+      "source_location": "L1230",
       "weight": 1.0
     },
     {
@@ -86895,7 +86895,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1234",
+      "source_location": "L1244",
       "weight": 1.0
     },
     {
@@ -104213,7 +104213,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L40",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -104225,7 +104225,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L216",
+      "source_location": "L219",
       "weight": 1.0
     },
     {
@@ -186930,7 +186930,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L184",
+      "source_location": "L187",
       "weight": 1.0
     },
     {
@@ -186941,7 +186941,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L185",
+      "source_location": "L188",
       "weight": 1.0
     },
     {
@@ -186952,7 +186952,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L186",
+      "source_location": "L189",
       "weight": 1.0
     },
     {
@@ -186963,7 +186963,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L189",
+      "source_location": "L192",
       "weight": 1.0
     },
     {
@@ -186985,7 +186985,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L209",
+      "source_location": "L212",
       "weight": 1.0
     },
     {
@@ -186996,7 +186996,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L211",
+      "source_location": "L214",
       "weight": 1.0
     },
     {
@@ -187007,7 +187007,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L220",
+      "source_location": "L223",
       "weight": 1.0
     },
     {
@@ -187018,7 +187018,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L221",
+      "source_location": "L224",
       "weight": 1.0
     },
     {
@@ -187029,7 +187029,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L230",
+      "source_location": "L233",
       "weight": 1.0
     },
     {
@@ -187051,7 +187051,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L288",
+      "source_location": "L291",
       "weight": 1.0
     },
     {
@@ -187062,7 +187062,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L43",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -187073,7 +187073,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L44",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -187084,7 +187084,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L45",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -187095,7 +187095,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L46",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -187106,7 +187106,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/modules.ts",
-      "source_location": "L48",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -187392,7 +187392,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1021",
+      "source_location": "L1031",
       "weight": 1.0
     },
     {
@@ -187403,7 +187403,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1044",
+      "source_location": "L1054",
       "weight": 1.0
     },
     {
@@ -187425,7 +187425,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1113",
+      "source_location": "L1123",
       "weight": 1.0
     },
     {
@@ -187436,7 +187436,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1117",
+      "source_location": "L1127",
       "weight": 1.0
     },
     {
@@ -187458,18 +187458,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1174",
-      "weight": 1.0
-    },
-    {
-      "source": "packages_admin_src_components_visual_editor_properties",
-      "target": "packages_admin_src_components_visual_editor_properties_themestyleinput",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1205",
+      "source_location": "L1184",
       "weight": 1.0
     },
     {
@@ -187485,13 +187474,24 @@
     },
     {
       "source": "packages_admin_src_components_visual_editor_properties",
+      "target": "packages_admin_src_components_visual_editor_properties_themestyleinput",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
+      "source_location": "L1215",
+      "weight": 1.0
+    },
+    {
+      "source": "packages_admin_src_components_visual_editor_properties",
       "target": "packages_admin_src_components_visual_editor_properties_setattr",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1254",
+      "source_location": "L1264",
       "weight": 1.0
     },
     {
@@ -187502,7 +187502,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1257",
+      "source_location": "L1267",
       "weight": 1.0
     },
     {
@@ -187513,7 +187513,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L1308",
+      "source_location": "L1318",
       "weight": 1.0
     },
     {
@@ -187535,7 +187535,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L255",
+      "source_location": "L257",
       "weight": 1.0
     },
     {
@@ -187546,7 +187546,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L301",
+      "source_location": "L303",
       "weight": 1.0
     },
     {
@@ -187557,7 +187557,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L389",
+      "source_location": "L398",
       "weight": 1.0
     },
     {
@@ -187568,7 +187568,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L438",
+      "source_location": "L447",
       "weight": 1.0
     },
     {
@@ -187579,7 +187579,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L466",
+      "source_location": "L475",
       "weight": 1.0
     },
     {
@@ -187590,7 +187590,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L520",
+      "source_location": "L529",
       "weight": 1.0
     },
     {
@@ -187601,7 +187601,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L597",
+      "source_location": "L606",
       "weight": 1.0
     },
     {
@@ -187634,7 +187634,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L712",
+      "source_location": "L721",
       "weight": 1.0
     },
     {
@@ -187645,7 +187645,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L735",
+      "source_location": "L744",
       "weight": 1.0
     },
     {
@@ -187656,7 +187656,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L771",
+      "source_location": "L781",
       "weight": 1.0
     },
     {
@@ -187667,7 +187667,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L795",
+      "source_location": "L805",
       "weight": 1.0
     },
     {
@@ -187711,7 +187711,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L866",
+      "source_location": "L876",
       "weight": 1.0
     },
     {
@@ -187733,7 +187733,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "packages/admin/src/components/visual-editor/Properties.tsx",
-      "source_location": "L891",
+      "source_location": "L901",
       "weight": 1.0
     },
     {
@@ -219080,5 +219080,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "710fac1edde4cf0aabf2f5b9042cee8a766a88cd"
+  "built_at_commit": "45f168333a6f80f59ad3cd37366158720ad434ad"
 }
