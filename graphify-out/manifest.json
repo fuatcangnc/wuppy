@@ -2094,9 +2094,9 @@
     "semantic_hash": ""
   },
   "packages/admin/public/icons.svg": {
-    "mtime": 1792831634.8446062,
-    "seen": 1792831680.367874,
-    "ast_hash": "ed10c86bc22dd63036506086d9c21c0c",
+    "mtime": 1792836615.2445405,
+    "seen": 1792836743.5744367,
+    "ast_hash": "accac393a7b9c4a2412139081e1cbeb2",
     "semantic_hash": ""
   },
   ".changeset/config.json": {
@@ -6924,9 +6924,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/visual-editor/store.ts": {
-    "mtime": 1792777775.3516924,
-    "seen": 1792783756.8990355,
-    "ast_hash": "578fd520dd5a1f8861020e44cfefc9d4",
+    "mtime": 1792832542.9054077,
+    "seen": 1792836743.5732367,
+    "ast_hash": "e9b04648f123a3daf82bebb2a0039322",
     "semantic_hash": ""
   },
   "packages/admin/src/components/visual-editor/tree.ts": {
@@ -6948,15 +6948,15 @@
     "semantic_hash": ""
   },
   "docs/src/content/docs/guides/visual-editor.md": {
-    "mtime": 1792830475.409528,
-    "seen": 1792831680.367668,
-    "ast_hash": "63d467ab1a9ac53c7d582771a3805347",
+    "mtime": 1792834724.1498163,
+    "seen": 1792836743.5741935,
+    "ast_hash": "1b2fcd2d564897874ba0a35bd3d75b2c",
     "semantic_hash": ""
   },
   "docs/src/content/docs/tr/guides/visual-editor.md": {
-    "mtime": 1792830485.4528668,
-    "seen": 1792831680.3677137,
-    "ast_hash": "1b3f9771102bb222aec53942aba608da",
+    "mtime": 1792834390.2333612,
+    "seen": 1792836743.5742497,
+    "ast_hash": "33e783975c642d26365605e2a401dc9f",
     "semantic_hash": ""
   },
   "packages/admin/src/components/visual-editor/Explorer.tsx": {
@@ -6978,9 +6978,9 @@
     "semantic_hash": ""
   },
   "packages/admin/src/components/visual-editor/Properties.tsx": {
-    "mtime": 1792831516.0552344,
-    "seen": 1792831680.3668485,
-    "ast_hash": "c058f9b02b84e573ecfd2e12fa55594a",
+    "mtime": 1792836253.0001435,
+    "seen": 1792836743.5732255,
+    "ast_hash": "d923b99c5d23724c55721869ce890951",
     "semantic_hash": ""
   },
   "packages/admin/src/components/visual-editor/Selectors.tsx": {
@@ -7086,9 +7086,9 @@
     "semantic_hash": ""
   },
   "acceptance/instatic-ui/instatic-ui-features.md": {
-    "mtime": 1792830492.1650946,
-    "seen": 1792831680.3676288,
-    "ast_hash": "5d88b6b70e19e029d5a40bd696362b39",
+    "mtime": 1792836711.732902,
+    "seen": 1792836743.574149,
+    "ast_hash": "a084b5dca4457687c2aa89660ab93d14",
     "semantic_hash": ""
   },
   "acceptance/instatic-ui/screenshots/ai-defaults.png": {
@@ -7644,15 +7644,15 @@
     "semantic_hash": ""
   },
   "packages/admin/tests/properties-panel.test.tsx": {
-    "mtime": 1792830995.8970354,
-    "seen": 1792831680.3669138,
-    "ast_hash": "1cc87e3bd046c8b0fdb92fb5a191edfb",
+    "mtime": 1792836341.766089,
+    "seen": 1792836743.5732973,
+    "ast_hash": "a62889ae0fb7496db5a956165c2a0561",
     "semantic_hash": ""
   },
   ".changeset/properties-panel-inst.md": {
-    "mtime": 1792830504.258508,
-    "seen": 1792831680.367519,
-    "ast_hash": "165ae02b197f664513401069b7e16c56",
+    "mtime": 1792834435.7205245,
+    "seen": 1792836743.5740218,
+    "ast_hash": "9fa9970f3fa1210fd421d81d2d8d157c",
     "semantic_hash": ""
   },
   ".changeset/theme-install-activation.md": {
@@ -7671,6 +7671,36 @@
     "mtime": 1792831649.9300401,
     "seen": 1792831680.367871,
     "ast_hash": "c3324539ac284b233463a87ebfaeff76",
+    "semantic_hash": ""
+  },
+  "acceptance/instatic-ui/screenshots/wuppy-properties-layout-1280.png": {
+    "mtime": 1792836224.5197642,
+    "seen": 1792836743.5744221,
+    "ast_hash": "7eac324d138d7c41d329e682628fd615",
+    "semantic_hash": ""
+  },
+  "acceptance/instatic-ui/screenshots/wuppy-properties-layout-icons.png": {
+    "mtime": 1792836224.5183673,
+    "seen": 1792836743.574424,
+    "ast_hash": "5cbce8d8becd8ceaca76dbbb535a68fa",
+    "semantic_hash": ""
+  },
+  "acceptance/instatic-ui/screenshots/wuppy-properties-spacing-radius.png": {
+    "mtime": 1792836224.5190747,
+    "seen": 1792836743.574427,
+    "ast_hash": "f17d351ef7dbbdfbf8b2537749556909",
+    "semantic_hash": ""
+  },
+  "acceptance/instatic-ui/screenshots/wuppy-theme-layout-icons.png": {
+    "mtime": 1792836239.5746748,
+    "seen": 1792836743.5744324,
+    "ast_hash": "de45d660575583863d9f3ba45ead313f",
+    "semantic_hash": ""
+  },
+  "acceptance/instatic-ui/screenshots/wuppy-theme-spacing-radius.png": {
+    "mtime": 1792836239.5754297,
+    "seen": 1792836743.5744336,
+    "ast_hash": "1416d96eff884430660b4f6770e5d1f7",
     "semantic_hash": ""
   }
 }
