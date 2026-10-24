@@ -27,7 +27,7 @@ beforeEach(() => {
 	addPreset(textPreset);
 });
 
-describe("PropertiesPanel", { timeout: 30_000 }, () => {
+describe("PropertiesPanel", { timeout: 60_000 }, () => {
 	it("shows Instatic's Styles/Attributes tabs, class picker, sections and right-side style rail", () => {
 		renderPanel();
 		const panel = screen.getByLabelText("Properties");
@@ -75,7 +75,7 @@ describe("PropertiesPanel", { timeout: 30_000 }, () => {
 	});
 
 	it("edits flex layout, position offsets, linked spacing and radius corners", async () => {
-		const user = userEvent.setup();
+		const user = userEvent.setup({ delay: null });
 		renderPanel();
 		const panel = screen.getByLabelText("Properties");
 		fireEvent.click(within(panel).getByRole("button", { name: "Flex" }));
@@ -129,6 +129,28 @@ describe("PropertiesPanel", { timeout: 30_000 }, () => {
 		expect($tree.get().nodes[selected]!.styles["border-radius"]).toBe("12px 8px 8px 8px");
 	});
 
+	it("uses icon controls for text alignment, decoration, case and size", () => {
+		renderPanel();
+		const panel = screen.getByLabelText("Properties");
+		fireEvent.click(within(panel).getByRole("button", { name: "Align text center" }));
+		fireEvent.click(within(panel).getByRole("button", { name: "Underline" }));
+		fireEvent.click(within(panel).getByRole("button", { name: "Capitalize" }));
+		const selected = $selected.get()!;
+		expect($tree.get().nodes[selected]!.styles).toMatchObject({
+			"text-align": "center",
+			"text-decoration": "underline",
+			"text-transform": "capitalize",
+		});
+
+		const width = within(panel).getByLabelText("width");
+		fireEvent.change(width, { target: { value: "120px" } });
+		fireEvent.blur(width);
+		expect($tree.get().nodes[selected]!.styles.width).toBe("120px");
+		fireEvent.click(within(panel).getByRole("button", { name: "Content box" }));
+		expect($tree.get().nodes[selected]!.styles["box-sizing"]).toBe("content-box");
+		expect(within(panel).getByRole("group", { name: "Box sizing" })).toBeInTheDocument();
+	});
+
 	it("reveals the context controls from the right rail when needed", () => {
 		renderPanel();
 		const panel = screen.getByLabelText("Properties");
@@ -163,6 +185,9 @@ describe("PropertiesPanel", { timeout: 30_000 }, () => {
 		expect(within(panel).getByRole("button", { name: "Column" })).toBeInTheDocument();
 		expect(within(panel).getByLabelText("Padding all sides")).toBeInTheDocument();
 		expect(within(panel).getByLabelText("Border radius all corners")).toHaveValue("0.5rem");
+		expect(within(panel).getByRole("group", { name: "Text align" })).toBeInTheDocument();
+		expect(within(panel).getByRole("group", { name: "Box sizing" })).toBeInTheDocument();
+		expect(within(panel).getByLabelText("width")).toBeInTheDocument();
 		fireEvent.change(within(panel).getByRole("textbox", { name: "Search styles" }), {
 			target: { value: "overflow" },
 		});

@@ -57,7 +57,7 @@ Screenshots: `acceptance/instatic-ui/screenshots/`.
 - **Styles / Attributes** tabs at the top of the right-hand panel.
 - Selector picker: “Add or create selector…”, colored class pills with icons, **Componentize** beside the input.
 - Section cards with icons: Text, Layout, Position, Size, Spacing, Typography, Background, Border, Effects and Interaction.
-- Layout uses an icon Type switch (Flex/Grid), Direction, Distribute, Align, Wrap and Gap; Position uses a T/R/B/L offset box around a centre cell, plus Type and Z index; Spacing uses four-side padding/margin pickers; Border uses a four-corner radius picker.
+- Layout uses an icon Type switch (Flex/Grid), Direction, Distribute, Align, Wrap and Gap; Position uses a T/R/B/L offset box around a centre cell, plus Type and Z index; Spacing uses four-side padding/margin pickers; Size uses icon-labelled width/height/min/max fields and an icon box-sizing picker; Typography uses icon rows for Align, Decor and Capitalize; Border uses a four-corner radius picker.
 - A right-edge **style category icon rail** (module + every style group) scrolls to its section and marks categories with stored values.
 - Pinned **Search styles in .class...** footer filters property rows; hidden Context & state opens from its rail icon.
 - The same inspector (tabs, class pills, section cards, rail and search) is used when a theme’s own markup element is picked; its context button appears for Tailwind themes.
@@ -112,9 +112,10 @@ Screenshots: `acceptance/instatic-ui/screenshots/`.
 - `/ai` implements the Instatic three-column UI (Providers/Defaults/MCP/Audit) as a UI workspace; provider connection actions are local UI previews until an AI backend is added.
 - Added Wuppy sidebar links for **Site** and **AI**.
 - Visual editor surfaces use Instatic-like dark tokens, 50% initial zoom, ascending breakpoint frames, green selection and floating center toolbar.
-- Properties Layout, Position, Spacing and Border use Instatic's icon controls for page blocks and theme elements:
-  Flex/Grid type, direction/distribute/align/wrap/gap, a T/R/B/L offset box, four-side padding/margin pickers and a
-  four-corner radius picker. Linked sides save as one undo step for blocks and one `.astro` write for themes.
+- Properties Layout, Position, Size, Spacing, Typography and Border use Instatic's icon controls for page blocks and
+  theme elements: Flex/Grid type, direction/distribute/align/wrap/gap, a T/R/B/L offset box, four-side padding/margin
+  pickers, a four-corner radius picker, icon-labelled size fields and Align/Decor/Capitalize icon rows. Linked sides
+  save as one undo step for blocks and one `.astro` write for themes.
 - Layers now use Instatic's 28px compact rows, coloured HTML-tag pills, module icons, expand/collapse chevrons and
   hover/selected/locked/hidden states; dragging shows the floating row, cyan drop lines and container inside
   highlight, and drops into div/container rows work. The right-click menu uses the same 16px dark panel, icon rows
@@ -149,5 +150,7 @@ Screenshots: `acceptance/instatic-ui/screenshots/`.
   `wuppy-design-toolbar-code-button.png`, `wuppy-code-view.png`, `wuppy-code-view-saved.png`,
   `wuppy-code-tailwind.png`, `wuppy-code-theme-files.png`, `wuppy-add-astro-components.png`,
   `wuppy-add-astro-component-inserted.png`, `wuppy-properties-panel.png`, `wuppy-properties-layout-icons.png`,
-  `wuppy-properties-spacing-radius.png`, `wuppy-properties-layout-1280.png`, `wuppy-theme-layout-icons.png`,
-  `wuppy-theme-spacing-radius.png`, `wuppy-ai-final2.png`, `wuppy-ai-defaults.png`, `wuppy-ai-mcp.png`.
+  `wuppy-properties-spacing-radius.png`, `wuppy-properties-typography-icons.png`, `wuppy-properties-size-icons.png`,
+  `wuppy-properties-layout-1280.png`, `wuppy-theme-layout-icons.png`, `wuppy-theme-spacing-radius.png`,
+  `wuppy-theme-typography-icons.png`, `wuppy-theme-typography-size.png`, `wuppy-ai-final2.png`,
+  `wuppy-ai-defaults.png`, `wuppy-ai-mcp.png`.

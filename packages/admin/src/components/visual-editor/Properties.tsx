@@ -1,6 +1,10 @@
 import {
+	AlignCenter,
 	AlignCenterVertical,
 	AlignEndVertical,
+	AlignJustify,
+	AlignLeft,
+	AlignRight,
 	AlignStartVertical,
 	ArrowDown,
 	ArrowLeft,
@@ -17,6 +21,12 @@ import {
 	Group,
 	Grid2x2,
 	Heading,
+	IconArrowAutofitHeight,
+	IconArrowAutofitWidth,
+	IconArrowsHorizontal,
+	IconArrowsVertical,
+	IconAspectRatio,
+	IconOverline,
 	Image,
 	Layout,
 	Link,
@@ -33,9 +43,11 @@ import {
 	SlidersHorizontal,
 	Sparkles,
 	Square,
+	Strikethrough,
 	Tags,
 	Trash2,
 	Type,
+	Underline,
 	X,
 } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
@@ -231,10 +243,15 @@ function DraftInput({
 }
 
 /** Instatic's compact label + control row. */
-function ControlRow({ label, children }: { label: string; children: ReactNode }) {
+function ControlRow({ label, icon: RowIcon, children }: { label: string; icon?: Icon; children: ReactNode }) {
 	return (
-		<div className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-2">
-			<PropertyLabel>{label}</PropertyLabel>
+		<div className="grid grid-cols-[80px_minmax(0,1fr)] items-center gap-2">
+			<PropertyLabel>
+				<span className="inline-flex items-center gap-1 whitespace-nowrap">
+					{RowIcon && <RowIcon size={11} className="shrink-0 text-[#71717a]" aria-hidden="true" />}
+					{label}
+				</span>
+			</PropertyLabel>
 			<div className="min-w-0">{children}</div>
 		</div>
 	);
@@ -744,9 +761,54 @@ const WRAP_OPTIONS: readonly SegmentOption[] = [
 	{ value: "wrap-reverse", label: "Rev", ariaLabel: "Wrap reverse", title: "flex-wrap: wrap-reverse" },
 ];
 
+const TEXT_ALIGN_OPTIONS: readonly SegmentOption[] = [
+	{ value: "left", icon: AlignLeft, ariaLabel: "Align text left", title: "text-align: left" },
+	{ value: "center", icon: AlignCenter, ariaLabel: "Align text center", title: "text-align: center" },
+	{ value: "right", icon: AlignRight, ariaLabel: "Align text right", title: "text-align: right" },
+	{ value: "justify", icon: AlignJustify, ariaLabel: "Align text justify", title: "text-align: justify" },
+];
+
+const TEXT_DECORATION_OPTIONS: readonly SegmentOption[] = [
+	{ value: "", icon: X, ariaLabel: "No decoration", title: "text-decoration: none" },
+	{ value: "underline", icon: Underline, ariaLabel: "Underline", title: "text-decoration: underline" },
+	{ value: "line-through", icon: Strikethrough, ariaLabel: "Strikethrough", title: "text-decoration: line-through" },
+	{ value: "overline", icon: IconOverline, ariaLabel: "Overline", title: "text-decoration: overline" },
+];
+
+const TEXT_TRANSFORM_OPTIONS: readonly SegmentOption[] = [
+	{ value: "", icon: X, ariaLabel: "No transform", title: "text-transform: none" },
+	{ value: "uppercase", label: "AA", ariaLabel: "Uppercase", title: "text-transform: uppercase" },
+	{ value: "capitalize", label: "Aa", ariaLabel: "Capitalize", title: "text-transform: capitalize" },
+	{ value: "lowercase", label: "aa", ariaLabel: "Lowercase", title: "text-transform: lowercase" },
+];
+
+const SIZE_ICONS: Record<string, Icon> = {
+	width: IconArrowAutofitWidth,
+	height: IconArrowAutofitHeight,
+	"min-width": IconArrowsHorizontal,
+	"max-width": IconArrowsHorizontal,
+	"min-height": IconArrowsVertical,
+	"max-height": IconArrowsVertical,
+	"aspect-ratio": IconAspectRatio,
+};
+
+const STYLE_ALIASES: Record<string, string> = {
+	"text-align": "align left center right justify",
+	"text-decoration": "decor decoration underline strike overline",
+	"text-transform": "capitalize uppercase lowercase case",
+	"box-sizing": "size box border content",
+};
+
+function matchesStyleKey(key: string, query: string): boolean {
+	const q = query.trim().toLowerCase();
+	return (
+		!q || key.includes(q) || styleLabel(key).toLowerCase().includes(q) || (STYLE_ALIASES[key]?.includes(q) ?? false)
+	);
+}
+
 function matchesStyle(key: string, query: string, group: string): boolean {
 	const q = query.trim().toLowerCase();
-	return !q || key.includes(q) || styleLabel(key).toLowerCase().includes(q) || group.includes(q);
+	return !q || matchesStyleKey(key, q) || group.includes(q);
 }
 
 const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
@@ -866,6 +928,91 @@ function SpacingEditor({ keys, query, valueOf, inherited, commit }: StyleControl
 					<SpacingRow key={box} box={box} valueOf={valueOf} inherited={inherited} onCommit={commit} />
 				) : null;
 			})}
+		</>
+	);
+}
+
+const SIZE_CONTROL_KEYS = new Set([...Object.keys(SIZE_ICONS), "box-sizing"]);
+
+function SizeEditor({ keys, query, valueOf, inherited, commit, renderInput }: StyleControlProps) {
+	const visible = (key: string) => keys.includes(key) && matchesStyle(key, query, "size");
+	return (
+		<>
+			{Object.entries(SIZE_ICONS).map(([key, RowIcon]) =>
+				visible(key) ? (
+					<ControlRow key={key} label={styleLabel(key)} icon={RowIcon}>
+						<DraftInput
+							ariaLabel={key}
+							value={valueOf(key)}
+							placeholder={inherited(key) || "auto"}
+							list={listFor(key)}
+							onCommit={(value) => commit({ [key]: value })}
+						/>
+					</ControlRow>
+				) : null,
+			)}
+			{visible("box-sizing") && (
+				<IconSegmented
+					label="Box sizing"
+					groupLabel="Box sizing"
+					value={valueOf("box-sizing")}
+					options={[
+						{ value: "", icon: X, ariaLabel: "Default box sizing", title: "Default box sizing" },
+						{ value: "border-box", icon: Box, ariaLabel: "Border box", title: "box-sizing: border-box" },
+						{ value: "content-box", icon: Square, ariaLabel: "Content box", title: "box-sizing: content-box" },
+					]}
+					onChange={(value) => commit({ "box-sizing": value })}
+				/>
+			)}
+			{keys
+				.filter((key) => !SIZE_CONTROL_KEYS.has(key) && matchesStyle(key, query, "size"))
+				.map((key) => renderInput(key))}
+		</>
+	);
+}
+
+const TYPOGRAPHY_CONTROL_KEYS = new Set(["text-align", "text-decoration", "text-transform"]);
+
+function TypographyEditor({ keys, query, valueOf, commit, renderInput }: StyleControlProps) {
+	const visible = (key: string) => keys.includes(key) && matchesStyle(key, query, "typography");
+	const align = valueOf("text-align");
+	const alignValue = align === "start" ? "left" : align === "end" ? "right" : align || "left";
+	const decoration = valueOf("text-decoration");
+	const decorationValue = decoration === "none" ? "" : decoration;
+	const transform = valueOf("text-transform");
+	const transformValue = transform === "none" ? "" : transform;
+	return (
+		<>
+			{visible("text-align") && (
+				<IconSegmented
+					label="Align"
+					groupLabel="Text align"
+					value={alignValue}
+					options={TEXT_ALIGN_OPTIONS}
+					onChange={(value) => commit({ "text-align": value })}
+				/>
+			)}
+			{visible("text-decoration") && (
+				<IconSegmented
+					label="Decor"
+					groupLabel="Text decoration"
+					value={decorationValue}
+					options={TEXT_DECORATION_OPTIONS}
+					onChange={(value) => commit({ "text-decoration": value })}
+				/>
+			)}
+			{visible("text-transform") && (
+				<IconSegmented
+					label="Capitalize"
+					groupLabel="Text transform"
+					value={transformValue}
+					options={TEXT_TRANSFORM_OPTIONS}
+					onChange={(value) => commit({ "text-transform": value })}
+				/>
+			)}
+			{keys
+				.filter((key) => !TYPOGRAPHY_CONTROL_KEYS.has(key) && matchesStyle(key, query, "typography"))
+				.map((key) => renderInput(key))}
 		</>
 	);
 }
@@ -1133,6 +1280,52 @@ function SpacingControls({
 	);
 }
 
+function SizeControls({
+	styles,
+	keys,
+	query,
+	inherit,
+}: {
+	styles: Styles;
+	keys: readonly string[];
+	query: string;
+	inherit: (key: string) => string | undefined;
+}) {
+	return (
+		<SizeEditor
+			keys={keys}
+			query={query}
+			valueOf={(key) => styles[key] ?? ""}
+			inherited={inherit}
+			commit={(patch) => setStyles(patch)}
+			renderInput={(key) => <StyleInput key={key} prop={key} value={styles[key] ?? ""} inherited={inherit(key)} />}
+		/>
+	);
+}
+
+function TypographyControls({
+	styles,
+	keys,
+	query,
+	inherit,
+}: {
+	styles: Styles;
+	keys: readonly string[];
+	query: string;
+	inherit: (key: string) => string | undefined;
+}) {
+	return (
+		<TypographyEditor
+			keys={keys}
+			query={query}
+			valueOf={(key) => styles[key] ?? ""}
+			inherited={inherit}
+			commit={(patch) => setStyles(patch)}
+			renderInput={(key) => <StyleInput key={key} prop={key} value={styles[key] ?? ""} inherited={inherit(key)} />}
+		/>
+	);
+}
+
 function BorderControls({
 	styles,
 	keys,
@@ -1174,7 +1367,7 @@ function StyleEditor({
 	const tokens = useMemo(() => frameworkTokens(visual.framework), [visual.framework]);
 	const inherit = (k: string) => (context || state ? base[k] : undefined);
 	const q = query.trim().toLowerCase();
-	const matches = (key: string) => !q || key.includes(q) || styleLabel(key).toLowerCase().includes(q);
+	const matches = (key: string) => matchesStyleKey(key, q);
 	const addProp = () => {
 		const prop = newProp.trim().toLowerCase();
 		if (/^-{0,2}[a-z][a-z0-9-]*$/.test(prop) && !(prop in styles)) setStyle(prop, "initial");
@@ -1222,6 +1415,20 @@ function StyleEditor({
 							<SpacingControls
 								styles={styles}
 								keys={STYLE_GROUPS.find(([name]) => name === "Spacing")?.[1] ?? []}
+								query={q}
+								inherit={inherit}
+							/>
+						) : group === "Size" ? (
+							<SizeControls
+								styles={styles}
+								keys={STYLE_GROUPS.find(([name]) => name === "Size")?.[1] ?? []}
+								query={q}
+								inherit={inherit}
+							/>
+						) : group === "Typography" ? (
+							<TypographyControls
+								styles={styles}
+								keys={STYLE_GROUPS.find(([name]) => name === "Typography")?.[1] ?? []}
 								query={q}
 								inherit={inherit}
 							/>
@@ -2224,7 +2431,7 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 	};
 	const commit = (prop: string, v: string) => commitMany({ [prop]: v });
 	const q = query.trim().toLowerCase();
-	const matches = (key: string) => !q || key.includes(q) || styleLabel(key).toLowerCase().includes(q);
+	const matches = (key: string) => matchesStyleKey(key, q);
 	const groups = STYLE_GROUPS.map(([group, keys]) => {
 		const groupHit = !q || group.toLowerCase().includes(q);
 		const visibleKeys = groupHit ? keys : keys.filter(matches);
@@ -2391,6 +2598,24 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 											/>
 										) : group === "Spacing" ? (
 											<SpacingEditor
+												keys={allKeys}
+												query={q}
+												valueOf={valueOf}
+												inherited={inherited}
+												commit={commitMany}
+												renderInput={renderInput}
+											/>
+										) : group === "Size" ? (
+											<SizeEditor
+												keys={allKeys}
+												query={q}
+												valueOf={valueOf}
+												inherited={inherited}
+												commit={commitMany}
+												renderInput={renderInput}
+											/>
+										) : group === "Typography" ? (
+											<TypographyEditor
 												keys={allKeys}
 												query={q}
 												valueOf={valueOf}
