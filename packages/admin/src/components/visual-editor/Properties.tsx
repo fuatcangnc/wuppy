@@ -10,10 +10,14 @@ import {
 	FileText,
 	Group,
 	Grid2x2,
+	Heading,
+	Image,
 	Layout,
+	Link,
 	Move,
 	PaintBucket,
 	Pencil,
+	Pilcrow,
 	Pointer,
 	Proportions,
 	Ruler,
@@ -22,6 +26,7 @@ import {
 	SlidersHorizontal,
 	Sparkles,
 	Square,
+	Tags,
 	Trash2,
 	Type,
 	X,
@@ -31,7 +36,6 @@ import { frameworkTokens, overrideKey, STATES, type Styles } from "@wuppy/visual
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { uploadImage } from "../../stores/content.ts";
 import { Button, IconButton, Input, Select, Textarea, toast } from "../../ui/index.tsx";
-import { Section } from "./Explorer.tsx";
 import { $themeElement, codePath, editThemeElement, type ThemeElement } from "./theme-element.ts";
 import { safeCssValue } from "./markdown.ts";
 import { GROUPED, SELECTS, STYLE_GROUPS } from "./style-props.ts";
@@ -804,16 +808,20 @@ function NodeActions({ node }: { node: VNode }) {
 
 function StyleRail({
 	moduleId,
+	moduleIcon,
 	styles,
 	active,
 	onSelect,
+	showContext = true,
 }: {
-	moduleId: string;
+	moduleId?: string;
+	moduleIcon?: Icon;
 	styles: Styles;
 	active: string;
 	onSelect: (id: string) => void;
+	showContext?: boolean;
 }) {
-	const ModuleIcon = MODULE_ICONS[moduleId] ?? Box;
+	const ModuleIcon = moduleIcon ?? (moduleId ? MODULE_ICONS[moduleId] : undefined) ?? Box;
 	const groups = STYLE_GROUPS.map(([group, keys]) => ({
 		id: GROUP_META[group]?.id ?? group.toLowerCase(),
 		label: group,
@@ -850,16 +858,18 @@ function StyleRail({
 					{hasValue && <span className="absolute top-1 right-1 size-1 rounded-full bg-[#6ee7b7]" aria-hidden="true" />}
 				</button>
 			))}
-			<button
-				type="button"
-				title="Context & state"
-				aria-label="Context and state"
-				aria-pressed={active === "context"}
-				onClick={() => onSelect("context")}
-				className={`grid size-7 place-items-center rounded-md ${active === "context" ? "bg-[#2a2a2f] text-white" : "text-[#71717a] hover:bg-[#1b1b1f] hover:text-[#d4d4d8]"}`}
-			>
-				<SlidersHorizontal size={13} />
-			</button>
+			{showContext && (
+				<button
+					type="button"
+					title="Context & state"
+					aria-label="Context and state"
+					aria-pressed={active === "context"}
+					onClick={() => onSelect("context")}
+					className={`grid size-7 place-items-center rounded-md ${active === "context" ? "bg-[#2a2a2f] text-white" : "text-[#71717a] hover:bg-[#1b1b1f] hover:text-[#d4d4d8]"}`}
+				>
+					<SlidersHorizontal size={13} />
+				</button>
+			)}
 			<button
 				type="button"
 				title="Scroll to bottom"
@@ -877,18 +887,21 @@ function StyleSearch({
 	value,
 	onChange,
 	classLabel,
+	classPrefix = ".",
 }: {
 	value: string;
 	onChange: (value: string) => void;
 	classLabel?: string;
+	classPrefix?: string;
 }) {
+	const target = classLabel ? `${classPrefix}${classLabel}` : "element";
 	return (
 		<div className="border-t border-[#242428] bg-[#111113] p-2">
 			<div className="relative">
 				<Search size={13} className="pointer-events-none absolute top-2.5 left-2.5 text-[#71717a]" />
 				<input
 					aria-label="Search styles"
-					placeholder={`Search styles in ${classLabel ? `.${classLabel}` : "element"}...`}
+					placeholder={`Search styles in ${target}...`}
 					value={value}
 					onChange={(e) => onChange(e.target.value)}
 					className="h-8 w-full rounded-md border border-[#34343a] bg-[#19191c] pr-2 pl-7 text-xs text-[#e4e4e7] outline-none placeholder:text-[#71717a] focus:border-[#6d5bd0]"
@@ -1082,7 +1095,7 @@ export function PropertiesPanel() {
 	if (target) return <SelectorProperties id={target} />;
 	const node = selected ? tree.nodes[selected] : undefined;
 	if (!node && themeElement)
-		return <ThemeElementProperties key={`${themeElement.file}:${themeElement.loc}`} el={themeElement} />;
+		return <ThemeElementProperties key={`${themeElement.file}:${themeElement.selection}`} el={themeElement} />;
 	if (!node || selected === tree.rootNodeId)
 		return (
 			<p className="p-3 text-sm text-muted-foreground">
@@ -1211,6 +1224,45 @@ const TAGS = [
 	"label",
 ];
 
+const TAG_LABELS: Record<string, string> = {
+	div: "Div",
+	section: "Section",
+	article: "Article",
+	aside: "Aside",
+	header: "Header",
+	footer: "Footer",
+	main: "Main",
+	nav: "Nav",
+	p: "Paragraph",
+	span: "Span",
+	a: "Link",
+	button: "Button",
+	ul: "Unordered list",
+	ol: "Ordered list",
+	li: "List item",
+	figure: "Figure",
+	blockquote: "Quote",
+	strong: "Strong",
+	em: "Emphasis",
+	small: "Small",
+	label: "Label",
+};
+
+const tagLabel = (tag: string): string =>
+	/^h[1-6]$/.test(tag) ? `Heading ${tag.slice(1)}` : (TAG_LABELS[tag] ?? tag.charAt(0).toUpperCase() + tag.slice(1));
+
+/** The module icon for a theme element, chosen from its HTML tag. */
+function themeIcon(tag: string): Icon {
+	if (/^h[1-6]$/.test(tag)) return Heading;
+	if (tag === "img") return Image;
+	if (tag === "a") return Link;
+	if (tag === "button") return Pointer;
+	if (tag === "ul" || tag === "ol" || tag === "li") return Rows3;
+	if (tag === "p" || tag === "span" || tag === "strong" || tag === "em" || tag === "small" || tag === "label")
+		return Pilcrow;
+	return Box;
+}
+
 /** One style of a theme element; typed values are saved on blur or Enter (each save rewrites the theme file). */
 function ThemeStyleInput({
 	prop,
@@ -1223,78 +1275,522 @@ function ThemeStyleInput({
 	placeholder?: string;
 	onCommit: (value: string) => void;
 }) {
+	const inputId = useId();
 	const [draft, setDraft] = useState(value);
+	const label = styleLabel(prop);
+	useEffect(() => setDraft(value), [value]);
 	const commit = (v: string) => v !== value && onCommit(v);
 	if (SELECTS[prop])
 		return (
-			<Select size="sm" label={prop} value={value} onChange={(e) => commit(e.target.value)}>
-				{[...new Set([...SELECTS[prop], value])].map((o) => (
-					<option key={o} value={o}>
-						{o || (placeholder ? `— (${placeholder})` : "—")}
-					</option>
-				))}
-			</Select>
+			<div className="grid gap-1">
+				<PropertyLabel htmlFor={inputId}>{label}</PropertyLabel>
+				<Select
+					id={inputId}
+					size="sm"
+					value={value}
+					aria-label={prop}
+					onChange={(e) => commit(e.target.value)}
+					className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+				>
+					{[...new Set([...SELECTS[prop], value])].map((o) => (
+						<option key={o} value={o}>
+							{o || (placeholder ? `— (${placeholder})` : "—")}
+						</option>
+					))}
+				</Select>
+			</div>
 		);
 	return (
-		<div className="flex items-end gap-1">
-			<Input
-				label={prop}
-				value={draft}
-				placeholder={placeholder}
-				list={listFor(prop)}
-				onChange={(e) => setDraft(e.target.value)}
-				onBlur={() => commit(draft)}
-				onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
-				className="h-8 text-xs"
-			/>
-			{COLOR.test(prop) && (
-				<input
-					type="color"
-					aria-label={`${prop} picker`}
-					value={/^#[0-9a-f]{6}$/i.test(draft) ? draft : "#000000"}
+		<div className="grid gap-1">
+			<PropertyLabel htmlFor={inputId}>{label}</PropertyLabel>
+			<div className="flex items-center gap-1">
+				<Input
+					id={inputId}
+					value={draft}
+					placeholder={placeholder}
+					list={listFor(prop)}
 					onChange={(e) => setDraft(e.target.value)}
 					onBlur={() => commit(draft)}
-					className="mb-0.5 h-8 w-8 shrink-0 rounded border border-border"
+					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+					aria-label={prop}
+					className="h-8 border-[#34343a] bg-[#19191c] text-xs"
 				/>
-			)}
+				{COLOR.test(prop) && (
+					<input
+						type="color"
+						aria-label={`${label} picker`}
+						value={/^#[0-9a-f]{6}$/i.test(draft) ? draft : "#000000"}
+						onChange={(e) => {
+							setDraft(e.target.value);
+							commit(e.target.value);
+						}}
+						className="h-8 w-8 shrink-0 rounded border border-[#34343a] bg-transparent"
+					/>
+				)}
+			</div>
 		</div>
 	);
 }
 
+function ThemeSegmented({
+	label,
+	value,
+	options,
+	onChange,
+}: {
+	label: string;
+	value: string;
+	options: readonly { value: string; label: ReactNode }[];
+	onChange: (value: string) => void;
+}) {
+	return (
+		<div className="grid gap-1">
+			<PropertyLabel>{label}</PropertyLabel>
+			<div className="grid grid-cols-2 gap-1 rounded-md border border-[#34343a] bg-[#19191c] p-1">
+				{options.map((option) => (
+					<button
+						key={option.value}
+						type="button"
+						aria-pressed={value === option.value}
+						onClick={() => onChange(option.value)}
+						className={`flex h-7 items-center justify-center gap-1.5 rounded text-[11px] font-medium ${value === option.value ? "bg-[#2c2c31] text-white" : "text-[#9b9ba3] hover:text-white"}`}
+					>
+						{option.label}
+					</button>
+				))}
+			</div>
+		</div>
+	);
+}
+
+/** Layout rows for a theme element: the same Flex/Grid switch as a page block, written as Tailwind classes. */
+function ThemeLayoutControls({
+	keys,
+	query,
+	valueOf,
+	inherited,
+	commit,
+}: {
+	keys: readonly string[];
+	query: string;
+	valueOf: (prop: string) => string;
+	inherited: (prop: string) => string | undefined;
+	commit: (prop: string, value: string) => void;
+}) {
+	const displayId = useId();
+	const q = query.trim().toLowerCase();
+	const visible = (key: string) =>
+		!q || key.includes(q) || styleLabel(key).toLowerCase().includes(q) || "layout".includes(q);
+	const showDisplay = keys.includes("display") && visible("display");
+	return (
+		<>
+			{showDisplay && (
+				<ThemeSegmented
+					label="Display"
+					value={valueOf("display")}
+					options={[
+						{
+							value: "flex",
+							label: (
+								<>
+									<Rows3 size={12} /> Flex
+								</>
+							),
+						},
+						{
+							value: "grid",
+							label: (
+								<>
+									<Grid2x2 size={12} /> Grid
+								</>
+							),
+						},
+					]}
+					onChange={(v) => commit("display", v)}
+				/>
+			)}
+			{keys
+				.filter((key) => key !== "display" && visible(key))
+				.map((key) => (
+					<ThemeStyleInput
+						key={`${key}:${valueOf(key)}`}
+						prop={key}
+						value={valueOf(key)}
+						placeholder={inherited(key)}
+						onCommit={(v) => commit(key, v)}
+					/>
+				))}
+			{showDisplay && (
+				<details className="text-[11px] text-[#8b8b93]">
+					<summary className="cursor-pointer select-none py-1 hover:text-white">Advanced display</summary>
+					<div className="grid gap-2 pt-1">
+						<div className="grid gap-1">
+							<PropertyLabel htmlFor={displayId}>Display</PropertyLabel>
+							<Select
+								id={displayId}
+								size="sm"
+								value={valueOf("display")}
+								aria-label="Display"
+								onChange={(e) => commit("display", e.target.value)}
+								className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+							>
+								{(SELECTS.display ?? []).map((option) => (
+									<option key={option} value={option}>
+										{option || "auto"}
+									</option>
+								))}
+							</Select>
+						</div>
+					</div>
+				</details>
+			)}
+		</>
+	);
+}
+
+/** Position rows for a theme element, with the Relative/Absolute switch of the block inspector. */
+function ThemePositionControls({
+	keys,
+	query,
+	valueOf,
+	inherited,
+	commit,
+}: {
+	keys: readonly string[];
+	query: string;
+	valueOf: (prop: string) => string;
+	inherited: (prop: string) => string | undefined;
+	commit: (prop: string, value: string) => void;
+}) {
+	const positionId = useId();
+	const q = query.trim().toLowerCase();
+	const visible = (key: string) =>
+		!q || key.includes(q) || styleLabel(key).toLowerCase().includes(q) || "position".includes(q);
+	const showPosition = keys.includes("position") && visible("position");
+	return (
+		<>
+			{showPosition && (
+				<ThemeSegmented
+					label="Position"
+					value={valueOf("position")}
+					options={[
+						{ value: "relative", label: "Relative" },
+						{ value: "absolute", label: "Absolute" },
+					]}
+					onChange={(v) => commit("position", v)}
+				/>
+			)}
+			{keys
+				.filter((key) => key !== "position" && visible(key))
+				.map((key) => (
+					<ThemeStyleInput
+						key={`${key}:${valueOf(key)}`}
+						prop={key}
+						value={valueOf(key)}
+						placeholder={inherited(key)}
+						onCommit={(v) => commit(key, v)}
+					/>
+				))}
+			{showPosition && (
+				<details className="text-[11px] text-[#8b8b93]">
+					<summary className="cursor-pointer select-none py-1 hover:text-white">Advanced position</summary>
+					<div className="grid gap-2 pt-1">
+						<div className="grid gap-1">
+							<PropertyLabel htmlFor={positionId}>Position</PropertyLabel>
+							<Select
+								id={positionId}
+								size="sm"
+								value={valueOf("position")}
+								aria-label="Position"
+								onChange={(e) => commit("position", e.target.value)}
+								className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+							>
+								{(SELECTS.position ?? []).map((option) => (
+									<option key={option} value={option}>
+										{option || "static"}
+									</option>
+								))}
+							</Select>
+						</div>
+					</div>
+				</details>
+			)}
+		</>
+	);
+}
+
+/** The theme element's Tailwind breakpoint and state, kept apart from the page block context. */
+function ThemeContextBar({
+	breakpoint,
+	state,
+	variant,
+	onBreakpoint,
+	onState,
+}: {
+	breakpoint: string;
+	state: string;
+	variant: string;
+	onBreakpoint: (value: string) => void;
+	onState: (value: string) => void;
+}) {
+	const visual = useStore($visual);
+	const breakpointId = useId();
+	const stateId = useId();
+	return (
+		<>
+			<div className="grid grid-cols-2 gap-2">
+				<div className="grid gap-1">
+					<PropertyLabel htmlFor={breakpointId}>Breakpoint</PropertyLabel>
+					<Select
+						id={breakpointId}
+						size="sm"
+						value={breakpoint}
+						onChange={(e) => onBreakpoint(e.target.value)}
+						className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+					>
+						<option value="">Base</option>
+						{visual.breakpoints
+							.toSorted((a, b) => b.width - a.width)
+							.map((b) => (
+								<option key={b.id} value={b.id}>
+									{b.label} (≤{b.width}px)
+								</option>
+							))}
+					</Select>
+				</div>
+				<div className="grid gap-1">
+					<PropertyLabel htmlFor={stateId}>State</PropertyLabel>
+					<Select
+						id={stateId}
+						size="sm"
+						value={state}
+						onChange={(e) => onState(e.target.value)}
+						className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+					>
+						<option value="">None</option>
+						{STATES.map((s) => (
+							<option key={s} value={s}>
+								{s}
+							</option>
+						))}
+					</Select>
+				</div>
+			</div>
+			<p className="text-[11px] leading-4 text-muted-foreground">
+				Saved as Tailwind 4 classes
+				{variant && (
+					<>
+						{" "}
+						under <code>{variant}</code>
+					</>
+				)}
+				. Values are Tailwind values (<code>4</code>, <code>full</code>, <code>red-500</code>) or CSS (
+				<code>320px</code>, <code>#fff</code>).
+			</p>
+		</>
+	);
+}
+
+/** The theme element's classes as removable pills, mirroring the selector picker of a page block. */
+function ThemeClassPicker({
+	classes,
+	tailwind,
+	onCommit,
+}: {
+	classes: string[];
+	tailwind: boolean;
+	onCommit: (classes: string[]) => void;
+}) {
+	const visual = useStore($visual);
+	const [draft, setDraft] = useState("");
+	const items = [...new Set(classes)];
+	const tokens = frameworkTokens(visual.framework).classes;
+	const add = () => {
+		const names = draft
+			.trim()
+			.replace(/^\./, "")
+			.split(/[\s,]+/)
+			.filter(Boolean);
+		const next = [...new Set([...items, ...names])];
+		if (next.length !== items.length) onCommit(next);
+		setDraft("");
+	};
+	return (
+		<div className="grid gap-2">
+			<div className="relative">
+				<input
+					aria-label="Add class"
+					placeholder="Add class…"
+					list="ve-theme-classes"
+					value={draft}
+					onChange={(e) => setDraft(e.target.value)}
+					onKeyDown={(e) => {
+						if (e.key === "Enter" || e.key === " " || e.key === ",") {
+							e.preventDefault();
+							add();
+						}
+					}}
+					onBlur={add}
+					className="h-8 w-full rounded-md border border-[#34343a] bg-[#19191c] pr-7 pl-2.5 text-xs text-[#e4e4e7] outline-none placeholder:text-[#71717a] focus:border-[#6d5bd0]"
+				/>
+				<ChevronDown
+					size={12}
+					aria-hidden="true"
+					className="pointer-events-none absolute top-2.5 right-2 text-[#71717a]"
+				/>
+			</div>
+			{items.length > 0 && (
+				<div className="flex flex-wrap gap-1">
+					{items.map((name) => (
+						<span
+							key={name}
+							className="inline-flex h-6 items-center gap-1 rounded-md bg-[#3a2b1e] px-1.5 text-[11px] text-[#f0b37e]"
+						>
+							<FileText size={10} className="shrink-0 opacity-70" />
+							<span className="font-mono">{tailwind ? name : `.${name}`}</span>
+							<button
+								type="button"
+								aria-label={`Remove ${name}`}
+								className="text-[#b28a68] hover:text-white"
+								onClick={() => onCommit(items.filter((item) => item !== name))}
+							>
+								<X size={10} />
+							</button>
+						</span>
+					))}
+				</div>
+			)}
+			<datalist id="ve-theme-classes">
+				{tokens.map((token) => (
+					<option key={token} value={token} />
+				))}
+			</datalist>
+		</div>
+	);
+}
+
+/** Text, tag and inline style of a theme element, saved on blur. */
+function ThemeElementFields({ el }: { el: ThemeElement }) {
+	const [text, setText] = useState(el.text ?? "");
+	const [inline, setInline] = useState(el.style);
+	const textId = useId();
+	const tagId = useId();
+	const inlineId = useId();
+	useEffect(() => setText(el.text ?? ""), [el.text]);
+	useEffect(() => setInline(el.style), [el.style]);
+	return (
+		<>
+			{el.text !== null && (
+				<div className="grid gap-1">
+					<PropertyLabel htmlFor={textId}>Text</PropertyLabel>
+					<Textarea
+						id={textId}
+						aria-label="Text"
+						value={text}
+						rows={3}
+						onChange={(e) => setText(e.target.value)}
+						onBlur={() => text !== el.text && void editThemeElement({ action: "text", value: text })}
+						className="min-h-[72px] border-[#34343a] bg-[#19191c] text-xs"
+					/>
+				</div>
+			)}
+			<div className="grid gap-1">
+				<PropertyLabel htmlFor={tagId}>Tag</PropertyLabel>
+				<Select
+					id={tagId}
+					size="sm"
+					value={el.tag}
+					aria-label="Tag"
+					onChange={(e) => void editThemeElement({ action: "tag", name: e.target.value })}
+					className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+				>
+					{[...new Set([el.tag, ...TAGS])].map((tag) => (
+						<option key={tag} value={tag}>
+							{tagLabel(tag)}
+						</option>
+					))}
+				</Select>
+			</div>
+			<div className="grid gap-1">
+				<PropertyLabel htmlFor={inlineId}>Inline style</PropertyLabel>
+				<Input
+					id={inlineId}
+					aria-label="Inline style"
+					value={inline}
+					placeholder="color: red; padding: 1rem"
+					onChange={(e) => setInline(e.target.value)}
+					onBlur={() =>
+						inline !== el.style && void editThemeElement({ action: "attrs", attrs: { style: inline.trim() || null } })
+					}
+					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+					className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+				/>
+			</div>
+		</>
+	);
+}
+
 const setAttr = (attr: string, v: string | null) => void editThemeElement({ action: "attrs", attrs: { [attr]: v } });
+const commitThemeClasses = (classes: string[]) =>
+	void editThemeElement({ action: "attrs", attrs: { class: classes.join(" ") || null } });
+
+function ThemeAttributeRow({ name, value }: { name: string; value: string }) {
+	const inputId = useId();
+	return (
+		<div className="grid gap-1">
+			<PropertyLabel htmlFor={inputId}>{name}</PropertyLabel>
+			<div className="flex items-center gap-1">
+				<Input
+					id={inputId}
+					aria-label={name}
+					defaultValue={value}
+					onBlur={(e) => e.target.value !== value && setAttr(name, e.target.value)}
+					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+					className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+				/>
+				<IconButton label={`Remove ${name}`} size="icon-sm" onClick={() => setAttr(name, null)}>
+					<X size={12} />
+				</IconButton>
+			</div>
+		</div>
+	);
+}
 
 /** The element's HTML attributes (Instatic's Attributes tab); values made by code are left to Code view. */
 function ThemeAttributes({ attrs }: { attrs: Record<string, string> }) {
 	const [name, setName] = useState("");
 	const [value, setValue] = useState("");
+	const nameId = useId();
+	const valueId = useId();
 	return (
-		<Section title="Attributes">
-			{Object.entries(attrs).map(([k, v]) => (
-				<div key={`${k}=${v}`} className="flex items-end gap-1">
-					<Input
-						label={k}
-						defaultValue={v}
-						onBlur={(e) => e.target.value !== v && setAttr(k, e.target.value)}
-						onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
-						className="h-8 text-xs"
-					/>
-					<IconButton label={`Remove ${k}`} size="icon-sm" onClick={() => setAttr(k, null)}>
-						<X size={12} />
-					</IconButton>
-				</div>
+		<>
+			{Object.entries(attrs).map(([key, attrValue]) => (
+				<ThemeAttributeRow key={`${key}=${attrValue}`} name={key} value={attrValue} />
 			))}
-			<div className="flex items-end gap-1">
-				<Input
-					label="Name"
-					placeholder="aria-label"
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					className="h-8 text-xs"
-				/>
-				<Input label="Value" value={value} onChange={(e) => setValue(e.target.value)} className="h-8 text-xs" />
+			<div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-1">
+				<div className="grid gap-1">
+					<PropertyLabel htmlFor={nameId}>Name</PropertyLabel>
+					<Input
+						id={nameId}
+						placeholder="aria-label"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+						className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+					/>
+				</div>
+				<div className="grid gap-1">
+					<PropertyLabel htmlFor={valueId}>Value</PropertyLabel>
+					<Input
+						id={valueId}
+						value={value}
+						onChange={(e) => setValue(e.target.value)}
+						className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+					/>
+				</div>
 				<Button
 					size="sm"
 					variant="secondary"
+					className="h-8"
 					disabled={!/^[a-zA-Z_@:][\w:.@-]*$/.test(name)}
 					onClick={() => {
 						setAttr(name, value);
@@ -1305,7 +1801,7 @@ function ThemeAttributes({ attrs }: { attrs: Record<string, string> }) {
 					Add
 				</Button>
 			</div>
-		</Section>
+		</>
 	);
 }
 
@@ -1317,17 +1813,25 @@ function ThemeAttributes({ attrs }: { attrs: Record<string, string> }) {
  */
 function ThemeElementProperties({ el }: { el: ThemeElement }) {
 	const visual = useStore($visual);
-	const [text, setText] = useState(el.text ?? "");
-	const [cls, setCls] = useState(el.cls);
-	const [inline, setInline] = useState(el.style);
+	const [view, setView] = useState<"styles" | "attributes">("styles");
+	const [query, setQuery] = useState("");
+	const [showContext, setShowContext] = useState(false);
 	const [breakpoint, setBreakpoint] = useState("");
 	const [state, setState] = useState("");
+	const [newProp, setNewProp] = useState("");
+	const [activeSection, setActiveSection] = useState("module");
+	const scrollRef = useRef<HTMLDivElement | null>(null);
 	const path = codePath(el.file);
 	const line = el.loc.split(":")[0];
 	const classes = el.cls.split(/\s+/).filter(Boolean);
 	const styles = parseStyle(el.style);
 	const variant = variantFor(visual.breakpoints.find((b) => b.id === breakpoint)?.width, state);
 	const valueOf = (prop: string) => (el.tailwind ? classValue(classes, prop, variant) : (styles[prop] ?? ""));
+	const inherited = (prop: string) => {
+		if (!variant) return el.computed[prop];
+		const base = el.tailwind ? classValue(classes, prop, "") : styles[prop];
+		return base || el.computed[prop];
+	};
 	const commit = (prop: string, v: string) =>
 		void editThemeElement({
 			action: "attrs",
@@ -1335,131 +1839,237 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 				? { class: withClassValue(classes, prop, variant, v).join(" ") || null }
 				: { style: printStyle({ ...styles, [prop]: v }) || null },
 		});
+	const q = query.trim().toLowerCase();
+	const matches = (key: string) => !q || key.includes(q) || styleLabel(key).toLowerCase().includes(q);
+	const groups = STYLE_GROUPS.map(([group, keys]) => {
+		const groupHit = !q || group.toLowerCase().includes(q);
+		const visibleKeys = groupHit ? keys : keys.filter(matches);
+		return { group, keys: visibleKeys, show: !q || groupHit || visibleKeys.length > 0 };
+	}).filter(({ show }) => show);
+	const extra = el.tailwind ? [] : Object.keys(styles).filter((key) => !GROUPED.has(key) && matches(key));
+	const classLabel = classes[0];
+	const railStyles: Styles = {};
+	for (const [, keys] of STYLE_GROUPS) {
+		for (const key of keys) {
+			const value = valueOf(key);
+			if (value) railStyles[key] = value;
+			else if (variant) {
+				const base = el.tailwind ? classValue(classes, key, "") : styles[key];
+				if (base) railStyles[key] = base;
+			}
+		}
+	}
+	useEffect(() => {
+		if (view !== "styles") return;
+		const scroller = scrollRef.current;
+		if (!scroller) return;
+		const update = () => {
+			const top = scroller.getBoundingClientRect().top + 48;
+			let current = "module";
+			for (const section of scroller.querySelectorAll<HTMLElement>("[data-property-section]")) {
+				if (section.getBoundingClientRect().top <= top) current = section.dataset.propertySection ?? current;
+			}
+			setActiveSection(current);
+		};
+		update();
+		scroller.addEventListener("scroll", update, { passive: true });
+		return () => scroller.removeEventListener("scroll", update);
+	}, [view, query, el.file, el.loc]);
+	const scrollTo = (section: string) => {
+		const scroller = scrollRef.current;
+		if (!scroller) return;
+		if (section === "end") {
+			scroller.scrollTo({ top: scroller.scrollHeight, behavior: "smooth" });
+			return;
+		}
+		setActiveSection(section);
+		scroller.querySelector<HTMLElement>(`[data-property-section="${section}"]`)?.scrollIntoView({
+			behavior: "smooth",
+			block: "start",
+		});
+	};
+	const navigate = (section: string) => {
+		if (section === "context") {
+			setShowContext(true);
+			requestAnimationFrame(() => requestAnimationFrame(() => scrollTo("context")));
+			return;
+		}
+		scrollTo(section);
+	};
+	const addProp = () => {
+		const prop = newProp.trim().toLowerCase();
+		if (/^-{0,2}[a-z][a-z0-9-]*$/.test(prop)) commit(prop, "initial");
+		setNewProp("");
+	};
+	const actions = (
+		<div className="flex items-center gap-0.5 text-[#71717a] opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+			<IconButton label="Move up" size="icon-sm" onClick={() => void editThemeElement({ action: "move", by: -1 })}>
+				<ArrowUp size={13} />
+			</IconButton>
+			<IconButton label="Move down" size="icon-sm" onClick={() => void editThemeElement({ action: "move", by: 1 })}>
+				<ArrowDown size={13} />
+			</IconButton>
+			<IconButton label="Duplicate" size="icon-sm" onClick={() => void editThemeElement({ action: "duplicate" })}>
+				<Copy size={13} />
+			</IconButton>
+			<IconButton label="Open in Code" size="icon-sm" onClick={() => $codeFile.set(path)}>
+				<Pencil size={13} />
+			</IconButton>
+			<IconButton
+				label="Delete"
+				size="icon-sm"
+				onClick={() => confirm(`Delete this <${el.tag}> from ${path}?`) && void editThemeElement({ action: "delete" })}
+			>
+				<Trash2 size={13} />
+			</IconButton>
+		</div>
+	);
+	const fields = <ThemeElementFields el={el} />;
+	const classPicker = <ThemeClassPicker classes={classes} tailwind={el.tailwind} onCommit={commitThemeClasses} />;
 	return (
-		<div>
-			<Section title={`<${el.tag}>`}>
-				<p className="text-[11px] leading-4 break-all text-muted-foreground">
-					Theme code: {path}, line {line}. Changes are saved to this file.
-				</p>
-				<div className="flex flex-wrap gap-0.5">
-					<IconButton label="Move up" size="icon-sm" onClick={() => void editThemeElement({ action: "move", by: -1 })}>
-						<ArrowUp size={14} />
-					</IconButton>
-					<IconButton label="Move down" size="icon-sm" onClick={() => void editThemeElement({ action: "move", by: 1 })}>
-						<ArrowDown size={14} />
-					</IconButton>
-					<IconButton label="Duplicate" size="icon-sm" onClick={() => void editThemeElement({ action: "duplicate" })}>
-						<Copy size={14} />
-					</IconButton>
-					<Button size="sm" variant="secondary" className="h-8" onClick={() => $codeFile.set(path)}>
-						<Pencil size={14} /> Open in Code
-					</Button>
-					<IconButton
-						label="Delete"
-						size="icon-sm"
-						onClick={() =>
-							confirm(`Delete this <${el.tag}> from ${path}?`) && void editThemeElement({ action: "delete" })
-						}
-					>
-						<Trash2 size={14} />
-					</IconButton>
-				</div>
-				{el.text !== null && (
-					<Textarea
-						label="Text"
-						value={text}
-						rows={3}
-						onChange={(e) => setText(e.target.value)}
-						onBlur={() => text !== el.text && void editThemeElement({ action: "text", value: text })}
-					/>
-				)}
-				<Select
-					size="sm"
-					label="Tag"
-					value={el.tag}
-					onChange={(e) => void editThemeElement({ action: "tag", name: e.target.value })}
+		<div className="flex h-full min-h-0 bg-[#111113]">
+			<div className="flex min-w-0 flex-1 flex-col">
+				<div
+					role="tablist"
+					aria-label="Element options"
+					className="flex gap-4 border-b border-[#242428] px-4 pt-3 pb-2"
 				>
-					{[...new Set([el.tag, ...TAGS])].map((t) => (
-						<option key={t} value={t}>
-							{t}
-						</option>
-					))}
-				</Select>
-				<Input
-					label="Classes"
-					value={cls}
-					onChange={(e) => setCls(e.target.value)}
-					onBlur={() =>
-						cls !== el.cls && void editThemeElement({ action: "attrs", attrs: { class: cls.trim() || null } })
-					}
-					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
-				/>
-				<Input
-					label="Inline style"
-					value={inline}
-					placeholder="color: red; padding: 1rem"
-					onChange={(e) => setInline(e.target.value)}
-					onBlur={() =>
-						inline !== el.style && void editThemeElement({ action: "attrs", attrs: { style: inline.trim() || null } })
-					}
-					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
-				/>
-			</Section>
-			<Section title="Styles">
-				{el.tailwind ? (
-					<>
-						<div className="grid grid-cols-2 gap-2">
-							<Select size="sm" label="Breakpoint" value={breakpoint} onChange={(e) => setBreakpoint(e.target.value)}>
-								<option value="">Base</option>
-								{visual.breakpoints
-									.toSorted((a, b) => b.width - a.width)
-									.map((b) => (
-										<option key={b.id} value={b.id}>
-											{b.label} (≤{b.width}px)
-										</option>
-									))}
-							</Select>
-							<Select size="sm" label="State" value={state} onChange={(e) => setState(e.target.value)}>
-								<option value="">None</option>
-								{STATES.map((s) => (
-									<option key={s} value={s}>
-										{s}
-									</option>
-								))}
-							</Select>
-						</div>
-						<p className="text-[11px] leading-4 text-muted-foreground">
-							Saved as Tailwind 4 classes
-							{variant && (
-								<>
-									{" "}
-									under <code>{variant}</code>
-								</>
+					<button
+						type="button"
+						role="tab"
+						aria-selected={view === "styles"}
+						className={`text-xs font-semibold ${view === "styles" ? "text-white" : "text-[#71717a] hover:text-[#d4d4d8]"}`}
+						onClick={() => setView("styles")}
+					>
+						Styles
+					</button>
+					<button
+						type="button"
+						role="tab"
+						aria-selected={view === "attributes"}
+						className={`text-xs font-semibold ${view === "attributes" ? "text-white" : "text-[#71717a] hover:text-[#d4d4d8]"}`}
+						onClick={() => setView("attributes")}
+					>
+						Attributes
+					</button>
+				</div>
+				{view === "styles" && <div className="px-3 py-3">{classPicker}</div>}
+				<div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto">
+					{view === "styles" ? (
+						<>
+							<PanelSection id="module" title={`<${el.tag}>`} icon={themeIcon(el.tag)} action={actions}>
+								<p className="text-[11px] leading-4 break-all text-muted-foreground">
+									Theme code: {path}, line {line}. Changes are saved to this file.
+								</p>
+								{fields}
+							</PanelSection>
+							{el.tailwind && (showContext || breakpoint || state) && (
+								<PanelSection id="context" title="Context & state" icon={SlidersHorizontal} defaultOpen>
+									<ThemeContextBar
+										breakpoint={breakpoint}
+										state={state}
+										variant={variant}
+										onBreakpoint={setBreakpoint}
+										onState={setState}
+									/>
+								</PanelSection>
 							)}
-							. Values are Tailwind values (<code>4</code>, <code>full</code>, <code>red-500</code>) or CSS (
-							<code>320px</code>, <code>#fff</code>).
-						</p>
-					</>
-				) : (
-					<p className="text-[11px] leading-4 text-muted-foreground">
-						This theme does not use Tailwind: styles are saved as the element's inline style.
-					</p>
+							{groups.map(({ group, keys }) => {
+								const meta = GROUP_META[group];
+								return (
+									<PanelSection key={group} id={meta?.id ?? group.toLowerCase()} title={group} icon={meta?.icon}>
+										{group === "Layout" ? (
+											<ThemeLayoutControls
+												keys={keys}
+												query={q}
+												valueOf={valueOf}
+												inherited={inherited}
+												commit={commit}
+											/>
+										) : group === "Position" ? (
+											<ThemePositionControls
+												keys={keys}
+												query={q}
+												valueOf={valueOf}
+												inherited={inherited}
+												commit={commit}
+											/>
+										) : (
+											keys.map((key) => (
+												<ThemeStyleInput
+													key={`${key}:${variant}:${valueOf(key)}`}
+													prop={key}
+													value={valueOf(key)}
+													placeholder={inherited(key)}
+													onCommit={(v) => commit(key, v)}
+												/>
+											))
+										)}
+									</PanelSection>
+								);
+							})}
+							{groups.length === 0 && extra.length === 0 && q && (
+								<p className="px-3 py-6 text-center text-xs text-[#71717a]">No matching styles.</p>
+							)}
+							<PanelSection id="other" title="Other styles" icon={EllipsisVertical} defaultOpen={false}>
+								{extra.map((key) => (
+									<ThemeStyleInput
+										key={`${key}:${valueOf(key)}`}
+										prop={key}
+										value={valueOf(key)}
+										placeholder={inherited(key)}
+										onCommit={(v) => commit(key, v)}
+									/>
+								))}
+								<div className="flex items-center gap-1">
+									<Input
+										aria-label="CSS property"
+										placeholder="opacity"
+										value={newProp}
+										onChange={(e) => setNewProp(e.target.value)}
+										onKeyDown={(e) => {
+											if (e.key !== "Enter") return;
+											e.preventDefault();
+											addProp();
+										}}
+										className="h-8 border-[#34343a] bg-[#19191c] text-xs"
+									/>
+									<Button size="sm" variant="secondary" className="h-8" onClick={addProp}>
+										Add
+									</Button>
+								</div>
+							</PanelSection>
+						</>
+					) : (
+						<div className="p-3">
+							<PanelSection id="element" title="Element" icon={themeIcon(el.tag)}>
+								<p className="text-[11px] leading-4 break-all text-muted-foreground">
+									Theme code: {path}, line {line}. Changes are saved to this file.
+								</p>
+								{fields}
+							</PanelSection>
+							<PanelSection id="attributes" title="Attributes" icon={Tags}>
+								<ThemeAttributes attrs={el.attrs} />
+							</PanelSection>
+							<PanelSection id="classes" title="Classes" icon={Layout}>
+								{classPicker}
+							</PanelSection>
+						</div>
+					)}
+				</div>
+				{view === "styles" && (
+					<StyleSearch value={query} onChange={setQuery} classLabel={classLabel} classPrefix={el.tailwind ? "" : "."} />
 				)}
-			</Section>
-			{STYLE_GROUPS.map(([group, keys]) => (
-				<Section key={group} title={group}>
-					{keys.map((k) => (
-						<ThemeStyleInput
-							key={`${k}:${variant}:${valueOf(k)}`}
-							prop={k}
-							value={valueOf(k)}
-							placeholder={variant ? undefined : el.computed[k]}
-							onCommit={(v) => commit(k, v)}
-						/>
-					))}
-				</Section>
-			))}
-			<ThemeAttributes attrs={el.attrs} />
+			</div>
+			{view === "styles" && (
+				<StyleRail
+					moduleIcon={themeIcon(el.tag)}
+					styles={railStyles}
+					active={activeSection}
+					onSelect={navigate}
+					showContext={el.tailwind}
+				/>
+			)}
 		</div>
 	);
 }

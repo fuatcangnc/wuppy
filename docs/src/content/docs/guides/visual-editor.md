@@ -58,7 +58,9 @@ actions, component/layout model, panels and drop rules, built on Wuppy's file-ba
   `w-[320px]`, and properties without a utility an arbitrary property (`[filter:blur(4px)]`). Type Tailwind values
   (`4`, `full`, `red-500`) or CSS (`320px`, `#fff`). A breakpoint and a state write the class under `max-[768px]:` and
   `hover:`; classes under other variants are kept. A theme without Tailwind gets the styles as inline style. Empty
-  fields show the browser's value.
+  fields show the browser's value. The panel uses the same **Styles / Attributes** tabs, class pills, section cards,
+  right style rail and **Search styles** footer as a page block; its context controls live behind the rail's
+  Context & state button for Tailwind themes.
 
 ### Explorer
 

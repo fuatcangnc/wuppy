@@ -60,6 +60,7 @@ Screenshots: `acceptance/instatic-ui/screenshots/`.
 - Layout uses Flex/Grid segmented control, Align self, Justify self, Flex, Grid column/row and Overflow; Position uses Relative/Absolute and Z index.
 - A right-edge **style category icon rail** (module + every style group) scrolls to its section and marks categories with stored values.
 - Pinned **Search styles in .class...** footer filters property rows; hidden Context & state opens from its rail icon.
+- The same inspector (tabs, class pills, section cards, rail and search) is used when a theme’s own markup element is picked; its context button appears for Tailwind themes.
 - Componentize/component editing when a layer is selected.
 
 ### Other Site tools

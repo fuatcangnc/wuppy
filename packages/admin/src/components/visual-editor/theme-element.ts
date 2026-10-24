@@ -9,6 +9,8 @@ import { $selected } from "./store.ts";
  * dev server reloads the page.
  */
 export interface ThemeElement {
+	/** Changes when the user picks another element; kept while edits rewrite this one, so the panel keeps its tab and context. */
+	selection: number;
 	file: string;
 	loc: string;
 	tag: string;
@@ -46,8 +48,10 @@ const computedOf = (el: Element): Record<string, string> => {
 };
 
 const OWN = /^(class|style|data-astro-|data-wuppy-)/;
+let selection = 0;
 
 export const describeElement = (el: Element): ThemeElement => ({
+	selection: ++selection,
 	file: el.getAttribute("data-wuppy-file") ?? "",
 	loc: el.getAttribute("data-wuppy-loc") ?? "",
 	tag: el.tagName.toLowerCase(),

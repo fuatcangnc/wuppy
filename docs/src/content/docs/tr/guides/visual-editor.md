@@ -58,7 +58,9 @@ component/layout modeli, paneller ve bırakma kuralları; Wuppy'nin dosya tabanl
   karşılığı olmayan özellikler arbitrary property olarak yazılır (`[filter:blur(4px)]`). Tailwind değeri (`4`, `full`,
   `red-500`) ya da CSS (`320px`, `#fff`) yazılabilir. Breakpoint ve state seçilince class `max-[768px]:` ve `hover:`
   altında yazılır; başka variant'lardaki class'lar korunur. Tailwind kullanmayan temada stiller inline style olur. Boş
-  alanlar tarayıcının değerini gösterir.
+  alanlar tarayıcının değerini gösterir. Panel; **Styles / Attributes** sekmeleri, class pill'leri, bölüm kartları, sağ
+  stil rayı ve **Search styles** altlığıyla sayfa bloğuyla aynıdır; Tailwind temasında context kontrolleri rayın
+  Context & state düğmesinden açılır.
 
 ### Explorer
 
