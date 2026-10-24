@@ -1,6 +1,20 @@
 {
-	"name": "@wuppy/admin",
-	"version": "0.0.0",
+	"name": "@wuppycms/admin",
+	"version": "0.2.3",
+	"description": "The admin panel of WuppyCMS.",
+	"keywords": [
+		"wuppycms",
+		"astro",
+		"cms",
+		"admin"
+	],
+	"homepage": "https://wuppycms.com",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fuatcangnc/wuppy.git",
+		"directory": "packages/admin"
+	},
+	"bugs": "https://github.com/fuatcangnc/wuppy/issues",
 	"type": "module",
 	"exports": {
 		"./dist/*": "./dist/*"
@@ -14,7 +28,7 @@
 		"prepack": "pnpm build"
 	},
 	"dependencies": {
-		"@better-auth/passkey": "1.7.10",
+		"@better-auth/passkey": "1.7.12",
 		"@fontsource-variable/jetbrains-mono": "^5.3.0",
 		"@lexical/code": "0.52.0",
 		"@lexical/history": "0.52.0",
@@ -29,8 +43,8 @@
 		"@radix-ui/react-select": "^2.4.1",
 		"@react-zero-ui/icon-sprite": "0.5.1",
 		"@tanstack/react-router": "catalog:",
-		"@wuppy/visual-editor": "workspace:*",
-		"better-auth": "1.7.10",
+		"@wuppycms/visual-editor": "workspace:*",
+		"better-auth": "1.7.12",
 		"lexical": "0.52.0",
 		"nanostores": "1.5.5",
 		"react": "catalog:",
@@ -54,6 +68,7 @@
 		"vitest": "catalog:"
 	},
 	"files": [
-		"dist"
+		"dist",
+		"THIRD-PARTY-NOTICES.md"
 	]
 }

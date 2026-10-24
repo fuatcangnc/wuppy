@@ -1,10 +1,10 @@
 /**
- * The visual editor's page tree: one flat map of nodes plus a root id. Adapted from Instatic's `NodeTree` and
- * `page-tree/mutations.ts` (MIT, © 2026 David Babinec). The mutations work on a draft the caller already copied
+ * The visual editor's page tree: one flat map of nodes plus a root id (third-party code: see
+ * THIRD-PARTY-NOTICES.md). The mutations work on a draft the caller already copied
  * (see `store.ts`), so they may mutate freely; `children` is the source of truth and `parentId` a cache of it.
  */
 
-import type { NodeJson, Overrides, Styles } from "@wuppy/visual-editor";
+import type { NodeJson, Overrides, Styles } from "@wuppycms/visual-editor";
 
 export type { Styles };
 
@@ -195,7 +195,7 @@ export function wrapNode(tree: NodeTree, id: string, wrapper: VNode): string {
 
 export type DropPosition = "before" | "after" | "inside";
 
-/** Where a dragged node lands, or null when the drop is not allowed (Instatic's `resolvePageTreeDropTarget`). */
+/** Where a dragged node lands, or null when the drop is not allowed. */
 export function resolveDrop(
 	tree: NodeTree,
 	draggedId: string,

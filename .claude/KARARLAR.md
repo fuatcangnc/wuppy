@@ -28,16 +28,16 @@ CMS olmaktır.
 
 1. **Varsayılan çalışma zamanı Node.js'tir.** `node:sqlite`, yerel dosya
    sistemi ve gerçek Git ile sıfır konfigürasyonla çalışır.
-2. **Cloudflare bir adaptördür.** `@wuppy/cloudflare` paketi D1, R2 ve Workers
+2. **Cloudflare bir adaptördür.** `@wuppycms/cloudflare` paketi D1, R2 ve Workers
    runtime eşlemelerini sağlar; isteğe bağlı kurulur.
 3. **Çekirdek Cloudflare'i bilmez.**
-   - `wuppy` (core) paketi `@wuppy/cloudflare`'e bağımlı olamaz.
+   - `wuppycms` (core) paketi `@wuppycms/cloudflare`'e bağımlı olamaz.
    - `packages/core/src/**` içinde `cloudflare:*`, `@cloudflare/*`,
      `wrangler`, `kysely-d1` import edilemez.
    - Platform farkları `StorageAdapter`, `DatabaseDialect`, `GitAdapter` ve
      `RuntimeAdapter` arayüzlerinin arkasında kalır.
 4. **Cloudflare'e özgü özellikler opsiyoneldir.** Sandbox eklentiler workerd
-   gerektiriyorsa bu, `@wuppy/cloudflare` içinde yaşar; Node.js tarafında
+   gerektiriyorsa bu, `@wuppycms/cloudflare` içinde yaşar; Node.js tarafında
    süreç tabanlı veya devre dışı bir sandbox adaptörü kullanılır.
 5. **Testler iki profilli olur.** `pnpm test` Node/SQLite ile çalışır;
    `pnpm test:workerd` yalnızca adaptör paketinde koşar.
@@ -68,7 +68,7 @@ gerekiyor.
 - **Veri erişimi:** Better Auth'un Kysely adaptörü. Wuppy'nin mevcut Kysely
   katmanıyla aynı bağlantıyı paylaşır.
 - **Depolama:** Varsayılan `node:sqlite`; Cloudflare'de D1 adaptörü
-  (`@wuppy/cloudflare`).
+  (`@wuppycms/cloudflare`).
 - **Kullanılacak Better Auth yetenekleri:**
   - E-posta/parola, e-posta doğrulama
   - Passkey (WebAuthn)
@@ -235,7 +235,7 @@ serileştirmesiyle uyumlu olması isteniyor.
   1. Lexical node sınıfı (`packages/blocks/src/lexical/`)
   2. taşınabilir içerik şeması (`packages/blocks/src/blocks/`)
   3. Astro renderer'ı (`packages/blocks/src/elements/` veya ilgili bileşen)
-- **MDX dönüşümü:** `@wuppy/markdown` içinde
+- **MDX dönüşümü:** `@wuppycms/markdown` içinde
   `mdx ↔ lexical JSON ↔ portable text` gidiş-dönüşü test edilir.
 - **Kod blokları:** `@lexical/code` + highlight.js/lowlight veya Shiki;
   render tarafı site temasına bırakılır.

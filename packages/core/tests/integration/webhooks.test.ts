@@ -4,7 +4,7 @@ import type { AddressInfo } from "node:net";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { NoopGit } from "@wuppy/git";
+import { NoopGit } from "@wuppycms/git";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { collectionSchema } from "../../src/content-types/index.ts";
 import { ContentService } from "../../src/content/service.ts";

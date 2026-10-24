@@ -14,8 +14,8 @@ import { defaultFramework, frameworkCss } from "./framework.ts";
 
 /**
  * Site-wide visual editor data (`.wuppy/data/visual.json`): breakpoints and conditions, the selector library, the
- * design framework, Visual Components, saved layouts and the user stylesheet. Instatic keeps these on its site
- * document; Wuppy keeps them next to the content, in Git, while the pages themselves stay MDX.
+ * design framework, Visual Components, saved layouts and the user stylesheet. WuppyCMS keeps them next to the
+ * content, in Git, while the pages themselves stay MDX.
  */
 
 const id = z.string().regex(/^[a-z0-9][a-z0-9-]{0,39}$/);

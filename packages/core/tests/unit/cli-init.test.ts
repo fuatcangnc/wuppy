@@ -6,7 +6,7 @@ import { astroRepos, importRepo, inferField, patchAstroConfig } from "../../src/
 
 const line = (repo: string, pkg: string) => JSON.stringify({ repo, private: repo.endsWith("b"), description: "", pkg });
 
-describe("wuppy init helpers", () => {
+describe("wuppycms init helpers", () => {
 	it("infers field types from existing frontmatter values", () => {
 		expect(inferField("draft", [true, undefined])).toBe("boolean");
 		expect(inferField("order", [1, 2])).toEqual({ type: "number", multiple: false, required: true });
@@ -20,7 +20,7 @@ describe("wuppy init helpers", () => {
 	it("adds the integration without an integrations array, keeps an existing adapter, is idempotent", () => {
 		const bare = `import { defineConfig } from "astro/config";\nexport default defineConfig({\n  site: "x",\n});\n`;
 		const out = patchAstroConfig(bare, {})!;
-		expect(out).toContain("  integrations: [wuppy(), mdx()],");
+		expect(out).toContain("  integrations: [wuppycms(), mdx()],");
 		expect(out).toContain('import node from "@astrojs/node";');
 		expect(out).toContain('import mdx from "@astrojs/mdx";');
 		const withAdapter = `import { defineConfig } from "astro/config";\nexport default defineConfig({ adapter: vercel(), integrations: [] });\n`;

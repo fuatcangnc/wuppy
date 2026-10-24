@@ -31,7 +31,7 @@ Bir güncelleme daha fazlasını isterse eklenti yeniden onaylanana kadar kapal�
 - **Klasörden**: onay hash'iyle birlikte `wuppy.config` dosyasına ekleyin:
 
 ```sh
-pnpm wuppy plugin hash plugins/search
+pnpm wuppycms plugin hash plugins/search
 ```
 
 ```js
@@ -44,12 +44,12 @@ kaldırılabilir.
 
 ## Eklenti yazma
 
-`wuppy-plugin` komutu eklentileri oluşturur, derler ve imzalar:
+`wuppycms-plugin` komutu eklentileri oluşturur, derler ve imzalar:
 
 ```sh
-wuppy-plugin init my-plugin       # manifest.json + plugin.js
-wuppy-plugin validate my-plugin   # manifesti doğrula
-wuppy-plugin build my-plugin      # kod beyan edilmemiş bir yetenek kullanırsa başarısız olur
-wuppy-plugin keygen               # yeni bir Ed25519 anahtar çifti
-wuppy-plugin pack my-plugin <key> # imzalı registry paketi ve indeks kaydı
+wuppycms-plugin init my-plugin       # manifest.json + plugin.js
+wuppycms-plugin validate my-plugin   # manifesti doğrula
+wuppycms-plugin build my-plugin      # kod beyan edilmemiş bir yetenek kullanırsa başarısız olur
+wuppycms-plugin keygen               # yeni bir Ed25519 anahtar çifti
+wuppycms-plugin pack my-plugin <key> # imzalı registry paketi ve indeks kaydı
 ```

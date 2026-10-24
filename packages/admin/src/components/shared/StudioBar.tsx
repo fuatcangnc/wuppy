@@ -17,7 +17,7 @@ const itemClass = (on: boolean) =>
 		on ? "bg-[#2b2b2e] text-white" : "text-[#a1a1aa] hover:bg-[#1f1f22] hover:text-[#e4e4e7]"
 	}`;
 
-/** Compact Instatic-style studio navigation used by the full-screen Site and AI workspaces. */
+/** Compact studio navigation used by the full-screen Site and AI workspaces. */
 export function StudioBar({ active }: { active?: "site" | "ai" }) {
 	const pathname = useRouterState({ select: (state) => state.location.pathname });
 	const pages = collectionOfKind(useStore($collections), "pages") ?? "pages";

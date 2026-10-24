@@ -4,9 +4,9 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const dist = new URL("../dist/", import.meta.url);
-const { default: wuppy } = await import(new URL("astro.mjs", dist).href);
+const { default: wuppycms } = await import(new URL("astro.mjs", dist).href);
 const entrypoints = [];
-wuppy().hooks["astro:config:setup"]({
+wuppycms().hooks["astro:config:setup"]({
 	config: { root: new URL("../../..", import.meta.url) },
 	injectRoute: (r) => entrypoints.push(r.entrypoint),
 	addMiddleware: (m) => entrypoints.push(m.entrypoint),

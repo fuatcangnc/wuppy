@@ -31,7 +31,7 @@ If an update asks for more, the plugin stays off until it is approved again.
 - **From a folder**: add it to `wuppy.config` with the approval hash:
 
 ```sh
-pnpm wuppy plugin hash plugins/search
+pnpm wuppycms plugin hash plugins/search
 ```
 
 ```js
@@ -43,12 +43,12 @@ and settings. Plugins can be turned on and off, configured, and removed (if inst
 
 ## Writing a plugin
 
-The `wuppy-plugin` CLI creates, builds and signs plugins:
+The `wuppycms-plugin` CLI creates, builds and signs plugins:
 
 ```sh
-wuppy-plugin init my-plugin       # manifest.json + plugin.js
-wuppy-plugin validate my-plugin   # check the manifest
-wuppy-plugin build my-plugin      # fails if the code uses a capability the manifest does not declare
-wuppy-plugin keygen               # a new Ed25519 key pair
-wuppy-plugin pack my-plugin <key> # a signed registry bundle and index entry
+wuppycms-plugin init my-plugin       # manifest.json + plugin.js
+wuppycms-plugin validate my-plugin   # check the manifest
+wuppycms-plugin build my-plugin      # fails if the code uses a capability the manifest does not declare
+wuppycms-plugin keygen               # a new Ed25519 key pair
+wuppycms-plugin pack my-plugin <key> # a signed registry bundle and index entry
 ```

@@ -1,6 +1,19 @@
 {
-	"name": "@wuppy/plugin-types",
-	"version": "0.0.0",
+	"name": "@wuppycms/plugin-types",
+	"version": "0.2.3",
+	"description": "Types and the API contract for WuppyCMS plugins.",
+	"keywords": [
+		"wuppycms",
+		"plugin",
+		"types"
+	],
+	"homepage": "https://wuppycms.com",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fuatcangnc/wuppy.git",
+		"directory": "packages/plugin-types"
+	},
+	"bugs": "https://github.com/fuatcangnc/wuppy/issues",
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts"

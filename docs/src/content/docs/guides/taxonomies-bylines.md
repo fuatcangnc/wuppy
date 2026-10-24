@@ -14,7 +14,7 @@ A taxonomy has a name, a slug, the collections it applies to, and is either **hi
 - Tags can be renamed and merged.
 - Each term has a slug, a description and a count of entries.
 
-The starter has archive pages for categories and tags; use `getTaxonomy()` from `wuppy` in your own templates.
+The starter has archive pages for categories and tags; use `getTaxonomy()` from `wuppycms` in your own templates.
 
 ## Bylines
 

@@ -50,19 +50,19 @@ Gövde, Astro'nun kullandığı ayrıştırıcıyla denetlenir. Kod blokları i�
 ## Sitede
 
 - Starter'ın `astro.config.mjs` dosyasında `@astrojs/mdx` vardır ve `**/*.{md,mdx}` yüklenir. Mevcut bir Astro projesinde
-  [`wuppy init`](/tr/guides/existing-astro-project/) aynısını yapar: `mdx()` ile `@astrojs/mdx`'i ekler ve
+  [`wuppycms init`](/tr/guides/existing-astro-project/) aynısını yapar: `mdx()` ile `@astrojs/mdx`'i ekler ve
   `pattern: "**/*.md"` glob'larını `**/*.{md,mdx}` yapar.
 - Tema bileşenleri otomatik eşlenir: Wuppy, temanın sayfalarındaki `<Content />` öğesine bir `components` haritası ekler; böylece temanın `src/components/*.astro` dosyaları **Add → Components** üzerinden içe aktarma satırı olmadan eklenebilir.
 - Sitenin kendi bileşenleri için adlarını `wuppy.config.mjs` içindeki `components` listesine ekleyin ve bir girdiyi gösterirken verin: `<Content components={{ Callout }} />`.
 - Admin'de düzenlenen bir MDX girdisi build gerekmeden hemen görünür. Sitenin Markdown ayarlarıyla derlenir: başlıklar
   build'dekiyle aynı id'leri ve `headings` listesini, kod blokları aynı renklendirmeyi alır.
-- Bir bölüm (ya da custom widget) gövdesini `wuppy/mdx` içindeki `mdxContent` ile gösterin. Göstermeden önce aynı
+- Bir bölüm (ya da custom widget) gövdesini `wuppycms/mdx` içindeki `mdxContent` ile gösterin. Göstermeden önce aynı
   denetimleri yeniden yapar ve `render()` ile aynı şeyi, `{ Content, headings }` döndürür:
 
   ```astro
   ---
-  import { getSection } from "wuppy";
-  import { mdxContent } from "wuppy/mdx";
+  import { getSection } from "wuppycms";
+  import { mdxContent } from "wuppycms/mdx";
   import Callout from "../components/Callout.astro";
   const section = await getSection("cta");
   const { Content: Body } = section ? await mdxContent(section.body) : {};

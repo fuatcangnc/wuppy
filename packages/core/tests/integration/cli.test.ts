@@ -12,7 +12,7 @@ let root: string;
 beforeEach(async () => void (root = await mkdtemp(join(tmpdir(), "wuppy-cli-"))));
 afterEach(() => rm(root, { recursive: true, force: true }));
 
-describe("wuppy plugin hash", () => {
+describe("wuppycms plugin hash", () => {
 	it("prints the capabilities to review and the approve value", async () => {
 		const manifest = { id: "p", version: "1.0.0", capabilities: { content: { read: ["posts"] } } };
 		await mkdir(join(root, "plugins/p"), { recursive: true });
@@ -35,7 +35,7 @@ describe("wuppy plugin hash", () => {
 	});
 });
 
-describe("wuppy doctor", () => {
+describe("wuppycms doctor", () => {
 	const secret = { WUPPY_SECRET: "x".repeat(32) };
 	it("passes for a healthy project", async () => {
 		await mkdir(join(root, "content/posts"), { recursive: true });
@@ -66,7 +66,7 @@ describe("wuppy doctor", () => {
 	});
 });
 
-describe("wuppy types", () => {
+describe("wuppycms types", () => {
 	it("writes frontmatter types for every collection", async () => {
 		await writeFile(
 			join(root, "wuppy.config.mjs"),
@@ -83,11 +83,11 @@ describe("wuppy types", () => {
 });
 
 const install = (version: string) =>
-	mkdir(join(root, "node_modules/wuppy"), { recursive: true }).then(() =>
-		writeFile(join(root, "node_modules/wuppy/package.json"), JSON.stringify({ version })),
+	mkdir(join(root, "node_modules/wuppycms"), { recursive: true }).then(() =>
+		writeFile(join(root, "node_modules/wuppycms/package.json"), JSON.stringify({ version })),
 	);
 
-describe("wuppy upgrade", () => {
+describe("wuppycms upgrade", () => {
 	it("records the installed version and is a no-op the second time", async () => {
 		await install("0.2.0");
 		const first = await run(["upgrade"], root);
@@ -150,7 +150,7 @@ async function project() {
 	}
 }
 
-describe("wuppy init", () => {
+describe("wuppycms init", () => {
 	it("wraps an existing Astro project: config from its collections, integration, deps, gitignore, secret", async () => {
 		await project();
 		const out = await run(["init"], root);
@@ -176,14 +176,14 @@ describe("wuppy init", () => {
 		]);
 		expect(out.stdout).toMatch(/skipped couriers/);
 		const astro = await readFile(join(root, "astro.config.mjs"), "utf8");
-		expect(astro).toContain('import wuppy from "wuppy/astro";');
-		expect(astro).toContain("integrations: [wuppy({ robots: false }), mdx(), sitemap()]");
+		expect(astro).toContain('import wuppycms from "wuppycms/astro";');
+		expect(astro).toContain("integrations: [wuppycms({ robots: false }), mdx(), sitemap()]");
 		expect(astro).toContain("@astrojs/mdx");
 		expect(astro).toContain('adapter: node({ mode: "standalone" })');
 		const pkg = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
 		expect(pkg.dependencies).toMatchObject({
 			astro: "^5",
-			wuppy: "latest",
+			wuppycms: "latest",
 			"@astrojs/node": expect.any(String),
 		});
 		expect(pkg.dependencies["@astrojs/mdx"]).toEqual(expect.any(String));
@@ -212,6 +212,21 @@ describe("wuppy init", () => {
 		expect((await planInit(root)).collections.find((c) => c.name === "blog")?.map).toEqual({ pubDate: "date" });
 	});
 
+	it("names a collection by its key in the collections export, not its variable", async () => {
+		await project();
+		const config = `const postCollection = defineCollection({\n  loader: glob({ pattern: "**/*.mdx", base: "src/data/post" }),\n});\nconst camelCase = defineCollection({\n  loader: glob({ pattern: "**/*.md", base: "src/data/x" }),\n});\nexport const collections = {\n  post: postCollection,\n  camelCase,\n};\n`;
+		await writeFile(
+			join(root, "src/content.config.ts"),
+			`import { defineCollection } from "astro:content";\n${config}`,
+		);
+		await mkdir(join(root, "src/data/post"), { recursive: true });
+		await writeFile(join(root, "src/data/post/a.mdx"), "---\ntitle: A\n---\nHi\n");
+		const { planInit } = await import("../../src/cli/init.ts");
+		const plan = await planInit(root);
+		expect(plan.collections.map((c) => c.name)).toEqual(["post"]);
+		expect(plan.skipped.join("\n")).toContain("camelCase: Wuppy collection names");
+	});
+
 	it("refuses outside an Astro project and does not overwrite an existing config", async () => {
 		expect((await run(["init"], root)).stderr).toMatch(/astro\.config/);
 		await project();
@@ -225,7 +240,7 @@ describe("wuppy init", () => {
 	});
 });
 
-describe("wuppy mdx-to-md", () => {
+describe("wuppycms mdx-to-md", () => {
 	it("converts plain .mdx entries to .md and keeps the ones with components", async () => {
 		await mkdir(join(root, "content"), { recursive: true });
 		await writeFile(

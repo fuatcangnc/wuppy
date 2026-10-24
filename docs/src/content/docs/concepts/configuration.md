@@ -22,7 +22,7 @@ export default {
 	],
 	redirects: [{ from: "/old", to: "/new" }],
 	webhooks: [{ url: "https://ci.example.com/hook", secret: "…", events: ["content.updated"] }],
-	plugins: [{ dir: "plugins/search", approve: "<output of wuppy plugin hash>" }],
+	plugins: [{ dir: "plugins/search", approve: "<output of wuppycms plugin hash>" }],
 };
 ```
 
@@ -57,7 +57,7 @@ collections: [
 ],
 ```
 
-`wuppy init` sets `kind` for you: the first collection with a date field becomes Posts, the first without one becomes
+`wuppycms init` sets `kind` for you: the first collection with a date field becomes Posts, the first without one becomes
 Pages. Other collections are listed under their own name. In a GitHub theme, `kind` and `map` link the theme to the
 site's content; see [Themes from GitHub](/guides/github-themes/#where-content-lives).
 
@@ -72,7 +72,7 @@ run code on your site. See [MDX content](/guides/markdown/).
 ## Types for your templates
 
 ```sh
-pnpm wuppy types
+pnpm wuppycms types
 ```
 
 writes `wuppy-env.d.ts` with a TypeScript type for each collection.

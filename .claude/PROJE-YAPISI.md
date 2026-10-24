@@ -5,7 +5,7 @@ klasörün ne işe yaradığını açıklar. Yapı, `emdash-main` deposunun mono
 yaklaşımı, paket sınırları, test katmanları ve bileşen organizasyonu örnek
 alınarak **Wuppy'nin dosya tabanlı CMS hedefine uyarlanmıştır**.
 
-> **Durum (güncel):** Çalışan dikey dilim var — `packages/{core,admin,auth,git,plugin-types,create-wuppy}`,
+> **Durum (güncel):** Çalışan dikey dilim var — `packages/{core,admin,auth,git,plugin-types,create-wuppycms}`,
 > `templates/starter` ve `e2e` gerçek kod içerir. Henüz yazılmamış klasörlerde yalnızca `.gitkeep` durur.
 > Plan değişiklikleri: Markdown doğrudan kaynaktır, `packages/markdown` ve `packages/blocks` ertelendi (KARARLAR.md ADR-006);
 > SEO, sitemap, yönlendirme, i18n, medya, webhook ve eklenti sandbox'ı şimdilik `packages/core` içindedir
@@ -72,7 +72,7 @@ wuppy/
 | `rfcs/` | Geri döndürülmesi zor mimari kararlar. | "Neden böyle yaptık?" sorusunun kalıcı kaydı. |
 | `scripts/` | Şablon senkronizasyonu, ekran görüntüsü, ortam tipi üretimi, bin relink. | Tekrarlanan depo işleri elle yapılmaz. |
 | `skills/` | Ajanların projeye özgü iş akışları. | Ajan rehberi kod tabanıyla birlikte yaşar. |
-| `templates/` | Kullanıcıya dağıtılan başlangıç siteleri. | `create-wuppy` buradan kopyalar; demo değildir. |
+| `templates/` | Kullanıcıya dağıtılan başlangıç siteleri. | `create-wuppycms` buradan kopyalar; demo değildir. |
 
 ---
 
@@ -81,17 +81,17 @@ wuppy/
 ```
 packages/
 ├── core/               wuppy        Astro entegrasyonu + Hono API + içerik motoru
-├── admin/              @wuppy/admin React yönetim SPA'sı
-├── auth/               @wuppy/auth  Better Auth yapılandırması + RBAC
-├── blocks/             @wuppy/blocks Editör blokları ve renderer'lar
-├── git/                @wuppy/git   Commit, diff, geçmiş, geri alma
-├── markdown/           @wuppy/markdown MDX ↔ taşınabilir içerik
-├── plugin-types/       @wuppy/plugin-types Eklenti sözleşmeleri
-├── plugin-cli/         @wuppy/plugin-cli Eklenti iskeleti/paketleme
-├── plugin-test/        @wuppy/plugin-test Eklenti test yardımcıları
+├── admin/              @wuppycms/admin React yönetim SPA'sı
+├── auth/               @wuppycms/auth  Better Auth yapılandırması + RBAC
+├── blocks/             @wuppycms/blocks Editör blokları ve renderer'lar
+├── git/                @wuppycms/git   Commit, diff, geçmiş, geri alma
+├── markdown/           @wuppycms/markdown MDX ↔ taşınabilir içerik
+├── plugin-types/       @wuppycms/plugin-types Eklenti sözleşmeleri
+├── plugin-cli/         @wuppycms/plugin-cli Eklenti iskeleti/paketleme
+├── plugin-test/        @wuppycms/plugin-test Eklenti test yardımcıları
 ├── test-utils/         Paylaşılan test altyapısı
-├── create-wuppy/       create-wuppy Yeni proje oluşturucu
-├── cloudflare/         @wuppy/cloudflare Opsiyonel Workers adaptörü
+├── create-wuppycms/       create-wuppycms Yeni proje oluşturucu
+├── cloudflare/         @wuppycms/cloudflare Opsiyonel Workers adaptörü
 └── plugins/            Birinci taraf eklentiler
     ├── seo/
     ├── sitemap/
@@ -126,7 +126,7 @@ core/
 │   ├── auth/           Better Auth mount noktası ve oturum yardımcıları
 │   ├── bylines/        Yazar profilleri, krediler, byline şeması
 │   ├── cache/          Önbellek anahtarları ve invalidation
-│   ├── cli/            `wuppy` komut satırı
+│   ├── cli/            `wuppycms` komut satırı
 │   ├── client/         Programatik içerik istemcisi
 │   ├── comments/       Yorumlar, moderasyon, sayaçlar
 │   ├── components/     Astro'ya sunulan UI parçaları
@@ -627,7 +627,7 @@ Bu iskelet tamamlandığında sırayla:
 3. `packages/admin`: içerik listesi → Lexical editör → kaydet (Git commit);
    durum Nanostores, UI shadcn/ui token'ları.
 4. `packages/auth`: Better Auth + Kysely/SQLite kurulumu, ilk kullanıcı.
-5. `templates/starter` + `create-wuppy`: 15 dakikalık kurulum.
+5. `templates/starter` + `create-wuppycms`: 15 dakikalık kurulum.
 6. Playwright fixture + ilk kabul yolculuğu.
 
 Ayrıntılı ürün kapsamı için `../emdashcms-wuppy.md`, hedef sıralama için

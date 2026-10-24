@@ -5,7 +5,7 @@ import { PRESETS } from "../src/components/visual-editor/modules.ts";
 import { $context, $selected, $state, $tree, $visual, addPreset, load } from "../src/components/visual-editor/store.ts";
 import { $themeElement } from "../src/components/visual-editor/theme-element.ts";
 import { $doc } from "../src/stores/editor.ts";
-import { defaultVisualData } from "@wuppy/visual-editor";
+import { defaultVisualData } from "@wuppycms/visual-editor";
 
 const textPreset = PRESETS.find((preset) => preset.label === "Text")!;
 const renderPanel = () =>
@@ -26,7 +26,7 @@ beforeEach(() => {
 });
 
 describe("PropertiesPanel", { timeout: 60_000 }, () => {
-	it("shows Instatic's Styles/Attributes tabs, class picker, sections and right-side style rail", () => {
+	it("shows the WuppyCMS Styles/Attributes tabs, class picker, sections and right-side style rail", () => {
 		renderPanel();
 		const panel = screen.getByLabelText("Properties");
 		expect(within(panel).getByRole("tab", { name: "Styles" })).toHaveAttribute("aria-selected", "true");

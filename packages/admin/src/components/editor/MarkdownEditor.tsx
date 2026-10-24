@@ -16,7 +16,7 @@ export function MarkdownEditor({ initial, onChange }: { initial: string; onChang
 	return (
 		<LexicalComposer
 			initialConfig={{
-				namespace: "wuppy",
+				namespace: "wuppycms",
 				nodes: NODES,
 				onError: (error) => {
 					throw error;

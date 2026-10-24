@@ -1,12 +1,12 @@
 import { Trash2 } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
-import { safeSelector } from "@wuppy/visual-editor";
+import { safeSelector } from "@wuppycms/visual-editor";
 import { useState } from "react";
 import { Button, IconButton, Input } from "../../ui/index.tsx";
 import { Section } from "./Explorer.tsx";
 import { $target, $visual, ensureSelector, mutateVisual } from "./store.ts";
 
-/** Instatic's selector library: class and element selectors shared by every page, styled in Properties. */
+/** The selector library: class and element selectors shared by every page, styled in Properties. */
 export function SelectorsPanel() {
 	const visual = useStore($visual);
 	const target = useStore($target);

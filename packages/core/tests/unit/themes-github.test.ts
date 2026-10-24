@@ -4,12 +4,12 @@ import { tmpdir } from "node:os";
 import { DatabaseSync } from "node:sqlite";
 import { dirname, join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { GithubAccounts, githubAstroRepos, GithubThemes, type Run } from "../../src/themes/github.ts";
+import { GithubAccounts, githubAstroRepos, GithubThemes, olderThan, type Run } from "../../src/themes/github.ts";
 
 let base: string;
 beforeEach(async () => {
 	base = await mkdtemp(join(tmpdir(), "wuppy-themes-"));
-	await mkdir(join(base, "node_modules", "wuppy"), { recursive: true });
+	await mkdir(join(base, "node_modules", "wuppycms"), { recursive: true });
 	await writeFile(
 		join(base, "wuppy.config.mjs"),
 		`export default { collections: [{ name: "posts", dir: "content/posts" }] };`,
@@ -23,20 +23,26 @@ const put = async (path: string, text: string) => {
 };
 
 /** Fake git/npm/astro: each step leaves what the real one would. */
-function fakeRun(calls: { cmd: string; args: string[]; env: NodeJS.ProcessEnv }[], buildOk = true): Run {
+function fakeRun(
+	calls: { cmd: string; args: string[]; env: NodeJS.ProcessEnv }[],
+	buildOk = true,
+	astro = "7.4.2",
+): Run {
 	return async (cmd, args, { cwd, env }) => {
 		calls.push({ cmd, args, env });
 		if (cmd === "git") {
 			const dir = args.at(-1)!;
 			await put(join(dir, ".git", "HEAD"), "ref: refs/heads/main\n");
-			await put(join(dir, "package.json"), JSON.stringify({ dependencies: { astro: "7", wuppy: "^1" } }));
+			await put(join(dir, "package.json"), JSON.stringify({ dependencies: { astro: "7", wuppycms: "^1" } }));
 			await put(
 				join(dir, "astro.config.mjs"),
 				`import { defineConfig } from "astro/config";\nexport default defineConfig({\n\tsite: "https://x.test",\n\tmarkdown: { remarkPlugins: [] },\n});\n`,
 			);
 			await put(join(dir, "src/content/posts/a.md"), "---\ntitle: A\n---\nHi\n");
-		} else if (cmd === "npm") await put(join(cwd, "node_modules/astro/bin/astro.mjs"), "");
-		else if (buildOk) await put(join(cwd, "dist/server/entry.mjs"), "");
+		} else if (cmd === "npm") {
+			await put(join(cwd, "node_modules/astro/bin/astro.mjs"), "");
+			await put(join(cwd, "node_modules/astro/package.json"), JSON.stringify({ version: astro }));
+		} else if (buildOk) await put(join(cwd, "dist/server/entry.mjs"), "");
 	};
 }
 
@@ -80,13 +86,14 @@ describe("GitHub themes", () => {
 		expect(existsSync(join(dir, "wuppy.config.mjs"))).toBe(true);
 		expect(existsSync(join(dir, ".env"))).toBe(false);
 		const deps = JSON.parse(await readFile(join(dir, "package.json"), "utf8")).dependencies;
-		expect(deps.wuppy).toBeUndefined();
+		expect(deps.wuppycms).toBeUndefined();
 		expect(deps["@astrojs/node"]).toBeDefined();
 		expect(deps["@astrojs/markdown-remark"]).toBeDefined();
+		expect(deps.astro).toBe("^7.4.0");
 		expect(await readFile(join(dir, "astro.wuppy.config.mjs"), "utf8")).toContain(
 			'import config from "./astro.config.mjs"',
 		);
-		expect(readlinkSync(join(dir, "node_modules/wuppy"))).toContain(join("node_modules", "wuppy"));
+		expect(readlinkSync(join(dir, "node_modules/wuppycms"))).toContain(join("node_modules", "wuppycms"));
 
 		expect(await themes.installed()).toEqual(["me/site"]);
 		expect(await themes.active()).toBe("me/site");
@@ -113,6 +120,19 @@ describe("GitHub themes", () => {
 		await settle(retry);
 		expect(calls[0]?.cmd).toBe("git");
 		expect(retry.job).toMatchObject({ status: "done" });
+	});
+
+	it("fails the install when npm still installs an Astro without source marks", async () => {
+		const themes = new GithubThemes({ base, run: fakeRun([], true, "7.3.1") });
+		themes.install("me/site", "t");
+		await settle(themes);
+		expect(themes.job).toMatchObject({ status: "failed", error: expect.stringMatching(/Astro 7\.3\.1/) });
+	});
+
+	it("raises only an Astro range that allows versions before 7.4", () => {
+		expect(
+			["7", "^7.3.1", "~6.2.0", "^7.4.0", "^7.4.2", "8", "latest", "*"].map((r) => olderThan(r, "^7.4.0")),
+		).toEqual([true, true, true, false, false, false, false, false]);
 	});
 
 	it("rejects bad repo names and a second install while one runs", () => {

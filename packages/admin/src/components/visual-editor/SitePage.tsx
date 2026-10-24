@@ -9,7 +9,7 @@ interface PageList {
 	data: Array<{ slug: string }>;
 }
 
-/** `/site` opens the site editor on the home page (or the first available page), like Instatic's Site workspace. */
+/** `/site` opens the site editor on the home page (or the first available page), like a site workspace. */
 export function SitePage() {
 	const navigate = useNavigate();
 	const [empty, setEmpty] = useState(false);

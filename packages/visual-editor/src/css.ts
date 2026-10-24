@@ -1,6 +1,6 @@
 /**
  * CSS of the visual editor (wuppy-visual-editor), shared by the admin canvas and the site so both render the same
- * thing. Adapted from Instatic's publisher (`publisher/classCss.ts`, `css-sanitize`) — MIT, © 2026 David Babinec.
+ * thing. Third-party code: see THIRD-PARTY-NOTICES.md.
  * Every property, value, selector and query passes a gate here: stored data can never leave its declaration, open a
  * new rule, close the `<style>` element or load code.
  */
@@ -12,7 +12,7 @@ export type Overrides = Record<string, Styles>;
 export interface Breakpoint {
 	id: string;
 	label: string;
-	/** Frame width on the canvas; the rule applies at `max-width: <width>px` (desktop first, as in Instatic). */
+	/** Frame width on the canvas; the rule applies at `max-width: <width>px` (desktop first). */
 	width: number;
 }
 
@@ -28,7 +28,7 @@ export interface Contexts {
 	conditions: Condition[];
 }
 
-/** Pseudo-classes and pseudo-elements a style can target (Instatic's state picker). */
+/** Pseudo-classes and pseudo-elements a style can target (state picker). */
 export const STATES = [
 	":hover",
 	":focus",

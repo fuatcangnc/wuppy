@@ -6,15 +6,15 @@
 	"baseBranch": "main",
 	"fixed": [
 		[
-			"wuppy",
-			"@wuppy/admin",
-			"@wuppy/auth",
-			"@wuppy/git",
-			"@wuppy/plugin-types",
-			"@wuppy/plugin-cli",
-			"create-wuppy",
-			"@wuppy/visual-editor"
+			"wuppycms",
+			"@wuppycms/admin",
+			"@wuppycms/auth",
+			"@wuppycms/git",
+			"@wuppycms/plugin-types",
+			"@wuppycms/plugin-cli",
+			"create-wuppycms",
+			"@wuppycms/visual-editor"
 		]
 	],
-	"ignore": ["wuppy-starter", "@wuppy/e2e"]
+	"ignore": ["wuppy-starter", "@wuppycms/e2e"]
 }

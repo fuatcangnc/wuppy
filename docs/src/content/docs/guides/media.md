@@ -31,4 +31,4 @@ A cleanup tool finds files nothing uses.
 
 When `sharp` is installed, Wuppy serves resized WebP, AVIF, JPEG or PNG variants at allowed widths
 (`?w=800&format=webp`), caches them on disk with long-lived URLs and stores a small placeholder and the image size
-at upload. In templates, `imageSrcset()` from `wuppy/site` builds the `srcset` for you.
+at upload. In templates, `imageSrcset()` from `wuppycms/site` builds the `srcset` for you.

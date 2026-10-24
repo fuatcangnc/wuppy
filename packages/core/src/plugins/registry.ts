@@ -1,5 +1,5 @@
 import { createPublicKey, verify } from "node:crypto";
-import { manifestSchema, type Manifest } from "@wuppy/plugin-types";
+import { manifestSchema, type Manifest } from "@wuppycms/plugin-types";
 import { z } from "zod";
 import { fetchPublic } from "../security/ssrf.ts";
 import { fileDigest } from "./loader.ts";

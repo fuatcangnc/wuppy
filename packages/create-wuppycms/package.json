@@ -1,0 +1,53 @@
+{
+	"name": "create-wuppycms",
+	"version": "0.2.3",
+	"description": "Create a new Astro site with WuppyCMS.",
+	"keywords": [
+		"astro",
+		"cms",
+		"create",
+		"starter",
+		"template"
+	],
+	"homepage": "https://wuppycms.com",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fuatcangnc/wuppy.git",
+		"directory": "packages/create-wuppycms"
+	},
+	"bugs": "https://github.com/fuatcangnc/wuppy/issues",
+	"type": "module",
+	"bin": {
+		"create-wuppycms": "./src/cli.ts"
+	},
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"test": "vitest run",
+		"typecheck": "tsc --noEmit",
+		"build": "tsdown",
+		"prepack": "node scripts/copy-template.mjs && tsdown"
+	},
+	"devDependencies": {
+		"@types/node": "catalog:",
+		"typescript": "catalog:",
+		"vitest": "catalog:",
+		"tsdown": "catalog:"
+	},
+	"files": [
+		"dist",
+		"template"
+	],
+	"publishConfig": {
+		"bin": {
+			"create-wuppycms": "./dist/cli.mjs"
+		},
+		"exports": {
+			".": {
+				"types": "./dist/index.d.mts",
+				"import": "./dist/index.mjs"
+			}
+		}
+	}
+}

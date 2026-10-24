@@ -1,4 +1,4 @@
-import type { AuthOptions } from "@wuppy/auth";
+import type { AuthOptions } from "@wuppycms/auth";
 
 const LOOPBACK = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
 

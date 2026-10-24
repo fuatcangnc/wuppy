@@ -38,7 +38,7 @@ export async function handleMcp(message: unknown, call: ApiCall, version: string
 						? p.protocolVersion
 						: VERSIONS[0],
 				capabilities: { tools: { listChanged: false } },
-				serverInfo: { name: "wuppy", version },
+				serverInfo: { name: "wuppycms", version },
 				instructions: INSTRUCTIONS,
 			});
 		case "ping":

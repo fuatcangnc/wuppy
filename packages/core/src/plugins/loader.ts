@@ -7,7 +7,7 @@ import {
 	type FilterName,
 	type HookName,
 	type Manifest,
-} from "@wuppy/plugin-types";
+} from "@wuppycms/plugin-types";
 import type { WebhookEvent } from "../webhooks/index.ts";
 import { PluginHookError, PluginRejectedError } from "./errors.ts";
 import { loadPlugin, type HostDeps, type LoadedPlugin } from "./host.ts";

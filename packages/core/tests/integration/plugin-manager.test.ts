@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import { NoopGit } from "@wuppy/git";
+import { NoopGit } from "@wuppycms/git";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createApp, type User } from "../../src/api/app.ts";
 import { CommentService } from "../../src/comments/index.ts";

@@ -64,7 +64,7 @@ describe("visual CSS", () => {
 });
 
 describe("framework", () => {
-	it("computes Instatic's fluid scale", () => {
+	it("computes the WuppyCMS fluid scale", () => {
 		const fw = defaultVisualData().framework;
 		const [, m] = fluidScale(fw.type, fw).find(([s]) => s === "m")!;
 		expect(m).toBe("clamp(1rem, calc(0.19vw + 0.96rem), 1.13rem)");

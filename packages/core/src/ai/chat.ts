@@ -144,7 +144,7 @@ async function readStream(body: ReadableStream<Uint8Array> | null, onText: (text
 	return { role: "assistant", content: content || null, ...(toolCalls.length ? { tool_calls: toolCalls } : {}) };
 }
 
-async function complete(
+export async function complete(
 	config: AiConfig,
 	model: string,
 	messages: ProviderMessage[],

@@ -5,7 +5,7 @@ sidebar:
   order: 20
 ---
 
-`create-wuppy` ile açılan her site **başlangıç temasıyla** gelir. Temada şunlar var: koyu bir üst şerit, kaydırınca koyulaşıp üstte sabit kalan kutulu bir başlık, büyük bir giriş alanı (hero), numaralı yazı kartları, koyu bir çağrı (CTA) bandı ve koyu bir alt bilgi. Yazı tipi Space Grotesk, vurgu rengi turuncu, köşeler keskin.
+`create-wuppycms` ile açılan her site **başlangıç temasıyla** gelir. Temada şunlar var: koyu bir üst şerit, kaydırınca koyulaşıp üstte sabit kalan kutulu bir başlık, büyük bir giriş alanı (hero), numaralı yazı kartları, koyu bir çağrı (CTA) bandı ve koyu bir alt bilgi. Yazı tipi Space Grotesk, vurgu rengi turuncu, köşeler keskin.
 
 ## Wuppy'den ne okur
 

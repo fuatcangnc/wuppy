@@ -1,6 +1,19 @@
 {
-	"name": "@wuppy/visual-editor",
-	"version": "0.0.0",
+	"name": "@wuppycms/visual-editor",
+	"version": "0.2.3",
+	"description": "Data model and CSS of the WuppyCMS visual editor.",
+	"keywords": [
+		"wuppycms",
+		"visual-editor",
+		"page-builder"
+	],
+	"homepage": "https://wuppycms.com",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fuatcangnc/wuppy.git",
+		"directory": "packages/visual-editor"
+	},
+	"bugs": "https://github.com/fuatcangnc/wuppy/issues",
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts"
@@ -20,7 +33,8 @@
 		"tsdown": "catalog:"
 	},
 	"files": [
-		"dist"
+		"dist",
+		"THIRD-PARTY-NOTICES.md"
 	],
 	"publishConfig": {
 		"exports": {

@@ -5,7 +5,7 @@ sidebar:
   order: 21
 ---
 
-Yönetim panelinin kenar çubuğundaki **Themes**, GitHub hesabınızdaki Astro sitelerini listeler. Birini seçtiğinizde Wuppy onu sunucuya klonlar, [`wuppy init`](/tr/guides/existing-astro-project/) gibi sarar, derler ve siteyi ona geçirir. Tema yalnız tasarımdır: yazılarınız, sayfalarınız, medya ve menüler sitede kalır, tema değişse de korunur.
+Yönetim panelinin kenar çubuğundaki **Themes**, GitHub hesabınızdaki Astro sitelerini listeler. Birini seçtiğinizde Wuppy onu sunucuya klonlar, [`wuppycms init`](/tr/guides/existing-astro-project/) gibi sarar, derler ve siteyi ona geçirir. Tema yalnız tasarımdır: yazılarınız, sayfalarınız, medya ve menüler sitede kalır, tema değişse de korunur.
 
 ## GitHub'ı bağlayın
 
@@ -25,8 +25,8 @@ Sunucuya GitHub OAuth uygulamasının secret'ı bir kez verilir:
 Liste; sahibi olduğunuz, katkıcı olduğunuz ya da bir organizasyon üzerinden eriştiğiniz depoları son push'a göre sıralar ve yalnız `package.json` dosyasında Astro olanları gösterir. **Install** düğmesine basın:
 
 1. **Cloning**: depo sunucuda `.wuppy/themes/<sahip>__<ad>/` klasörüne klonlanır.
-2. **Wrapping**: `wuppy init` içerik koleksiyonlarını bulur, `wuppy.config.mjs` dosyasını yazar.
-3. **Installing packages**: `npm install`.
+2. **Wrapping**: `wuppycms init` içerik koleksiyonlarını bulur, `wuppy.config.mjs` dosyasını yazar.
+3. **Installing packages**: `npm install`. Astro'su 7.4'ten eski bir tema önce `^7.4.0`'a çıkarılır: eski Astro elementleri kaynak satırlarıyla işaretlemez, bu yüzden görsel editör temanın elementlerini listeleyemez ve seçemezdi. npm yine de eski bir Astro kurarsa (örneğin bir `overrides` kaydı yüzünden), kurulum editörün düzenleyemeyeceği bir tema bırakmak yerine bir mesajla durur. Astro'nun dev araç çubuğunu kapatan bir temada araç çubuğu, tema bir site için çalışırken yeniden açılır; işaretler onunla gelir. Bundan önce kurulmuş bir tema için bir kez **Rebuild** kullanın.
 4. **Building**: site, kendi ayarı hangi adapter'ı kullanırsa kullansın (Cloudflare, Vercel…) Node adapter'ıyla derlenir.
 5. **Importing sample content**: temanın kendi `.md` girdileri bir kez siteye kopyalanır (WordPress'teki demo içe aktarma gibi). Sitede aynı adla bulunan girdinin üzerine asla yazılmaz.
 
@@ -51,7 +51,7 @@ Temanın `wuppy.config.mjs` dosyası hangi koleksiyonunun hangi site koleksiyonu
 ```
 
 - `kind: "posts"` / `"pages"`: temanın `blog`'u sitenin Posts'unu, `about`'u sitenin Pages'ini gösterir. `kind` olmayan koleksiyon sitenin `content/<ad>` klasöründe tutulur.
-- `map`: temanın alan adı ve sitenin alan adı. Tema `pubDate` okur, site `date` saklar. `wuppy init` bilinen adları kendisi yazar (`pubDate`, `publishDate` → `date`; `heroImage`, `image` → `cover`).
+- `map`: temanın alan adı ve sitenin alan adı. Tema `pubDate` okur, site `date` saklar. `wuppycms init` bilinen adları kendisi yazar (`pubDate`, `publishDate` → `date`; `heroImage`, `image` → `cover`).
 - `route`: herkese açık adresleri tema belirler.
 - Yalnız temanın kullandığı alanlar (`description`, `pinned`) sitenin koleksiyonuna eklenir, editörler doldurabilir. Temanın zorunlu tuttuğu bir alanı eksik olan girdi, alan doldurulana kadar temada görünmez.
 
@@ -78,9 +78,9 @@ Sitede aynı adla bir sayfa varsa o korunur ve tema sayfası onun için listelen
 
 ## Gereksinimler
 
-- Sunucu `node serve.mjs` ile başlatılmalı (Docker imajı bunu yapar) ve kapanınca onu yeniden başlatan bir süreç yöneticisi olmalı; örneğin Docker'ın `restart: unless-stopped` ayarı. Geliştirmede `pnpm dev` (`node dev.mjs`) `astro dev`'i etkin temanın içinde sitenin içeriğiyle çalıştırır; önizleme temadır. Tema değiştirince yeniden başlatın.
+- Sunucu `node serve.mjs` ile başlatılmalı (Docker imajı bunu yapar) ve kapanınca onu yeniden başlatan bir süreç yöneticisi olmalı; örneğin Docker'ın `restart: unless-stopped` ayarı. Geliştirmede `pnpm dev` (`node dev.mjs`) `astro dev`'i etkin temanın içinde sitenin içeriğiyle çalıştırır; önizleme temadır. Admin'de tema değiştirince yeni temayla kendiliğinden yeniden başlar.
 - Sunucuda `git` ve `npm`, GitHub'a ve npm kayıt deposuna ağ erişimi.
-- Depo, Markdown içerik koleksiyonları olan bir Astro 7 sitesi olmalı. `.mdx` örnek girdileri içe aktarılmaz.
+- Depo, Markdown içerik koleksiyonları olan bir Astro 7 sitesi olmalı. `.mdx` örnek girdileri içe aktarılmaz. Etkin temanın gösteremediği bir girdi (başka bir temanın `<Callout>`'u gibi sahip olmadığı bir bileşen ya da bir paketten import) gövdesi olmadan gösterilir ve sunucu günlüğü dosyayı adlandırır; sayfanın geri kalanı yine çalışır.
 
 ## Bilinmesi gerekenler
 

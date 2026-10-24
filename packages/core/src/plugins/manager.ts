@@ -1,6 +1,6 @@
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { join, resolve, sep } from "node:path";
-import { canReadContent, canWriteContent, resolveSettings, type Manifest } from "@wuppy/plugin-types";
+import { canReadContent, canWriteContent, resolveSettings, type Manifest } from "@wuppycms/plugin-types";
 import type { JsonStore } from "../data/store.ts";
 import { sanitizeHtml } from "../security/sanitize.ts";
 import type { HostDeps } from "./host.ts";

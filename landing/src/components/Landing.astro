@@ -1,0 +1,186 @@
+---
+import "@/styles/theme.css";
+import { Button } from "@/ui/button";
+
+interface Props {
+	lang: "en" | "tr";
+}
+const { lang } = Astro.props;
+
+const DOCS = "https://docs.wuppycms.com";
+// Our own open-source install; app.wuppycms.com is reserved for WuppyCMS Cloud.
+const APP = "https://test.wuppycms.com/admin";
+
+const copy = {
+	en: {
+		title: "WuppyCMS — the file-based CMS for Astro",
+		description:
+			"WuppyCMS adds an admin panel to your Astro site. Content stays in Markdown files, every save is a Git commit, and editors get a visual editor.",
+		nav: { features: "Features", how: "How it works", docs: "Docs", app: "Demo" },
+		eyebrow: "CMS for Astro",
+		headline: "Your Astro site, with an admin your clients can use.",
+		lead: "WuppyCMS keeps content in Markdown and MDX files in your repository. Editors work in a clean admin with a visual editor; you keep plain files, Git history and your own Astro code.",
+		start: "Read the docs",
+		open: "Try the demo",
+		docs: `${DOCS}/`,
+		featuresTitle: "Everything a site needs, nothing it does not own",
+		features: [
+			["Content is files", "Markdown and MDX in your repo. Remove WuppyCMS and every page still reads."],
+			["Every save is a commit", "See what changed, compare versions and undo. History is never lost."],
+			["Visual editor", "Edit blocks and your theme's own markup on the page, per device, with live preview."],
+			["GitHub themes", "Install any Astro repository as a theme; its pages and content come with it."],
+			["Users and roles", "Admin, editor, author and viewer, with two-factor sign-in, passkeys and a security log."],
+			["Safe plugins", "Plugins run in a WebAssembly sandbox with only the capabilities you approve."],
+			["Media and SEO", "Uploads with focal points and crops, redirects, sitemaps and social previews."],
+			["Many sites, one hub", "Manage client sites from one place and publish to any of them."],
+		],
+		howTitle: "How it works",
+		steps: [
+			["Create", "npm create wuppycms my-site", "A new Astro site with WuppyCMS, or add the wuppycms() integration to an existing one."],
+			["Describe", "wuppy.config.mjs", "List your collections and fields; WuppyCMS builds the forms from them."],
+			["Edit", "/admin", "Sign in, invite your team and publish. Node.js is all it needs."],
+		],
+		ctaTitle: "Try WuppyCMS on your next Astro site",
+		ctaText: "Start with the guides, or sign in to the hosted app.",
+		other: { href: "/tr/", label: "Türkçe" },
+		footer: "File-based CMS for Astro.",
+	},
+	tr: {
+		title: "WuppyCMS — Astro için dosya tabanlı CMS",
+		description:
+			"WuppyCMS Astro sitenize bir yönetim paneli ekler. İçerik Markdown dosyalarında kalır, her kayıt bir Git commit'idir ve editörler görsel editörle çalışır.",
+		nav: { features: "Özellikler", how: "Nasıl çalışır", docs: "Dokümanlar", app: "Demo" },
+		eyebrow: "Astro için CMS",
+		headline: "Astro siteniz, müşterilerinizin kullanabileceği bir panelle.",
+		lead: "WuppyCMS içeriği deponuzdaki Markdown ve MDX dosyalarında tutar. Editörler görsel editörlü sade bir panelde çalışır; siz düz dosyaları, Git geçmişini ve kendi Astro kodunuzu korursunuz.",
+		start: "Dokümanları okuyun",
+		open: "Demoyu deneyin",
+		docs: `${DOCS}/tr/`,
+		featuresTitle: "Bir sitenin ihtiyacı olan her şey, size ait olmayan hiçbir şey",
+		features: [
+			["İçerik dosyadır", "Deponuzda Markdown ve MDX. WuppyCMS'i kaldırsanız da her sayfa okunur kalır."],
+			["Her kayıt bir commit", "Neyin değiştiğini görün, sürümleri karşılaştırın, geri alın. Geçmiş silinmez."],
+			["Görsel editör", "Blokları ve temanızın kendi işaretlemesini sayfada, cihaz cihaz, canlı önizlemeyle düzenleyin."],
+			["GitHub temaları", "Herhangi bir Astro deposunu tema olarak kurun; sayfaları ve içeriğiyle gelir."],
+			["Kullanıcılar ve roller", "Admin, editor, author ve viewer; iki faktörlü giriş, passkey ve güvenlik günlüğü."],
+			["Güvenli eklentiler", "Eklentiler WebAssembly kum havuzunda, yalnızca onayladığınız yeteneklerle çalışır."],
+			["Medya ve SEO", "Odak noktası ve kırpmalı yüklemeler, yönlendirmeler, site haritası ve sosyal önizlemeler."],
+			["Çok site, tek merkez", "Müşteri sitelerini tek yerden yönetin, herhangi birine yayınlayın."],
+		],
+		howTitle: "Nasıl çalışır",
+		steps: [
+			["Oluşturun", "npm create wuppycms my-site", "WuppyCMS'li yeni bir Astro sitesi; ya da var olan sitenize wuppycms() entegrasyonunu ekleyin."],
+			["Tanımlayın", "wuppy.config.mjs", "Koleksiyonlarınızı ve alanlarınızı yazın; WuppyCMS formları bunlardan kurar."],
+			["Düzenleyin", "/admin", "Giriş yapın, ekibinizi davet edin ve yayınlayın. Tek ihtiyacı Node.js."],
+		],
+		ctaTitle: "Bir sonraki Astro sitenizde WuppyCMS'i deneyin",
+		ctaText: "Rehberlerle başlayın ya da barındırılan uygulamaya giriş yapın.",
+		other: { href: "/", label: "English" },
+		footer: "Astro için dosya tabanlı CMS.",
+	},
+}[lang];
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{copy.title}</title>
+		<meta name="description" content={copy.description} />
+		<link rel="canonical" href={new URL(lang === "tr" ? "/tr/" : "/", Astro.site)} />
+		<link rel="alternate" hreflang="en" href={new URL("/", Astro.site)} />
+		<link rel="alternate" hreflang="tr" href={new URL("/tr/", Astro.site)} />
+		<meta property="og:title" content={copy.title} />
+		<meta property="og:description" content={copy.description} />
+		<meta property="og:type" content="website" />
+		<link rel="preload" href="/fonts/space-grotesk-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+	</head>
+	<body class="bg-background text-foreground antialiased">
+		<header class="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur">
+			<nav class="mx-auto flex h-16 max-w-6xl items-center gap-6 px-5" aria-label="Main">
+				<a href={lang === "tr" ? "/tr/" : "/"} class="flex items-center gap-2.5 font-bold tracking-tight">
+					<span class="grid size-8 place-items-center bg-primary text-white" aria-hidden="true">W</span>
+					WuppyCMS
+				</a>
+				<div class="ml-auto hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+					<a href="#features" class="hover:text-foreground">{copy.nav.features}</a>
+					<a href="#how" class="hover:text-foreground">{copy.nav.how}</a>
+					<a href={copy.docs} class="hover:text-foreground">{copy.nav.docs}</a>
+					<a href={copy.other.href} hreflang={lang === "tr" ? "en" : "tr"} class="hover:text-foreground">{copy.other.label}</a>
+				</div>
+				<Button as="a" href={APP} size="sm" class="ml-auto md:ml-0">{copy.nav.app}</Button>
+			</nav>
+		</header>
+
+		<main>
+			<section class="bg-navy text-white">
+				<div class="mx-auto max-w-6xl px-5 py-24 md:py-32">
+					<p class="inline-block border border-primary px-3 py-1 font-mono text-xs font-bold tracking-[0.18em] text-primary uppercase">
+						{copy.eyebrow}
+					</p>
+					<h1 class="mt-6 max-w-4xl text-4xl leading-tight font-bold tracking-tight text-balance md:text-6xl">
+						{copy.headline}
+					</h1>
+					<p class="mt-6 max-w-2xl text-lg text-white/75">{copy.lead}</p>
+					<div class="mt-10 flex flex-wrap gap-3">
+						<Button as="a" href={copy.docs} size="lg">{copy.start}</Button>
+						<Button as="a" href={APP} size="lg" variant="outline" class="border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white">
+							{copy.open}
+						</Button>
+					</div>
+				</div>
+			</section>
+
+			<section id="features" class="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 md:py-28">
+				<h2 class="max-w-2xl text-3xl font-bold tracking-tight text-balance md:text-4xl">{copy.featuresTitle}</h2>
+				<ul class="mt-12 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+					{
+						copy.features.map(([title, text]) => (
+							<li class="bg-background p-6">
+								<h3 class="font-bold">{title}</h3>
+								<p class="mt-2 text-sm text-muted-foreground">{text}</p>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section id="how" class="scroll-mt-20 bg-muted">
+				<div class="mx-auto max-w-6xl px-5 py-20 md:py-28">
+					<h2 class="text-3xl font-bold tracking-tight md:text-4xl">{copy.howTitle}</h2>
+					<ol class="mt-12 grid gap-8 md:grid-cols-3">
+						{
+							copy.steps.map(([title, code, text], i) => (
+								<li>
+									<span class="font-mono text-sm font-bold text-primary">0{i + 1}</span>
+									<h3 class="mt-2 text-xl font-bold">{title}</h3>
+									<code class="mt-3 block bg-navy px-3 py-2 font-mono text-sm text-white">{code}</code>
+									<p class="mt-3 text-muted-foreground">{text}</p>
+								</li>
+							))
+						}
+					</ol>
+				</div>
+			</section>
+
+			<section class="mx-auto max-w-6xl px-5 py-20 text-center md:py-28">
+				<h2 class="text-3xl font-bold tracking-tight text-balance md:text-4xl">{copy.ctaTitle}</h2>
+				<p class="mt-4 text-muted-foreground">{copy.ctaText}</p>
+				<div class="mt-8 flex flex-wrap justify-center gap-3">
+					<Button as="a" href={copy.docs} size="lg">{copy.start}</Button>
+					<Button as="a" href={APP} size="lg" variant="outline">{copy.open}</Button>
+				</div>
+			</section>
+		</main>
+
+		<footer class="border-t border-border">
+			<div class="mx-auto flex max-w-6xl flex-wrap items-center gap-4 px-5 py-8 text-sm text-muted-foreground">
+				<span><strong class="text-foreground">WuppyCMS</strong> · {copy.footer}</span>
+				<a href={copy.docs} class="ml-auto hover:text-foreground">{copy.nav.docs}</a>
+				<a href={APP} class="hover:text-foreground">{copy.nav.app}</a>
+				<a href={copy.other.href} hreflang={lang === "tr" ? "en" : "tr"} class="hover:text-foreground">{copy.other.label}</a>
+			</div>
+		</footer>
+	</body>
+</html>

@@ -21,7 +21,7 @@ Başlangıç şablonunda şunlar bulunur:
 - `/rss.xml` adresinde RSS akışı,
 - `/search` adresinde yayındaki yazılarda istemci tarafı arama,
 - kategori, etiket ve yazar arşiv sayfaları,
-- sayfalama, okuma süresi ve ilgili yazılar (`wuppy/site` içindeki `paginate`, `readingTime` ve `related`),
+- sayfalama, okuma süresi ve ilgili yazılar (`wuppycms/site` içindeki `paginate`, `readingTime` ve `related`),
 - aramalı bir 404 sayfası,
 - içeriğe atlama bağlantısı, görünür odak stilleri ve anlamlı başlıklar.
 

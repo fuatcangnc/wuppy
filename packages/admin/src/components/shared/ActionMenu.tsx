@@ -24,10 +24,13 @@ export function ActionMenu({
 	items,
 	label = "More actions",
 	className,
+	trigger,
 }: {
 	items: ActionMenuItem[];
 	label?: string;
 	className?: string;
+	/** What the button shows instead of the ⋮ icon. */
+	trigger?: ReactNode;
 }) {
 	const [open, setOpen] = useState(false);
 	const [position, setPosition] = useState<MenuPosition | null>(null);
@@ -35,12 +38,12 @@ export function ActionMenu({
 	const menu = useRef<HTMLDivElement>(null);
 
 	const place = () => {
-		const trigger = root.current?.getBoundingClientRect();
-		if (!trigger) return;
-		const spaceBelow = window.innerHeight - trigger.bottom;
+		const box = root.current?.getBoundingClientRect();
+		if (!box) return;
+		const spaceBelow = window.innerHeight - box.bottom;
 		setPosition({
-			right: Math.max(8, window.innerWidth - trigger.right),
-			...(spaceBelow < 240 ? { bottom: window.innerHeight - trigger.top + 4 } : { top: trigger.bottom + 4 }),
+			right: Math.max(8, window.innerWidth - box.right),
+			...(spaceBelow < 240 ? { bottom: window.innerHeight - box.top + 4 } : { top: box.bottom + 4 }),
 		});
 	};
 
@@ -78,7 +81,7 @@ export function ActionMenu({
 			<Button
 				type="button"
 				variant="ghost"
-				size="icon-sm"
+				size={trigger ? "sm" : "icon-sm"}
 				aria-label={label}
 				title={label}
 				aria-haspopup="menu"
@@ -88,7 +91,7 @@ export function ActionMenu({
 					setOpen((value) => !value);
 				}}
 			>
-				<EllipsisVertical size="1em" />
+				{trigger ?? <EllipsisVertical size="1em" />}
 			</Button>
 			{open &&
 				position &&

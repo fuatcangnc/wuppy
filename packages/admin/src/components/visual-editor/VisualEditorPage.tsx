@@ -6,6 +6,7 @@ import {
 	FolderTree,
 	Grid2x2Plus,
 	Hash,
+	Sparkles,
 	Image as ImageIcon,
 	Redo2,
 	Search,
@@ -40,6 +41,7 @@ import { FrameworkPanel } from "./Framework.tsx";
 import { Breadcrumbs, ContextMenu, Inserter, Notch, Settings, Spotlight } from "./Overlays.tsx";
 import { PropertiesPanel } from "./Properties.tsx";
 import { SelectorsPanel } from "./Selectors.tsx";
+import { AiPanel } from "./AiPanel.tsx";
 import {
 	$codeFile,
 	$editingComponent,
@@ -86,6 +88,7 @@ const PANELS = [
 	["explorer", FolderTree, "Explorer"],
 	["framework", SwatchBook, "Framework"],
 	["selectors", Hash, "Selectors"],
+	["ai", Sparkles, "AI"],
 ] as const;
 
 const doSave = () =>
@@ -126,7 +129,7 @@ function escape(): void {
 }
 
 /**
- * Visual editing of an entry's body (wuppy-visual-editor), adapted from Instatic's site editor: a panel rail
+ * Visual editing of an entry's body (wuppy-visual-editor): a panel rail
  * (Explorer, Framework, Selectors) on the left, the multi-breakpoint canvas in the middle, Properties on the right.
  * Page content saves through the same entry API as the classic editor (permissions, MDX rules, plugin hooks, locks and
  * history apply unchanged); site-wide data (framework, selectors, components, layouts) saves to `.wuppy/data/visual.json`.
@@ -275,7 +278,15 @@ export function VisualEditorPage() {
 						className="w-[340px] shrink-0 overflow-y-auto border-r border-[#2a2a2d] bg-[#111113]"
 						aria-label={PANELS.find((p) => p[0] === panel)![2]}
 					>
-						{panel === "explorer" ? <ExplorerPanel /> : panel === "framework" ? <FrameworkPanel /> : <SelectorsPanel />}
+						{panel === "explorer" ? (
+							<ExplorerPanel />
+						) : panel === "framework" ? (
+							<FrameworkPanel />
+						) : panel === "ai" ? (
+							<AiPanel />
+						) : (
+							<SelectorsPanel />
+						)}
 					</aside>
 					<div className="relative flex min-w-0 flex-1 flex-col">
 						<div className="flex h-10 min-w-0 shrink-0 items-center gap-2 overflow-x-auto overflow-y-hidden border-b border-[#2a2a2d] bg-[#19191b] px-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

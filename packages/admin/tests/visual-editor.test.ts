@@ -27,7 +27,7 @@ import {
 	createNode,
 } from "../src/components/visual-editor/tree.ts";
 import { $doc } from "../src/stores/editor.ts";
-import { defaultVisualData, pageCss } from "@wuppy/visual-editor";
+import { defaultVisualData, pageCss } from "@wuppycms/visual-editor";
 
 const preset = (label: string) => PRESETS.find((p) => p.label === label)!;
 const rootChildren = () => $tree.get().nodes[$tree.get().rootNodeId]!.children;

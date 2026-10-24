@@ -7,7 +7,7 @@ import {
 	type NodeJson,
 	type Overrides,
 	type VisualComponent,
-} from "@wuppy/visual-editor";
+} from "@wuppycms/visual-editor";
 import { MODULES } from "./modules.ts";
 import { createNode, emptyTree, fromJson, type NodeTree, type Styles } from "./tree.ts";
 
@@ -155,6 +155,11 @@ function element(node: NodeJson, components: VisualComponent[], slot: NodeJson[]
 	else if (def.text) inner = escText(node.props[def.text] ?? "");
 	return `${open}>${inner}</${tag}>`;
 }
+
+/** A block as plain markup for a theme's `.astro` file: the editor's own `data-ve*` marks dropped. */
+// shortcut: breakpoint/state styles (data-ve-r) need the site's visual CSS, so they are dropped too; inline styles stay.
+export const themeMarkup = (node: NodeJson, components: VisualComponent[] = []): string =>
+	element(node, components).replace(/ data-ve(?:-[a-z]+)?=(?:"[^"]*"|'[^']*')/g, "");
 
 export function serialize(tree: NodeTree, components: VisualComponent[] = []): string {
 	const root = tree.nodes[tree.rootNodeId]!;
@@ -340,7 +345,7 @@ function walkHtml(parent: Element): NodeJson[] {
 	return out;
 }
 
-/** Pasted or imported HTML as visual nodes (Instatic's HTML import): tags map to the closest module, the rest becomes text. */
+/** Pasted or imported HTML as visual nodes (HTML import): tags map to the closest module, the rest becomes text. */
 export function importHtml(html: string): NodeJson[] {
 	const doc = new DOMParser().parseFromString(html, "text/html");
 	return walkHtml(doc.body);

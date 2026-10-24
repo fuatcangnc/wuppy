@@ -5,7 +5,7 @@ import {
 	type NodeJson,
 	type Styles,
 	type VisualData,
-} from "@wuppy/visual-editor";
+} from "@wuppycms/visual-editor";
 import { atom, computed } from "nanostores";
 import { api, apiData, slugPath } from "../../lib/api.ts";
 import { $dirty, $doc, save, setBody } from "../../stores/editor.ts";
@@ -32,7 +32,7 @@ import {
 } from "./tree.ts";
 
 /**
- * Editor state, after Instatic's editor store: every change goes through `mutate` (the page tree) or `mutateVisual`
+ * Editor state: every change goes through `mutate` (the page tree) or `mutateVisual`
  * (site-wide data: selectors, framework, components, layouts), which records one undo step for both and writes the
  * new body into the entry being edited, so Save, autosave and the dirty flag just work.
  */
@@ -53,14 +53,14 @@ export const $visualLoaded = atom(false);
 export const $context = atom("");
 /** A pseudo-class/element (":hover") the style edits apply to, or "". */
 export const $state = atom("");
-/** When set, Properties edits this selector of the library instead of the selected node (Instatic's selector mode). */
+/** When set, Properties edits this selector of the library instead of the selected node (selector mode). */
 export const $target = atom<string | null>(null);
 export const $mode = atom<"design" | "live">("design");
 /** A Visual Component open on the canvas instead of the page. */
 export const $editingComponent = atom<{ id: string; page: NodeTree } | null>(null);
 
 // UI surfaces
-export const $panel = atom<"explorer" | "framework" | "selectors">("explorer");
+export const $panel = atom<"explorer" | "framework" | "selectors" | "ai">("explorer");
 export const $inserter = atom<{ at?: { overId: string; position: DropPosition } } | null>(null);
 export const $spotlight = atom(false);
 /** A theme source file requested from the component catalog; opened by the code workspace. */
@@ -194,8 +194,16 @@ function insertionPoint(tree: NodeTree, moduleId: string): { parentId: string; i
 }
 
 /** Insert plain-data nodes (a module preset, a layout, the clipboard, imported HTML); selects the first one. */
+// Set by theme-element.ts (it imports this file, so it cannot be imported back): while a theme element is picked, new
+// blocks go into the theme's markup after it instead of the entry's body. Returns false to fall back to the body.
+let themeInsert: ((nodes: NodeJson[]) => boolean) | undefined;
+export const setThemeInsert = (fn: typeof themeInsert) => {
+	themeInsert = fn;
+};
+
 export function addJson(nodes: NodeJson[], at?: { overId: string; position: DropPosition }): void {
 	if (!nodes.length) return;
+	if (!at && themeInsert?.(nodes)) return;
 	const tree = $tree.get();
 	const moduleId = nodes.some((n) => n.moduleId === "markdown") ? "markdown" : nodes[0]!.moduleId;
 	let target: { parentId: string; index?: number } = insertionPoint(tree, moduleId);
@@ -271,7 +279,7 @@ export function selectParent(): void {
 	if (node?.parentId && node.parentId !== $tree.get().rootNodeId) $selected.set(node.parentId);
 }
 
-// Clipboard: kept in localStorage so it works across entries and tabs, like Instatic's.
+// Clipboard: kept in localStorage so it works across entries and tabs.
 const CLIPBOARD = "wuppy.visual.clipboard";
 const readJson = (raw: string | null): unknown => {
 	try {
@@ -411,7 +419,7 @@ export function insertComponent(id: string, at?: { overId: string; position: Dro
 	if (c) addJson([{ moduleId: "ref", props: { ref: c.id, name: c.name }, styles: {}, children: [] }], at);
 }
 
-/** Replaces an instance with a plain copy of the component's nodes (its slot content moved in), like Instatic's detach. */
+/** Replaces an instance with a plain copy of the component's nodes (its slot content moved in) (detach). */
 export function detachSelected(): void {
 	const node = selectedNode();
 	const component = node && $visual.get().components.find((c) => c.id === node.props.ref);
@@ -465,7 +473,7 @@ export function finishComponent(): void {
 	});
 }
 
-// Favorites and recents of the inserter (Instatic keeps them per user, so do we: in this browser).
+// Favorites and recents of the inserter (kept per user, in this browser).
 const listStore = (key: string) => {
 	const store = atom<string[]>(
 		((readJson(localStorage.getItem(key)) as string[] | null) ?? []).filter((x) => typeof x === "string"),
@@ -500,8 +508,8 @@ export async function saveAll(): Promise<boolean> {
 }
 
 /**
- * Rewrites every other entry that uses a Visual Component with the components as they are now (Instatic republishes
- * pages when a component changes; here the markup lives in each entry, so each one is saved again).
+ * Rewrites every other entry that uses a Visual Component with the components as they are now (the markup lives in
+ * each entry, so each one is saved again).
  */
 export async function updateInstances(): Promise<{ updated: number; failed: string[] }> {
 	const current = $doc.get();

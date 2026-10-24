@@ -1,6 +1,6 @@
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import type { GitAdapter } from "@wuppy/git";
+import type { GitAdapter } from "@wuppycms/git";
 
 const NAME = /^[a-z][a-z0-9-]*$/;
 

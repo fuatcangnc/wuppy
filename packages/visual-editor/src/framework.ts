@@ -1,7 +1,7 @@
 /**
- * The design framework (Instatic's Framework panel): color tokens with shades, tints and transparent steps, fluid type
- * and spacing scales, font stacks, and the utility classes generated from them. The fluid-scale math is ported from
- * Instatic's `framework/scale.ts` (MIT, © 2026 David Babinec), itself byte-compatible with Core Framework.
+ * The design framework (Framework panel): color tokens with shades, tints and transparent steps, fluid type
+ * and spacing scales, font stacks, and the utility classes generated from them. The fluid-scale math is third-party
+ * code (see THIRD-PARTY-NOTICES.md), byte-compatible with Core Framework.
  * Everything is emitted as CSS custom properties under a prefix so it never collides with the site theme's tokens.
  */
 import { declarations, safeCssValue } from "./css.ts";
@@ -54,7 +54,7 @@ export interface Framework {
 	fonts: Font[];
 }
 
-/** √2 to three places (the augmented fourth), as Instatic lists it. */
+/** √2 to three places (the augmented fourth). */
 export const AUG_FOURTH = Math.round(Math.SQRT2 * 1000) / 1000;
 export const TYPE_RATIOS = [1.067, 1.125, 1.2, 1.25, 1.333, AUG_FOURTH, 1.5, 1.6, 1.667, 1.778, 1.875, 2] as const;
 
@@ -92,7 +92,7 @@ const NAME = /^[a-z][a-z0-9-]*$/;
 const round = (n: number) => Number(n.toFixed(2));
 const rem = (px: number, root: number) => `${round(px / root)}rem`;
 
-/** `clamp(min, calc(slope + intercept), max)` per step (Instatic's `computeFluidScale` + `declarationFromStep`). */
+/** `clamp(min, calc(slope + intercept), max)` per step. */
 export function fluidScale(
 	scale: Scale,
 	fw: Pick<Framework, "rootFontSize" | "minWidth" | "maxWidth">,

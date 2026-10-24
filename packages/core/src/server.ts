@@ -14,8 +14,8 @@ import {
 	permissionsFor,
 	revokeInvitation as revokeInvitationRecord,
 	userFromRequest,
-} from "@wuppy/auth";
-import { NoopGit, RealGit } from "@wuppy/git";
+} from "@wuppycms/auth";
+import { NoopGit, RealGit } from "@wuppycms/git";
 import { Hono } from "hono";
 import { createApp } from "./api/app.ts";
 import { loadConfig } from "./config/index.ts";
@@ -314,10 +314,11 @@ export async function createServer({
 				pluginManager: plugins,
 				themes: new GithubThemes({
 					base: root,
-					// Only serve.mjs restarts the process after an exit (Docker's restart policy); `astro dev` would just stop.
+					// serve.mjs (with Docker's restart policy) and the starter's dev.mjs start the server again after this exit.
 					restart: () => {
 						if (process.env.WUPPY_RESTART !== "1") return false;
-						setTimeout(() => process.exit(0), 1000);
+						// dev.mjs restarts only on its own code, so a plain exit of astro still ends it.
+						setTimeout(() => process.exit(Number(process.env.WUPPY_RESTART_CODE ?? 0)), 1000);
 						return true;
 					},
 				}),

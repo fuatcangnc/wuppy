@@ -36,9 +36,9 @@ tutulur.
 
 | Paket | Görevi |
 | --- | --- |
-| `wuppy` | İçerik motoru, REST API, Astro entegrasyonu, medya, SEO, yönlendirmeler, webhook'lar, eklenti sandbox'ı, yapay zekâ ve çoklu site |
-| `@wuppy/admin` | `/admin` altındaki React yönetim paneli |
-| `@wuppy/auth` | Giriş (Better Auth), roller ve izinler |
-| `@wuppy/git` | Commit, geçmiş, fark ve geri alma |
-| `@wuppy/plugin-types` | Eklenti manifesti ve yetenek kontrolleri |
-| `create-wuppy` | `npm create wuppy` |
+| `wuppycms` | İçerik motoru, REST API, Astro entegrasyonu, medya, SEO, yönlendirmeler, webhook'lar, eklenti sandbox'ı, yapay zekâ ve çoklu site |
+| `@wuppycms/admin` | `/admin` altındaki React yönetim paneli |
+| `@wuppycms/auth` | Giriş (Better Auth), roller ve izinler |
+| `@wuppycms/git` | Commit, geçmiş, fark ve geri alma |
+| `@wuppycms/plugin-types` | Eklenti manifesti ve yetenek kontrolleri |
+| `create-wuppycms` | `npm create wuppycms` |

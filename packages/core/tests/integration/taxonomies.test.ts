@@ -2,7 +2,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import { RealGit } from "@wuppy/git";
+import { RealGit } from "@wuppycms/git";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createApp } from "../../src/api/app.ts";
 import { CommentService } from "../../src/comments/index.ts";

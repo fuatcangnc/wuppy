@@ -14,7 +14,7 @@ Bir taksonominin adı, slug'ı ve uygulandığı koleksiyonlar vardır; **hiyera
 - Etiketler yeniden adlandırılabilir ve birleştirilebilir.
 - Her terimin slug'ı, açıklaması ve kayıt sayısı vardır.
 
-Başlangıç şablonunda kategori ve etiket arşiv sayfaları bulunur; kendi şablonlarınızda `wuppy` paketindeki
+Başlangıç şablonunda kategori ve etiket arşiv sayfaları bulunur; kendi şablonlarınızda `wuppycms` paketindeki
 `getTaxonomy()` yardımcısını kullanın.
 
 ## Yazar profilleri (Bylines)

@@ -1,4 +1,4 @@
-/** The style properties the Properties panel edits, grouped and with their choices as in Instatic's inspector. */
+/** The style properties the Properties panel edits, grouped and with their choices as in the inspector. */
 
 const BORDER_STYLES = [
 	"",

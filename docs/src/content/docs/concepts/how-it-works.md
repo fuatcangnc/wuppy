@@ -34,9 +34,9 @@ in Docker). Users, sessions and comments are stored in SQLite (`node:sqlite`) in
 
 | Package | Role |
 | --- | --- |
-| `wuppy` | Content engine, REST API, Astro integration, media, SEO, redirects, webhooks, plugin sandbox, AI and managed sites |
-| `@wuppy/admin` | The React admin panel at `/admin` |
-| `@wuppy/auth` | Sign-in (Better Auth), roles and permissions |
-| `@wuppy/git` | Commits, history, diffs and reverts |
-| `@wuppy/plugin-types` | Plugin manifest and capability checks |
-| `create-wuppy` | `npm create wuppy` |
+| `wuppycms` | Content engine, REST API, Astro integration, media, SEO, redirects, webhooks, plugin sandbox, AI and managed sites |
+| `@wuppycms/admin` | The React admin panel at `/admin` |
+| `@wuppycms/auth` | Sign-in (Better Auth), roles and permissions |
+| `@wuppycms/git` | Commits, history, diffs and reverts |
+| `@wuppycms/plugin-types` | Plugin manifest and capability checks |
+| `create-wuppycms` | `npm create wuppycms` |

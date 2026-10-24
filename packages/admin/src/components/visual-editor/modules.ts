@@ -24,7 +24,7 @@ export interface Field {
 	options?: readonly string[];
 }
 
-/** What a node is: its HTML tag, which props become attributes, and how it is edited. Mirrors Instatic's modules. */
+/** What a node is: its HTML tag, which props become attributes, and how it is edited. */
 export interface ModuleDef {
 	id: string;
 	label: string;

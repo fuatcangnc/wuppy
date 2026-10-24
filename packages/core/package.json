@@ -1,6 +1,24 @@
 {
-	"name": "wuppy",
-	"version": "0.0.0",
+	"name": "wuppycms",
+	"version": "0.2.3",
+	"description": "WuppyCMS: a file-based, Git-backed CMS and admin panel for Astro.",
+	"keywords": [
+		"astro",
+		"astro-integration",
+		"cms",
+		"headless-cms",
+		"markdown",
+		"mdx",
+		"git",
+		"withastro"
+	],
+	"homepage": "https://wuppycms.com",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fuatcangnc/wuppy.git",
+		"directory": "packages/core"
+	},
+	"bugs": "https://github.com/fuatcangnc/wuppy/issues",
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts",
@@ -20,11 +38,11 @@
 	},
 	"dependencies": {
 		"@astrojs/compiler-rs": "^0.5.2",
-		"@wuppy/admin": "workspace:*",
-		"@wuppy/auth": "workspace:*",
-		"@wuppy/git": "workspace:*",
-		"@wuppy/plugin-types": "workspace:*",
-		"@wuppy/visual-editor": "workspace:*",
+		"@wuppycms/admin": "workspace:*",
+		"@wuppycms/auth": "workspace:*",
+		"@wuppycms/git": "workspace:*",
+		"@wuppycms/plugin-types": "workspace:*",
+		"@wuppycms/visual-editor": "workspace:*",
 		"hono": "catalog:",
 		"nodemailer": "^10.1.7",
 		"quickjs-emscripten": "0.32.0",
@@ -44,7 +62,7 @@
 		"astro": "catalog:"
 	},
 	"bin": {
-		"wuppy": "./src/cli/main.ts"
+		"wuppycms": "./src/cli/main.ts"
 	},
 	"files": [
 		"dist"
@@ -81,7 +99,7 @@
 			}
 		},
 		"bin": {
-			"wuppy": "./dist/cli.mjs"
+			"wuppycms": "./dist/cli.mjs"
 		}
 	},
 	"optionalDependencies": {

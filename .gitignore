@@ -32,4 +32,4 @@ test-results/
 # OS / editor
 .DS_Store
 .idea/
-packages/create-wuppy/template
+packages/create-wuppycms/template

@@ -9,7 +9,7 @@ import { parseDocument } from "../content/parsers/frontmatter.ts";
 const exec = promisify(execFile);
 
 /**
- * `wuppy init`: wraps an existing Astro project. Finds its Markdown/MDX content collections, writes wuppy.config.mjs,
+ * `wuppycms init`: wraps an existing Astro project. Finds its Markdown/MDX content collections, writes wuppy.config.mjs,
  * adds the integration (plus MDX, and a Node adapter when there is none) to astro.config, lets the content globs load
  * .mdx, and adds the dependencies to package.json.
  * Files are only patched when the pattern is recognised; otherwise the manual step is printed instead.
@@ -39,7 +39,7 @@ export interface InitPlan {
 	collections: FoundCollection[];
 	/** Collections Wuppy cannot edit (JSON/YAML data, remote loaders) with the reason. */
 	skipped: string[];
-	/** Things the integration would clash with, turned off in `wuppy({...})`. */
+	/** Things the integration would clash with, turned off in `wuppycms({...})`. */
 	integration: { sitemap?: false; robots?: false; rss?: false };
 	components: string[];
 	warnings: string[];
@@ -87,18 +87,27 @@ export function inferField(key: string, values: unknown[]): FieldType {
 	return present.length === values.length && values.length > 0 ? { type, multiple: false, required: true } : type;
 }
 
-/** `const posts = defineCollection({ loader: glob({ pattern, base }) ... })` -> name, base, pattern. */
+/**
+ * `const posts = defineCollection({ loader: glob({ pattern, base }) ... })` -> name, base, pattern. The name is the key
+ * in `export const collections = { post: postCollection }` (what `getCollection("post")` uses), else the variable's.
+ */
 function collectionsFromConfig(
 	source: string,
 ): Array<{ name: string; base?: string; pattern?: string; loader: string }> {
 	const out: Array<{ name: string; base?: string; pattern?: string; loader: string }> = [];
+	const exported = /export\s+const\s+collections\s*=\s*\{([^}]*)\}/.exec(source)?.[1] ?? "";
+	const keys = new Map<string, string>();
+	for (const entry of exported.split(",")) {
+		const m = /^\s*(?:["'`]?([\w-]+)["'`]?\s*:\s*)?(\w+)\s*$/.exec(entry);
+		if (m) keys.set(m[2]!, m[1] ?? m[2]!);
+	}
 	const re = /(?:const|let)\s+(\w+)\s*=\s*defineCollection\(\s*\{([\s\S]*?)\n\}\s*\)/g;
 	for (const m of source.matchAll(re)) {
 		const body = m[2] ?? "";
 		const glob = /loader:\s*glob\(\s*\{([\s\S]*?)\}\s*\)/.exec(body)?.[1];
 		const str = (key: string) => (glob ? new RegExp(`${key}:\\s*["'\`]([^"'\`]+)["'\`]`).exec(glob)?.[1] : undefined);
 		out.push({
-			name: m[1]!,
+			name: keys.get(m[1]!) ?? m[1]!,
 			base: str("base"),
 			pattern: str("pattern"),
 			loader: glob ? "glob" : (/loader:\s*(\w+)/.exec(body)?.[1] ?? "legacy"),
@@ -141,6 +150,10 @@ export async function planInit(root: string): Promise<InitPlan> {
 
 	const components = new Set<string>();
 	for (const c of declared) {
+		if (!/^[a-z][a-z0-9-]*$/.test(c.name)) {
+			plan.skipped.push(`${c.name}: Wuppy collection names are lowercase letters, digits and dashes`);
+			continue;
+		}
 		if (c.loader !== "glob" && c.loader !== "legacy") {
 			plan.skipped.push(`${c.name}: uses the "${c.loader}" loader, only file collections can be edited`);
 			continue;
@@ -225,20 +238,20 @@ export function patchContentConfig(source: string): string {
 	return source.replace(/(pattern:\s*["'`][^"'`]*?)\.md(["'`])/g, "$1.{md,mdx}$2");
 }
 
-/** Adds `wuppy(...)`, `mdx()` and a Node adapter when missing. Returns null when the config shape is not recognised. */
+/** Adds `wuppycms(...)`, `mdx()` and a Node adapter when missing. Returns null when the config shape is not recognised. */
 export function patchAstroConfig(source: string, integration: InitPlan["integration"]): string | null {
-	if (/wuppy\/astro/.test(source)) return source;
+	if (/wuppycms(cms)?\/astro/.test(source)) return source;
 	const off = Object.keys(integration);
 	const options = off.length ? `{ ${off.map((k) => `${k}: false`).join(", ")} }` : "";
 	const mdx = !/@astrojs\/mdx/.test(source);
-	const call = `wuppy(${options})${mdx ? ", mdx()" : ""}`;
+	const call = `wuppycms(${options})${mdx ? ", mdx()" : ""}`;
 	const tab = /^([ \t]+)\S/m.exec(source)?.[1] ?? "\t";
 	let out = source;
 	if (/integrations:\s*\[/.test(out)) out = out.replace(/integrations:\s*\[/, `integrations: [${call}, `);
 	else if (/defineConfig\(\s*\{/.test(out))
 		out = out.replace(/defineConfig\(\s*\{/, `defineConfig({\n${tab}integrations: [${call}],`);
 	else return null;
-	const imports = ['import wuppy from "wuppy/astro";'];
+	const imports = ['import wuppycms from "wuppycms/astro";'];
 	if (mdx) imports.push('import mdx from "@astrojs/mdx";');
 	if (!/\badapter\s*:/.test(out)) {
 		out = out.replace(/defineConfig\(\s*\{/, `defineConfig({\n${tab}adapter: node({ mode: "standalone" }),`);
@@ -264,7 +277,7 @@ export function renderConfig(plan: InitPlan, site: { url?: string; name: string 
 			fields,
 		})),
 	};
-	return `// Made by \`wuppy init\` from the files already in this project. Fields are guessed from the frontmatter; adjust freely.\nexport default ${JSON.stringify(config, null, "\t")};\n`;
+	return `// Made by \`wuppycms init\` from the files already in this project. Fields are guessed from the frontmatter; adjust freely.\nexport default ${JSON.stringify(config, null, "\t")};\n`;
 }
 
 const IGNORE = [
@@ -283,7 +296,7 @@ export async function init(
 		return {
 			code: 1,
 			stdout: "",
-			stderr: "No astro.config found here. Run `wuppy init` in the root of an Astro project.",
+			stderr: "No astro.config found here. Run `wuppycms init` in the root of an Astro project.",
 		};
 	if (!force && (await exists(join(root, "wuppy.config.mjs"))))
 		return { code: 1, stdout: "", stderr: "wuppy.config.mjs already exists (use --force to replace it)." };
@@ -311,12 +324,12 @@ export async function init(
 	const addsMdx = adds("@astrojs/mdx");
 	if (patched === null) {
 		plan.warnings.push(
-			`${astro.file}: add \`import wuppy from "wuppy/astro"\` and \`wuppy()\` to integrations by hand (plus a server adapter)`,
+			`${astro.file}: add \`import wuppycms from "wuppycms/astro"\` and \`wuppycms()\` to integrations by hand (plus a server adapter)`,
 		);
 	} else if (patched !== astro.source) {
 		await writeFile(join(root, astro.file), patched);
 		lines.push(
-			`Added wuppy()${addsMdx ? ", mdx()" : ""}${addsAdapter ? " and the Node adapter" : ""} to ${astro.file}`,
+			`Added wuppycms()${addsMdx ? ", mdx()" : ""}${addsAdapter ? " and the Node adapter" : ""} to ${astro.file}`,
 		);
 	}
 	for (const f of CONTENT_CONFIGS) {
@@ -330,7 +343,7 @@ export async function init(
 		break;
 	}
 
-	pkg.dependencies = { ...pkg.dependencies, wuppy: pkg.dependencies?.wuppy ?? version };
+	pkg.dependencies = { ...pkg.dependencies, wuppycms: pkg.dependencies?.wuppycms ?? version };
 	if (addsAdapter) pkg.dependencies["@astrojs/node"] ??= NODE_ADAPTER;
 	if (addsMdx) pkg.dependencies["@astrojs/mdx"] ??= MDX_INTEGRATION;
 	await writeFile(pkgPath, JSON.stringify(pkg, null, 2) + "\n");
@@ -411,8 +424,8 @@ const failed = (what: string, e: unknown) => ({
 });
 
 /**
- * `wuppy import <git-url> <dir>`: clone a repository, then wrap it.
- * `wuppy import` with no URL lists the user's Astro repositories on GitHub to pick from (via `gh`, so private repos work).
+ * `wuppycms import <git-url> <dir>`: clone a repository, then wrap it.
+ * `wuppycms import` with no URL lists the user's Astro repositories on GitHub to pick from (via `gh`, so private repos work).
  */
 export async function importRepo(
 	url: string,
@@ -442,7 +455,7 @@ export async function importRepo(
 	}
 	// A leading "-" would be read by git as an option (e.g. --upload-pack).
 	if (url.startsWith("-") || !dir || dir.startsWith("-"))
-		return { code: 1, stdout: "", stderr: "Usage: wuppy import [<git-url> <dir>]" };
+		return { code: 1, stdout: "", stderr: "Usage: wuppycms import [<git-url> <dir>]" };
 	const target = resolve(cwd, dir);
 	try {
 		await sh("git", ["clone", "--", url, target]);

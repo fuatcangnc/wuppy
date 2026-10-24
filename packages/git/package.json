@@ -1,6 +1,19 @@
 {
-	"name": "@wuppy/git",
-	"version": "0.0.0",
+	"name": "@wuppycms/git",
+	"version": "0.2.3",
+	"description": "Git storage for WuppyCMS: commits, history and diffs for content files.",
+	"keywords": [
+		"wuppycms",
+		"git",
+		"cms"
+	],
+	"homepage": "https://wuppycms.com",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fuatcangnc/wuppy.git",
+		"directory": "packages/git"
+	},
+	"bugs": "https://github.com/fuatcangnc/wuppy/issues",
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts"

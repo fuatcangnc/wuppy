@@ -21,7 +21,7 @@ The starter template includes:
 - an RSS feed at `/rss.xml`,
 - client-side search at `/search` over published posts,
 - category, tag and author archive pages,
-- pagination, reading time and related posts (`paginate`, `readingTime` and `related` from `wuppy/site`),
+- pagination, reading time and related posts (`paginate`, `readingTime` and `related` from `wuppycms/site`),
 - a 404 page with search,
 - a skip link, visible focus styles and semantic headings.
 

@@ -38,11 +38,11 @@ export interface UpgradeResult {
 }
 
 /**
- * Brings project data up to the installed `wuppy` version. Install the new version first (`pnpm up wuppy`);
+ * Brings project data up to the installed `wuppycms` version. Install the new version first (`pnpm up wuppycms`);
  * the previous state is whatever Git has, so a dirty tree is refused: rolling back is `git checkout`.
  */
 export async function upgrade(cwd: string, { force = false } = {}): Promise<UpgradeResult> {
-	const installed = (await readJson<{ version: string }>(join(cwd, "node_modules", "wuppy", "package.json")))?.version;
+	const installed = (await readJson<{ version: string }>(join(cwd, "node_modules", "wuppycms", "package.json")))?.version;
 	if (!installed) return { code: 1, message: "wuppy is not installed here. Run your package manager's install first." };
 	const stateFile = join(cwd, ".wuppy", "version.json");
 	const from = (await readJson<{ version: string }>(stateFile))?.version ?? "0.0.0";
@@ -72,6 +72,6 @@ export async function upgrade(cwd: string, { force = false } = {}): Promise<Upgr
 	const done = pending.length ? pending.map((m) => `  - ${m.title}`).join("\n") : "  (no data changes needed)";
 	return {
 		code: 0,
-		message: `Upgraded ${from} -> ${installed}\n${done}\nRun \`wuppy types\` to refresh generated types. To undo data changes: git checkout . && git clean -fd .wuppy/data`,
+		message: `Upgraded ${from} -> ${installed}\n${done}\nRun \`wuppycms types\` to refresh generated types. To undo data changes: git checkout . && git clean -fd .wuppy/data`,
 	};
 }

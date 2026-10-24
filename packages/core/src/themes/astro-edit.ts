@@ -7,11 +7,16 @@ import { parse } from "@astrojs/compiler-rs";
  */
 
 export type ElementEdit =
-	| { action: "text"; value: string }
+	/** `code` also replaces text made by code (`{site.title}`) with the literal value; never other elements. */
+	| { action: "text"; value: string; code?: boolean }
 	/** Attribute values to set; `null` removes one, `""` leaves a bare attribute (`hidden`). */
 	| { action: "attrs"; attrs: Record<string, string | null> }
 	| { action: "tag"; name: string }
 	| { action: "delete" | "duplicate" }
+	/** New markup (one element) right after this one, on its own line with the same indent. */
+	| { action: "insert"; html: string }
+	/** Moves the element before, after or into another element of the same file (named by its location and tag). */
+	| { action: "moveTo"; loc: string; tag?: string; position: "before" | "after" | "inside" }
 	| { action: "move"; by: -1 | 1 };
 
 interface Span {
@@ -106,14 +111,15 @@ export function editAstroElement(
 	loc: string,
 	edit: ElementEdit,
 	tag?: string,
-): { source: string; loc?: string } {
+): { source: string; loc?: string; quiet?: boolean } {
 	const { el, siblings } = find(source, loc, tag);
 	let out = source;
 	// Where the edited element starts afterwards, to report its new location.
 	let start: number | undefined = el.start;
 	if (edit.action === "text") {
 		if (!el.closingElement) throw new ElementEditError("This element has no text");
-		if (el.children.some((c) => c.type !== "JSXText"))
+		const allowed = edit.code ? ["JSXText", "JSXExpressionContainer"] : ["JSXText"];
+		if (el.children.some((c) => !allowed.includes(c.type)))
 			throw new ElementEditError("This text is made by code or holds other elements; edit it in Code view");
 		out = splice(source, el.openingElement.end, el.closingElement.start, escapeText(edit.value));
 	} else if (edit.action === "attrs") {
@@ -147,6 +153,58 @@ export function editAstroElement(
 		const range = lines(source, el);
 		const copy = source.slice(range.start, el.end);
 		out = splice(source, el.end, el.end, range.own ? `\n${copy}` : copy);
+	} else if (edit.action === "insert") {
+		if (!siblings?.includes(el))
+			throw new ElementEditError("This element is made by code; add next to it in Code view");
+		const range = lines(source, el);
+		const indent = range.own ? source.slice(range.start, el.start) : "";
+		out = splice(source, el.end, el.end, `${range.own ? `\n${indent}` : ""}${edit.html.trim()}`);
+		start = el.end + (range.own ? 1 + indent.length : 0);
+		if (!elements(out).some(({ el: e }) => e.start === start))
+			throw new ElementEditError("The new markup must start with an element");
+	} else if (edit.action === "moveTo") {
+		if (!siblings?.includes(el)) throw new ElementEditError("This element is made by code; move it in Code view");
+		const { el: target, siblings: around } = find(source, edit.loc, edit.tag);
+		if (target === el || (target.start >= el.start && target.end <= el.end))
+			throw new ElementEditError("An element cannot go inside itself");
+		if (edit.position !== "inside" && !around?.includes(target))
+			throw new ElementEditError("That element is made by code; move next to it in Code view");
+		if (edit.position === "inside" && !target.closingElement)
+			throw new ElementEditError("That element cannot hold other elements");
+		const text = source.slice(el.start, el.end);
+		const own = lines(source, el);
+		const cut = { start: own.start, end: own.own && own.end < source.length ? own.end + 1 : own.end };
+		const indentOf = (at: number) => /^[ \t]*/.exec(source.slice(source.lastIndexOf("\n", at - 1) + 1))![0];
+		let at: number;
+		let insert: string;
+		let lead: number; // where the element starts within `insert`
+		if (edit.position === "inside") {
+			const close = target.closingElement!;
+			const closeLine = lines(source, close);
+			const indent = `${indentOf(target.start)}\t`;
+			at = closeLine.own ? closeLine.start : close.start;
+			insert = closeLine.own ? `${indent}${text}\n` : text;
+			lead = closeLine.own ? indent.length : 0;
+		} else {
+			const range = lines(source, target);
+			const indent = range.own ? indentOf(target.start) : "";
+			if (edit.position === "before") {
+				at = range.start;
+				insert = range.own ? `${indent}${text}\n` : text;
+				lead = indent.length;
+			} else {
+				at = target.end;
+				insert = range.own ? `\n${indent}${text}` : text;
+				lead = range.own ? 1 + indent.length : 0;
+			}
+		}
+		if (at <= cut.start) {
+			out = splice(splice(source, cut.start, cut.end), at, at, insert);
+			start = at + lead;
+		} else {
+			out = splice(splice(source, at, at, insert), cut.start, cut.end);
+			start = at - (cut.end - cut.start) + lead;
+		}
 	} else if (edit.action === "move") {
 		const i = siblings?.indexOf(el) ?? -1;
 		const other = i === -1 ? undefined : siblings![i + edit.by];
@@ -160,6 +218,15 @@ export function editAstroElement(
 		start = edit.by < 0 ? a.start : b.end - (el.end - el.start);
 	}
 	if (start === undefined) return { source: out };
-	const moved = elements(out).find(({ el: e }) => e.start === start);
-	return { source: out, loc: moved ? locOf(out, moved.el) : undefined };
+	const after = elements(out);
+	const moved = after.find(({ el: e }) => e.start === start);
+	// Text or attributes that leave every other element where it was: the page can show it without a reload.
+	let quiet: boolean | undefined;
+	if (edit.action === "text" || edit.action === "attrs") {
+		const all = elements(source);
+		quiet =
+			after.length === all.length &&
+			after.every(({ el: e }, i) => all[i]!.el.start === el.start || locOf(out, e) === locOf(source, all[i]!.el));
+	}
+	return { source: out, loc: moved ? locOf(out, moved.el) : undefined, ...(quiet ? { quiet } : {}) };
 }

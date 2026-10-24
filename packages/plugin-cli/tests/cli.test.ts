@@ -3,11 +3,11 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { capabilityHash, run, TEMPLATE_MANIFEST } from "../src/index.ts";
-import { manifestSchema } from "@wuppy/plugin-types";
+import { manifestSchema } from "@wuppycms/plugin-types";
 
 let root: string;
 beforeEach(async () => {
-	root = await mkdtemp(join(tmpdir(), "wuppy-plugin-cli-"));
+	root = await mkdtemp(join(tmpdir(), "wuppycms-plugin-cli-"));
 });
 afterEach(() => rm(root, { recursive: true, force: true }));
 

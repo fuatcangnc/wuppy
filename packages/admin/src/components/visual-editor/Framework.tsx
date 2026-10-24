@@ -1,7 +1,15 @@
 import { Plus, Trash2 } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
 import { useState } from "react";
-import { AUG_FOURTH, fluidScale, frameworkSchema, TYPE_RATIOS, type Framework, type Scale } from "@wuppy/visual-editor";
+import { ColorPicker } from "./ColorPicker.tsx";
+import {
+	AUG_FOURTH,
+	fluidScale,
+	frameworkSchema,
+	TYPE_RATIOS,
+	type Framework,
+	type Scale,
+} from "@wuppycms/visual-editor";
 import { Button, IconButton, Input, Select, Switch, Tabs } from "../../ui/index.tsx";
 import { Section } from "./Explorer.tsx";
 import { $visual, mutateVisual } from "./store.ts";
@@ -95,7 +103,7 @@ function ScaleEditor({ name, scale, fw }: { name: "type" | "space"; scale: Scale
 	);
 }
 
-/** Instatic's Framework panel: color tokens, fluid type and space scales, fonts, and global preferences. */
+/** The Framework panel: color tokens, fluid type and space scales, fonts, and global preferences. */
 export function FrameworkPanel() {
 	const visual = useStore($visual);
 	const fw = visual.framework;
@@ -204,13 +212,13 @@ export function FrameworkPanel() {
 										onChange={(e) => edit((f) => void (f.colors[i]!.value = e.target.value), `c${i}:value`)}
 										className="h-8 text-xs"
 									/>
-									<input
-										type="color"
-										aria-label={`${c.name} picker`}
-										value={/^#[0-9a-f]{6}$/i.test(c.value) ? c.value : "#000000"}
-										onChange={(e) => edit((f) => void (f.colors[i]!.value = e.target.value), `c${i}:value`)}
-										className="mb-0.5 h-8 w-8 shrink-0 rounded border border-border"
-									/>
+									<div className="mb-0.5">
+										<ColorPicker
+											label={c.name}
+											value={c.value}
+											onChange={(v) => edit((f) => void (f.colors[i]!.value = v), `c${i}:value`)}
+										/>
+									</div>
 								</div>
 								<Input
 									label="Dark mode value"

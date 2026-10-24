@@ -8,7 +8,7 @@ import { join, resolve } from "node:path";
 const root = resolve(import.meta.dirname, "..");
 const out = mkdtempSync(join(tmpdir(), "wuppy-pack-"));
 const run = (cwd, ...args) => execFileSync("pnpm", args, { cwd, stdio: ["ignore", "inherit", "inherit"] });
-// @wuppy/admin ships static files only, so it has no types to check.
+// @wuppycms/admin ships static files only, so it has no types to check.
 const withoutTypes = new Set(["wuppy-admin"]);
 
 for (const dir of readdirSync(join(root, "packages"), { withFileTypes: true })) {

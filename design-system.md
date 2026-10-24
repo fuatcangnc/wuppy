@@ -308,7 +308,7 @@ Settings, Users ve Account security ekranlarının ortak iki panelli kabuğudur:
 - Canvas iframe içine portal edilir; seçim/hover çerçeveleri, seçim toolbar'ı ve breakpoint/condition
   context selector canvas koordinatlarında çizilir.
 - Design modu tüm breakpoint'leri yan yana, Live modu tek gerçek boyutlu çerçeve gösterir.
-- Stil değerleri `@wuppy/visual-editor` güvenlik filtrelerinden geçer; blok metni karakter
+- Stil değerleri `@wuppycms/visual-editor` güvenlik filtrelerinden geçer; blok metni karakter
   referanslarıyla yazılır.
 
 Kırılma noktaları Tailwind varsayılanları: `sm 640`, `md 768`, `lg 1024`,

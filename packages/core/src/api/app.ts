@@ -1,9 +1,9 @@
 import { createHash } from "node:crypto";
 import { githubAstroRepos, type GithubAccounts, type GithubThemes } from "../themes/github.ts";
 import { templateUrl } from "../themes/site.ts";
-import { PERMISSIONS, permissionsFor, ROLES, type PendingInvitation, type Permission, type Role } from "@wuppy/auth";
-import { canRoute } from "@wuppy/plugin-types";
-import { visualCss } from "@wuppy/visual-editor";
+import { PERMISSIONS, permissionsFor, ROLES, type PendingInvitation, type Permission, type Role } from "@wuppycms/auth";
+import { canRoute } from "@wuppycms/plugin-types";
+import { visualCss } from "@wuppycms/visual-editor";
 import type { PluginManager } from "../plugins/manager.ts";
 import { PluginHookError } from "../plugins/errors.ts";
 import { Hono, type MiddlewareHandler } from "hono";
@@ -54,6 +54,7 @@ import type { SiteStore, ManagedSite } from "../sites/store.ts";
 import { AGENCY_SCOPE, SITE_ROLES } from "../sites/store.ts";
 import { HUB_API_VERSION, normalizeSiteUrl, SiteError, toCheck, whoami, type SiteNetwork } from "../sites/connect.ts";
 import { forward, MAX_PROXY_REQUEST_BYTES, proxyPath, readCapped } from "../sites/proxy.ts";
+import { planEdits } from "../ai/edit.ts";
 import { AGENTS, AiError, chat, type AgentId, type AiConfig, type ChatEvent } from "../ai/chat.ts";
 import type { ChatHistory } from "../ai/history.ts";
 import { buildReport, monthOf, previousMonth, remoteGet, reportHtml, scanSite } from "../sites/care.ts";
@@ -804,6 +805,39 @@ export function createApp({
 					}
 				});
 			})
+			// The visual editor's AI: edits for the picked elements, applied by the editor itself (see ai/edit.ts).
+			.post("/api/ai/edit", need("content:write"), aiLimit, async (c) => {
+				if (!ai) throw new ApiError(400, "NOT_ENABLED", "The assistant is not set up on this server");
+				const short = z.string().max(2000);
+				const body = z
+					.object({
+						model: z.string().refine((m) => ai.models.includes(m), "Unknown model"),
+						prompt: z.string().trim().min(1).max(4000),
+						elements: z
+							.array(
+								z.object({
+									ref: z.string().max(100),
+									kind: z.enum(["block", "theme"]),
+									tag: z.string().max(100),
+									text: z.string().max(5000).nullable().optional(),
+									classes: short.optional(),
+									styles: z.record(z.string().max(100), short).optional(),
+									attrs: z.record(z.string().max(100), short).optional(),
+									tailwind: z.boolean().optional(),
+								}),
+							)
+							.min(1)
+							.max(20),
+						history: z
+							.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().max(5000) }))
+							.max(20)
+							.default([]),
+					})
+					.parse(await c.req.json().catch(() => undefined));
+				const out = await planEdits(ai, body).catch(aiFailure);
+				record(c, "ai.edit", { detail: `${body.model}: ${out.edits.length} edits` });
+				return c.json({ data: out });
+			})
 			.get("/api/ai/chats", (c) => c.json({ data: chats?.list(c.get("user").id) ?? [] }))
 			.get("/api/ai/chats/:id", (c) => {
 				const found = chats?.get(c.get("user").id, c.req.param("id"));
@@ -822,7 +856,7 @@ export function createApp({
 						id: a.id,
 						object: "model",
 						created: 0,
-						owned_by: "wuppy",
+						owned_by: "wuppycms",
 						description: a.description,
 					})),
 				}),
@@ -1591,20 +1625,28 @@ export function createApp({
 						file: z.string().trim().min(1).max(1000),
 						loc: z.string().regex(/^\d+:\d+$/),
 						tag: z.string().max(100).optional(),
+						live: z.boolean().optional(),
 						edit: z.discriminatedUnion("action", [
-							z.object({ action: z.literal("text"), value: z.string().max(10_000) }),
+							z.object({ action: z.literal("text"), value: z.string().max(10_000), code: z.boolean().optional() }),
 							z.object({
 								action: z.literal("attrs"),
 								attrs: z.record(z.string().regex(/^[a-zA-Z_@:][\w:.@-]{0,99}$/), z.string().max(5000).nullable()),
 							}),
 							z.object({ action: z.literal("tag"), name: z.string().regex(/^[a-z][a-z0-9-]{0,49}$/) }),
 							z.object({ action: z.enum(["delete", "duplicate"]) }),
+							z.object({ action: z.literal("insert"), html: z.string().min(1).max(100_000) }),
+							z.object({
+								action: z.literal("moveTo"),
+								loc: z.string().regex(/^\d+:\d+$/),
+								tag: z.string().max(100).optional(),
+								position: z.enum(["before", "after", "inside"]),
+							}),
 							z.object({ action: z.literal("move"), by: z.union([z.literal(-1), z.literal(1)]) }),
 						]),
 					})
 					.parse(await c.req.json().catch(() => ({})));
 				try {
-					const out = await themes.editElement(body.file, body.loc, body.edit, body.tag);
+					const out = await themes.editElement(body.file, body.loc, body.edit, body.tag, body.live);
 					record(c, "theme.file.write", { detail: body.file });
 					return c.json({ data: out });
 				} catch (e) {

@@ -5,7 +5,7 @@ RUN corepack enable
 WORKDIR /app
 COPY . .
 RUN pnpm install --frozen-lockfile \
- && pnpm --filter @wuppy/admin build \
+ && pnpm --filter @wuppycms/admin build \
  && pnpm --filter wuppy-starter build
 
 FROM node:24-slim

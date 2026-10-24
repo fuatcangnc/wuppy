@@ -25,7 +25,7 @@
 | Supply chain | 24 h release age, trust-downgrade block, install scripts denied | `pnpm-workspace.yaml` |
 | Dead code | no unused files or dependencies | `pnpm knip` |
 | Packages | every tarball passes publint and attw | `pnpm verify:pack` (after `pnpm build`) |
-| Docs | every English docs page has a Turkish twin | `pnpm test` (`@wuppy/docs`: `scripts/check-locales.mjs`) |
+| Docs | every English docs page has a Turkish twin | `pnpm test` (`@wuppycms/docs`: `scripts/check-locales.mjs`) |
 | Architecture | `packages/core/src` imports no `cloudflare:*`, `@cloudflare/*`, `wrangler`, `kysely-d1` | `packages/core/tests/unit/architecture.test.ts` |
 
 `pnpm check` runs lint, typecheck and tests.

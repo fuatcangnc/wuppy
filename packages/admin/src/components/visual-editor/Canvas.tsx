@@ -1,3 +1,4 @@
+import { ChevronDown, Monitor, Smartphone, Tablet } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
 import {
 	declarations,
@@ -8,7 +9,7 @@ import {
 	visualCss,
 	type NodeJson,
 	type VisualData,
-} from "@wuppy/visual-editor";
+} from "@wuppycms/visual-editor";
 import { atom } from "nanostores";
 import {
 	createElement,
@@ -23,6 +24,7 @@ import {
 import { createPortal } from "react-dom";
 import { apiData, apiSite } from "../../lib/api.ts";
 import { Select } from "../../ui/index.tsx";
+import { ActionMenu } from "../shared/ActionMenu.tsx";
 import { expandComponent, paramsOf, safeCssValue } from "./markdown.ts";
 import { MODULES, moduleOf, nodeName } from "./modules.ts";
 import {
@@ -46,7 +48,7 @@ import {
 	selectParent,
 	$inserter,
 } from "./store.ts";
-import { $themeElement, describeElement, editThemeElement, SOURCE } from "./theme-element.ts";
+import { $themeDoc, $themeElement, describeElement, flushThemeEdits, liveThemeEdit, SOURCE } from "./theme-element.ts";
 import { isAncestor, updateNodeProps, type DropPosition, type NodeTree, type Styles, type VNode } from "./tree.ts";
 
 type DragPreview = { label: string; moduleId: string };
@@ -86,7 +88,7 @@ export function moveDragPreview(x: number, y: number): void {
 	if (preview) $dragPreview.set({ ...preview, x, y });
 }
 
-/** Suppress the browser's own drag image so the Instatic-like row is the only ghost. */
+/** Suppress the browser's own drag image so the custom row is the only ghost. */
 export function hideNativeDragImage(event: DragEvent): void {
 	const canvas = document.createElement("canvas");
 	canvas.width = 1;
@@ -94,7 +96,7 @@ export function hideNativeDragImage(event: DragEvent): void {
 	event.dataTransfer?.setDragImage(canvas, 0, 0);
 }
 
-/** Top quarter: before, bottom quarter: after, middle: inside (Instatic's drop zones). */
+/** Top quarter: before, bottom quarter: after, middle: inside (drop zones). */
 export function dropPosition(e: DragEvent, el: Element, container: boolean): DropPosition {
 	const r = el.getBoundingClientRect();
 	const y = (e.clientY - r.top) / Math.max(r.height, 1);
@@ -112,14 +114,18 @@ export function dropOn(overId: string, position: DropPosition): void {
 	$dragPreview.set(null);
 }
 
-/** Design mode zoom and pan (Instatic opens the canvas at 50%). */
+/** Design mode zoom and pan (the canvas opens at 50%). */
 export const $zoom = atom(0.5);
 export const $pan = atom({ x: 48, y: 64 });
 let stageEl: HTMLDivElement | null = null;
 
+/** The breakpoint whose frame design mode shows: the picked breakpoint, or the base (desktop) for anything else. */
+const deviceOf = (v: VisualData, context: string) => (v.breakpoints.some((b) => b.id === context) ? context : "");
+
 export function fitView(): void {
 	const v = $visual.get();
-	const total = v.baseWidth + v.breakpoints.reduce((sum, b) => sum + b.width + 64, 0);
+	const id = deviceOf(v, $context.get());
+	const total = v.breakpoints.find((b) => b.id === id)?.width ?? v.baseWidth;
 	const width = stageEl?.clientWidth ?? 1200;
 	$zoom.set(Math.min(1, Math.max(0.1, (width - 96) / total)));
 	$pan.set({ x: 48, y: 64 });
@@ -208,6 +214,54 @@ const CHROME_CSS = `astro-dev-toolbar{display:none!important}[data-node-id]{curs
 const THEME_CSS =
 	"[data-wuppy-hover]{outline:1px dashed #3b82f6;outline-offset:-1px}[data-wuppy-picked]{outline:2px solid #3b82f6!important;outline-offset:-1px}";
 
+/** The viewport height a design-mode frame lays out with: its iframe is as tall as the whole page. */
+export const DEVICE_HEIGHT = 900;
+const VIEWPORT_UNIT = /(-?\d*\.?\d+)[dsl]?vh\b/g;
+
+/** "calc(100vh - 5rem)" -> "calc(900px - 5rem)" for a viewport `height` px tall; null when there is no vh unit. */
+export function fixedViewport(value: string, height: number): string | null {
+	if (!/\d[dsl]?vh\b/.test(value)) return null;
+	return value.replace(VIEWPORT_UNIT, (_, n: string) => `${(Number(n) * height) / 100}px`);
+}
+
+/**
+ * Design mode makes each iframe as tall as its page, so `100vh` there is the page's own height: a `min-h-screen`
+ * section then grows the page, which grows the frame, without end. Viewport heights in the frame's CSS are turned
+ * into the fixed DEVICE_HEIGHT instead.
+ */
+function fixDeclaration(s: CSSStyleDeclaration) {
+	for (let i = 0; i < s.length; i++) {
+		const name = s.item(i);
+		const next = fixedViewport(s.getPropertyValue(name), DEVICE_HEIGHT);
+		if (next !== null) s.setProperty(name, next, s.getPropertyPriority(name));
+	}
+}
+
+// The editor's hover/selection outlines (<style id="ve-ui">) change on every hover and hold no vh.
+const editorOwn = (r: MutationRecord) =>
+	(r.target.nodeType === 1 ? (r.target as Element) : r.target.parentElement)?.id === "ve-ui";
+
+// Rules come from the frame's realm, so `instanceof CSSStyleRule` would be false: check the shape instead.
+function fixRules(rules: CSSRuleList) {
+	for (const rule of Array.from(rules)) {
+		if ("style" in rule) fixDeclaration(rule.style as CSSStyleDeclaration);
+		if ("cssRules" in rule) fixRules(rule.cssRules as CSSRuleList);
+	}
+}
+
+function fixViewportUnits(d: Document) {
+	for (const sheet of Array.from(d.styleSheets)) {
+		let rules: CSSRuleList;
+		try {
+			rules = sheet.cssRules;
+		} catch {
+			continue; // a stylesheet from another origin cannot be read; it is left as it is
+		}
+		fixRules(rules);
+	}
+	for (const el of Array.from(d.querySelectorAll<HTMLElement>('[style*="vh"]'))) fixDeclaration(el.style);
+}
+
 /** The theme's own markup around the entry's body on a live page: hover, pick, and double-click to edit its text. */
 function wireThemeElements(d: Document, root: HTMLElement | null) {
 	const theme = (t: EventTarget | null): HTMLElement | null => {
@@ -260,7 +314,10 @@ function wireThemeElements(d: Document, root: HTMLElement | null) {
 				() => {
 					el.removeEventListener("keydown", key);
 					el.removeAttribute("contenteditable");
-					if (el.innerText !== before) void editThemeElement({ action: "text", value: el.innerText });
+					if (el.innerText === before) return;
+					// Shown here already; copies elsewhere follow, and the file is written without reloading the page.
+					liveThemeEdit({ action: "text", value: el.innerText });
+					flushThemeEdits();
 				},
 				{ once: true },
 			);
@@ -573,7 +630,7 @@ const stop = (fn: () => void) => (e: { stopPropagation: () => void; preventDefau
 	fn();
 };
 
-/** Instatic's selection toolbar: the node's name and quick actions, pinned above the selected element. */
+/** The selection toolbar: the node's name and quick actions, pinned above the selected element. */
 function Toolbar({ doc, node, scale }: { doc: Document; node: VNode; scale: number }) {
 	const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
 	const tree = useStore($tree);
@@ -685,7 +742,7 @@ export function liveBodyRoot(d: Document): HTMLElement | null {
 
 /**
  * One page frame: an iframe at a breakpoint's width so the site's media queries apply exactly, with the site theme,
- * the visual CSS and the editor chrome injected (Instatic's frame CSS injection).
+ * the visual CSS and the editor chrome injected.
  */
 function Frame({
 	width,
@@ -757,6 +814,29 @@ function Frame({
 		};
 	}, [doc, onKey, onWheel]);
 
+	useEffect(() => {
+		if (!doc || fill) return;
+		let queued = 0;
+		const observer = new MutationObserver((records) => {
+			if (queued || records.every(editorOwn)) return;
+			queued = requestAnimationFrame(() => {
+				queued = 0;
+				fixViewportUnits(doc);
+			});
+		});
+		observer.observe(doc.documentElement, {
+			childList: true,
+			subtree: true,
+			characterData: true,
+			attributeFilter: ["style"],
+		});
+		fixViewportUnits(doc);
+		return () => {
+			observer.disconnect();
+			cancelAnimationFrame(queued);
+		};
+	}, [doc, fill]);
+
 	// Design mode shows each frame at its full page height, so the whole page is visible at once.
 	useEffect(() => {
 		if (!doc || fill) return;
@@ -816,6 +896,7 @@ function Frame({
 			d.addEventListener("submit", (e) => e.preventDefault(), true);
 			wireThemeElements(d, root);
 			setLoads((n) => n + 1);
+			$themeDoc.set({ doc: d, root, loads: ($themeDoc.get()?.loads ?? 0) + 1 });
 			// shortcut: a preview has no editable body, so keys and design-mode height are not wired to it; add if needed.
 			if (root) setBody(root);
 			return;
@@ -855,7 +936,7 @@ function Frame({
 							$context.set(context);
 							const id = idAt(e.target);
 							const sel = $selected.get();
-							// Alt/Option climbs the ancestor ladder from the current selection (Instatic's inspect ladder).
+							// Alt/Option climbs the ancestor ladder from the current selection (inspect ladder).
 							if (e.altKey && id && sel && sel !== tree.rootNodeId && isAncestor(tree, sel, id)) {
 								const parent = tree.nodes[sel]?.parentId;
 								$selected.set(parent && parent !== tree.rootNodeId ? parent : sel);
@@ -939,7 +1020,39 @@ function Frame({
 	);
 }
 
-/** Floating breakpoint/condition switch, matching Instatic's canvas context selector. */
+/** Desktop / tablet / mobile dropdown: the frame the canvas shows and the breakpoint styles are edited for. */
+export function DeviceSwitch() {
+	const visual = useStore($visual);
+	const context = useStore($context);
+	const tablet = visual.breakpoints.find((breakpoint) => breakpoint.width >= 600 && breakpoint.width < 1100);
+	const phone = visual.breakpoints.find((breakpoint) => breakpoint.width < 600);
+	const devices: [string, string, typeof Monitor][] = [["", "Desktop", Monitor]];
+	if (tablet) devices.push([tablet.id, "Tablet", Tablet]);
+	if (phone) devices.push([phone.id, "Mobile", Smartphone]);
+	const shown = deviceOf(visual, context);
+	const [, current, Current] = devices.find(([id]) => id === shown) ?? devices[0]!;
+	return (
+		<ActionMenu
+			label={`Device: ${current}`}
+			trigger={
+				<>
+					<Current size={14} />
+					<ChevronDown size={12} />
+				</>
+			}
+			items={devices.map(([id, label, Icon]) => ({
+				label,
+				icon: <Icon size={14} />,
+				onSelect: () => {
+					$context.set(id);
+					fitView();
+				},
+			}))}
+		/>
+	);
+}
+
+/** Floating breakpoint/condition switch. */
 function ContextSelector() {
 	const visual = useStore($visual);
 	const context = useStore($context);
@@ -970,7 +1083,7 @@ function ContextSelector() {
 }
 
 /**
- * The canvas. Design mode: every breakpoint side by side on a pannable, zoomable stage (wheel pans, Ctrl+wheel
+ * The canvas. Design mode: the picked device's frame on a pannable, zoomable stage (wheel pans, Ctrl+wheel
  * zooms, drag the background to pan). Live mode: one real-size frame for the active breakpoint.
  */
 export function Canvas({
@@ -1027,10 +1140,10 @@ export function Canvas({
 			</div>
 		);
 	}
-	const frames = [
-		...visual.breakpoints.toSorted((a, b) => a.width - b.width),
-		{ id: "", label: "Desktop", width: visual.baseWidth },
-	];
+	const shown = deviceOf(visual, context);
+	const frames = [...visual.breakpoints, { id: "", label: "Desktop", width: visual.baseWidth }].filter(
+		(f) => f.id === shown,
+	);
 	return (
 		<div
 			ref={stage}

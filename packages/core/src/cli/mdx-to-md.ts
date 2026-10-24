@@ -23,7 +23,7 @@ export async function mdxToMarkdown(source: string): Promise<{ markdown: string 
 	return problems.length ? { problems } : { markdown: front + body };
 }
 
-/** `wuppy mdx-to-md [dir]`: converts the `.mdx` entries of every collection (or one folder) to `.md`, once. */
+/** `wuppycms mdx-to-md [dir]`: converts the `.mdx` entries of every collection (or one folder) to `.md`, once. */
 export async function convertMdx(cwd: string, dir?: string): Promise<{ code: number; stdout: string; stderr: string }> {
 	let dirs: string[];
 	try {

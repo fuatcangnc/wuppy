@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { collectionSchema } from "../content-types/index.ts";
-import { defaultVisualData, visualDataSchema } from "@wuppy/visual-editor";
+import { defaultVisualData, visualDataSchema } from "@wuppycms/visual-editor";
 import { webhooksSchema } from "../webhooks/index.ts";
 
 const id = z.string().regex(/^[a-z0-9][a-z0-9-]*$/);

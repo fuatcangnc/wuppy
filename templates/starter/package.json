@@ -19,7 +19,7 @@
 		"tailwind-merge": "catalog:",
 		"tailwindcss": "catalog:",
 		"tw-animate-css": "catalog:",
-		"wuppy": "workspace:*",
+		"wuppycms": "workspace:*",
 		"zod": "catalog:"
 	},
 	"devDependencies": {

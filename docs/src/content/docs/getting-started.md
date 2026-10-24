@@ -15,14 +15,14 @@ is served at `/admin`, and every change is a Git commit.
 ## Create a site
 
 ```sh
-npm create wuppy my-site
+npm create wuppycms my-site
 cd my-site
 ```
 
 The new project is a copy of the starter template: an Astro site with **Pages** and **Posts** collections, a menu,
 SEO tags, a sitemap, RSS, search and a 404 page.
 
-Already have an Astro site on GitHub? Run `npx wuppy import` instead and pick it from the list; see [Existing Astro project](/guides/existing-astro-project/).
+Already have an Astro site on GitHub? Run `npx wuppycms import` instead and pick it from the list; see [Existing Astro project](/guides/existing-astro-project/).
 
 ## Set the environment
 
@@ -55,7 +55,7 @@ Passkeys need a real host name. Open the admin at `http://localhost:4321`, not `
 ## Check the setup
 
 ```sh
-pnpm wuppy doctor
+pnpm wuppycms doctor
 ```
 
 `doctor` checks that the config loads, the content folders exist, Git is ready and `WUPPY_SECRET` is long enough.

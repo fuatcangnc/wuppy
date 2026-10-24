@@ -1,6 +1,20 @@
 {
-	"name": "@wuppy/auth",
-	"version": "0.0.0",
+	"name": "@wuppycms/auth",
+	"version": "0.2.3",
+	"description": "Authentication for WuppyCMS (Better Auth with passkeys and two-factor sign-in).",
+	"keywords": [
+		"wuppycms",
+		"auth",
+		"better-auth",
+		"passkey"
+	],
+	"homepage": "https://wuppycms.com",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fuatcangnc/wuppy.git",
+		"directory": "packages/auth"
+	},
+	"bugs": "https://github.com/fuatcangnc/wuppy/issues",
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts"
@@ -11,8 +25,8 @@
 		"build": "tsdown"
 	},
 	"dependencies": {
-		"@better-auth/passkey": "1.7.10",
-		"better-auth": "1.7.10",
+		"@better-auth/passkey": "1.7.12",
+		"better-auth": "1.7.12",
 		"reflect-metadata": "0.2.2"
 	},
 	"devDependencies": {

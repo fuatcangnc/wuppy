@@ -1,0 +1,1 @@
+{"nodes": [{"id": "$graphify-root$_templates_starter_content_pages_services_md", "label": "services.md", "file_type": "document", "node_kind": "page", "source_file": "templates/starter/content/pages/services.md", "source_location": "L1", "frontmatter": {"title": "Services", "template": "src/pages/services.astro"}}], "edges": [], "input_tokens": 0, "output_tokens": 0}

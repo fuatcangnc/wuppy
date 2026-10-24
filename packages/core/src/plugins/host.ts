@@ -6,7 +6,7 @@ import {
 	type FilterName,
 	type HookName,
 	type Manifest,
-} from "@wuppy/plugin-types";
+} from "@wuppycms/plugin-types";
 import { newQuickJSWASMModule, type QuickJSContext } from "quickjs-emscripten";
 
 export interface HostDeps {

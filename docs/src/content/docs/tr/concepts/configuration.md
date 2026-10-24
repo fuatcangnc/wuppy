@@ -22,7 +22,7 @@ export default {
 	],
 	redirects: [{ from: "/old", to: "/new" }],
 	webhooks: [{ url: "https://ci.example.com/hook", secret: "…", events: ["content.updated"] }],
-	plugins: [{ dir: "plugins/search", approve: "<wuppy plugin hash çıktısı>" }],
+	plugins: [{ dir: "plugins/search", approve: "<wuppycms plugin hash çıktısı>" }],
 };
 ```
 
@@ -57,7 +57,7 @@ collections: [
 ],
 ```
 
-`wuppy init` `kind` değerini kendisi yazar: tarih alanı olan ilk koleksiyon Posts, tarih alanı olmayan ilk koleksiyon
+`wuppycms init` `kind` değerini kendisi yazar: tarih alanı olan ilk koleksiyon Posts, tarih alanı olmayan ilk koleksiyon
 Pages olur. Diğer koleksiyonlar kendi adlarıyla listelenir. GitHub temasında `kind` ve `map` temayı sitenin içeriğine
 bağlar; bkz. [GitHub'dan temalar](/tr/guides/github-themes/).
 
@@ -73,7 +73,7 @@ bileşenler kayıtta reddedilir, böylece editörler sitenizde kod çalıştıra
 ## Şablonlarınız için tipler
 
 ```sh
-pnpm wuppy types
+pnpm wuppycms types
 ```
 
 her koleksiyon için TypeScript tipi içeren `wuppy-env.d.ts` dosyasını yazar.

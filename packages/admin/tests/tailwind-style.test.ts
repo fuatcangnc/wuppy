@@ -23,6 +23,7 @@ describe("CSS properties as Tailwind 4 classes", () => {
 		expect(utilityFor("filter", "blur(4px)")).toBe("[filter:blur(4px)]");
 		expect(utilityFor("font-family", "Inter")).toBe("[font-family:Inter]");
 		expect(utilityFor("border-width", "1px")).toBe("border");
+		expect(utilityFor("background-attachment", "fixed")).toBe("bg-fixed");
 		expect(utilityFor("background-image", "url(/a.png)")).toBe("bg-[url(/a.png)]");
 	});
 

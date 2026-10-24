@@ -4,7 +4,7 @@ Son güncelleme: 2026-10-23. Kaynak: `/home/fuat/Downloads/Instatic-main` (MIT, 
 
 ## Bitenler
 
-### `packages/visual-editor` (`@wuppy/visual-editor`, yeni paket)
+### `packages/visual-editor` (`@wuppycms/visual-editor`, yeni paket)
 + [x] `css.ts`: Styles/Overrides, breakpoint/condition, STATES, güvenlik (`safeCssValue`, `safeSelector`, `safeQuery`, `safeStylesheet`), `ruleCss`, `nodeCss`, `pageCss` (render edilen HTML'den `data-ve-r` → `<style>`)
 + [x] `framework.ts`: renkler (shade/tint/transparent), fluid type/space scale (Instatic matematiği), fontlar, `v-` prefixli utility class'lar, `frameworkTokens`, `frameworkCss`
 + [x] `schema.ts`: zod `visualDataSchema` (baseWidth, breakpoints, conditions, selectors, framework, components, layouts, stylesheet), `visualCss`
@@ -40,19 +40,19 @@ Son güncelleme: 2026-10-23. Kaynak: `/home/fuat/Downloads/Instatic-main` (MIT, 
 
 ### MDX + tema bileşenleri (2026-10-23, ADR-023)
 + [x] MDX geri geldi: `format: "md" | "mdx"`, `components` allowlist'i, `/api/editor/components`, görsel editör "component" modülü; mevcut `.md` bileşen eklenince `.mdx`'e yükselir. JSX'ten yapıştırılan `className` → `class`.
-+ [x] Tema `src/components/*.astro` dosyaları Add → Components'ta `ASTRO` rozeti/kaynak yoluyla listelenir; seçim gerçek `data-ve="component"` düğümü ekler. `@wuppy/astro` `<Content />` çağrısına doğrudan import edilen bir `components` haritası verir; tuval placeholder, site gerçek çıktıyı gösterir.
++ [x] Tema `src/components/*.astro` dosyaları Add → Components'ta `ASTRO` rozeti/kaynak yoluyla listelenir; seçim gerçek `data-ve="component"` düğümü ekler. `@wuppycms/astro` `<Content />` çağrısına doğrudan import edilen bir `components` haritası verir; tuval placeholder, site gerçek çıktıyı gösterir.
 + [x] Code görünümü gerçek yollar: sayfa `<koleksiyon dir>/<slug>.mdx` (veya `.md`), site CSS/componentler `.wuppy/data/visual/…` (visual.json parçaları); sayfa tema içindeyse tek ağaç `theme: owner/repo`, sahte `src/` yok
 + [x] `pnpm dev` (`templates/starter/dev.mjs`) aktif temada `astro dev` çalıştırır; 4330 dev sunucusu bununla yeniden başlatıldı
 
 ## Kalanlar
 
 - [x] e2e `e2e/tests/first-post.spec.ts` visual journey Inserter + Enter commit + desktop iframe'e göre güncellendi; `/admin/ai`, `/admin/site` smoke eklendi; 15/15 E2E geçti
-- [x] Changeset: `@wuppy/visual-editor` fixed grubuna eklendi; admin/core/visual-editor changeset'i güncellendi
+- [x] Changeset: `@wuppycms/visual-editor` fixed grubuna eklendi; admin/core/visual-editor changeset'i güncellendi
 - [x] knip temiz
 - [x] README + `.opencode/PROJE-YAPISI.md` paket listesi
 - [x] `.opencode/KARARLAR.md` ADR-020 güncellendi (site verisi `.wuppy/data/visual.json`, middleware CSS, `v-` prefix, component markup'ı her entry'ye yazılır)
 - [x] `yapılacaklar.md` ve `design-system.md` güncellendi
-- [x] Docs EN+TR güncellendi; `pnpm --filter @wuppy/docs test` (37×2 sayfa) ve `build` (75 sayfa) temiz. rsync deploy yapılmadı.
+- [x] Docs EN+TR güncellendi; `pnpm --filter @wuppycms/docs test` (37×2 sayfa) ve `build` (75 sayfa) temiz. rsync deploy yapılmadı.
 + [x] `graphify update .`, admin build, e2e (16/16)
 - [ ] Prod deploy YOK (kullanıcıya sorulmadan)
 

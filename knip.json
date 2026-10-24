@@ -10,7 +10,7 @@
 			"entry": ["types/index.d.ts", "tests/public-types.ts"]
 		},
 		"packages/core": {
-			"ignoreDependencies": ["@wuppy/admin"]
+			"ignoreDependencies": ["@wuppycms/admin"]
 		},
 		"templates/starter": {
 			"ignore": ["content/**"],

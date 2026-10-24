@@ -1,6 +1,0 @@
----
-"wuppy": minor
-"@wuppy/admin": minor
----
-
-Content is MDX or Markdown. A collection's `format` (`"mdx"` by default for new content types, `"md"` for Markdown-only) controls new entries; existing `.md` and `.mdx` files can live side by side, and a `.md` entry is promoted to `.mdx` when a component is inserted. MDX bodies are checked with Astro's own parser and saving is refused (422 `DISALLOWED_CONTENT`) for imports, expressions, dangerous tags, event handlers, `javascript:`/`data:` links and components not in `components` or the theme. The active theme's `.astro` components are allowed automatically and the integration provides a components map to `<Content />`, so Add → Components inserts real Astro components without import lines. Section and widget bodies render with `mdxContent` from `wuppy/mdx` (`{ Content, headings }`). New `wuppy mdx-to-md [dir]` can still convert component-free `.mdx` files to `.md`; `wuppy init` adds `@astrojs/mdx`, widens content globs and builds the component allowlist. The starter's `pnpm dev` runs the active GitHub theme, and the visual editor's Code view shows files at their real paths (one tree when the site runs from a theme). Dependencies: hono 4.13.13 (security fixes).

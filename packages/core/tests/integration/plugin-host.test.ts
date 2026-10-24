@@ -1,4 +1,4 @@
-import { manifestSchema, type Manifest } from "@wuppy/plugin-types";
+import { manifestSchema, type Manifest } from "@wuppycms/plugin-types";
 import { describe, expect, it } from "vitest";
 import { loadPlugin, type HostDeps } from "../../src/plugins/host.ts";
 

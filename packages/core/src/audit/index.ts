@@ -1,5 +1,5 @@
 import type { DatabaseSync } from "node:sqlite";
-import type { AuditEvent } from "@wuppy/auth";
+import type { AuditEvent } from "@wuppycms/auth";
 
 const MAX_PAGE = 500;
 

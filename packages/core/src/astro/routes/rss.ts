@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { NoopGit } from "@wuppy/git";
+import { NoopGit } from "@wuppycms/git";
 import { loadSiteConfig, siteRoot, themeRoot } from "../../themes/site.ts";
 import { ContentService } from "../../content/service.ts";
 import { buildRss } from "../../seo/index.ts";

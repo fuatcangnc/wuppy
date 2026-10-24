@@ -1,7 +1,7 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { RealGit } from "@wuppy/git";
+import { RealGit } from "@wuppycms/git";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { collectionSchema } from "../../src/content-types/index.ts";
 import { ContentService } from "../../src/content/service.ts";

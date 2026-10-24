@@ -1,6 +1,6 @@
 import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import type { Commit, GitAdapter } from "@wuppy/git";
+import type { Commit, GitAdapter } from "@wuppycms/git";
 import { dataSchema, type Collection } from "../content-types/index.ts";
 import type { WebhookEvent } from "../webhooks/index.ts";
 import { componentTags, findDisallowed, stripComponentImports } from "../markdown/index.ts";

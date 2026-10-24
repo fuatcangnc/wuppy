@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { dirname, extname, join, resolve, sep } from "node:path";
-import type { GitAdapter } from "@wuppy/git";
+import type { GitAdapter } from "@wuppycms/git";
 import type { WebhookEvent } from "../webhooks/index.ts";
 import type { JsonStore } from "../data/store.ts";
 import { imageInfo, parseVariant, renderVariant } from "./optimize.ts";

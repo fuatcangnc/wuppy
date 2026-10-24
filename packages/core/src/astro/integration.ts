@@ -5,6 +5,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { listThemeComponents } from "../themes/components.ts";
 import { isLiveRoute, liveContentPlugin } from "./live-content.ts";
+import { quietHmrPlugin } from "./quiet-hmr.ts";
 import { mapSource, themeComponentsPlugin } from "./theme-components.ts";
 import { themePageRel, themePagesPlugin } from "./theme-pages.ts";
 
@@ -22,7 +23,7 @@ export interface WuppyIntegrationOptions {
 	live?: boolean;
 }
 
-export default function wuppy(options: WuppyIntegrationOptions = {}): AstroIntegration {
+export default function wuppycms(options: WuppyIntegrationOptions = {}): AstroIntegration {
 	let root = process.cwd();
 	let markdown: AstroConfig["markdown"] | undefined;
 	let image: AstroConfig["image"] | undefined;
@@ -44,7 +45,7 @@ export default function wuppy(options: WuppyIntegrationOptions = {}): AstroInteg
 			}),
 		) as Record<string, unknown>;
 	return {
-		name: "wuppy",
+		name: "wuppycms",
 		hooks: {
 			"astro:config:setup": async ({ config, injectRoute, addMiddleware, updateConfig }) => {
 				root = fileURLToPath(config.root);
@@ -65,15 +66,17 @@ export default function wuppy(options: WuppyIntegrationOptions = {}): AstroInteg
 							],
 						},
 					});
+				// The visual editor finds a theme's elements by the source marks Astro adds only while its dev toolbar is on.
+				if (site) updateConfig({ devToolbar: { enabled: true } });
 				// Themes expose their Astro components to MDX through a generated components map. The plugin is a no-op
 				// when there are none, so sites that never use components pay nothing at runtime.
-				updateConfig({ vite: { plugins: [themeComponentsPlugin(root)] } });
+				updateConfig({ vite: { plugins: [themeComponentsPlugin(root), quietHmrPlugin()] } });
 				// .wuppy/ holds the auth database and GitHub themes (whole Astro projects): watching it would restart
 				// `astro dev` while a theme is cloned and lose the install in progress.
 				// Only the project's own .wuppy/: a theme runs from inside the site's, and its files must still reload on edit.
 				updateConfig({ vite: { server: { watch: { ignored: [`${join(root, ".wuppy")}/**`] } } } });
 				// Workspace siblings are TypeScript sources: let Vite compile them instead of handing them to Node. Published builds are plain JS.
-				if (ext === "ts") updateConfig({ vite: { ssr: { noExternal: [/^@wuppy\//] } } });
+				if (ext === "ts") updateConfig({ vite: { ssr: { noExternal: [/^@wuppycms\//] } } });
 				addMiddleware({ entrypoint: entry("redirect-middleware"), order: "pre" });
 				addMiddleware({ entrypoint: entry("page-cache-middleware"), order: "post" });
 				// After the page cache, so cached pages already carry the visual CSS.

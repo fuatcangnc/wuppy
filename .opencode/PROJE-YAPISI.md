@@ -81,18 +81,18 @@ wuppy/
 ```
 packages/
 ├── core/               wuppy        Astro entegrasyonu + Hono API + içerik motoru
-├── admin/              @wuppy/admin React yönetim SPA'sı + visual editor UI
-├── visual-editor/      @wuppy/visual-editor NodeTree, CSS/framework/selector şemaları
-├── auth/               @wuppy/auth  Better Auth yapılandırması + RBAC
-├── blocks/             @wuppy/blocks Editör blokları ve renderer'lar
-├── git/                @wuppy/git   Commit, diff, geçmiş, geri alma
-├── markdown/           @wuppy/markdown MDX ↔ taşınabilir içerik
-├── plugin-types/       @wuppy/plugin-types Eklenti sözleşmeleri
-├── plugin-cli/         @wuppy/plugin-cli Eklenti iskeleti/paketleme
-├── plugin-test/        @wuppy/plugin-test Eklenti test yardımcıları
+├── admin/              @wuppycms/admin React yönetim SPA'sı + visual editor UI
+├── visual-editor/      @wuppycms/visual-editor NodeTree, CSS/framework/selector şemaları
+├── auth/               @wuppycms/auth  Better Auth yapılandırması + RBAC
+├── blocks/             @wuppycms/blocks Editör blokları ve renderer'lar
+├── git/                @wuppycms/git   Commit, diff, geçmiş, geri alma
+├── markdown/           @wuppycms/markdown MDX ↔ taşınabilir içerik
+├── plugin-types/       @wuppycms/plugin-types Eklenti sözleşmeleri
+├── plugin-cli/         @wuppycms/plugin-cli Eklenti iskeleti/paketleme
+├── plugin-test/        @wuppycms/plugin-test Eklenti test yardımcıları
 ├── test-utils/         Paylaşılan test altyapısı
 ├── create-wuppy/       create-wuppy Yeni proje oluşturucu
-├── cloudflare/         @wuppy/cloudflare Opsiyonel Workers adaptörü
+├── cloudflare/         @wuppycms/cloudflare Opsiyonel Workers adaptörü
 └── plugins/            Birinci taraf eklentiler
     ├── seo/
     ├── sitemap/
@@ -105,7 +105,7 @@ packages/
 | Paket | Bağımlı olduğu | ASLA bağımlı olmadığı |
 | --- | --- | --- |
 | `core` | `admin`, `auth`, `blocks`, `git`, `markdown`, `plugin-types` | Uygulama şablonları, demolar |
-| `admin` | HTTP API + paylaşılan tipler; shadcn/ui, Nanostores, Lexical, `@wuppy/visual-editor` | `core`'un iç modülleri, Node API'leri |
+| `admin` | HTTP API + paylaşılan tipler; shadcn/ui, Nanostores, Lexical, `@wuppycms/visual-editor` | `core`'un iç modülleri, Node API'leri |
 | `visual-editor` | zod ve saf TypeScript | `admin`, `core`, tarayıcı DOM'u |
 | `auth` | `better-auth`, Kysely adaptörü | `admin`, `core` |
 | `git` | Node `fs`, Git kütüphanesi | `core`, `admin` |

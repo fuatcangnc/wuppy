@@ -1,6 +1,6 @@
 import { access, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { isFilter, manifestSchema } from "@wuppy/plugin-types";
+import { isFilter, manifestSchema } from "@wuppycms/plugin-types";
 import { generateTypes } from "../content-types/generate.ts";
 import { loadConfig } from "../config/index.ts";
 import { capabilityHash } from "../plugins/loader.ts";
@@ -15,7 +15,7 @@ export interface CliResult {
 }
 
 const USAGE =
-	"Usage: wuppy init [--force] | wuppy import [<git-url> <dir>] | wuppy plugin hash <plugin-dir> | wuppy doctor | wuppy types | wuppy upgrade [--force] | wuppy mdx-to-md [<dir>]";
+	"Usage: wuppycms init [--force] | wuppycms import [<git-url> <dir>] | wuppycms plugin hash <plugin-dir> | wuppycms doctor | wuppycms types | wuppycms upgrade [--force] | wuppycms mdx-to-md [<dir>]";
 
 const exists = (p: string) =>
 	access(p).then(

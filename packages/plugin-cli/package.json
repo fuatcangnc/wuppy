@@ -1,9 +1,22 @@
 {
-	"name": "@wuppy/plugin-cli",
-	"version": "0.0.0",
+	"name": "@wuppycms/plugin-cli",
+	"version": "0.2.3",
+	"description": "Build and package WuppyCMS plugins.",
+	"keywords": [
+		"wuppycms",
+		"plugin",
+		"cli"
+	],
+	"homepage": "https://wuppycms.com",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fuatcangnc/wuppy.git",
+		"directory": "packages/plugin-cli"
+	},
+	"bugs": "https://github.com/fuatcangnc/wuppy/issues",
 	"type": "module",
 	"bin": {
-		"wuppy-plugin": "./src/main.ts"
+		"wuppycms-plugin": "./src/main.ts"
 	},
 	"exports": {
 		".": "./src/index.ts"
@@ -14,7 +27,7 @@
 		"build": "tsdown"
 	},
 	"dependencies": {
-		"@wuppy/plugin-types": "workspace:*"
+		"@wuppycms/plugin-types": "workspace:*"
 	},
 	"devDependencies": {
 		"@types/node": "catalog:",
@@ -27,7 +40,7 @@
 	],
 	"publishConfig": {
 		"bin": {
-			"wuppy-plugin": "./dist/main.mjs"
+			"wuppycms-plugin": "./dist/main.mjs"
 		},
 		"exports": {
 			".": {

@@ -8,6 +8,7 @@ import { promisify } from "node:util";
 import { loadConfig } from "../config/index.ts";
 import { open, seal } from "../security/secret-box.ts";
 import { astroOnly, CONFIGS, init, NODE_ADAPTER, REPOS_QUERY, type GithubRepo } from "../cli/init.ts";
+import { quietNextChange } from "../astro/quiet-hmr.ts";
 import { themeBodyShift, themePageRel } from "../astro/theme-pages.ts";
 import { editAstroElement, type ElementEdit } from "./astro-edit.ts";
 import { importDemo, importPages } from "./site.ts";
@@ -16,7 +17,7 @@ import { importDemo, importPages } from "./site.ts";
 const shiftLine = (loc: string, n: number) => loc.replace(/^\d+/, (line) => String(Number(line) + n));
 
 /**
- * A GitHub repository as this site's theme: the server clones it under `.wuppy/themes/`, wraps it (`wuppy init`),
+ * A GitHub repository as this site's theme: the server clones it under `.wuppy/themes/`, wraps it (`wuppycms init`),
  * installs and builds it, then points `.wuppy/themes/active.json` at it. The launcher (`serve.mjs` in the starter)
  * starts the active build after the restart. The repo is the user's own code, so only admins may install one.
  */
@@ -32,6 +33,21 @@ export interface ThemeJob {
 
 // GitHub names: letters, digits, "-", "_", "."; never starting with a dot, so no ".." path parts.
 const MARKDOWN_REMARK = "^7.3.4";
+// Astro before 7.4 (its Rust compiler before 0.5) does not mark elements with their source spot in dev, and the visual
+// editor finds theme elements by those marks: an older theme gets this Astro.
+const ASTRO = "^7.4.0";
+const version = (range: string) =>
+	range
+		.match(/\d+(?:\.\d+){0,2}/)?.[0]
+		.split(".")
+		.map(Number);
+/** Whether an npm range like "^7.3.1" or "7" allows versions older than `min` ("^7.4.0"). */
+export const olderThan = (range: string, min: string): boolean => {
+	const [a, b] = [version(range), version(min)!];
+	if (!a) return false;
+	for (let i = 0; i < 3; i++) if ((a[i] ?? 0) !== b[i]) return (a[i] ?? 0) < b[i]!;
+	return false;
+};
 const REPO = /^[\w-][\w.-]*\/[\w-][\w.-]*$/;
 const exec = promisify(execFile);
 const defaultRun: Run = (cmd, args, opts) =>
@@ -51,7 +67,7 @@ export async function githubAstroRepos(token: string, fetchFn: typeof fetch = fe
 	for (let page = 0; page < 10; page++) {
 		const res = await fetchFn("https://api.github.com/graphql", {
 			method: "POST",
-			headers: { authorization: `Bearer ${token}`, "content-type": "application/json", "user-agent": "wuppy" },
+			headers: { authorization: `Bearer ${token}`, "content-type": "application/json", "user-agent": "wuppycms" },
 			body: JSON.stringify({ query: REPOS_QUERY, variables: { endCursor } }),
 			signal: AbortSignal.timeout(15_000),
 		});
@@ -210,16 +226,18 @@ export class GithubThemes {
 		if (!existsSync(join(dir, "wuppy.config.mjs"))) {
 			const hadEnv = existsSync(join(dir, ".env"));
 			const r = await init(dir);
-			if (r.code !== 0) throw new Error(r.stderr || "wuppy init failed");
+			if (r.code !== 0) throw new Error(r.stderr || "wuppycms init failed");
 			// init writes a fresh secret for local use; the server's own environment is the one to use.
 			if (!hadEnv) await rm(join(dir, ".env"), { force: true });
 		}
 		// Wuppy itself is linked from this server below; npm would look for it in the registry.
 		const pkgPath = join(dir, "package.json");
 		const pkg = JSON.parse(await readFile(pkgPath, "utf8")) as Record<string, Record<string, string> | undefined>;
-		delete pkg.dependencies?.wuppy;
-		delete pkg.devDependencies?.wuppy;
+		delete pkg.dependencies?.wuppycms;
+		delete pkg.devDependencies?.wuppycms;
 		// Wuppy runs sites on Node; a repo made for Cloudflare or Vercel is built with the Node adapter instead.
+		for (const deps of [pkg.dependencies, pkg.devDependencies])
+			if (deps?.astro && olderThan(deps.astro, ASTRO)) deps.astro = ASTRO;
 		pkg.dependencies = { ...pkg.dependencies, "@astrojs/node": pkg.dependencies?.["@astrojs/node"] ?? NODE_ADAPTER };
 		const config = CONFIGS.find((f) => existsSync(join(dir, f)));
 		if (!config) throw new Error("No astro.config file in the repository");
@@ -251,9 +269,15 @@ export class GithubThemes {
 			cwd: dir,
 			env: cleanEnv(),
 		});
-		const link = join(dir, "node_modules", "wuppy");
+		// An override or an odd lockfile can still keep an older Astro; without source marks the editor shows no elements.
+		const astro = JSON.parse(await readFile(join(dir, "node_modules", "astro", "package.json"), "utf8")) as {
+			version: string;
+		};
+		if (olderThan(astro.version, ASTRO))
+			throw new Error(`The theme installed Astro ${astro.version}; Wuppy needs ${ASTRO} to edit its elements.`);
+		const link = join(dir, "node_modules", "wuppycms");
 		await rm(link, { recursive: true, force: true });
-		await symlink(realpathSync(join(this.o.base, "node_modules", "wuppy")), link, "dir");
+		await symlink(realpathSync(join(this.o.base, "node_modules", "wuppycms")), link, "dir");
 		job.step = "Building";
 		await run(
 			process.execPath,
@@ -358,7 +382,14 @@ export class GithubThemes {
 	 * Edits one element of the active theme's `.astro` files in place (see astro-edit.ts). `file` and `loc` are what
 	 * Astro's dev server put on the element (`data-astro-source-file`, `data-astro-source-loc`); returns its new `loc`.
 	 */
-	async editElement(file: string, loc: string, edit: ElementEdit, tag?: string): Promise<{ loc?: string }> {
+	/** `live`: the editor already shows the change, so a write that moves nothing else skips the page reload. */
+	async editElement(
+		file: string,
+		loc: string,
+		edit: ElementEdit,
+		tag?: string,
+		live = false,
+	): Promise<{ loc?: string; reload: boolean }> {
 		const active = await this.activeTheme();
 		if (!active) throw new Error("No active theme");
 		const root = resolve(active.dir);
@@ -368,8 +399,10 @@ export class GithubThemes {
 		// A theme page's template lines move when its body slot cannot share the frontmatter's first line.
 		const shift = themePageRel(root, join(root, path)) ? themeBodyShift(source) : 0;
 		const out = editAstroElement(source, shiftLine(loc, -shift), edit, tag);
+		const reload = !(live && out.quiet);
+		if (!reload) quietNextChange(join(root, path));
 		await this.writeSource(path, out.source);
-		return { loc: out.loc && shiftLine(out.loc, shift) };
+		return { loc: out.loc && shiftLine(out.loc, shift), reload };
 	}
 
 	/** Points the launcher at an installed theme (`null` = the built-in site) and restarts when possible. */

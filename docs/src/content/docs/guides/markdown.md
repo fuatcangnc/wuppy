@@ -49,19 +49,19 @@ The body is checked with the same parser Astro uses. Code inside code blocks is 
 ## On the site
 
 - The starter has `@astrojs/mdx` in `astro.config.mjs` and loads `**/*.{md,mdx}`. For an existing Astro project
-  [`wuppy init`](/guides/existing-astro-project/) does the same: it adds `mdx()` and `@astrojs/mdx`, and widens
+  [`wuppycms init`](/guides/existing-astro-project/) does the same: it adds `mdx()` and `@astrojs/mdx`, and widens
   `pattern: "**/*.md"` globs to `**/*.{md,mdx}`.
 - Theme components are mapped automatically: Wuppy adds a `components` map to `<Content />` in the theme's pages, so a theme's `src/components/*.astro` files can be inserted from **Add → Components** without an import line.
 - For a site's own components, add their names to `components` in `wuppy.config.mjs` and pass them when you render an entry: `<Content components={{ Callout }} />`.
 - An MDX entry edited in the admin shows at once, without a rebuild. It is compiled with the site's Markdown settings:
   headings get the same ids and `headings` list as in the build, code blocks the same highlighting.
-- Render a section (or custom widget) body with `mdxContent` from `wuppy/mdx`. It runs the same checks again before
+- Render a section (or custom widget) body with `mdxContent` from `wuppycms/mdx`. It runs the same checks again before
   rendering and returns what `render()` does, `{ Content, headings }`:
 
   ```astro
   ---
-  import { getSection } from "wuppy";
-  import { mdxContent } from "wuppy/mdx";
+  import { getSection } from "wuppycms";
+  import { mdxContent } from "wuppycms/mdx";
   import Callout from "../components/Callout.astro";
   const section = await getSection("cta");
   const { Content: Body } = section ? await mdxContent(section.body) : {};

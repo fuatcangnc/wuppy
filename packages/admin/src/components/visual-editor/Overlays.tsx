@@ -27,12 +27,12 @@ import {
 	Trash2,
 } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
-import { safeQuery, type NodeJson } from "@wuppy/visual-editor";
+import { safeQuery, type NodeJson } from "@wuppycms/visual-editor";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { apiData } from "../../lib/api.ts";
 import { Button, Dialog, IconButton, Input, toast } from "../../ui/index.tsx";
-import { $zoom, fitView, zoomBy } from "./Canvas.tsx";
+import { $zoom, DeviceSwitch, fitView, zoomBy } from "./Canvas.tsx";
 import { importHtml } from "./markdown.ts";
 import { MODULE_ICONS, MODULES, moduleOf, nodeName, PRESETS, type Category, type Preset } from "./modules.ts";
 import {
@@ -190,7 +190,7 @@ function insertItem(item: Item): void {
 	$inserter.set(null);
 }
 
-/** Wireframe thumbnail used by the Instatic-style inserter. */
+/** Wireframe thumbnail used by the inserter. */
 function Wireframe({ moduleId, className = "" }: { moduleId: string; className?: string }) {
 	if (moduleId === "image")
 		return (
@@ -261,7 +261,7 @@ function Wireframe({ moduleId, className = "" }: { moduleId: string; className?:
 
 const itemModule = (item: Item) => item.moduleId ?? item.nodes?.()[0]?.moduleId ?? "container";
 
-/** Instatic's "Add to canvas": category rail, search, list/grid views, wireframes, favorites and recents. */
+/** "Add to canvas": category rail, search, list/grid views, wireframes, favorites and recents. */
 export function Inserter() {
 	const open = useStore($inserter);
 	const favorites = useStore($favorites);
@@ -590,7 +590,7 @@ export function Inserter() {
 	);
 }
 
-/** The floating bar over the canvas: favorites, add, Design/Live and zoom (Instatic's canvas notch). */
+/** The floating bar over the canvas: favorites, add, Design/Live and zoom (the canvas notch). */
 export function Notch() {
 	const mode = useStore($mode);
 	const zoom = useStore($zoom);
@@ -632,6 +632,7 @@ export function Notch() {
 					</button>
 				))}
 			</div>
+			<DeviceSwitch />
 			{mode === "design" && (
 				<>
 					<span className="mx-1 h-5 w-px bg-border" />
@@ -658,7 +659,7 @@ export function Notch() {
 	);
 }
 
-/** Ctrl+K: jump to any layer, or run a command (Instatic's spotlight). */
+/** Ctrl+K: jump to any layer, or run a command (the spotlight). */
 export function Spotlight() {
 	const open = useStore($spotlight);
 	const tree = useStore($tree);
@@ -895,7 +896,7 @@ const QUICK_INSERT = [
 
 type MenuIcon = typeof Square;
 
-function MenuItem({
+export function MenuItem({
 	icon: Icon,
 	label,
 	onSelect,
@@ -931,11 +932,11 @@ function MenuItem({
 	);
 }
 
-function MenuSeparator() {
+export function MenuSeparator() {
 	return <div role="separator" className="mx-2 my-1 h-px bg-[#2f2f31]" />;
 }
 
-/** Instatic-style right-click menu for a layer, on the canvas or in Layers. */
+/** Right-click menu for a layer, on the canvas or in Layers. */
 export function ContextMenu() {
 	const menu = useStore($menu);
 	const tree = useStore($tree);

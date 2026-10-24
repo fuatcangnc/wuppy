@@ -16,13 +16,13 @@ describe("ADR-001: core does not know Cloudflare", () => {
 		const offenders = files(SRC).filter((f) => FORBIDDEN.test(readFileSync(f, "utf8")));
 		expect(offenders).toEqual([]);
 	});
-	it("core does not depend on @wuppy/cloudflare", () => {
+	it("core does not depend on @wuppycms/cloudflare", () => {
 		const pkg = JSON.parse(readFileSync(resolve(SRC, "../package.json"), "utf8")) as Record<
 			string,
 			Record<string, string>
 		>;
 		expect(Object.keys({ ...pkg.dependencies, ...pkg.devDependencies, ...pkg.peerDependencies })).not.toContain(
-			"@wuppy/cloudflare",
+			"@wuppycms/cloudflare",
 		);
 	});
 });

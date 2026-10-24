@@ -15,14 +15,14 @@ paneli `/admin` adresindedir ve her değişiklik bir Git commit'idir.
 ## Site oluşturun
 
 ```sh
-npm create wuppy my-site
+npm create wuppycms my-site
 cd my-site
 ```
 
 Yeni proje başlangıç şablonunun bir kopyasıdır: **Pages** ve **Posts** koleksiyonları, menü, SEO etiketleri,
 site haritası, RSS, arama ve 404 sayfası olan bir Astro sitesi.
 
-GitHub'da zaten bir Astro siteniz mi var? Bunun yerine `npx wuppy import` çalıştırıp listeden seçin; bkz. [Mevcut Astro projesi](/tr/guides/existing-astro-project/).
+GitHub'da zaten bir Astro siteniz mi var? Bunun yerine `npx wuppycms import` çalıştırıp listeden seçin; bkz. [Mevcut Astro projesi](/tr/guides/existing-astro-project/).
 
 ## Ortamı ayarlayın
 
@@ -55,7 +55,7 @@ Passkey için gerçek bir alan adı gerekir. Paneli `127.0.0.1` yerine `http://l
 ## Kurulumu kontrol edin
 
 ```sh
-pnpm wuppy doctor
+pnpm wuppycms doctor
 ```
 
 `doctor`; yapılandırmanın yüklendiğini, içerik klasörlerinin var olduğunu, Git'in hazır olduğunu ve

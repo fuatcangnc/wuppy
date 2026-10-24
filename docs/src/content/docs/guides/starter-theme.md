@@ -5,7 +5,7 @@ sidebar:
   order: 20
 ---
 
-Every site made with `create-wuppy` starts with the **starter theme**: a dark top bar, a boxed header that turns dark and sticks to the top as you scroll, a large hero, numbered post cards, a dark call-to-action band and a dark footer. The typeface is Space Grotesk, the accent colour is orange and corners are square.
+Every site made with `create-wuppycms` starts with the **starter theme**: a dark top bar, a boxed header that turns dark and sticks to the top as you scroll, a large hero, numbered post cards, a dark call-to-action band and a dark footer. The typeface is Space Grotesk, the accent colour is orange and corners are square.
 
 ## What it reads from Wuppy
 

@@ -1,32 +1,32 @@
 ---
 title: Command line
-description: The wuppy and wuppy-plugin commands.
+description: The wuppy and wuppycms-plugin commands.
 ---
 
 ## wuppy
 
 | Command | Does |
 | --- | --- |
-| `wuppy init [--force]` | Wraps the Astro project in this folder: writes `wuppy.config.mjs` from its content collections and adds the integration. See [Existing Astro project](/guides/existing-astro-project/). |
-| `wuppy import <git-url> <dir>` | Clones a repository into `<dir>`, then runs `wuppy init` there. |
-| `wuppy import` | Lists your Astro repositories on GitHub (needs `gh`), clones the one you pick and runs `wuppy init`. |
-| `wuppy doctor` | Checks the config, content folders, Git and `WUPPY_SECRET`. Exits with 1 on a problem. |
-| `wuppy types` | Writes `wuppy-env.d.ts` with types for every collection. |
-| `wuppy mdx-to-md [dir]` | Converts `.mdx` entries without components or expressions to `.md`; files that still need MDX are kept and listed. |
-| `wuppy upgrade [--force]` | Applies data migrations after a package update. See [Upgrading](/deployment/upgrading/). |
-| `wuppy plugin hash <dir>` | Prints a plugin's capabilities and the hash to approve it in `wuppy.config`. |
+| `wuppycms init [--force]` | Wraps the Astro project in this folder: writes `wuppy.config.mjs` from its content collections and adds the integration. See [Existing Astro project](/guides/existing-astro-project/). |
+| `wuppycms import <git-url> <dir>` | Clones a repository into `<dir>`, then runs `wuppycms init` there. |
+| `wuppycms import` | Lists your Astro repositories on GitHub (needs `gh`), clones the one you pick and runs `wuppycms init`. |
+| `wuppycms doctor` | Checks the config, content folders, Git and `WUPPY_SECRET`. Exits with 1 on a problem. |
+| `wuppycms types` | Writes `wuppy-env.d.ts` with types for every collection. |
+| `wuppycms mdx-to-md [dir]` | Converts `.mdx` entries without components or expressions to `.md`; files that still need MDX are kept and listed. |
+| `wuppycms upgrade [--force]` | Applies data migrations after a package update. See [Upgrading](/deployment/upgrading/). |
+| `wuppycms plugin hash <dir>` | Prints a plugin's capabilities and the hash to approve it in `wuppy.config`. |
 
-## wuppy-plugin
+## wuppycms-plugin
 
 | Command | Does |
 | --- | --- |
-| `wuppy-plugin init <dir>` | Creates `manifest.json` and `plugin.js`. |
-| `wuppy-plugin validate <dir>` | Validates the manifest. |
-| `wuppy-plugin hash <dir>` | Prints the capability hash to approve. |
-| `wuppy-plugin build <dir>` | Fails if the code uses an undeclared capability. |
-| `wuppy-plugin keygen` | Prints a new Ed25519 key pair. |
-| `wuppy-plugin pack <dir> [privateKey]` | Prints a registry bundle and index entry, signed when a key is given. |
+| `wuppycms-plugin init <dir>` | Creates `manifest.json` and `plugin.js`. |
+| `wuppycms-plugin validate <dir>` | Validates the manifest. |
+| `wuppycms-plugin hash <dir>` | Prints the capability hash to approve. |
+| `wuppycms-plugin build <dir>` | Fails if the code uses an undeclared capability. |
+| `wuppycms-plugin keygen` | Prints a new Ed25519 key pair. |
+| `wuppycms-plugin pack <dir> [privateKey]` | Prints a registry bundle and index entry, signed when a key is given. |
 
-## create-wuppy
+## create-wuppycms
 
-`npm create wuppy <folder>` creates a new site from the starter template.
+`npm create wuppycms <folder>` creates a new site from the starter template.

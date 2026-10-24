@@ -51,10 +51,10 @@ const findAdminDist = (): string => {
 	const req = createRequire(import.meta.url);
 	const candidates: string[] = [];
 	try {
-		const pkg = req.resolve("wuppy/package.json");
+		const pkg = req.resolve("wuppycms/package.json");
 		const dir = dirname(pkg);
 		candidates.push(
-			join(dir, "node_modules", "@wuppy", "admin", "dist"),
+			join(dir, "node_modules", "@wuppycms", "admin", "dist"),
 			join(dir, "..", "admin", "dist"),
 			join(dir, "..", "..", "packages", "admin", "dist"),
 		);
@@ -62,11 +62,11 @@ const findAdminDist = (): string => {
 		// published layouts where only the package entry is resolvable
 	}
 	candidates.push(
-		join(process.cwd(), "node_modules", "@wuppy", "admin", "dist"),
+		join(process.cwd(), "node_modules", "@wuppycms", "admin", "dist"),
 		join(process.cwd(), "packages", "admin", "dist"),
 	);
 	const found = candidates.find((dir) => existsSync(join(dir, "index.html")));
-	if (!found) throw new Error("Cannot locate @wuppy/admin/dist");
+	if (!found) throw new Error("Cannot locate @wuppycms/admin/dist");
 	return found;
 };
 

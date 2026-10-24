@@ -435,12 +435,12 @@ CI iş akışları: `ci.yml`, `release.yml`, `visual.yml`, `visual-apply.yml`,
 | TanStack Query | **Nanostores** (`nanostores` 1.5.5, `@nanostores/react` 2.0.1) | İstemci/sunucu durumu atomik store'larda |
 | Kumo | **Bejamas UI** (`bejamas` CLI 0.6.0) | Astro-native; React admin için kopyalanmış primitives + aynı token'lar |
 | Tiptap 3 | **Lexical 0.52** (`lexical`, `@lexical/react`, `@lexical/markdown`, …) | Blok = Lexical node + şema + renderer |
-| Portable Text + MDX dönüştürücü | `@wuppy/markdown` | Wuppy'de MDX **kaynak format**; Lexical JSON ara model |
+| Portable Text + MDX dönüştürücü | `@wuppycms/markdown` | Wuppy'de MDX **kaynak format**; Lexical JSON ara model |
 | Kysely + SQLite/PG/D1 | Aynı, opsiyonel | Wuppy'de DB zorunlu değil |
-| Yerel FS + S3/R2 | `@wuppy/core/storage` | Wuppy'de medya depolama; R2 adaptörde |
-| — (EmDash'te yok) | `@wuppy/git` | Wuppy'nin ana farkı: dosya + Git |
+| Yerel FS + S3/R2 | `@wuppycms/core/storage` | Wuppy'de medya depolama; R2 adaptörde |
+| — (EmDash'te yok) | `@wuppycms/git` | Wuppy'nin ana farkı: dosya + Git |
 | Özel auth (`@emdash-cms/auth`) | **Better Auth 1.7.11** + Kysely adaptörü | Passkey, OAuth, magic link, 2FA, organization/access hazır |
-| workerd/Miniflare sandbox | `@wuppy/cloudflare` | Opsiyonel adaptör; core'da import yasak |
+| workerd/Miniflare sandbox | `@wuppycms/cloudflare` | Opsiyonel adaptör; core'da import yasak |
 | Vitest + Playwright + axe | Aynı | Test yaklaşımı birebir izlenecek |
 | Lingui + Lunaria | Aynı | Çok dilli admin |
 | Changesets + pnpm workspace | Aynı | Sürüm yönetimi |
@@ -456,7 +456,7 @@ CI iş akışları: `ci.yml`, `release.yml`, `visual.yml`, `visual-apply.yml`,
    kaynak dosya, DB yalnızca indeks olacaktır. Teknoloji seçimi aynı olsa bile
    veri akışı terstir.
 2. **Cloudflare ağırlığı yüksektir.** Kumo, Workers, D1, R2, workerd, Hyperdrive
-   ve Worker Loader birlikte gelir. Wuppy'de yalnızca `@wuppy/cloudflare`
+   ve Worker Loader birlikte gelir. Wuppy'de yalnızca `@wuppycms/cloudflare`
    adaptöründe yaşar; `packages/core` bu importları **edemez**.
 3. **AT Protocol / registry / x402 katmanı** EmDash'in pazar yeri vizyonudur;
    Wuppy ilk sürümde buna ihtiyaç duymaz.

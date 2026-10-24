@@ -18,7 +18,7 @@ In a template:
 
 ```astro
 ---
-import { getMenu } from "wuppy";
+import { getMenu } from "wuppycms";
 const menu = await getMenu("header", Astro.currentLocale);
 ---
 ```

@@ -1,5 +1,10 @@
 import {
+	ArrowDown,
+	ArrowUp,
 	ChevronRight,
+	Code,
+	CopyPlus,
+	CornerLeftUp,
 	Component,
 	ExternalLink,
 	File,
@@ -18,9 +23,9 @@ import {
 	EyeOff,
 } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
-import { safeStylesheet } from "@wuppy/visual-editor";
+import { safeStylesheet } from "@wuppycms/visual-editor";
 import { Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { $entries, $media, loadEntries, loadMedia, uploadImage, type MediaItem } from "../../stores/content.ts";
 import { $doc } from "../../stores/editor.ts";
@@ -33,6 +38,7 @@ import {
 	$editingComponent,
 	$hovered,
 	$inserter,
+	$codeFile,
 	$menu,
 	$selected,
 	$target,
@@ -48,6 +54,16 @@ import {
 	saveLayout,
 	updateInstances,
 } from "./store.ts";
+import {
+	$themeDoc,
+	$themeElement,
+	codePath,
+	describeElement,
+	editThemeElement,
+	SOURCE,
+	type ThemeEdit,
+} from "./theme-element.ts";
+import { MenuItem, MenuSeparator } from "./Overlays.tsx";
 import { renameNode, updateNodeProps, type DropPosition } from "./tree.ts";
 
 export function Section({ title, children, action }: { title: string; children: ReactNode; action?: ReactNode }) {
@@ -62,7 +78,7 @@ export function Section({ title, children, action }: { title: string; children: 
 	);
 }
 
-/** Instatic's categorical tag colours: deterministic from the first meaningful character of the tag. */
+/** Categorical tag colours: deterministic from the first meaningful character of the tag. */
 const TAG_ACCENTS: Record<string, string> = {
 	a: "#8ee6c8",
 	b: "#9bdcff",
@@ -124,7 +140,7 @@ const subtreeMatches = (tree: ReturnType<typeof $tree.get>, id: string, query: s
 	return node.children.some((child) => subtreeMatches(tree, child, query));
 };
 
-/** Instatic's tree hit-testing: 8–12px edge band, everything between is "inside" a container. */
+/** Tree hit-testing: 8–12px edge band, everything between is "inside" a container. */
 function treeDropPosition(event: React.DragEvent, element: Element, container: boolean): DropPosition {
 	const rect = element.getBoundingClientRect();
 	const y = event.clientY - rect.top;
@@ -135,7 +151,7 @@ function treeDropPosition(event: React.DragEvent, element: Element, container: b
 	return y < rect.height / 2 ? "before" : "after";
 }
 
-/** The Instatic-style row that follows the pointer during a native drag. */
+/** The row that follows the pointer during a native drag. */
 function DragGhost() {
 	const preview = useStore($dragPreview);
 	useEffect(() => {
@@ -254,7 +270,7 @@ function LayerRow({
 					if (e.dataTransfer) e.dataTransfer.dropEffect = "move";
 					const position = isRoot ? "inside" : treeDropPosition(e, e.currentTarget, container);
 					setDropTarget(dropTarget?.id === id && dropTarget.position === position ? dropTarget : { id, position });
-					// Instatic expands a collapsed container after a short hover so
+					// Expand a collapsed container after a short hover so
 					// "drop inside" remains usable even when its children are hidden.
 					if (position === "inside" && hasChildren && !isRoot && !expanded && !expandTimer.current) {
 						expandTimer.current = setTimeout(() => {
@@ -380,8 +396,292 @@ function LayerRow({
 	);
 }
 
+/** One row of the theme's own markup in Layers; `body` is where the page's blocks render. */
+interface ThemeLayer {
+	key: string;
+	el: Element;
+	children: ThemeLayer[];
+	body?: boolean;
+}
+
+const SKIP_THEME = new Set(["script", "style", "template", "noscript", "link", "meta"]);
+const THEME_CONTAINERS = new Set([
+	"div",
+	"section",
+	"main",
+	"header",
+	"footer",
+	"nav",
+	"article",
+	"aside",
+	"ul",
+	"ol",
+	"form",
+]);
+
+/** The theme's elements (Astro-marked) as a tree; unmarked wrappers are skipped, their children kept. */
+function themeLayers(parent: Element, root: HTMLElement | null, path = ""): ThemeLayer[] {
+	return [...parent.children].flatMap((el, i): ThemeLayer[] => {
+		const key = `${path}.${i}`;
+		if (el === root) return [{ key, el, children: [], body: true }];
+		if (SKIP_THEME.has(el.tagName.toLowerCase()) || el.tagName.toLowerCase().startsWith("astro-dev")) return [];
+		const children = themeLayers(el, root, key);
+		return el.matches(SOURCE) ? [{ key, el, children }] : children;
+	});
+}
+
+const holds = (layer: ThemeLayer, test: (l: ThemeLayer) => boolean): boolean =>
+	test(layer) || layer.children.some((c) => holds(c, test));
+
+function themeLabel(el: Element): string {
+	const text = [...el.childNodes].every((n) => n.nodeType === 3) ? (el.textContent ?? "").trim() : "";
+	const cls = el
+		.getAttribute("class")
+		?.split(/\s+/)
+		.find((c) => c && !c.startsWith("astro-"));
+	return text.slice(0, 40) || (cls ? `.${cls}` : el.tagName.toLowerCase());
+}
+
+const themeContainer = (el: Element) =>
+	THEME_CONTAINERS.has(el.tagName.toLowerCase()) || [...el.children].some((c) => c.matches(SOURCE));
+
+/** Top and bottom quarter: before/after; the middle of a container: inside. */
+function themeDropPosition(e: React.DragEvent, row: Element, container: boolean): DropPosition {
+	const rect = row.getBoundingClientRect();
+	const y = (e.clientY - rect.top) / rect.height;
+	if (!container) return y < 0.5 ? "before" : "after";
+	return y < 0.25 ? "before" : y > 0.75 ? "after" : "inside";
+}
+
+const sourceOf = (el: Element) => ({
+	file: el.getAttribute("data-wuppy-file"),
+	loc: el.getAttribute("data-wuppy-loc"),
+});
+
+/** Runs a theme file edit on an element of the Layers tree: it becomes the picked element first. */
+function editThemeLayer(el: Element, edit: ThemeEdit) {
+	$selected.set(null);
+	$target.set(null);
+	$themeElement.set(describeElement(el));
+	void editThemeElement(edit);
+}
+
+let themeDrag: Element | null = null;
+
+/** The theme's markup in Layers (the whole page): click picks, drag moves, right-click for more. */
+function ThemeLayerRows({
+	layers,
+	depth,
+	query,
+	blocks,
+	toggled,
+	onToggle,
+	onMenu,
+}: {
+	layers: ThemeLayer[];
+	depth: number;
+	query: string;
+	blocks: (depth: number) => ReactNode;
+	toggled: Map<string, boolean>;
+	onToggle: (key: string, open: boolean) => void;
+	onMenu: (menu: { x: number; y: number; el: Element }) => void;
+}) {
+	const picked = useStore($themeElement);
+	const tree = useStore($tree);
+	const [drop, setDrop] = useState<{ key: string; position: DropPosition } | null>(null);
+	const isPicked = (l: ThemeLayer) =>
+		!!picked && sourceOf(l.el).file === picked.file && sourceOf(l.el).loc === picked.loc;
+	const matches = (l: ThemeLayer): boolean =>
+		l.body
+			? subtreeMatches(tree, tree.rootNodeId, query)
+			: `${l.el.tagName} ${themeLabel(l.el)} ${l.el.getAttribute("class") ?? ""}`.toLowerCase().includes(query) ||
+				l.children.some(matches);
+	return layers.map((l) => {
+		if (query && !matches(l)) return null;
+		if (l.body) return <Fragment key={l.key}>{blocks(depth)}</Fragment>;
+		const tag = l.el.tagName.toLowerCase();
+		// Open by default: the top level, and the way to the page's blocks and to the picked element; all while searching.
+		const auto = !!query || depth === 0 || holds(l, (x) => !!x.body) || l.children.some((c) => holds(c, isPicked));
+		const open = query ? true : (toggled.get(l.key) ?? auto);
+		const container = themeContainer(l.el);
+		const position = drop?.key === l.key ? drop.position : undefined;
+		const edge = "pointer-events-none absolute right-2 z-10 h-0.5 rounded-full bg-[#5eead4]";
+		return (
+			<Fragment key={l.key}>
+				<div
+					role="treeitem"
+					aria-level={depth + 1}
+					aria-selected={isPicked(l)}
+					aria-expanded={l.children.length ? open : undefined}
+					aria-label={`${themeLabel(l.el)}, ${tag}, theme`}
+					draggable
+					onDragStart={(e) => {
+						themeDrag = l.el;
+						e.dataTransfer.effectAllowed = "move";
+						e.dataTransfer.setData("text/plain", themeLabel(l.el));
+					}}
+					onDragEnd={() => {
+						themeDrag = null;
+						setDrop(null);
+					}}
+					onDragOver={(e) => {
+						if (!themeDrag || themeDrag === l.el) return;
+						e.preventDefault();
+						e.stopPropagation();
+						const at = themeDropPosition(e, e.currentTarget, container);
+						if (position !== at) setDrop({ key: l.key, position: at });
+					}}
+					onDragLeave={() => setDrop((d) => (d?.key === l.key ? null : d))}
+					onDrop={(e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						const from = themeDrag;
+						themeDrag = null;
+						setDrop(null);
+						if (!from || from === l.el) return;
+						const target = sourceOf(l.el);
+						if (sourceOf(from).file !== target.file)
+							return toast(
+								`Theme elements move within their own file; this one is in ${codePath(target.file ?? "")}`,
+								"error",
+							);
+						editThemeLayer(from, {
+							action: "moveTo",
+							loc: target.loc ?? "",
+							tag,
+							position: themeDropPosition(e, e.currentTarget, container),
+						});
+					}}
+					onClick={() => {
+						$selected.set(null);
+						$target.set(null);
+						$themeElement.set(describeElement(l.el));
+						l.el.scrollIntoView({ block: "center" });
+					}}
+					onContextMenu={(e) => {
+						e.preventDefault();
+						$selected.set(null);
+						$themeElement.set(describeElement(l.el));
+						onMenu({ x: e.clientX, y: e.clientY, el: l.el });
+					}}
+					onMouseEnter={() => l.el.setAttribute("data-wuppy-hover", "")}
+					onMouseLeave={() => l.el.removeAttribute("data-wuppy-hover")}
+					className={`relative flex h-7 cursor-default items-center gap-1 rounded-lg pr-3 text-xs ${
+						isPicked(l) ? "bg-sky-500/15 text-white" : "text-[#9a9aa3] hover:bg-white/[0.04]"
+					}`}
+					style={{
+						paddingLeft: 8 + depth * 12,
+						...(position === "inside"
+							? { backgroundColor: "rgba(94, 234, 212, 0.08)", outline: "1px solid rgba(94, 234, 212, 0.65)" }
+							: {}),
+					}}
+				>
+					{position === "before" && (
+						<span aria-hidden="true" className={`${edge} top-0`} style={{ left: 8 + depth * 12 }} />
+					)}
+					{position === "after" && (
+						<span aria-hidden="true" className={`${edge} bottom-0`} style={{ left: 8 + depth * 12 }} />
+					)}
+					<button
+						type="button"
+						tabIndex={-1}
+						aria-label={open ? "Collapse" : "Expand"}
+						onClick={(e) => {
+							e.stopPropagation();
+							onToggle(l.key, !open);
+						}}
+						className={`grid size-3.5 shrink-0 place-items-center rounded text-[#71717a] hover:text-white ${
+							l.children.length ? "" : "invisible"
+						}`}
+					>
+						<ChevronRight size={10} className={`transition-transform ${open ? "rotate-90" : ""}`} />
+					</button>
+					<LayerTag tag={tag} />
+					<span className="min-w-0 truncate text-[12px]">{themeLabel(l.el)}</span>
+				</div>
+				{open && (
+					<ThemeLayerRows
+						layers={l.children}
+						depth={depth + 1}
+						query={query}
+						blocks={blocks}
+						toggled={toggled}
+						onToggle={onToggle}
+						onMenu={onMenu}
+					/>
+				)}
+			</Fragment>
+		);
+	});
+}
+
+/** Right-click menu of a theme row: what the theme file API can do to one element. */
+function ThemeLayerMenu({ menu, onClose }: { menu: { x: number; y: number; el: Element }; onClose: () => void }) {
+	const ref = useRef<HTMLDivElement>(null);
+	const [pos, setPos] = useState({ x: menu.x, y: menu.y });
+	useEffect(() => {
+		const close = (e: Event) => !ref.current?.contains(e.target as Node) && onClose();
+		const key = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+		document.addEventListener("pointerdown", close, true);
+		document.addEventListener("keydown", key, true);
+		return () => {
+			document.removeEventListener("pointerdown", close, true);
+			document.removeEventListener("keydown", key, true);
+		};
+	}, [onClose]);
+	useLayoutEffect(() => {
+		const rect = ref.current?.getBoundingClientRect();
+		if (!rect) return;
+		setPos({
+			x: Math.max(8, Math.min(menu.x, innerWidth - rect.width - 8)),
+			y: Math.max(8, Math.min(menu.y, innerHeight - rect.height - 8)),
+		});
+	}, [menu]);
+	const { el } = menu;
+	const parent = el.parentElement?.closest(SOURCE);
+	const run = (fn: () => void) => () => {
+		onClose();
+		fn();
+	};
+	return createPortal(
+		<div
+			ref={ref}
+			role="menu"
+			aria-label="Theme element actions"
+			className="fixed z-[100] grid w-56 gap-px rounded-xl border border-[#2f2f31] bg-[#1c1c1f] p-1 shadow-2xl"
+			style={{ left: pos.x, top: pos.y }}
+		>
+			<MenuItem icon={Plus} label="Insert module after" onSelect={run(() => $inserter.set({}))} />
+			<MenuItem icon={CopyPlus} label="Duplicate" onSelect={run(() => editThemeLayer(el, { action: "duplicate" }))} />
+			<MenuItem icon={ArrowUp} label="Move up" onSelect={run(() => editThemeLayer(el, { action: "move", by: -1 }))} />
+			<MenuItem
+				icon={ArrowDown}
+				label="Move down"
+				onSelect={run(() => editThemeLayer(el, { action: "move", by: 1 }))}
+			/>
+			<MenuItem
+				icon={CornerLeftUp}
+				label="Select parent"
+				disabled={!parent}
+				onSelect={run(() => parent && $themeElement.set(describeElement(parent)))}
+			/>
+			<MenuItem
+				icon={Code}
+				label="Open in Code"
+				onSelect={run(() => $codeFile.set(codePath(el.getAttribute("data-wuppy-file") ?? "")))}
+			/>
+			<MenuSeparator />
+			<MenuItem icon={Trash2} label="Delete" danger onSelect={run(() => editThemeLayer(el, { action: "delete" }))} />
+		</div>,
+		document.body,
+	);
+}
+
 function LayersTab() {
 	const tree = useStore($tree);
+	const themeDoc = useStore($themeDoc);
+	const [themeToggled, setThemeToggled] = useState<Map<string, boolean>>(() => new Map());
+	const [themeMenu, setThemeMenu] = useState<{ x: number; y: number; el: Element } | null>(null);
 	const [query, setQuery] = useState("");
 	const [collapsed, setCollapsed] = useState<Set<string>>(() => new Set());
 	const [dropTarget, setDropTarget] = useState<{ id: string; position: DropPosition } | null>(null);
@@ -429,16 +729,35 @@ function LayersTab() {
 				}}
 				onDrop={() => setDropTarget(null)}
 			>
-				<LayerRow
-					id={tree.rootNodeId}
-					depth={0}
-					query={q}
-					collapsed={collapsed}
-					onToggle={toggle}
-					dropTarget={dropTarget}
-					setDropTarget={setDropTarget}
-				/>
-				{q && !subtreeMatches(tree, tree.rootNodeId, q) && (
+				{(() => {
+					const blocks = (depth: number) => (
+						<LayerRow
+							id={tree.rootNodeId}
+							depth={depth}
+							query={q}
+							collapsed={collapsed}
+							onToggle={toggle}
+							dropTarget={dropTarget}
+							setDropTarget={setDropTarget}
+						/>
+					);
+					const theme = themeDoc?.root?.isConnected ? themeLayers(themeDoc.doc.body, themeDoc.root) : [];
+					return theme.length ? (
+						<ThemeLayerRows
+							layers={theme}
+							depth={0}
+							query={q}
+							blocks={blocks}
+							onMenu={setThemeMenu}
+							toggled={themeToggled}
+							onToggle={(key, open) => setThemeToggled((prev) => new Map(prev).set(key, open))}
+						/>
+					) : (
+						blocks(0)
+					);
+				})()}
+				{themeMenu && <ThemeLayerMenu menu={themeMenu} onClose={() => setThemeMenu(null)} />}
+				{q && !subtreeMatches(tree, tree.rootNodeId, q) && !themeDoc?.root?.isConnected && (
 					<p className="px-1 py-3 text-xs text-muted-foreground">No matching layers.</p>
 				)}
 			</div>
@@ -995,7 +1314,7 @@ function MediaTab() {
 
 type Tab = "layers" | "site" | "code" | "media";
 
-/** Instatic's Explorer: Layers, Site (pages, components, layouts), Code and Media. */
+/** The Explorer: Layers, Site (pages, components, layouts), Code and Media. */
 export function ExplorerPanel() {
 	const [tab, setTab] = useState<Tab>("layers");
 	return (

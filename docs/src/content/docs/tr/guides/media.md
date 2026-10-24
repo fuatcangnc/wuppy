@@ -32,4 +32,4 @@ dosyalar klasörsüz olarak kalır). Bir temizlik aracı, hiçbir yerde kullanı
 
 `sharp` kuruluysa Wuppy, izinli genişliklerde yeniden boyutlandırılmış WebP, AVIF, JPEG veya PNG varyantları sunar
 (`?w=800&format=webp`), bunları uzun ömürlü adreslerle diskte önbelleğe alır ve yüklemede küçük bir yer tutucu ile
-görsel boyutunu kaydeder. Şablonlarda `wuppy/site` paketindeki `imageSrcset()` sizin için `srcset` üretir.
+görsel boyutunu kaydeder. Şablonlarda `wuppycms/site` paketindeki `imageSrcset()` sizin için `srcset` üretir.

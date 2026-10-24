@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
-import { fontLinks, pageCss, visualCss, visualDataSchema, type VisualData } from "@wuppy/visual-editor";
+import { fontLinks, pageCss, visualCss, visualDataSchema, type VisualData } from "@wuppycms/visual-editor";
 
 const SKIP_PATH = /^\/(admin|api|uploads|_astro)(\/|$)/;
 

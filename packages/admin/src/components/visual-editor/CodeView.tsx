@@ -9,24 +9,21 @@ import {
 	FolderOpen,
 	Lock,
 	Minus,
-	Monitor,
 	Plus,
 	RefreshCw,
 	Save,
 	Search,
-	Smartphone,
 	Square,
-	Tablet,
 	X,
 } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
 import { Link } from "@tanstack/react-router";
-import { overrideKey, safeStylesheet, type Styles } from "@wuppy/visual-editor";
+import { overrideKey, safeStylesheet, type Styles } from "@wuppycms/visual-editor";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { apiData } from "../../lib/api.ts";
 import { $collections } from "../../stores/content.ts";
 import { $doc } from "../../stores/editor.ts";
-import { Canvas, $zoom, fitView, refreshThemeHead, zoomBy } from "./Canvas.tsx";
+import { Canvas, DeviceSwitch, $zoom, fitView, refreshThemeHead, zoomBy } from "./Canvas.tsx";
 import { parse } from "./markdown.ts";
 import { moduleOf, nodeName } from "./modules.ts";
 import {
@@ -314,31 +311,11 @@ function fileIcon(file: WorkspaceFile) {
 }
 
 function CodePreviewToolbar({ onExit }: { onExit: () => void }) {
-	const visual = useStore($visual);
-	const context = useStore($context);
 	const zoom = useStore($zoom);
-	const tablet = visual.breakpoints.find((breakpoint) => breakpoint.width >= 600 && breakpoint.width < 1100);
-	const phone = visual.breakpoints.find((breakpoint) => breakpoint.width < 600);
-	const button = (value: string, label: string, Icon: typeof Monitor, disabled = false) => (
-		<button
-			type="button"
-			aria-label={label}
-			aria-pressed={context === value}
-			disabled={disabled}
-			onClick={() => $context.set(value)}
-			className={`grid size-6 place-items-center rounded-md transition-colors disabled:opacity-30 ${
-				context === value ? "bg-[#3a3a3f] text-white" : "text-[#a1a1aa] hover:bg-white/[0.06] hover:text-white"
-			}`}
-		>
-			<Icon size={13} />
-		</button>
-	);
 	return (
 		<div className="flex h-10 shrink-0 items-center gap-2 border-b border-[#2a2a2d] bg-[#19191b] px-3">
 			<div className="flex items-center gap-0.5">
-				{button("", "Desktop preview", Monitor)}
-				{button(tablet?.id ?? "", "Tablet preview", Tablet, !tablet)}
-				{button(phone?.id ?? "", "Mobile preview", Smartphone, !phone)}
+				<DeviceSwitch />
 				<button
 					type="button"
 					aria-label="Add breakpoint"

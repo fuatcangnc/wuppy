@@ -141,8 +141,16 @@ export async function getEntry(collectionOrRef, id) {
 // An MDX entry changed since the build has no compiled module: compile it now, with the site's Markdown settings.
 export async function render(entry, ...rest) {
 	if (!live.rendersAtRuntime(entry)) return real.render(entry, ...rest);
-	const { Content, headings } = await mdxContent(entry.body ?? "", { markdown: settings });
-	return { Content, headings, remarkPluginFrontmatter: {} };
+	try {
+		const { Content, headings } = await mdxContent(entry.body ?? "", { markdown: settings });
+		return { Content, headings, remarkPluginFrontmatter: {} };
+	} catch (e) {
+		// An entry this theme cannot render (a component it lacks, an import) must not take every page listing it down.
+		if (!String(e?.message).startsWith("[wuppy] MDX not allowed")) throw e;
+		console.warn(\`\${e.message} in \${entry.filePath}; its body is left out\`);
+		const { Content } = await mdxContent("", { markdown: settings });
+		return { Content, headings: [], remarkPluginFrontmatter: {} };
+	}
 }
 export async function getEntries(refs) {
 	return Promise.all(refs.map((ref) => getEntry(ref)));

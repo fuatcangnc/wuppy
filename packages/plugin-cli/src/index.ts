@@ -1,7 +1,7 @@
 import { createHash, createPrivateKey, createPublicKey, generateKeyPairSync, sign } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { capabilityHash, manifestSchema, type Manifest } from "@wuppy/plugin-types";
+import { capabilityHash, manifestSchema, type Manifest } from "@wuppycms/plugin-types";
 
 /** Single source of truth lives in plugin-types so the CLI and the server can never disagree. */
 export { capabilityHash };
@@ -31,7 +31,7 @@ export interface CliResult {
 	stderr: string;
 }
 
-const USAGE = `Usage: wuppy-plugin <command>
+const USAGE = `Usage: wuppycms-plugin <command>
 
 Commands:
   init <dir>       create manifest.json and plugin.js
@@ -90,7 +90,7 @@ export async function run(argv: string[], cwd: string): Promise<CliResult> {
 			return {
 				code: 0,
 				stderr: "",
-				stdout: `Created ${dir}/manifest.json and ${dir}/plugin.js\nNext: wuppy-plugin hash ${dir}\n`,
+				stdout: `Created ${dir}/manifest.json and ${dir}/plugin.js\nNext: wuppycms-plugin hash ${dir}\n`,
 			};
 		}
 

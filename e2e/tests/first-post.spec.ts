@@ -338,7 +338,7 @@ test("admin modules render and the owner resets a colleague's two-factor", async
 	await page.getByRole("button", { name: /Open Hello Wuppy/ }).click();
 	await expect(page.getByTestId("post-detail")).toBeVisible();
 
-	// The studio entry points share Instatic's top bar.
+	// The studio entry points share the WuppyCMS top bar.
 	await page.goto("/admin/ai");
 	await expect(page.getByRole("heading", { name: "AI", exact: true })).toBeVisible();
 	await expect(page.getByRole("heading", { name: "Connect Anthropic" })).toBeVisible();

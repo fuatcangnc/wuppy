@@ -1,5 +1,5 @@
 {
-	"name": "@wuppy/e2e",
+	"name": "@wuppycms/e2e",
 	"private": true,
 	"type": "module",
 	"scripts": {

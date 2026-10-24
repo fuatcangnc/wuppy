@@ -60,11 +60,12 @@ import {
 	X,
 } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
-import { frameworkTokens, overrideKey, STATES, type Styles } from "@wuppy/visual-editor";
+import { frameworkTokens, overrideKey, STATES, type Styles } from "@wuppycms/visual-editor";
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { ColorPicker } from "./ColorPicker.tsx";
 import { uploadImage } from "../../stores/content.ts";
 import { Button, IconButton, Input, Select, Textarea, toast } from "../../ui/index.tsx";
-import { $themeElement, codePath, editThemeElement, type ThemeElement } from "./theme-element.ts";
+import { $themeElement, codePath, editThemeElement, liveThemeEdit, type ThemeElement } from "./theme-element.ts";
 import { safeCssValue } from "./markdown.ts";
 import { GROUPED, SELECTS, STYLE_GROUPS } from "./style-props.ts";
 import { classValue, parseStyle, printStyle, variantFor, withClassValue } from "./tailwind.ts";
@@ -99,7 +100,7 @@ const COLOR = /(^|-)color$/;
 const SPACE = /^(margin|padding|gap|top|right|bottom|left)/;
 type Icon = typeof Square;
 
-/** Which framework tokens a property's input suggests (Instatic's token-aware inputs). */
+/** Which framework tokens a property's input suggests (token-aware inputs). */
 const listFor = (prop: string): string | undefined =>
 	COLOR.test(prop) || prop === "border"
 		? "ve-colors"
@@ -166,15 +167,7 @@ function StyleInput({ prop, value, inherited }: { prop: string; value: string; i
 					aria-invalid={bad || undefined}
 					className="h-8 border-[#34343a] bg-[#19191c] text-xs"
 				/>
-				{COLOR.test(prop) && (
-					<input
-						type="color"
-						aria-label={`${label} picker`}
-						value={/^#[0-9a-f]{6}$/i.test(value) ? value : "#000000"}
-						onChange={(e) => set(e.target.value)}
-						className="h-8 w-8 shrink-0 rounded border border-[#34343a] bg-transparent"
-					/>
-				)}
+				{COLOR.test(prop) && <ColorPicker label={label} value={value} onChange={set} />}
 			</div>
 			{bad && <p className="text-[10px] text-destructive">Not allowed</p>}
 		</div>
@@ -242,7 +235,7 @@ function DraftInput({
 	);
 }
 
-/** Instatic's compact label + control row. */
+/** Compact label + control row. */
 function ControlRow({ label, icon: RowIcon, children }: { label: string; icon?: Icon; children: ReactNode }) {
 	return (
 		<div className="grid grid-cols-[80px_minmax(0,1fr)] items-center gap-2">
@@ -327,9 +320,23 @@ function EnumControl({
 	inherited?: string;
 	onChange: (value: string) => void;
 }) {
+	const [open, setOpen] = useState(false);
 	const list = [...new Set([...options, ...(value && !options.includes(value) ? [value] : [])])];
 	const longest = Math.max(...list.map((option) => option.length));
-	const columns = list.length <= 3 ? list.length : longest > 4 ? 2 : Math.min(list.length, 5);
+	const icons = list.every((option) => !option || ENUM_ICONS[prop]?.[option]);
+	// One row; the rest sit behind "…" (the chosen value always stays in view).
+	const fit = icons ? 6 : longest > 6 ? 3 : 4;
+	const more = list.length > fit;
+	let shown = list;
+	if (more && !open) {
+		shown = list.slice(0, fit - 1);
+		if (!shown.includes(value)) shown[shown.length - 1] = value;
+	}
+	const columns = open ? (longest > 4 ? 2 : Math.min(list.length, 4)) : shown.length + (more ? 1 : 0);
+	const pick = (option: string) => {
+		setOpen(false);
+		onChange(option);
+	};
 	return (
 		<ControlRow label={label}>
 			<div
@@ -338,7 +345,7 @@ function EnumControl({
 				className="grid gap-0.5 rounded-md border border-[#34343a] bg-[#19191c] p-0.5"
 				style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
 			>
-				{list.map((option, index) => {
+				{shown.map((option, index) => {
 					const selected = value === option;
 					const OptionIcon = ENUM_ICONS[prop]?.[option];
 					const text = option || "—";
@@ -349,7 +356,7 @@ function EnumControl({
 							aria-label={`${label}: ${option || "Default"}`}
 							aria-pressed={selected}
 							title={option ? option : inherited ? `Default (${inherited})` : "Default"}
-							onClick={() => onChange(option)}
+							onClick={() => pick(option)}
 							className={`flex h-6 min-w-0 items-center justify-center gap-1 rounded px-1 text-[10px] font-medium transition-colors ${selected ? "bg-[#2c2c31] text-white" : "text-[#9b9ba3] hover:text-white"}`}
 						>
 							{OptionIcon ? (
@@ -360,6 +367,18 @@ function EnumControl({
 						</button>
 					);
 				})}
+				{more && (
+					<button
+						type="button"
+						aria-expanded={open}
+						aria-label={open ? `Fewer ${label} choices` : `More ${label} choices`}
+						title={open ? "Fewer" : "More"}
+						onClick={() => setOpen(!open)}
+						className="flex h-6 min-w-0 items-center justify-center rounded px-1 text-[11px] font-medium text-[#9b9ba3] hover:text-white"
+					>
+						{open ? "‹" : "…"}
+					</button>
+				)}
 			</div>
 		</ControlRow>
 	);
@@ -2174,7 +2193,7 @@ function ComponentParams({ id, node }: { id: string; node: VNode }) {
 	);
 }
 
-/** The right-hand panel: what the selected element is, its content and its styles (Instatic's Properties). */
+/** The right-hand panel: what the selected element is, its content and its styles. */
 export function PropertiesPanel() {
 	const tree = useStore($tree);
 	const selected = useStore($selected);
@@ -2374,7 +2393,7 @@ function themeIcon(tag: string): Icon {
 	return Box;
 }
 
-/** One style of a theme element; typed values are saved on blur or Enter (each save rewrites the theme file). */
+/** One style of a theme element; shown as it is typed and written to the theme file after a short pause. */
 function ThemeStyleInput({
 	prop,
 	value,
@@ -2411,22 +2430,21 @@ function ThemeStyleInput({
 					value={draft}
 					placeholder={placeholder}
 					list={listFor(prop)}
-					onChange={(e) => setDraft(e.target.value)}
-					onBlur={() => commit(draft)}
-					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+					onChange={(e) => {
+						setDraft(e.target.value);
+						commit(e.target.value);
+					}}
 					aria-label={prop}
 					className="h-8 border-[#34343a] bg-[#19191c] text-xs"
 				/>
 				{COLOR.test(prop) && (
-					<input
-						type="color"
-						aria-label={`${label} picker`}
-						value={/^#[0-9a-f]{6}$/i.test(draft) ? draft : "#000000"}
-						onChange={(e) => {
-							setDraft(e.target.value);
-							commit(e.target.value);
+					<ColorPicker
+						label={label}
+						value={draft}
+						onChange={(v) => {
+							setDraft(v);
+							commit(v);
 						}}
-						className="h-8 w-8 shrink-0 rounded border border-[#34343a] bg-transparent"
 					/>
 				)}
 			</div>
@@ -2584,7 +2602,7 @@ function ThemeClassPicker({
 	);
 }
 
-/** Text, tag and inline style of a theme element, saved on blur. */
+/** Text, tag and inline style of a theme element, shown as they are typed. */
 function ThemeElementFields({ el }: { el: ThemeElement }) {
 	const [text, setText] = useState(el.text ?? "");
 	const [inline, setInline] = useState(el.style);
@@ -2603,8 +2621,10 @@ function ThemeElementFields({ el }: { el: ThemeElement }) {
 						aria-label="Text"
 						value={text}
 						rows={3}
-						onChange={(e) => setText(e.target.value)}
-						onBlur={() => text !== el.text && void editThemeElement({ action: "text", value: text })}
+						onChange={(e) => {
+							setText(e.target.value);
+							liveThemeEdit({ action: "text", value: e.target.value });
+						}}
 						className="min-h-[72px] border-[#34343a] bg-[#19191c] text-xs"
 					/>
 				</div>
@@ -2633,11 +2653,10 @@ function ThemeElementFields({ el }: { el: ThemeElement }) {
 					aria-label="Inline style"
 					value={inline}
 					placeholder="color: red; padding: 1rem"
-					onChange={(e) => setInline(e.target.value)}
-					onBlur={() =>
-						inline !== el.style && void editThemeElement({ action: "attrs", attrs: { style: inline.trim() || null } })
-					}
-					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+					onChange={(e) => {
+						setInline(e.target.value);
+						liveThemeEdit({ action: "attrs", attrs: { style: e.target.value.trim() || null } });
+					}}
 					className="h-8 border-[#34343a] bg-[#19191c] text-xs"
 				/>
 			</div>
@@ -2645,9 +2664,9 @@ function ThemeElementFields({ el }: { el: ThemeElement }) {
 	);
 }
 
-const setAttr = (attr: string, v: string | null) => void editThemeElement({ action: "attrs", attrs: { [attr]: v } });
+const setAttr = (attr: string, v: string | null) => liveThemeEdit({ action: "attrs", attrs: { [attr]: v } });
 const commitThemeClasses = (classes: string[]) =>
-	void editThemeElement({ action: "attrs", attrs: { class: classes.join(" ") || null } });
+	liveThemeEdit({ action: "attrs", attrs: { class: classes.join(" ") || null } });
 
 function ThemeAttributeRow({ name, value }: { name: string; value: string }) {
 	const inputId = useId();
@@ -2659,8 +2678,7 @@ function ThemeAttributeRow({ name, value }: { name: string; value: string }) {
 					id={inputId}
 					aria-label={name}
 					defaultValue={value}
-					onBlur={(e) => e.target.value !== value && setAttr(name, e.target.value)}
-					onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+					onChange={(e) => setAttr(name, e.target.value)}
 					className="h-8 border-[#34343a] bg-[#19191c] text-xs"
 				/>
 				<IconButton label={`Remove ${name}`} size="icon-sm" onClick={() => setAttr(name, null)}>
@@ -2671,7 +2689,7 @@ function ThemeAttributeRow({ name, value }: { name: string; value: string }) {
 	);
 }
 
-/** The element's HTML attributes (Instatic's Attributes tab); values made by code are left to Code view. */
+/** The element's HTML attributes (Attributes tab); values made by code are left to Code view. */
 function ThemeAttributes({ attrs }: { attrs: Record<string, string> }) {
 	const [name, setName] = useState("");
 	const [value, setValue] = useState("");
@@ -2680,7 +2698,7 @@ function ThemeAttributes({ attrs }: { attrs: Record<string, string> }) {
 	return (
 		<>
 			{Object.entries(attrs).map(([key, attrValue]) => (
-				<ThemeAttributeRow key={`${key}=${attrValue}`} name={key} value={attrValue} />
+				<ThemeAttributeRow key={key} name={key} value={attrValue} />
 			))}
 			<div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] items-end gap-1">
 				<div className="grid gap-1">
@@ -2721,7 +2739,7 @@ function ThemeAttributes({ attrs }: { attrs: Record<string, string> }) {
 }
 
 /**
- * An element of the theme's own markup, with Instatic's inspector: its text and tag, every style group and its
+ * An element of the theme's own markup, with the full inspector: its text and tag, every style group and its
  * attributes, written straight into the theme's `.astro` file. Styles are Tailwind 4 classes (under the chosen
  * breakpoint and state) when the theme uses Tailwind, inline style otherwise. Anything made by code (a `{...}`
  * expression) is left to Code view.
@@ -2751,7 +2769,7 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 		if (el.tailwind) {
 			let next = classes;
 			for (const [prop, value] of Object.entries(patch)) next = withClassValue(next, prop, variant, value);
-			void editThemeElement({ action: "attrs", attrs: { class: next.join(" ") || null } });
+			liveThemeEdit({ action: "attrs", attrs: { class: next.join(" ") || null } });
 			return;
 		}
 		const next = { ...styles };
@@ -2759,7 +2777,7 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 			if (value.trim()) next[prop] = value;
 			else delete next[prop];
 		}
-		void editThemeElement({ action: "attrs", attrs: { style: printStyle(next) || null } });
+		liveThemeEdit({ action: "attrs", attrs: { style: printStyle(next) || null } });
 	};
 	const commit = (prop: string, v: string) => commitMany({ [prop]: v });
 	const q = query.trim().toLowerCase();
@@ -2901,7 +2919,7 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 								const meta = GROUP_META[group];
 								const renderInput = (key: string) => (
 									<ThemeStyleInput
-										key={`${key}:${variant}:${valueOf(key)}`}
+										key={`${key}:${variant}`}
 										prop={key}
 										value={valueOf(key)}
 										placeholder={inherited(key)}
@@ -2985,7 +3003,7 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 							<PanelSection id="other" title="Other styles" icon={EllipsisVertical} defaultOpen={false}>
 								{extra.map((key) => (
 									<ThemeStyleInput
-										key={`${key}:${valueOf(key)}`}
+										key={key}
 										prop={key}
 										value={valueOf(key)}
 										placeholder={inherited(key)}

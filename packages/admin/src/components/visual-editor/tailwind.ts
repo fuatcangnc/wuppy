@@ -101,6 +101,7 @@ const RULES: Rule[] = [
 	},
 	{ prop: "background-size", prefix: "bg-", values: keep("auto", "cover", "contain") },
 	{ prop: "background-attachment", prefix: "bg-", values: keep("fixed", "local", "scroll") },
+	{ prop: "background-attachment", prefix: "bg-", values: keep("fixed", "local", "scroll") },
 	{
 		prop: "background-position",
 		prefix: "bg-",

@@ -5,7 +5,7 @@ sidebar:
   order: 21
 ---
 
-**Themes** in the admin sidebar lists the Astro sites in your GitHub account. Pick one and Wuppy clones it on the server, wraps it like [`wuppy init`](/guides/existing-astro-project/), builds it and switches the site over to it. The theme is the design only: your posts, pages, media and menus stay in the site, so switching themes keeps them.
+**Themes** in the admin sidebar lists the Astro sites in your GitHub account. Pick one and Wuppy clones it on the server, wraps it like [`wuppycms init`](/guides/existing-astro-project/), builds it and switches the site over to it. The theme is the design only: your posts, pages, media and menus stay in the site, so switching themes keeps them.
 
 ## Connect GitHub
 
@@ -25,8 +25,8 @@ The server needs the GitHub OAuth app's secret, once:
 The list shows repositories you own, collaborate on or reach through an organization, newest push first, and only those whose `package.json` depends on Astro. Click **Install**:
 
 1. **Cloning**: the repository goes to `.wuppy/themes/<owner>__<name>/` on the server.
-2. **Wrapping**: `wuppy init` finds the content collections and writes `wuppy.config.mjs`.
-3. **Installing packages**: `npm install`.
+2. **Wrapping**: `wuppycms init` finds the content collections and writes `wuppy.config.mjs`.
+3. **Installing packages**: `npm install`. A theme on Astro older than 7.4 is moved to `^7.4.0` first: older Astro does not mark elements with their source line, so the visual editor could not list or select the theme's elements. If npm still installs an older Astro (an `overrides` entry, say), the install stops with a message instead of giving a theme the editor cannot edit. A theme that turns Astro's dev toolbar off gets it back while it runs for a site, since the marks come with it. For a theme installed before this, use **Rebuild** once.
 4. **Building**: the site is built with the Node adapter, whatever adapter its own config uses (Cloudflare, Vercel…).
 5. **Importing sample content**: the theme's own `.md` entries are copied into the site once, like a WordPress demo import. An entry the site already has (same file name) is never overwritten.
 
@@ -51,7 +51,7 @@ The theme's `wuppy.config.mjs` says which of its collections reads which site co
 ```
 
 - `kind: "posts"` / `"pages"`: the theme's `blog` shows the site's Posts, its `about` the site's Pages. A collection without `kind` is stored in the site's `content/<name>`.
-- `map`: the theme's field name and the site's. The theme reads `pubDate`, the site stores `date`. `wuppy init` fills it for common names (`pubDate`, `publishDate` → `date`; `heroImage`, `image` → `cover`).
+- `map`: the theme's field name and the site's. The theme reads `pubDate`, the site stores `date`. `wuppycms init` fills it for common names (`pubDate`, `publishDate` → `date`; `heroImage`, `image` → `cover`).
 - `route`: the theme decides the public URLs.
 - Fields only the theme uses (`description`, `pinned`) are added to the site's collection, so editors can fill them. An entry missing a field the theme requires is not shown by the theme until it is filled in.
 
@@ -78,9 +78,9 @@ A site page with the same name is kept and the theme page is not listed for it. 
 
 ## Requirements
 
-- The server must be started with `node serve.mjs` (the Docker image does this) and a process manager that starts it again after it exits, such as Docker's `restart: unless-stopped`. In development, `pnpm dev` (`node dev.mjs`) runs `astro dev` inside the active theme with the site's content, so the preview is the theme; restart it after switching themes.
+- The server must be started with `node serve.mjs` (the Docker image does this) and a process manager that starts it again after it exits, such as Docker's `restart: unless-stopped`. In development, `pnpm dev` (`node dev.mjs`) runs `astro dev` inside the active theme with the site's content, so the preview is the theme; switching themes in the admin restarts it in the new theme by itself.
 - `git` and `npm` on the server, and network access to GitHub and the npm registry.
-- The repository must be an Astro 7 site with Markdown/MDX content collections. Its `.md` and `.mdx` sample entries are imported; component imports in `.mdx` are removed because the theme's components map is provided automatically.
+- The repository must be an Astro 7 site with Markdown/MDX content collections. Its `.md` and `.mdx` sample entries are imported; component imports in `.mdx` are removed because the theme's components map is provided automatically. An entry the active theme cannot render (a component it does not have, such as another theme's `<Callout>`, or an import from a package) is shown without its body, and the server log names the file; the rest of the page still renders.
 
 ## What to know
 

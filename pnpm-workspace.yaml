@@ -17,6 +17,7 @@ packages:
   - "!templates/astrojs-boilerplate" # design source only (a client site); its look lives in templates/starter
   - e2e
   - docs
+  - landing
 catalog:
   oxlint: ^1.74.0
   prettier: ^3.9.5

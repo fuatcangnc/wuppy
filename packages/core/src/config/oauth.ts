@@ -1,4 +1,4 @@
-import type { SocialProviderId, SocialProvidersConfig } from "@wuppy/auth";
+import type { SocialProviderId, SocialProvidersConfig } from "@wuppycms/auth";
 
 export interface OAuthConfig {
 	socialProviders: SocialProvidersConfig;

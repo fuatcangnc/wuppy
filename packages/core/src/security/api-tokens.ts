@@ -1,5 +1,5 @@
 import { createHash, randomBytes, randomUUID } from "node:crypto";
-import { permissionsFor } from "@wuppy/auth";
+import { permissionsFor } from "@wuppycms/auth";
 import type { DatabaseSync } from "node:sqlite";
 
 /** `hub` tokens are used by another Wuppy that manages this site; they act with the hub user's role. */
