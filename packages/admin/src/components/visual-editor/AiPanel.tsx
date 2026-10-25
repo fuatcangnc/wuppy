@@ -85,7 +85,7 @@ export function AiPanel() {
 		setBusy(true);
 		try {
 			await undoAiEdits(undo);
-			setTurns((t) => t.map((x, j) => (j === i ? { ...x, undone: true, note: `${x.note ?? ""}\nUndone`.trim() } : x)));
+			setTurns((t) => t.map((x, j) => (j === i ? { ...x, undone: true } : x)));
 		} catch (e) {
 			toast((e as Error).message, "error");
 		} finally {
@@ -102,7 +102,11 @@ export function AiPanel() {
 		setTurns((t) => [...t, { role: "user", content: prompt }]);
 		try {
 			const out = await askAi(model, prompt, history);
-			const note = [out.changed ? `Changed ${out.changed} element${out.changed === 1 ? "" : "s"}` : "", ...out.failed]
+			const note = [
+				out.changed ? `Changed ${out.changed} element${out.changed === 1 ? "" : "s"}` : "",
+				out.inserted ? `Added ${out.inserted} section${out.inserted === 1 ? "" : "s"}` : "",
+				...out.failed,
+			]
 				.filter(Boolean)
 				.join("\n");
 			setTurns((t) => [
@@ -112,7 +116,7 @@ export function AiPanel() {
 					content: out.reply || "Done.",
 					note,
 					failed: out.failed.length > 0,
-					...(out.undo.blocks.length || out.undo.files.length ? { undo: out.undo } : {}),
+					...(out.undo.blocks.length || out.undo.files.length || out.undo.inserted.length ? { undo: out.undo } : {}),
 				},
 			]);
 		} catch (e) {
@@ -218,13 +222,15 @@ export function AiPanel() {
 							)}
 						</span>
 					))}
-					{!targets.length && <span className="text-xs text-muted-foreground">No element picked</span>}
+					{!targets.length && (
+						<span className="text-xs text-muted-foreground">No element picked · the AI can add a section</span>
+					)}
 				</div>
 				<textarea
 					aria-label="Ask the AI"
 					rows={3}
 					value={draft}
-					placeholder="Make the title red and bigger…"
+					placeholder="Change the title, or add an about section…"
 					onChange={(e) => setDraft(e.target.value)}
 					onKeyDown={(e) => {
 						if (e.key === "Enter" && !e.shiftKey) {
@@ -256,12 +262,7 @@ export function AiPanel() {
 					>
 						<MousePointer2 size={12} /> Select
 					</button>
-					<IconButton
-						label="Send (Enter)"
-						size="icon-sm"
-						disabled={busy || !draft.trim() || !targets.length}
-						onClick={() => void send()}
-					>
+					<IconButton label="Send (Enter)" size="icon-sm" disabled={busy || !draft.trim()} onClick={() => void send()}>
 						<ArrowUp size={14} />
 					</IconButton>
 				</div>

@@ -201,9 +201,9 @@ export const setThemeInsert = (fn: typeof themeInsert) => {
 	themeInsert = fn;
 };
 
-export function addJson(nodes: NodeJson[], at?: { overId: string; position: DropPosition }): void {
-	if (!nodes.length) return;
-	if (!at && themeInsert?.(nodes)) return;
+export function addJson(nodes: NodeJson[], at?: { overId: string; position: DropPosition }): string[] {
+	if (!nodes.length) return [];
+	if (!at && themeInsert?.(nodes)) return [];
 	const tree = $tree.get();
 	const moduleId = nodes.some((n) => n.moduleId === "markdown") ? "markdown" : nodes[0]!.moduleId;
 	let target: { parentId: string; index?: number } = insertionPoint(tree, moduleId);
@@ -216,17 +216,21 @@ export function addJson(nodes: NodeJson[], at?: { overId: string; position: Drop
 		if (allowedParent(tree, moduleId, parentId) && !parent.locked) target = { parentId, index };
 	}
 	let first = "";
+	const ids: string[] = [];
 	mutate((draft) => {
 		nodes.forEach((n, i) => {
 			const id = fromJson(draft, n, target.parentId, target.index === undefined ? undefined : target.index + i);
+			ids.push(id);
 			first ||= id;
 		});
 	});
 	$selected.set(first);
+	return ids;
 }
 
-export const addPreset = (preset: Preset, at?: { overId: string; position: DropPosition }): void =>
+export const addPreset = (preset: Preset, at?: { overId: string; position: DropPosition }): void => {
 	addJson([presetJson(preset)], at);
+};
 
 export function dropNode(draggedId: string, overId: string, position: DropPosition): boolean {
 	const tree = $tree.get();

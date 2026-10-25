@@ -23,11 +23,43 @@ describe("visual editor AI edits", () => {
 			},
 			input,
 		);
-		expect(out).toEqual({ reply: "Done", edits: [{ ref: "n:1", styles: { color: "red" } }] });
+		expect(out).toEqual({
+			reply: "Done",
+			edits: [{ ref: "n:1", styles: { color: "red" } }],
+			insertions: [],
+		});
+	});
+
+	it("adds a new section when no element is picked", async () => {
+		const out = await planEdits(
+			{
+				baseUrl: "x",
+				models: ["m"],
+				fetch: answer(
+					JSON.stringify({
+						reply: "Added an about section",
+						edits: [],
+						insertions: [{ html: '<section class="py-20 px-5"><h2>About</h2></section>' }],
+					}),
+				),
+			},
+			{
+				model: "m",
+				prompt: "add an about section",
+				history: [],
+				elements: [],
+				page: { title: "Home", sections: [{ tag: "section", classes: "py-20 px-5" }] },
+			},
+		);
+		expect(out).toEqual({
+			reply: "Added an about section",
+			edits: [],
+			insertions: [{ html: '<section class="py-20 px-5"><h2>About</h2></section>' }],
+		});
 	});
 
 	it("shows an answer without JSON as the reply", async () => {
 		const out = await planEdits({ baseUrl: "x", models: ["m"], fetch: answer(" Which card? ") }, input);
-		expect(out).toEqual({ reply: "Which card?", edits: [] });
+		expect(out).toEqual({ reply: "Which card?", edits: [], insertions: [] });
 	});
 });

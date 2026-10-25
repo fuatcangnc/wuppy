@@ -841,8 +841,22 @@ export function createApp({
 										.optional(),
 								}),
 							)
-							.min(1)
 							.max(20),
+						page: z
+							.object({
+								title: z.string().max(200).optional(),
+								sections: z
+									.array(
+										z.object({
+											tag: z.string().max(100),
+											classes: short.optional(),
+											text: z.string().max(500).optional(),
+										}),
+									)
+									.max(50)
+									.default([]),
+							})
+							.optional(),
 						history: z
 							.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().max(5000) }))
 							.max(20)
@@ -850,7 +864,9 @@ export function createApp({
 					})
 					.parse(await c.req.json().catch(() => undefined));
 				const out = await planEdits(ai, body).catch(aiFailure);
-				record(c, "ai.edit", { detail: `${body.model}: ${out.edits.length} edits` });
+				record(c, "ai.edit", {
+					detail: `${body.model}: ${out.edits.length} edits, ${out.insertions.length} sections`,
+				});
 				return c.json({ data: out });
 			})
 			.get("/api/ai/chats", (c) => c.json({ data: chats?.list(c.get("user").id) ?? [] }))

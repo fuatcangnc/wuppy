@@ -1,7 +1,9 @@
 import { atom } from "nanostores";
 import { apiData } from "../../lib/api.ts";
 import { moduleOf, nodeName } from "./modules.ts";
-import { $selected, $tree, mutate } from "./store.ts";
+import { $doc } from "../../stores/editor.ts";
+import { $selected, $tree, addJson, mutate } from "./store.ts";
+import { importHtml } from "./markdown.ts";
 import { parseStyle, printStyle, withClassValue } from "./tailwind.ts";
 import {
 	$themeElement,
@@ -11,7 +13,7 @@ import {
 	type ThemeEdit,
 	type ThemeElement,
 } from "./theme-element.ts";
-import { updateNodeProps, updateNodeStyles } from "./tree.ts";
+import { deleteNode, updateNodeProps, updateNodeStyles } from "./tree.ts";
 
 /**
  * The editor's AI panel: the user picks elements (blocks of the body or the theme's own markup), asks for a change, and
@@ -28,6 +30,12 @@ export interface ElementPatch {
 	classes?: string;
 	styles?: Record<string, string>;
 	attrs?: Record<string, string | null>;
+}
+
+export interface AiInsertion {
+	html: string;
+	/** A picked element's ref; the new section goes after it. Omitted: the end of the page. */
+	after?: string;
 }
 
 export const $aiPicks = atom<AiPick[]>([]);
@@ -125,6 +133,8 @@ export function themeEdits(el: ThemeElement, patch: ElementPatch): ThemeEdit[] {
 export interface AiUndo {
 	blocks: { id: string; props: Record<string, string>; styles: unknown }[];
 	files: { path: string; before: string; after: string }[];
+	/** Root ids of sections the AI added; undo removes their subtrees. */
+	inserted: string[];
 }
 
 // shortcut: reads every theme source file to snapshot the few it edits; add a one-file read endpoint if themes grow large.
@@ -156,6 +166,10 @@ export async function undoAiEdits(undo: AiUndo): Promise<void> {
 				node.styles = structuredClone(b.styles) as typeof node.styles;
 			}
 		}, "ai-undo");
+	if (undo.inserted.length)
+		mutate((d) => {
+			for (const id of undo.inserted) if (d.nodes[id]) deleteNode(d, id);
+		}, "ai-undo");
 }
 
 const position = (el: ThemeElement) => el.loc.split(":").map(Number) as [number, number];
@@ -164,7 +178,8 @@ const position = (el: ThemeElement) => el.loc.split(":").map(Number) as [number,
 export async function applyAiEdits(
 	targets: AiPick[],
 	patches: ElementPatch[],
-): Promise<{ changed: number; failed: string[]; undo: AiUndo }> {
+	insertions: AiInsertion[] = [],
+): Promise<{ changed: number; inserted: number; failed: string[]; undo: AiUndo }> {
 	const byRef = new Map(targets.map((t, i) => [`e${i + 1}`, t]));
 	let changed = 0;
 	const failed: string[] = [];
@@ -178,6 +193,7 @@ export async function applyAiEdits(
 			return { id, props: structuredClone(node.props), styles: structuredClone(node.styles) };
 		}),
 		files: [],
+		inserted: [],
 	};
 	if (blocks.length) {
 		mutate((d) => {
@@ -197,6 +213,25 @@ export async function applyAiEdits(
 		}, "ai");
 		changed += blocks.length;
 	}
+	let inserted = 0;
+	for (const insertion of insertions) {
+		const nodes = importHtml(insertion.html);
+		if (!nodes.length) {
+			failed.push("New section was empty");
+			continue;
+		}
+		const after = insertion.after ? byRef.get(insertion.after) : undefined;
+		const at =
+			after?.kind === "block" && $tree.get().nodes[after.id]
+				? { overId: after.id, position: "after" as const }
+				: { overId: $tree.get().rootNodeId, position: "inside" as const };
+		const ids = addJson(nodes, at);
+		if (ids.length) {
+			undo.inserted.push(...ids);
+			inserted++;
+		}
+	}
+
 	// Later spots in a file first, so an edit does not move the elements still to be edited.
 	const themes = patches
 		.flatMap((p) => {
@@ -244,7 +279,7 @@ export async function applyAiEdits(
 			return now !== undefined && now !== content ? [{ path, before: content, after: now }] : [];
 		});
 	}
-	return { changed, failed, undo };
+	return { changed, inserted, failed, undo };
 }
 
 export interface AiTurn {
@@ -288,17 +323,47 @@ export function saveChat(chat: AiChat): void {
 	$aiChats.set([chat, ...$aiChats.get().filter((c) => c.id !== chat.id)].slice(0, 30));
 }
 
+/** The top-level blocks and their classes: enough for the model to match the page's design without a pick. */
+function pageContext() {
+	const tree = $tree.get();
+	const root = tree.nodes[tree.rootNodeId];
+	const doc = $doc.get();
+	const sections = (root?.children ?? []).flatMap((id) => {
+		const node = tree.nodes[id];
+		if (!node) return [];
+		const def = moduleOf(node);
+		return [
+			{
+				tag: def.tag(node.props),
+				classes: (node.props.class ?? "").slice(0, 1200),
+				...(def.text ? { text: String(node.props[def.text] ?? "").slice(0, 300) } : {}),
+			},
+		];
+	});
+	return {
+		title: doc && typeof doc.data.title === "string" ? doc.data.title : undefined,
+		sections: sections.slice(0, 40),
+	};
+}
+
 export async function askAi(model: string, prompt: string, history: AiTurn[]) {
 	const targets = aiTargets();
-	if (!targets.length) throw new Error("Pick an element first (Select, or click one on the canvas)");
-	const out = await apiData<{ reply: string; edits: ElementPatch[] }>("POST", "/api/ai/edit", {
-		model,
-		prompt,
-		elements: targets.map((t, i) => describePick(t, `e${i + 1}`)),
-		history: history.slice(-10).map(({ role, content, note }) => ({
-			role,
-			content: (note ? `${content}\n[Editor: ${note}]` : content).slice(0, 5000),
-		})),
-	});
-	return { reply: out.reply, ...(await applyAiEdits(targets, out.edits)) };
+	const out = await apiData<{ reply: string; edits: ElementPatch[]; insertions?: AiInsertion[] }>(
+		"POST",
+		"/api/ai/edit",
+		{
+			model,
+			prompt,
+			elements: targets.map((t, i) => describePick(t, `e${i + 1}`)),
+			page: pageContext(),
+			history: history.slice(-10).map(({ role, content, note }) => ({
+				role,
+				content: (note ? `${content}\n[Editor: ${note}]` : content).slice(0, 5000),
+			})),
+		},
+	);
+	return {
+		reply: out.reply,
+		...(await applyAiEdits(targets, out.edits, out.insertions ?? [])),
+	};
 }
