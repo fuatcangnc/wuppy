@@ -1,6 +1,6 @@
 {
 	"name": "@wuppycms/git",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"description": "Git storage for WuppyCMS: commits, history and diffs for content files.",
 	"keywords": [
 		"wuppycms",

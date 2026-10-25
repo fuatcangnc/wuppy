@@ -1,6 +1,6 @@
 {
 	"name": "@wuppycms/auth",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"description": "Authentication for WuppyCMS (Better Auth with passkeys and two-factor sign-in).",
 	"keywords": [
 		"wuppycms",

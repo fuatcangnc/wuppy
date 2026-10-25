@@ -1,5 +1,16 @@
 # @wuppycms/admin
 
+## 0.2.4
+
+### Patch Changes
+
+- 4c39921: The visual editor's AI now sees a picked theme element's children and styles them from the parent with Tailwind variants (`md:[&>:nth-child(1)]:col-span-2`), so "make this a bento grid" also sizes the cards, even ones made by `.map()`. An AI answer without edits shows as its reply instead of failing.
+- 4c39921: The visual editor selects one use of a theme component at a time (a `<SectionHeader />` used three times in a section no longer selects all three). Class edits, move, duplicate, delete and adding next to its outer element change only that use, through the call's `className`/`class` (a component class is replaced with the theme's `tailwind-merge`). A class list built by code (`className={cn("flex gap-5", …)}`) can now be edited; its string literals change.
+- 4c39921: Theme element edits on a production server now show on the live site at once, for every kind of edit (text, class, style, add, delete, duplicate, move, tag), in `.astro` and React (`.tsx`/`.jsx`) files. The edit is written to the theme's file and laid over the built pages (`.wuppy/themes/overlay.json`) until the theme is built again; new Tailwind classes get their CSS from the theme's own Tailwind. The theme rebuilds in the background after about 90 seconds without edits, into `dist-next`, and is swapped in at the end, so the site keeps working during the build; editing goes on during a build too (a build that edits came in during is dropped and made again). Text typed into a React component now escapes `>` too. A Code view change no longer blocks visual edits of the same file until the build (only the elements it changed wait), and it starts the background build itself. The editor now knows a production Tailwind theme (its CSS is a linked sheet), so styles and AI edits are written as Tailwind classes there instead of inline style.
+- 4c39921: The visual editor now finds and edits a theme's own elements on a production server, not only under `astro dev`: a theme build marks its HTML elements with their source file and line, which only the editor's canvas receives. Theme builds also get the site's folder, so a theme's Markdown pages render the site's Pages entries in production. After an edit that moves elements, the file asks for Rebuild before the next edit.
+- 4c39921: Theme text that a component renders from a prop or a data array (`<h2>{title}</h2>`) is now editable in the visual editor: when the old text is written exactly once as a quoted string in the theme's code, that string is changed instead of failing with "This text is made by code".
+- @wuppycms/visual-editor@0.2.4
+
 ## 0.2.3
 
 ### Patch Changes

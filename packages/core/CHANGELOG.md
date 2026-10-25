@@ -1,5 +1,34 @@
 # wuppy
 
+## 0.2.4
+
+### Patch Changes
+
+- 4c39921: The visual editor's AI now sees a picked theme element's children and styles them from the parent with Tailwind variants (`md:[&>:nth-child(1)]:col-span-2`), so "make this a bento grid" also sizes the cards, even ones made by `.map()`. An AI answer without edits shows as its reply instead of failing.
+- 4c39921: A theme attribute edit with `&` or `"` in it (a Tailwind variant like `sm:[&>*]:h-full`) is now written as a JS string (`class={"…"}`); Astro keeps `&amp;` in a quoted attribute as is, so the class never matched on the live site.
+- 4c39921: The visual editor selects one use of a theme component at a time (a `<SectionHeader />` used three times in a section no longer selects all three). Class edits, move, duplicate, delete and adding next to its outer element change only that use, through the call's `className`/`class` (a component class is replaced with the theme's `tailwind-merge`). A class list built by code (`className={cn("flex gap-5", …)}`) can now be edited; its string literals change.
+- 707056c: `wuppycms init` and GitHub theme installs no longer fail on an Astro site without Markdown/MDX content collections: the site is wrapped with `collections: []` and a warning.
+- 4c39921: Theme element edits on a production server now show on the live site at once, for every kind of edit (text, class, style, add, delete, duplicate, move, tag), in `.astro` and React (`.tsx`/`.jsx`) files. The edit is written to the theme's file and laid over the built pages (`.wuppy/themes/overlay.json`) until the theme is built again; new Tailwind classes get their CSS from the theme's own Tailwind. The theme rebuilds in the background after about 90 seconds without edits, into `dist-next`, and is swapped in at the end, so the site keeps working during the build; editing goes on during a build too (a build that edits came in during is dropped and made again). Text typed into a React component now escapes `>` too. A Code view change no longer blocks visual edits of the same file until the build (only the elements it changed wait), and it starts the background build itself. The editor now knows a production Tailwind theme (its CSS is a linked sheet), so styles and AI edits are written as Tailwind classes there instead of inline style.
+- 707056c: The Astro compiler used for theme element edits now loads only when an edit happens, so a production server bundled in a pnpm workspace no longer fails on `/api` with "Cannot find native binding".
+- 4c39921: The visual editor now finds and edits a theme's own elements on a production server, not only under `astro dev`: a theme build marks its HTML elements with their source file and line, which only the editor's canvas receives. Theme builds also get the site's folder, so a theme's Markdown pages render the site's Pages entries in production. After an edit that moves elements, the file asks for Rebuild before the next edit.
+- 4c39921: The visual editor now edits the elements of a theme's React components (`.tsx`/`.jsx` rendered on the server), not only `.astro` files: text, classes (written as `className`), inline style (written as a style object), tag, insert, duplicate, move and delete. `typescript` is now a runtime dependency of `wuppycms` (it parses those files).
+  
+  Theme element edits on a production server no longer fail with "__filename is not defined in ES module scope" (or a missing native binding): the Astro compiler and TypeScript are loaded from where `wuppycms` is installed instead of being bundled into the theme's build.
+  
+  On a production server a theme element edit now rebuilds the theme by itself a few seconds after the last edit, instead of asking for Rebuild.
+- 4c39921: Theme text that a component renders from a prop or a data array (`<h2>{title}</h2>`) is now editable in the visual editor: when the old text is written exactly once as a quoted string in the theme's code, that string is changed instead of failing with "This text is made by code".
+- 4c39921: **Rebuild** on the Themes page now pulls what was pushed to the theme's GitHub repository before building. Edits made on the server are kept; where GitHub changed or deleted the same file, GitHub's version wins and the server's version stays in `git stash`.
+- Updated dependencies [4c39921]
+- Updated dependencies [4c39921]
+- Updated dependencies [4c39921]
+- Updated dependencies [4c39921]
+- Updated dependencies [4c39921]
+  - @wuppycms/admin@0.2.4
+  - @wuppycms/auth@0.2.4
+  - @wuppycms/git@0.2.4
+  - @wuppycms/plugin-types@0.2.4
+  - @wuppycms/visual-editor@0.2.4
+
 ## 0.2.3
 
 ### Patch Changes

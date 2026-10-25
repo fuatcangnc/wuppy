@@ -1,6 +1,6 @@
 {
 	"name": "wuppycms",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"description": "WuppyCMS: a file-based, Git-backed CMS and admin panel for Astro.",
 	"keywords": [
 		"astro",

@@ -1,5 +1,11 @@
 # @wuppycms/plugin-cli
 
+## 0.2.4
+
+### Patch Changes
+
+- @wuppycms/plugin-types@0.2.4
+
 ## 0.2.3
 
 ### Patch Changes
