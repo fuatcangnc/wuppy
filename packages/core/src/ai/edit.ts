@@ -87,6 +87,9 @@ NEW SECTIONS:
 - "html" is complete section HTML. Use class="..." (not className), Tailwind 4 utilities, no <script>, <style>, <iframe> or <form>, no imports and no Markdown.
 - Match the page context's design system. "design" is the theme's real CSS and markup and "containerClass" is its wrapper class; use those exact classes, fonts, colors, spacing, borders and buttons. Do not invent a generic full-width section or unrelated black/white styling.
 - Put the content of every new section inside the site's container class, e.g. <section class="py-16"><div class="container-page">...</div></section>. The outer section may be full-bleed; the content stays in the site's container.
+- Use one of the approved layouts in the design system. For an About section, copy the design system's "Split about" template exactly (eyebrow, h2, copy, two buttons, bordered panel with four small cards). Never use a numbered build-steps panel, timeline, process list or a giant bordered text panel.
+- Use only the component classes the design system lists. Do not invent new cards, pills, icon grids, numbered lists or full-width wrappers. If no approved layout fits, use the Standard cards layout.
+- Buttons must be the design system's exact primary/secondary anchors: h-9 rounded-[10px], not rounded-full pills. Orange is an accent, not the primary button fill.
 - If the design examples use max-width/padding utilities or a named container, use the same ones rather than adding another container.
 - Omit "after" to append the new section at the end of the page. Set "after" to a picked element's ref only when the user explicitly asks to put the new section after that element.
 - If no elements are picked, return insertions (and no element edits) for a new section.
