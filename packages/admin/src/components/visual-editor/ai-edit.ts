@@ -78,6 +78,7 @@ export function pickLabel(p: AiPick): string {
 }
 
 const clip = (s: string) => s.slice(0, 1500);
+const classList = (el: Element) => (el.getAttribute("class") ?? "").split(/\s+/).filter(Boolean);
 
 /** How an element is shown to the model; `ref` is how its edits name it. */
 export function describePick(p: AiPick, ref: string) {
@@ -172,6 +173,27 @@ export async function undoAiEdits(undo: AiUndo): Promise<void> {
 		}, "ai-undo");
 }
 
+/** The site's content wrapper around a generated section's children, unless the model already used one. */
+function withContainer(html: string, containerClass?: string): string {
+	if (!containerClass) return html;
+	const doc = new DOMParser().parseFromString(html, "text/html");
+	const roots = [...doc.body.children];
+	if (!roots.length) return html;
+	const contained = (el: Element) => {
+		const list = classList(el);
+		return list.includes(containerClass) || list.some((name) => name === "container" || name.startsWith("max-w-"));
+	};
+	for (const root of roots) {
+		if (contained(root) || [...root.children].some(contained) || [...root.querySelectorAll("*")].some(contained))
+			continue;
+		const wrapper = doc.createElement("div");
+		wrapper.className = containerClass;
+		while (root.firstChild) wrapper.appendChild(root.firstChild);
+		root.appendChild(wrapper);
+	}
+	return doc.body.innerHTML;
+}
+
 const position = (el: ThemeElement) => el.loc.split(":").map(Number) as [number, number];
 
 /** Applies the model's edits; returns how many elements changed and what failed. */
@@ -179,6 +201,7 @@ export async function applyAiEdits(
 	targets: AiPick[],
 	patches: ElementPatch[],
 	insertions: AiInsertion[] = [],
+	containerClass?: string,
 ): Promise<{ changed: number; inserted: number; failed: string[]; undo: AiUndo }> {
 	const byRef = new Map(targets.map((t, i) => [`e${i + 1}`, t]));
 	let changed = 0;
@@ -215,7 +238,7 @@ export async function applyAiEdits(
 	}
 	let inserted = 0;
 	for (const insertion of insertions) {
-		const nodes = importHtml(insertion.html);
+		const nodes = importHtml(withContainer(insertion.html, containerClass));
 		if (!nodes.length) {
 			failed.push("New section was empty");
 			continue;
@@ -340,30 +363,35 @@ function pageContext() {
 			},
 		];
 	});
+	const pageClasses = sections.flatMap((section) => (section.classes ?? "").split(/\s+/).filter(Boolean));
+	const candidates = pageClasses.filter((name) => /(^|-)container($|-)/.test(name) || name.startsWith("max-w-"));
+	const containerClass = candidates.find((name) => /container|max-w-/.test(name)) ?? candidates[0];
 	return {
 		title: doc && typeof doc.data.title === "string" ? doc.data.title : undefined,
 		sections: sections.slice(0, 40),
+		...(containerClass ? { containerClass } : {}),
 	};
 }
 
 export async function askAi(model: string, prompt: string, history: AiTurn[]) {
 	const targets = aiTargets();
-	const out = await apiData<{ reply: string; edits: ElementPatch[]; insertions?: AiInsertion[] }>(
-		"POST",
-		"/api/ai/edit",
-		{
-			model,
-			prompt,
-			elements: targets.map((t, i) => describePick(t, `e${i + 1}`)),
-			page: pageContext(),
-			history: history.slice(-10).map(({ role, content, note }) => ({
-				role,
-				content: (note ? `${content}\n[Editor: ${note}]` : content).slice(0, 5000),
-			})),
-		},
-	);
+	const out = await apiData<{
+		reply: string;
+		edits: ElementPatch[];
+		insertions?: AiInsertion[];
+		containerClass?: string;
+	}>("POST", "/api/ai/edit", {
+		model,
+		prompt,
+		elements: targets.map((t, i) => describePick(t, `e${i + 1}`)),
+		page: pageContext(),
+		history: history.slice(-10).map(({ role, content, note }) => ({
+			role,
+			content: (note ? `${content}\n[Editor: ${note}]` : content).slice(0, 5000),
+		})),
+	});
 	return {
 		reply: out.reply,
-		...(await applyAiEdits(targets, out.edits, out.insertions ?? [])),
+		...(await applyAiEdits(targets, out.edits, out.insertions ?? [], out.containerClass)),
 	};
 }

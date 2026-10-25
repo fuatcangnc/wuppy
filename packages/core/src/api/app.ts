@@ -410,6 +410,56 @@ export function createApp({
 
 	const searchIndex = new SearchIndex(service);
 	const locks = new EditLocks();
+	/**
+	 * The active GitHub theme's CSS and a few sections, so the visual editor's AI can write a section in the site's
+	 * own design system instead of generic markup. Null for the built-in site or when no theme is active.
+	 */
+	const themeDesign = async (): Promise<{ design: string; containerClass?: string; repo: string } | null> => {
+		if (!themes) return null;
+		const source = await themes.sourceFiles().catch(() => null);
+		if (!source) return null;
+		const cssFile =
+			source.files.find((f) => /^src\/styles\/.*\.css$/.test(f.path)) ??
+			source.files.find((f) => f.path.endsWith(".css"));
+		const css = cssFile?.content ?? "";
+		const containerMatch = /\.[a-z][a-z0-9-]*container[a-z0-9-]*\s*\{/i.exec(css)?.[0] ?? "";
+		const containerFromCss = containerMatch ? containerMatch.slice(1).split(/\s/)[0] : undefined;
+		const cssRule = (name: string) =>
+			new RegExp(`\\.[a-z0-9-]*${name}[a-z0-9-]*\\s*\\{[^}]*\\}`, "i").exec(css)?.[0] ?? "";
+		const cssExcerpt = [css.slice(0, 6500), containerMatch, cssRule("display"), cssRule("text-gradient-orange")]
+			.filter(Boolean)
+			.join("\n");
+		const preferred = [
+			"src/components/site/Footer.astro",
+			"src/components/site/Hero.astro",
+			"src/components/site/SectionHeader.astro",
+			"src/pages/index.astro",
+		];
+		const preferredFiles = source.files.filter((f) => preferred.includes(f.path));
+		const fallbackFiles = source.files
+			.filter((f) => f.path.startsWith("src/components/") && f.path.endsWith(".astro"))
+			.slice(0, 3);
+		const exampleFiles = [
+			...preferredFiles,
+			...fallbackFiles.filter((f) => !preferredFiles.some((p) => p.path === f.path)),
+		].slice(0, 6);
+		const examples = exampleFiles.map((f) => `--- ${f.path} ---\n${f.content.slice(0, 4500)}`).join("\n\n");
+		const containerFromMarkup = /class="[^"]*\b([a-z][a-z0-9-]*container[a-z0-9-]*)\b/.exec(examples)?.[1];
+		const containerClass = containerFromCss ?? containerFromMarkup;
+		const design = [
+			`Theme: ${source.repo}`,
+			containerClass ? `Container class: ${containerClass}` : "",
+			"CSS design tokens and classes:",
+			cssExcerpt,
+			"Example theme markup:",
+			examples,
+		]
+			.filter(Boolean)
+			.join("\n\n")
+			.slice(0, 30_000);
+		return { design, ...(containerClass ? { containerClass } : {}), repo: source.repo };
+	};
+
 	const app = new Hono<Env>().onError(onError);
 
 	// Public, unauthenticated surfaces. Registered before the auth middleware.
@@ -845,6 +895,7 @@ export function createApp({
 						page: z
 							.object({
 								title: z.string().max(200).optional(),
+								containerClass: z.string().max(200).optional(),
 								sections: z
 									.array(
 										z.object({
@@ -863,11 +914,14 @@ export function createApp({
 							.default([]),
 					})
 					.parse(await c.req.json().catch(() => undefined));
-				const out = await planEdits(ai, body).catch(aiFailure);
+				const design = await themeDesign().catch(() => null);
+				const page = design ? { ...body.page, ...design } : body.page;
+				const out = await planEdits(ai, { ...body, page }).catch(aiFailure);
+				const containerClass = design?.containerClass ?? body.page?.containerClass;
 				record(c, "ai.edit", {
 					detail: `${body.model}: ${out.edits.length} edits, ${out.insertions.length} sections`,
 				});
-				return c.json({ data: out });
+				return c.json({ data: { ...out, ...(containerClass ? { containerClass } : {}) } });
 			})
 			.get("/api/ai/chats", (c) => c.json({ data: chats?.list(c.get("user").id) ?? [] }))
 			.get("/api/ai/chats/:id", (c) => {

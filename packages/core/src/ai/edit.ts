@@ -31,6 +31,11 @@ export interface PageSection {
 export interface PageContext {
 	title?: string;
 	sections?: PageSection[];
+	/** The theme's own CSS and markup, so a new section matches the site's design system. */
+	design?: string;
+	/** The site's content wrapper class, e.g. `container-page`; the editor also wraps new sections in it. */
+	containerClass?: string;
+	repo?: string;
 }
 
 const editSchema = z.object({
@@ -75,7 +80,9 @@ For theme elements with "tailwind": true prefer Tailwind 4 utilities in "classes
 NEW SECTIONS:
 - When the user asks for a new section, return it in "insertions". A picked element never prevents adding a section, even when it is a small element such as <hr>. Do not refuse because the picked element cannot contain a section.
 - "html" is complete section HTML. Use class="..." (not className), Tailwind 4 utilities, no <script>, <style>, <iframe> or <form>, no imports and no Markdown.
-- Match the page context's existing sections and their classes. Keep the section usable in the site's design system.
+- Match the page context's design system. "design" is the theme's real CSS and markup and "containerClass" is its wrapper class; use those exact classes, fonts, colors, spacing, borders and buttons. Do not invent a generic full-width section or unrelated black/white styling.
+- Put the content of every new section inside the site's container class, e.g. <section class="py-16"><div class="container-page">...</div></section>. The outer section may be full-bleed; the content stays in the site's container.
+- If the design examples use max-width/padding utilities or a named container, use the same ones rather than adding another container.
 - Omit "after" to append the new section at the end of the page. Set "after" to a picked element's ref only when the user explicitly asks to put the new section after that element.
 - If no elements are picked, return insertions (and no element edits) for a new section.
 
