@@ -48,7 +48,15 @@ import {
 	selectParent,
 	$inserter,
 } from "./store.ts";
-import { $themeDoc, $themeElement, describeElement, flushThemeEdits, liveThemeEdit, SOURCE } from "./theme-element.ts";
+import {
+	$themeDoc,
+	$themeElement,
+	describeElement,
+	flushThemeEdits,
+	isCopy,
+	liveThemeEdit,
+	SOURCE,
+} from "./theme-element.ts";
 import { isAncestor, updateNodeProps, type DropPosition, type NodeTree, type Styles, type VNode } from "./tree.ts";
 
 type DragPreview = { label: string; moduleId: string };
@@ -867,14 +875,13 @@ function Frame({
 		if (text !== node.props[key]) mutate((d) => updateNodeProps(d, node.id, { [key]: text }));
 	};
 
-	// Outline the picked theme element (every copy, e.g. each item of a list) again after each reload of the page.
+	// Outline the picked theme element (every copy of its use, e.g. each item of a list) again after each reload of the page.
 	useEffect(() => {
 		const d = frame.current?.contentDocument;
 		if (!d || !loads) return;
 		for (const el of d.querySelectorAll("[data-wuppy-picked]")) el.removeAttribute("data-wuppy-picked");
 		for (const el of picked ? d.querySelectorAll(SOURCE) : [])
-			if (el.getAttribute("data-wuppy-file") === picked?.file && el.getAttribute("data-wuppy-loc") === picked.loc)
-				el.setAttribute("data-wuppy-picked", "");
+			if (picked && isCopy(el, picked)) el.setAttribute("data-wuppy-picked", "");
 	}, [picked, loads]);
 
 	const onLoad = async () => {
@@ -921,7 +928,7 @@ function Frame({
 				ref={frame}
 				key={live ?? "blank"}
 				title={`Page canvas${context ? ` (${context})` : ""}`}
-				src={live}
+				src={live && `${live}${live.includes("?") ? "&" : "?"}wuppy-visual`}
 				srcDoc={live ? undefined : "<!doctype html><html><head></head><body></body></html>"}
 				onLoad={() => void onLoad()}
 				className={`block bg-white ${fill ? "h-full" : ""}`}

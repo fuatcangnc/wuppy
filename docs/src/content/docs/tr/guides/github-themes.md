@@ -32,7 +32,7 @@ Liste; sahibi olduğunuz, katkıcı olduğunuz ya da bir organizasyon üzerinden
 
 Derleme başarılı olunca tema etkinleşir ve sunucu yeniden başlar; sayfa kendiliğinden yenilenir. Hesaplar, şifreler ve oturumlar aynı kalır. Bir adım başarısız olursa hata gösterilir ve mevcut site çalışmaya devam eder.
 
-**Active** bölümü yerleşik siteyi ve burada derlenen her temayı listeler. **Activate** yeniden derlemeden aralarında geçiş yapar. **Rebuild** kurulu bir temayı yeniden derler.
+**Active** bölümü yerleşik siteyi ve burada derlenen her temayı listeler. **Activate** yeniden derlemeden aralarında geçiş yapar. **Rebuild** önce o zamandan beri GitHub'a gönderilenleri çeker, sonra temayı yeniden derler. Sunucuda yapılan düzenlemeler (görsel editör, Code görünümü) korunur. GitHub aynı dosyayı değiştirdiyse ya da sildiyse GitHub'ınki kazanır; sunucudaki sürüm tema klasörünün `git stash`'inde kalır. `package.json`, kilit dosyası ve `astro.config` değişiklikleri çekmeden sonra yeniden yapılır; `wuppy.config.mjs` korunur.
 
 ## İçerik nerede durur
 
@@ -88,7 +88,6 @@ Sitede aynı adla bir sayfa varsa o korunur ve tema sayfası onun için listelen
 - İçerik düzenlemeleri sitenin Git deposuna commit edilir. Görsel editörün Code görünümünde (**theme: owner/repo** kökü) düzenlenen tema kodu yalnız temanın klasörüne kaydedilir; GitHub'a hiçbir şey push edilmez.
 - Temanın göreli yolla (`../../assets/x.png`) gösterdiği örnek görseller içe aktarılan girdilerle gelmez; Media'dan değiştirin.
 - Derleme depodaki bir sorun yüzünden başarısız olursa (örneğin bir yazıda içerik şemasının zorunlu tuttuğu bir alan eksikse) sorunu GitHub'da düzeltip yeniden **Install**'a basın: hiç derlenmemiş tema baştan klonlanır.
-- **Rebuild** GitHub'dan yeni commit çekmez. Güncellemek için sunucuda `.wuppy/themes/<sahip>__<ad>/` klasörünü silip yeniden kurun.
 - Tema derlemesi, derlendiği Wuppy sürümünü içerir. Wuppy'yi güncelledikten sonra **Rebuild** düğmesine basın.
 - Etkin tema başlatılamazsa `serve.mjs` hatayı loglar ve yerleşik siteyi çalıştırır.
 - Yalnız sitenin kökündeki `package.json` kontrol edilir; monorepo alt klasöründeki Astro siteleri listelenmez.

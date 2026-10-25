@@ -6,6 +6,8 @@ const el = (tailwind: boolean): ThemeElement => ({
 	selection: 1,
 	file: "/t/src/pages/a.astro",
 	loc: "3:5",
+	uses: 1,
+	ownUse: false,
 	tag: "h1",
 	text: "Tags",
 	cls: "title text-lg",

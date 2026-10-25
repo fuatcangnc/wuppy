@@ -46,7 +46,7 @@ export interface InitPlan {
 }
 
 export const CONFIGS = ["astro.config.mjs", "astro.config.ts", "astro.config.js", "astro.config.mts"];
-const CONTENT_CONFIGS = [
+export const CONTENT_CONFIGS = [
 	"src/content.config.ts",
 	"src/content.config.mjs",
 	"src/content.config.js",

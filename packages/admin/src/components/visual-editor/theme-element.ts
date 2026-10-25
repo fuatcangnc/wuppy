@@ -27,11 +27,26 @@ export interface ThemeElement {
 	computed: Record<string, string>;
 	/** The theme builds its CSS with Tailwind 4, so styles are written as classes (else as inline style). */
 	tailwind: boolean;
+	/** The use of its component it is in (see `hostOf`); copies with another host are other uses. */
+	host?: ElementHost;
+	/** How many places of the page use its component: more than one when it is part of a shared component. */
+	uses: number;
+	/** Picked on its own use (not one of a list's copies) and the outermost element of it: edits change this use only. */
+	ownUse: boolean;
+}
+
+/** Where a component is used: the element of another file holding it, and which of its children from other files. */
+export interface ElementHost {
+	file: string;
+	loc: string;
+	tag: string;
+	slot: number;
+	count: number;
 }
 
 export type ThemeEdit =
-	| { action: "text"; value: string; code?: boolean }
-	| { action: "attrs"; attrs: Record<string, string | null> }
+	| { action: "text"; value: string; code?: boolean; from?: string }
+	| { action: "attrs"; attrs: Record<string, string | null>; from?: Record<string, string> }
 	| { action: "tag"; name: string }
 	| { action: "delete" | "duplicate" }
 	| { action: "insert"; html: string }
@@ -60,10 +75,69 @@ const computedOf = (el: Element): Record<string, string> => {
 };
 
 const OWN = /^(class|style|data-astro-|data-wuppy-)/;
+
+const rulesOf = (sheet: CSSStyleSheet): CSSRule[] => {
+	try {
+		return [...sheet.cssRules];
+	} catch {
+		// Another origin's sheet (web fonts) cannot be read.
+		return [];
+	}
+};
+/**
+ * Tailwind 4 starts its CSS with a banner (dev inlines it in a `<style>`); a production build links the sheet, whose
+ * comments the browser drops, so there it is known by its `utilities` layer.
+ */
+const usesTailwind = (doc: Document) =>
+	[...doc.querySelectorAll("style")].some((s) => s.textContent?.includes("tailwindcss v4")) ||
+	[...doc.styleSheets].some((sheet) =>
+		rulesOf(sheet).some((r) => (r as CSSRule & { name?: string }).name === "utilities"),
+	);
 let selection = 0;
+
+const fileAttr = (el: Element) => el.getAttribute("data-wuppy-file");
+
+/**
+ * The use of a component the element is in: its nearest ancestor from another file (the host) and which of the host's
+ * children from other files holds it. Mirrors core's overlay.ts `isUse`.
+ */
+function hostOf(el: Element): (ElementHost & { child: Element }) | undefined {
+	const own = fileAttr(el);
+	let child = el;
+	let p = el.parentElement;
+	while (p && (fileAttr(p) ?? own) === own) [child, p] = [p, p.parentElement];
+	if (!p) return undefined;
+	const file = fileAttr(p)!;
+	const uses = [...p.children].filter((c) => fileAttr(c) && fileAttr(c) !== file);
+	const loc = p.getAttribute("data-wuppy-loc") ?? "";
+	return { file, loc, tag: p.tagName.toLowerCase(), slot: uses.indexOf(child), count: uses.length, child };
+}
+const placeOf = (h: { file: string; loc: string } | undefined) => (h ? `${h.file}|${h.loc}` : "");
+
+/** Whether `node` is a copy of the picked element in the same use of its component (a list's items are one use). */
+export const isCopy = (node: Element, el: Pick<ThemeElement, "file" | "loc" | "host">): boolean =>
+	fileAttr(node) === el.file &&
+	node.getAttribute("data-wuppy-loc") === el.loc &&
+	// An element just added is told apart once the page shows it.
+	(!el.host || placeOf(hostOf(node)) === placeOf(el.host));
+
+function usesOf(el: Element) {
+	const host = hostOf(el);
+	const same = [...el.ownerDocument.querySelectorAll(SOURCE)].filter(
+		(n) => fileAttr(n) === fileAttr(el) && n.getAttribute("data-wuppy-loc") === el.getAttribute("data-wuppy-loc"),
+	);
+	const places = new Set(same.map((n) => placeOf(hostOf(n))));
+	const here = same.filter((n) => placeOf(hostOf(n)) === placeOf(host));
+	return {
+		host: host && { file: host.file, loc: host.loc, tag: host.tag, slot: host.slot, count: host.count },
+		uses: places.size,
+		ownUse: places.size > 1 && here.length === 1 && host?.child === el && host.slot !== -1,
+	};
+}
 
 export const describeElement = (el: Element): ThemeElement => ({
 	selection: ++selection,
+	...usesOf(el),
 	file: el.getAttribute("data-wuppy-file") ?? "",
 	loc: el.getAttribute("data-wuppy-loc") ?? "",
 	tag: el.tagName.toLowerCase(),
@@ -72,8 +146,7 @@ export const describeElement = (el: Element): ThemeElement => ({
 	style: el.getAttribute("style") ?? "",
 	attrs: Object.fromEntries([...el.attributes].filter((a) => !OWN.test(a.name)).map((a) => [a.name, a.value])),
 	computed: computedOf(el),
-	// Tailwind 4 starts its CSS with this banner, in dev as in builds.
-	tailwind: [...el.ownerDocument.querySelectorAll("style")].some((s) => s.textContent?.includes("tailwindcss v4")),
+	tailwind: usesTailwind(el.ownerDocument),
 });
 
 /** The theme-relative path the Code view opens: `.../themes/x/src/pages/a.astro` → `src/pages/a.astro`. */
@@ -96,14 +169,18 @@ const patchOf = (el: ThemeElement, edit: ThemeEdit): Partial<ThemeElement> => {
 };
 
 /** Every copy of the element on the canvas frames (one per breakpoint; a list item renders many). */
-function copiesOf(el: ThemeElement): Element[] {
+export function copiesOf(el: ThemeElement): Element[] {
 	const frames = document.querySelectorAll<HTMLIFrameElement>('iframe[title^="Page canvas"]');
 	return [...frames].flatMap((f) =>
-		[...(f.contentDocument?.querySelectorAll(SOURCE) ?? [])].filter(
-			(e) => e.getAttribute("data-wuppy-file") === el.file && e.getAttribute("data-wuppy-loc") === el.loc,
-		),
+		[...(f.contentDocument?.querySelectorAll(SOURCE) ?? [])].filter((e) => isCopy(e, el)),
 	);
 }
+
+/** Loads the canvas frames again, to show what the server now renders. */
+const reloadCanvas = () => {
+	for (const f of document.querySelectorAll<HTMLIFrameElement>('iframe[title^="Page canvas"]'))
+		f.contentWindow?.location.reload();
+};
 
 /** Shows a text or attribute edit on the canvas right away, before the file is written. */
 function previewThemeEdit(el: ThemeElement, edit: LiveEdit): void {
@@ -121,13 +198,21 @@ function previewThemeEdit(el: ThemeElement, edit: LiveEdit): void {
  * the canvas already shows the change, so the dev server may skip reloading the page.
  */
 export async function applyThemeEdit(el: ThemeElement, edit: ThemeEdit, live = false): Promise<ThemeElement | null> {
-	const out = await apiData<{ loc?: string }>("POST", "/api/themes/element", {
+	// The class before the edit: a class list made by code, or one use of a component, is changed by the difference.
+	const sent =
+		edit.action === "attrs" && "class" in edit.attrs && !edit.from ? { ...edit, from: { class: el.cls } } : edit;
+	const out = await apiData<{ loc?: string; refresh?: boolean; slot?: number }>("POST", "/api/themes/element", {
 		file: el.file,
 		loc: el.loc,
 		tag: el.tag,
-		edit,
+		edit: sent,
 		...(live ? { live } : {}),
+		...(el.ownUse && el.host ? { host: el.host } : {}),
 	});
+	if (out.slot !== undefined && el.host && out.slot !== el.host.slot)
+		el = { ...el, host: { ...el.host, slot: out.slot } };
+	// A production server shows the edit on the page it renders; there is no dev server to reload it.
+	if (out.refresh) reloadCanvas();
 	// Without a reload the canvas keeps the old location on the element; later edits find it by the new one.
 	if (out.loc && out.loc !== el.loc) for (const node of copiesOf(el)) node.setAttribute("data-wuppy-loc", out.loc);
 	return out.loc ? { ...el, ...patchOf(el, edit), loc: out.loc } : null;
@@ -137,7 +222,11 @@ type LiveEdit = Extract<ThemeEdit, { action: "text" | "attrs" }>;
 interface Pending {
 	el: ThemeElement;
 	text?: string;
+	/** The text before this run of typing: the server finds it in the theme's code when the element shows a variable. */
+	from?: string;
 	attrs?: Record<string, string | null>;
+	/** The class before this run of edits. */
+	fromClass?: string;
 	timer: ReturnType<typeof setTimeout>;
 }
 let pending: Pending | null = null;
@@ -162,8 +251,7 @@ async function write(edit: ThemeEdit, target: ThemeElement | null, live: boolean
 		if (target) {
 			// The canvas shows a change the file does not have: load it again.
 			$themeElement.set(null);
-			for (const f of document.querySelectorAll<HTMLIFrameElement>('iframe[title^="Page canvas"]'))
-				f.contentWindow?.location.reload();
+			reloadCanvas();
 		}
 		return false;
 	}
@@ -181,8 +269,13 @@ export function flushThemeEdits(): void {
 	pending = null;
 	if (!p) return;
 	clearTimeout(p.timer);
-	if (p.text !== undefined) void enqueue({ action: "text", value: p.text }, p.el, true);
-	if (p.attrs) void enqueue({ action: "attrs", attrs: p.attrs }, p.el, true);
+	if (p.text !== undefined) void enqueue({ action: "text", value: p.text, from: p.from }, p.el, true);
+	if (p.attrs)
+		void enqueue(
+			{ action: "attrs", attrs: p.attrs, ...(p.fromClass !== undefined ? { from: { class: p.fromClass } } : {}) },
+			p.el,
+			true,
+		);
 }
 
 /**
@@ -199,7 +292,9 @@ export function liveThemeEdit(edit: LiveEdit): void {
 	if (pending) clearTimeout(pending.timer);
 	pending = {
 		...pending,
-		...(edit.action === "text" ? { text: edit.value } : { attrs: { ...pending?.attrs, ...edit.attrs } }),
+		...(edit.action === "text"
+			? { text: edit.value, from: pending?.text !== undefined ? pending.from : (el.text ?? undefined) }
+			: { attrs: { ...pending?.attrs, ...edit.attrs }, fromClass: pending?.fromClass ?? el.cls }),
 		el: next,
 		timer: setTimeout(flushThemeEdits, 400),
 	};
@@ -219,18 +314,25 @@ async function insertIntoTheme(nodes: NodeJson[]): Promise<void> {
 		const html = themeMarkup(node, $visual.get().components);
 		if (!el || !html) continue;
 		try {
-			const out = await apiData<{ loc?: string }>("POST", "/api/themes/element", {
+			const out = await apiData<{ loc?: string; file?: string; refresh?: boolean }>("POST", "/api/themes/element", {
 				file: el.file,
 				loc: el.loc,
 				tag: el.tag,
 				edit: { action: "insert", html },
+				...(el.ownUse && el.host ? { host: el.host } : {}),
 			});
+			if (out.refresh) reloadCanvas();
 			if (!out.loc) return;
 			const def = MODULES[node.moduleId] ?? MODULES.markdown!;
 			el = {
 				...el,
 				selection: ++selection,
+				// Added next to a component's use, it is in the file that uses it.
+				file: out.file ?? el.file,
 				loc: out.loc,
+				host: undefined,
+				uses: 1,
+				ownUse: false,
 				tag: def.tag(node.props),
 				text: def.text ? (node.props[def.text] ?? "") : null,
 				cls: node.props.class ?? "",

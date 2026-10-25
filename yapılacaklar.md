@@ -836,6 +836,11 @@ temel → uzak taraf → hub → proxy → UI → client → test.
 + [x] Tema `src/pages/*.md(x)` sayfaları etkinleştirmede sitenin Pages'ına aktarılır; tema aynı URL'de kendi layout'uyla site girdisini her istekte çizer (yoksa temanın metni)
 + [x] Tema `src/pages/*.astro` sayfaları Pages'ta "Theme page" olarak listelenir: gövdeye eklenen bloklar `<main>` sonunda çizilir ve görsel editörde yerinde düzenlenir, Edit → Code görünümünde dosya, SEO alanları tema sayfasına uygulanır
 + [x] Görsel editör tema `.astro` işaretlemesini de düzenler: canlı sayfada öğe seçilir (Astro dev kaynak işaretleri), metin/class/inline stil, taşı/çoğalt/sil dosyaya yazılır (`POST /api/themes/element`); kodla üretilen kısımlar Code görünümüne yönlendirilir
++ [x] Production tema düzenlemeleri anında canlıda: overlay.json + gölge dosyalar, yeni Tailwind class CSS'i, arka planda `dist-next` derleyip değiştirme (Ek 22)
++ [x] Bileşen kullanımları ayrı seçilir/düzenlenir (çağrının className'i + tailwind-merge), `cn(...)` className düzenleme (Ek 22)
++ [x] Themes › Rebuild GitHub'dan çeker; sunucu düzenlemeleri korunur, çakışmada GitHub kazanır (stash'te kalır) (Ek 22)
++ [x] Görsel editör AI'ı alt öğeleri görür ve üst öğeden Tailwind varyantlarıyla biçimlendirir (bento span'leri); JSON'suz cevap hata değil cevaptır (Ek 22)
++ [x] `&`/`"` içeren öznitelik `{"…"}` olarak yazılır (Astro `&amp;`'yi çözmüyordu; bento class'ları canlıda bozuktu) (Ek 22)
 + [x] Tema öğesi Properties'i Instatic'in tüm bölümleriyle: metin, etiket, Layout…Interaction stilleri (Tailwind 4 class'ı; breakpoint/state → `max-[Npx]:`/`hover:`; Tailwind yoksa inline style) ve HTML öznitelikleri
 + [x] Görsel editörde AI paneli (Selectors altında): Select ile öğe seç/bırak, istek yaz; model (`POST /api/ai/edit`) düzenleme JSON'u döner, editör blokları tek undo adımında, tema öğelerini tema dosyasına uygular
 + [x] Layers tema sayfasında temanın tüm öğelerini (bloklar body yerinde) gösterir; tema öğesi seçiliyken eklenen modül tema dosyasına o öğenin altına yazılır (`insert` eylemi)
@@ -857,3 +862,8 @@ temel → uzak taraf → hub → proxy → UI → client → test.
 + [x] GitHub OAuth (giriş + tema bağlantısı) sunucuda wuppycms.com ve test.wuppycms.com için açıldı (.env, .env.landing)
 + [x] Docker imajına ca-certificates eklendi (GitHub tema klonlama TLS hatası); wuppycms.com landing servisi starter serve.mjs ile çalışıyor (tema seçimi destekli)
 + [x] wuppycms init / GitHub tema kurulumu Markdown koleksiyonu olmayan sitelerde de çalışıyor (collections: [] + uyarı); Docker dokümanına git + ca-certificates notu
++ [x] Görsel editör tema öğelerini production build'inde de buluyor (build-time data-wuppy-file/loc, ziyaretçiden siliniyor); tema build'ine WUPPY_BASE_ROOT; kaydıran düzenlemeden sonra Rebuild kilidi; wuppycms.com landing yeniden deploy + tema rebuild
++ [x] Görsel editör tema React bileşenlerinin (.tsx/.jsx) öğelerini de işaretliyor ve düzenliyor (className, style nesnesi, JSX ekleme); wuppycms.com yeniden deploy + tema rebuild
++ [x] Production tema öğesi düzenlemesindeki "__filename is not defined" hatası: compiler-rs ve typescript kurulu yerinden yükleniyor
++ [x] Production tema öğesi düzenlemesi temayı otomatik yeniden derliyor (elle Rebuild gerekmiyor)
++ [x] Koddan gelen tema metinleri (prop / veri dizisi) görsel editörde düzenlenebiliyor (tek geçen string bulunup değiştiriliyor)

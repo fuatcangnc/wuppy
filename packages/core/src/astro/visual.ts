@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
+import { applyOverlay, currentOverlay, overlayCss } from "../themes/overlay.ts";
 import { fontLinks, pageCss, visualCss, visualDataSchema, type VisualData } from "@wuppycms/visual-editor";
 
 const SKIP_PATH = /^\/(admin|api|uploads|_astro)(\/|$)/;
@@ -43,19 +44,30 @@ async function visualData(root: string): Promise<Loaded | null> {
  * Astro's dev server marks each element with the `.astro` file and spot it comes from, and its dev toolbar removes the
  * marks once the page loads. The visual editor edits theme markup by them, so it gets a copy the toolbar leaves alone.
  */
-export const withSourceCopy = (html: string): string =>
-	html.includes("data-astro-source-file")
+export const withSourceCopy = (html: string, editor = true): string => {
+	const out = html.includes("data-astro-source-file")
 		? html.replace(/ data-astro-source-(file|loc)="([^"]*)"/g, ' data-astro-source-$1="$2" data-wuppy-$1="$2"')
 		: html;
+	// Only the editor's canvas (`?wuppy-visual`) needs them; a production theme build puts them on every element.
+	return editor ? out : out.replace(/ data-wuppy-(file|loc)="[^"]*"/g, "");
+};
 
 export function createVisualMiddleware(root: string) {
 	return async (ctx: { request: Request; url: URL }, next: () => Promise<Response>): Promise<Response> => {
 		if (ctx.request.method !== "GET" || SKIP_PATH.test(ctx.url.pathname)) return next();
 		const res = await next();
 		if (res.status !== 200 || !(res.headers.get("content-type") ?? "").includes("text/html")) return res;
-		const html = withSourceCopy(await res.text());
+		// Theme element edits not built yet (production), applied by the marks before they are stripped.
+		const overlay = await currentOverlay(root);
+		const rendered = await res.text();
+		const html = withSourceCopy(
+			overlay.ops.length ? applyOverlay(rendered, overlay.ops) : rendered,
+			ctx.url.searchParams.has("wuppy-visual") || ctx.url.pathname.startsWith("/_wuppy/"),
+		);
 		const visual = await visualData(root);
 		const tags: string[] = [];
+		const css = overlay.ops.length ? await overlayCss(process.cwd(), overlay.ops) : "";
+		if (css) tags.push(`<style data-wuppy-overlay>${css}</style>`);
 		if (visual?.version) tags.push(`<link rel="stylesheet" href="/api/public/visual.css?v=${visual.version}">`);
 		for (const href of visual ? fontLinks(visual.data.framework) : [])
 			tags.push(`<link rel="stylesheet" href="${href.replace(/&/g, "&amp;")}">`);

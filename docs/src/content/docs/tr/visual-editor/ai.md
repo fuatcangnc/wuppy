@@ -18,6 +18,11 @@ sidebar:
 Metni, stilleri, class'ları ve tema öğelerinde öznitelikleri ve etiketi değiştirebilir. Temanın kodla doldurduğu metin
 (`{site.title}`) istediğiniz metinle değiştirilir.
 
+Seçilen tema öğesinin alt öğeleri de AI'a gösterilir; AI onları üst öğenin class'larından Tailwind varyantlarıyla
+biçimlendirir: "bunu bento grid yap" kapsayıcıyı grid'e çevirir ve her karta kendi span'ini verir
+(`md:[&>:nth-child(1)]:col-span-2`), kartlar `.map()` ile üretilse de. Değişiklik içermeyen bir cevap (örneğin bir soru)
+cevap olarak gösterilir.
+
 ## Sohbetler ve geri alma
 
 - Sohbetler bu tarayıcıda saklanır: **Chat history** birini yeniden açar ya da siler, **New chat** yenisini başlatır.

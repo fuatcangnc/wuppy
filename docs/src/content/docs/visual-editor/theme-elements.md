@@ -6,7 +6,13 @@ sidebar:
 ---
 
 With a [GitHub theme](/guides/github-themes/) active, the theme's own markup is editable on its live page, not only the
-blocks of the entry. This runs on the dev server (`pnpm dev`); in production, save theme changes and use **Rebuild**.
+blocks of the entry. This works on the dev server (`pnpm dev`) and on a production server. In production every edit
+(text, class, style, add, delete, duplicate, move, tag) shows on the live site at once, for visitors too: it is written
+to the theme's file and laid over the built pages until the theme is built again. That build runs by itself in the
+background once you stop editing for about a minute and a half; the site keeps working while it runs, and you can keep
+editing (a build that edits came in during is dropped and made again). A Tailwind class the build has never seen gets its CSS from the theme's own Tailwind
+right away. An element you add can be edited again before the build too. A change made in Code view (or an AI undo)
+shows after that build; the elements it did not touch stay editable meanwhile.
 
 ## Selecting
 
@@ -28,6 +34,13 @@ blocks of the entry. This runs on the dev server (`pnpm dev`); in production, sa
   always go into the page's blocks.
 - Text or attributes produced by code (`{...}`, items of `.map()`) are edited in Code view. An element in a shared
   component such as `Footer.astro` changes on every page that uses it.
+- A component used several times in one place (`<SectionHeader … />` in a page section) is selected one use at a time.
+  For its outer element, class edits, move, duplicate, delete and adding next to it change only that use: the class
+  goes to that call's `className` (`class` in `.astro`), and a class of the component is replaced through the theme's
+  `tailwind-merge` (`gap-8` over `gap-5`). Elements inside it, and its other edits, change every use; Properties says
+  which. Copies made by a `.map()` are selected together.
+- A class list built by code (`className={cn("flex gap-5", …)}`) is edited in its strings: a removed class leaves them,
+  an added one joins the first.
 
 ## The inspector
 
@@ -55,7 +68,15 @@ inline `style`.
 
 - Astro 7.4 or later. Older Astro does not mark elements with their source file and line, so they cannot be listed or
   selected. Installing a theme raises its Astro to `^7.4.0`; a theme installed earlier needs **Rebuild** once.
-- Astro's dev toolbar must be on, since the marks come with it. Wuppy turns it back on while a theme runs for a site,
-  even when the theme's own config turns it off.
+- On the dev server the marks come with Astro's dev toolbar; Wuppy turns it back on while a theme runs for a site,
+  even when the theme's own config turns it off. A production build gets the same marks from Wuppy, so a theme built
+  before this change needs **Rebuild** once. Visitors never get them: only the editor's canvas (`?wuppy-visual`) does.
+- Text a component gets from code (`<h2>{title}</h2>` with `title="…"` where it is used, or `{item.title}` from a data
+  array) is edited where it is written: when the old text appears exactly once as a quoted string in the theme's `src/`
+  code, that string changes. Text written in several places, or built from pieces, is edited in Code view.
+- React components (`.tsx`/`.jsx`) rendered on the server are editable like `.astro` files. Wuppy marks their HTML
+  elements itself, and an edit is written the React way: `class` becomes `className`, `style` an object
+  (`style={{ "paddingTop": "1rem" }}`), inserted void tags self-close. A `className` or `style` made by code
+  (`className={cn(...)}`) stays read-only; edit it in Code view.
 - Changing theme files needs an admin (the `site:settings` permission). Nothing is pushed to GitHub: edits stay in the
   theme's folder on the server.

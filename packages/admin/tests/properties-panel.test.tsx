@@ -184,6 +184,8 @@ describe("PropertiesPanel", { timeout: 60_000 }, () => {
 			selection: 1,
 			file: "/site/.wuppy/themes/blog/src/pages/index.astro",
 			loc: "12:3",
+			uses: 1,
+			ownUse: false,
 			tag: "h1",
 			text: "Hello",
 			cls: "text-4xl flex font-bold rounded-lg",

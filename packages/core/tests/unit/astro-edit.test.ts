@@ -18,16 +18,20 @@ const tags = ["a"];
 describe("editing a theme .astro element", () => {
 	it("changes static text and reports the element's location", () => {
 		const out = editAstroElement(page, "7:9", { action: "text", value: "Etiketler {x} <b>" });
-		expect(out.source).toContain("<h1>Etiketler &#123;x&#125; &lt;b></h1>");
+		expect(out.source).toContain("<h1>Etiketler &#123;x&#125; &lt;b&gt;</h1>");
 		expect(out.loc).toBe("7:9");
 	});
 
 	it("sets, adds and removes class and style", () => {
-		const out = editAstroElement(page, "6:27", { action: "attrs", attrs: { class: "wide", style: 'color: "red"' } });
-		expect(out.source).toContain('<main style="color: &quot;red&quot;" class="wide">');
-		expect(out.loc).toBe("6:53");
-		expect(editAstroElement(out.source, "6:53", { action: "attrs", attrs: { class: null } }).source).toContain(
-			'<main style="color: &quot;red&quot;">',
+		// Astro keeps entities in attributes, so `&` and `"` go in a JS string.
+		const out = editAstroElement(page, "6:27", {
+			action: "attrs",
+			attrs: { class: "wide sm:[&>*]:h-full", style: 'color: "red"' },
+		});
+		expect(out.source).toContain('<main style={"color: \\"red\\""} class={"wide sm:[&>*]:h-full"}>');
+		const loc = out.loc!;
+		expect(editAstroElement(out.source, loc, { action: "attrs", attrs: { class: null } }).source).toContain(
+			'<main style={"color: \\"red\\""}>',
 		);
 		// A self-closing element is located inside its tag.
 		expect(editAstroElement(page, "9:6", { action: "attrs", attrs: { class: "pic" } }).source).toContain(

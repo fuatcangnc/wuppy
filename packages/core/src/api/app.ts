@@ -824,6 +824,10 @@ export function createApp({
 									styles: z.record(z.string().max(100), short).optional(),
 									attrs: z.record(z.string().max(100), short).optional(),
 									tailwind: z.boolean().optional(),
+									children: z
+										.array(z.object({ tag: z.string().max(100), classes: short.optional() }))
+										.max(50)
+										.optional(),
 								}),
 							)
 							.min(1)
@@ -1626,11 +1630,26 @@ export function createApp({
 						loc: z.string().regex(/^\d+:\d+$/),
 						tag: z.string().max(100).optional(),
 						live: z.boolean().optional(),
+						host: z
+							.object({
+								file: z.string().trim().min(1).max(1000),
+								loc: z.string().regex(/^\d+:\d+$/),
+								tag: z.string().max(100).optional(),
+								slot: z.number().int().min(0).max(10_000),
+								count: z.number().int().min(1).max(10_000),
+							})
+							.optional(),
 						edit: z.discriminatedUnion("action", [
-							z.object({ action: z.literal("text"), value: z.string().max(10_000), code: z.boolean().optional() }),
+							z.object({
+								action: z.literal("text"),
+								value: z.string().max(10_000),
+								code: z.boolean().optional(),
+								from: z.string().max(10_000).optional(),
+							}),
 							z.object({
 								action: z.literal("attrs"),
 								attrs: z.record(z.string().regex(/^[a-zA-Z_@:][\w:.@-]{0,99}$/), z.string().max(5000).nullable()),
+								from: z.record(z.string().max(100), z.string().max(5000)).optional(),
 							}),
 							z.object({ action: z.literal("tag"), name: z.string().regex(/^[a-z][a-z0-9-]{0,49}$/) }),
 							z.object({ action: z.enum(["delete", "duplicate"]) }),
@@ -1646,7 +1665,7 @@ export function createApp({
 					})
 					.parse(await c.req.json().catch(() => ({})));
 				try {
-					const out = await themes.editElement(body.file, body.loc, body.edit, body.tag, body.live);
+					const out = await themes.editElement(body.file, body.loc, body.edit, body.tag, body.live, body.host);
 					record(c, "theme.file.write", { detail: body.file });
 					return c.json({ data: out });
 				} catch (e) {

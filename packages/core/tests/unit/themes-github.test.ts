@@ -42,7 +42,7 @@ function fakeRun(
 		} else if (cmd === "npm") {
 			await put(join(cwd, "node_modules/astro/bin/astro.mjs"), "");
 			await put(join(cwd, "node_modules/astro/package.json"), JSON.stringify({ version: astro }));
-		} else if (buildOk) await put(join(cwd, "dist/server/entry.mjs"), "");
+		} else if (buildOk) await put(join(cwd, args.at(-1)!, "server/entry.mjs"), "");
 	};
 }
 
@@ -80,7 +80,7 @@ describe("GitHub themes", () => {
 		);
 		for (const c of [npm!, build!]) expect(c.env.WUPPY_SECRET).toBeUndefined();
 		expect(build!.env.NODE_ENV).toBe("production");
-		expect(build!.args.slice(1)).toEqual(["build", "--config", "astro.wuppy.config.mjs"]);
+		expect(build!.args.slice(1)).toEqual(["build", "--config", "astro.wuppy.config.mjs", "--outDir", "dist-next"]);
 
 		const dir = themes.themeDir("me/site");
 		expect(existsSync(join(dir, "wuppy.config.mjs"))).toBe(true);

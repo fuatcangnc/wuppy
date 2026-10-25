@@ -2756,6 +2756,13 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 	const scrollRef = useRef<HTMLDivElement | null>(null);
 	const path = codePath(el.file);
 	const line = el.loc.split(":")[0];
+	// A shared component: say which edits stay on this use.
+	const usesNote =
+		el.uses > 1
+			? el.ownUse
+				? ` Its component is used ${el.uses} times: class, move, duplicate and delete change only this use; other edits change every use.`
+				: ` Part of a component used ${el.uses} times: changes apply to every use.`
+			: "";
 	const classes = el.cls.split(/\s+/).filter(Boolean);
 	const styles = parseStyle(el.style);
 	const variant = variantFor(visual.breakpoints.find((b) => b.id === breakpoint)?.width, state);
@@ -2901,6 +2908,7 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 							<PanelSection id="module" title={`<${el.tag}>`} icon={themeIcon(el.tag)} action={actions}>
 								<p className="text-[11px] leading-4 break-all text-muted-foreground">
 									Theme code: {path}, line {line}. Changes are saved to this file.
+									{usesNote}
 								</p>
 								{fields}
 							</PanelSection>
@@ -3034,6 +3042,7 @@ function ThemeElementProperties({ el }: { el: ThemeElement }) {
 							<PanelSection id="element" title="Element" icon={themeIcon(el.tag)}>
 								<p className="text-[11px] leading-4 break-all text-muted-foreground">
 									Theme code: {path}, line {line}. Changes are saved to this file.
+									{usesNote}
 								</p>
 								{fields}
 							</PanelSection>

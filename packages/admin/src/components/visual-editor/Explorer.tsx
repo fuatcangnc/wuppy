@@ -59,6 +59,7 @@ import {
 	$themeElement,
 	codePath,
 	describeElement,
+	isCopy,
 	editThemeElement,
 	SOURCE,
 	type ThemeEdit,
@@ -489,8 +490,7 @@ function ThemeLayerRows({
 	const picked = useStore($themeElement);
 	const tree = useStore($tree);
 	const [drop, setDrop] = useState<{ key: string; position: DropPosition } | null>(null);
-	const isPicked = (l: ThemeLayer) =>
-		!!picked && sourceOf(l.el).file === picked.file && sourceOf(l.el).loc === picked.loc;
+	const isPicked = (l: ThemeLayer) => !!picked && isCopy(l.el, picked);
 	const matches = (l: ThemeLayer): boolean =>
 		l.body
 			? subtreeMatches(tree, tree.rootNodeId, query)

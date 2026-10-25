@@ -47,6 +47,7 @@
 		"nodemailer": "^10.1.7",
 		"quickjs-emscripten": "0.32.0",
 		"resend": "^6.34.1",
+		"typescript": "catalog:",
 		"yaml": "catalog:",
 		"zod": "catalog:"
 	},
@@ -55,7 +56,6 @@
 		"@types/nodemailer": "^8.0.2",
 		"astro": "catalog:",
 		"tsdown": "catalog:",
-		"typescript": "catalog:",
 		"vitest": "catalog:"
 	},
 	"peerDependencies": {

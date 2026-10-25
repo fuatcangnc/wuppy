@@ -1,4 +1,5 @@
-import { parse } from "@astrojs/compiler-rs";
+import { importInstalled } from "./installed-dep.ts";
+import { jsxElements } from "./jsx-elements.ts";
 
 /**
  * Edits one element of an `.astro` file, found by the `data-astro-source-loc` ("line:col") Astro's dev server puts on
@@ -8,9 +9,11 @@ import { parse } from "@astrojs/compiler-rs";
 
 export type ElementEdit =
 	/** `code` also replaces text made by code (`{site.title}`) with the literal value; never other elements. */
-	| { action: "text"; value: string; code?: boolean }
+	/** `from`: the text before the edit, to find it in the theme's code when the element shows it from a variable. */
+	| { action: "text"; value: string; code?: boolean; from?: string }
 	/** Attribute values to set; `null` removes one, `""` leaves a bare attribute (`hidden`). */
-	| { action: "attrs"; attrs: Record<string, string | null> }
+	/** `from`: the values before the edit; a class list made by code (`cn("a", b)`) is changed by it. */
+	| { action: "attrs"; attrs: Record<string, string | null>; from?: Record<string, string> }
 	| { action: "tag"; name: string }
 	| { action: "delete" | "duplicate" }
 	/** New markup (one element) right after this one, on its own line with the same indent. */
@@ -31,10 +34,13 @@ interface El extends Span {
 }
 type Attr = Span & { type: string; name?: Span & { name?: unknown }; value?: (Span & { type: string }) | null };
 
+const { parse } = await importInstalled<typeof import("@astrojs/compiler-rs")>("@astrojs/compiler-rs");
+
 export class ElementEditError extends Error {}
 
 /** Every element with the children list it sits in (`null` when it is inside an expression, e.g. a `.map()`). */
-function elements(source: string): Array<{ el: El; siblings: El[] | null }> {
+export function elements(source: string, jsx = false): Array<{ el: El; siblings: El[] | null }> {
+	if (jsx) return jsxElements(source) as unknown as Array<{ el: El; siblings: El[] | null }>;
 	const out: Array<{ el: El; siblings: El[] | null }> = [];
 	const walk = (node: unknown, siblings: El[] | null): void => {
 		if (!node || typeof node !== "object") return;
@@ -76,25 +82,78 @@ const astroAt = (el: El): number => {
 	return first.type === "JSXElement" ? first.start + 1 : first.start;
 };
 
-const locOf = (source: string, el: El): string => {
+export const locOf = (source: string, el: El): string => {
 	const before = source.slice(0, astroAt(el));
 	return `${before.split("\n").length}:${before.length - before.lastIndexOf("\n")}`;
 };
 
-const nameOf = (el: El) => String((el.openingElement.name as { name?: unknown }).name ?? "").toLowerCase();
+export const nameOf = (el: El) => String((el.openingElement.name as { name?: unknown }).name ?? "").toLowerCase();
 
-function find(source: string, loc: string, tag?: string) {
+function find(source: string, loc: string, tag: string | undefined, jsx: boolean) {
 	const at = offsetOf(source, loc);
 	// An element that opens with an empty child shares its location; the tag tells them apart.
-	const hits = elements(source).filter(({ el }) => astroAt(el) === at);
+	const hits = elements(source, jsx).filter(({ el }) => astroAt(el) === at);
 	const hit = hits.find(({ el }) => !tag || nameOf(el) === tag.toLowerCase()) ?? hits[0];
 	if (!hit) throw new ElementEditError("The element is no longer in the file; reload the page");
 	return hit;
 }
 
+// `>` too: React (esbuild) rejects it in JSX text.
 const escapeText = (s: string) =>
-	s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/\{/g, "&#123;").replace(/\}/g, "&#125;");
-const escapeAttr = (s: string) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+	s
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/\{/g, "&#123;")
+		.replace(/\}/g, "&#125;");
+// Astro keeps `&amp;` in a quoted attribute as is, so `sm:[&>*]:h-full` would break; a value with `&` or `"` is
+// written as a JS string, the same in Astro and JSX.
+const attrValue = (s: string) => (/["&]/.test(s) ? `{${JSON.stringify(s)}}` : `"${s}"`);
+const JS_STRING = /^\{\s*("(?:[^"\\\n]|\\.)*")\s*\}$/;
+
+/** An attribute's text when it is plain (`"x"`, or `{"x"}` as written above); null when code makes it. */
+export function plainValue(source: string, value: { type: string; start: number; end: number }): string | null {
+	const text = source.slice(value.start, value.end);
+	if (value.type === "Literal") return text.slice(1, -1);
+	const m = JS_STRING.exec(text);
+	return m ? (JSON.parse(m[1]!) as string) : null;
+}
+
+const words = (s: string) => s.split(/\s+/).filter(Boolean);
+// A quoted string that is not compared with something (`align === "center"`).
+const CLASS_LITERAL = /(?<![=!]=\s*)(["'])([^"'\\\n]*)\1(?!\s*[=!]==?)/g;
+
+/**
+ * A class list made by code (`cn("flex gap-5", wide && "w-full", className)`), changed from `from` to `to` in its
+ * string literals: a removed class leaves every literal it is in, an added one joins the first literal.
+ */
+export function classInCode(code: string, from: string, to: string): string {
+	const before = new Set(words(from));
+	const after = words(to);
+	const literals = [...code.matchAll(CLASS_LITERAL)];
+	if (!literals.length) throw new ElementEditError("This element's class is set by code; edit it in Code view");
+	const lists = literals.map((m) => words(m[2]!));
+	const changed = new Set<number>();
+	for (const gone of [...before].filter((c) => !after.includes(c))) {
+		const hits = lists.flatMap((list, i) => (list.includes(gone) ? [i] : []));
+		if (!hits.length) throw new ElementEditError(`"${gone}" is added by code here; remove it in Code view`);
+		for (const i of hits) {
+			lists[i] = lists[i]!.filter((x) => x !== gone);
+			changed.add(i);
+		}
+	}
+	const added = after.filter((c) => !before.has(c));
+	if (added.length) {
+		lists[0]!.push(...added);
+		changed.add(0);
+	}
+	let out = code;
+	for (const i of [...changed].toSorted((a, b) => b - a)) {
+		const m = literals[i]!;
+		out = out.slice(0, m.index) + m[1] + lists[i]!.join(" ") + m[1] + out.slice(m.index + m[0].length);
+	}
+	return out;
+}
 
 /** The element's range, widened to whole lines when it is alone on them. */
 function lines(source: string, { start, end }: Span): Span & { own: boolean } {
@@ -104,6 +163,27 @@ function lines(source: string, { start, end }: Span): Span & { own: boolean } {
 	return own ? { start: lineStart, end: lineEnd, own } : { start, end, own };
 }
 
+// React spells these attributes differently and takes `style` as an object.
+const JSX_NAMES: Record<string, string> = { class: "className", for: "htmlFor" };
+const camel = (prop: string) =>
+	prop.startsWith("--") ? prop : prop.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
+const cssProp = /^-{0,2}[a-zA-Z][\w-]*$/;
+export const jsxStyle = (css: string): string =>
+	`{{ ${css
+		.split(";")
+		.filter((d) => d.includes(":"))
+		.map((d) => [d.slice(0, d.indexOf(":")).trim(), d.slice(d.indexOf(":") + 1).trim()] as const)
+		.filter(([prop, value]) => cssProp.test(prop) && value)
+		.map(([prop, value]) => `${JSON.stringify(camel(prop))}: ${JSON.stringify(value)}`)
+		.join(", ")} }}`;
+const VOID = /<(area|base|br|col|embed|hr|img|input|link|meta|source|track|wbr)\b([^<>]*?)\s*\/?>/g;
+/** Editor markup (HTML) as JSX: React attribute names, style objects, self-closed void tags. */
+export const htmlToJsx = (html: string): string =>
+	html
+		.replace(/ (class|for)="/g, (_, n: string) => ` ${JSX_NAMES[n]}="`)
+		.replace(/ style="([^"]*)"/g, (_, css: string) => ` style=${jsxStyle(css.replace(/&quot;/g, '"'))}`)
+		.replace(VOID, "<$1$2 />");
+
 const splice = (s: string, start: number, end: number, insert = "") => s.slice(0, start) + insert + s.slice(end);
 
 export function editAstroElement(
@@ -111,8 +191,10 @@ export function editAstroElement(
 	loc: string,
 	edit: ElementEdit,
 	tag?: string,
+	/** A React (`.tsx`/`.jsx`) file: `class`/`for` are written as `className`/`htmlFor`, `style` as an object. */
+	jsx = false,
 ): { source: string; loc?: string; quiet?: boolean } {
-	const { el, siblings } = find(source, loc, tag);
+	const { el, siblings } = find(source, loc, tag, jsx);
 	let out = source;
 	// Where the edited element starts afterwards, to report its new location.
 	let start: number | undefined = el.start;
@@ -124,12 +206,33 @@ export function editAstroElement(
 		out = splice(source, el.openingElement.end, el.closingElement.start, escapeText(edit.value));
 	} else if (edit.action === "attrs") {
 		const changes: Array<[number, number, string]> = [];
-		for (const [name, value] of Object.entries(edit.attrs)) {
+		for (const [html, value] of Object.entries(edit.attrs)) {
+			const name = jsx ? (JSX_NAMES[html] ?? html) : html;
 			const attr = el.openingElement.attributes.find(
 				(a) => a.type === "JSXAttribute" && source.slice(a.name!.start, a.name!.end) === name,
 			);
-			const text = value === null ? "" : value.trim() ? `${name}="${escapeAttr(value.trim())}"` : name;
-			if (attr?.value && attr.value.type !== "Literal")
+			const text =
+				value === null
+					? ""
+					: !value.trim()
+						? name
+						: jsx && name === "style"
+							? `style=${jsxStyle(value)}`
+							: `${name}=${attrValue(value.trim())}`;
+			// A React style written as plain values (`{{ color: "red" }}`) is rewritten whole; one made by code is not.
+			const plainStyle =
+				jsx && name === "style" && /^\{\{[^{}`$]*\}\}$/.test(source.slice(attr?.value?.start, attr?.value?.end));
+			const before = edit.from?.[html];
+			const code = !!attr?.value && plainValue(source, attr.value) === null;
+			if (attr?.value && code && /^class(Name)?$/.test(name) && value !== null && before !== undefined) {
+				changes.push([
+					attr.value.start,
+					attr.value.end,
+					classInCode(source.slice(attr.value.start, attr.value.end), before, value),
+				]);
+				continue;
+			}
+			if (code && !plainStyle)
 				throw new ElementEditError(`This element's ${name} is set by code; edit it in Code view`);
 			if (attr) {
 				// Removing also drops the space before it.
@@ -158,13 +261,18 @@ export function editAstroElement(
 			throw new ElementEditError("This element is made by code; add next to it in Code view");
 		const range = lines(source, el);
 		const indent = range.own ? source.slice(range.start, el.start) : "";
-		out = splice(source, el.end, el.end, `${range.own ? `\n${indent}` : ""}${edit.html.trim()}`);
+		out = splice(
+			source,
+			el.end,
+			el.end,
+			`${range.own ? `\n${indent}` : ""}${jsx ? htmlToJsx(edit.html.trim()) : edit.html.trim()}`,
+		);
 		start = el.end + (range.own ? 1 + indent.length : 0);
-		if (!elements(out).some(({ el: e }) => e.start === start))
+		if (!elements(out, jsx).some(({ el: e }) => e.start === start))
 			throw new ElementEditError("The new markup must start with an element");
 	} else if (edit.action === "moveTo") {
 		if (!siblings?.includes(el)) throw new ElementEditError("This element is made by code; move it in Code view");
-		const { el: target, siblings: around } = find(source, edit.loc, edit.tag);
+		const { el: target, siblings: around } = find(source, edit.loc, edit.tag, jsx);
 		if (target === el || (target.start >= el.start && target.end <= el.end))
 			throw new ElementEditError("An element cannot go inside itself");
 		if (edit.position !== "inside" && !around?.includes(target))
@@ -218,12 +326,12 @@ export function editAstroElement(
 		start = edit.by < 0 ? a.start : b.end - (el.end - el.start);
 	}
 	if (start === undefined) return { source: out };
-	const after = elements(out);
+	const after = elements(out, jsx);
 	const moved = after.find(({ el: e }) => e.start === start);
 	// Text or attributes that leave every other element where it was: the page can show it without a reload.
 	let quiet: boolean | undefined;
 	if (edit.action === "text" || edit.action === "attrs") {
-		const all = elements(source);
+		const all = elements(source, jsx);
 		quiet =
 			after.length === all.length &&
 			after.every(({ el: e }, i) => all[i]!.el.start === el.start || locOf(out, e) === locOf(source, all[i]!.el));

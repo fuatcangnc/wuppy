@@ -32,7 +32,7 @@ The list shows repositories you own, collaborate on or reach through an organiza
 
 When the build succeeds the theme becomes active and the server restarts; the page reloads by itself. Accounts, passwords and sessions stay the same. If a step fails, the error is shown and the current site keeps running.
 
-**Active** lists the built-in site and every theme built here. **Activate** switches between them without a new build. **Rebuild** builds an installed theme again.
+**Active** lists the built-in site and every theme built here. **Activate** switches between them without a new build. **Rebuild** first pulls what was pushed to GitHub since, then builds the theme again. Edits made on the server (visual editor, Code view) are kept. Where GitHub changed or deleted the same file, GitHub's version wins, and the server's version stays in the theme folder's `git stash`. Changes to `package.json`, the lockfile and `astro.config` are made again after the pull; `wuppy.config.mjs` is kept.
 
 ## Where content lives
 
@@ -88,7 +88,6 @@ A site page with the same name is kept and the theme page is not listed for it. 
 - Content edits are committed in the site's Git repository. Theme code edited in the visual editor's Code view (root **theme: owner/repo**) is saved in the theme's folder only; nothing is pushed to GitHub.
 - Sample images the theme references by a relative path (`../../assets/x.png`) do not come along with the imported entries; replace them from Media.
 - If the build fails because of the repository (for example a post missing a field its content schema requires), fix it on GitHub and click **Install** again: a theme that never built is cloned afresh.
-- **Rebuild** does not pull new commits from GitHub. To update, delete `.wuppy/themes/<owner>__<name>/` on the server and install again.
 - A theme build contains the Wuppy version it was built with. After upgrading Wuppy, click **Rebuild**.
 - If the active theme cannot start, `serve.mjs` logs the error and runs the built-in site instead.
 - Only the site's root `package.json` is checked, so an Astro site inside a monorepo folder is not listed.

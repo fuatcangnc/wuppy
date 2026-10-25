@@ -26,9 +26,8 @@ describe("visual editor AI edits", () => {
 		expect(out).toEqual({ reply: "Done", edits: [{ ref: "n:1", styles: { color: "red" } }] });
 	});
 
-	it("fails clearly on an answer without JSON", async () => {
-		await expect(planEdits({ baseUrl: "x", models: ["m"], fetch: answer("Sure!") }, input)).rejects.toThrow(
-			/without changes/,
-		);
+	it("shows an answer without JSON as the reply", async () => {
+		const out = await planEdits({ baseUrl: "x", models: ["m"], fetch: answer(" Which card? ") }, input);
+		expect(out).toEqual({ reply: "Which card?", edits: [] });
 	});
 });

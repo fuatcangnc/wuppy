@@ -3,7 +3,14 @@ import { apiData } from "../../lib/api.ts";
 import { moduleOf, nodeName } from "./modules.ts";
 import { $selected, $tree, mutate } from "./store.ts";
 import { parseStyle, printStyle, withClassValue } from "./tailwind.ts";
-import { $themeElement, applyThemeEdit, codePath, type ThemeEdit, type ThemeElement } from "./theme-element.ts";
+import {
+	$themeElement,
+	applyThemeEdit,
+	codePath,
+	copiesOf,
+	type ThemeEdit,
+	type ThemeElement,
+} from "./theme-element.ts";
 import { updateNodeProps, updateNodeStyles } from "./tree.ts";
 
 /**
@@ -77,6 +84,9 @@ export function describePick(p: AiPick, ref: string) {
 			styles: parseStyle(el.style),
 			attrs: Object.fromEntries(Object.entries(el.attrs).map(([k, v]) => [k, clip(v)])),
 			tailwind: el.tailwind,
+			children: [...(copiesOf(el)[0]?.children ?? [])]
+				.slice(0, 50)
+				.map((c) => ({ tag: c.tagName.toLowerCase(), classes: clip(c.getAttribute("class") ?? "") })),
 		};
 	}
 	const node = $tree.get().nodes[p.id];

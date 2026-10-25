@@ -7,6 +7,7 @@ import { listThemeComponents } from "../themes/components.ts";
 import { isLiveRoute, liveContentPlugin } from "./live-content.ts";
 import { quietHmrPlugin } from "./quiet-hmr.ts";
 import { mapSource, themeComponentsPlugin } from "./theme-components.ts";
+import { sourceMarksPlugin } from "./source-marks.ts";
 import { themePageRel, themePagesPlugin } from "./theme-pages.ts";
 
 // Source runs as .ts (workspace dev); the published build is .mjs. Entrypoints sit next to this file in both layouts.
@@ -62,7 +63,7 @@ export default function wuppycms(options: WuppyIntegrationOptions = {}): AstroIn
 							plugins: [
 								liveContentPlugin({ root, runtime, liveRoutes, markdown: settings }),
 								// A theme run for a site: its Markdown pages render the site's Pages entries.
-								...(site ? [themePagesPlugin({ root, runtime, markdown: settings })] : []),
+								...(site ? [themePagesPlugin({ root, runtime, markdown: settings }), sourceMarksPlugin(root)] : []),
 							],
 						},
 					});

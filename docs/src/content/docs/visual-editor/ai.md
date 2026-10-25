@@ -19,6 +19,11 @@ sidebar:
 It can change text, styles, classes, and on theme elements attributes and the tag. Text the theme fills from code
 (`{site.title}`) is replaced with the text you ask for.
 
+A picked theme element shows the AI its child elements too, and the AI styles them from the parent's classes with
+Tailwind variants: "make this a bento grid" turns the container into a grid and gives each card its span
+(`md:[&>:nth-child(1)]:col-span-2`), also when the cards come from a `.map()`. An answer without changes (a
+question, say) shows as the reply.
+
 ## Chats and undo
 
 - Chats are kept in this browser: **Chat history** reopens or deletes one, **New chat** starts another.

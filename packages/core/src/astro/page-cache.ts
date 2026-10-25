@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { overlayStamp } from "../themes/overlay.ts";
 
 /**
  * Id of the current Git commit. Every content, media and settings write is a commit, so it changes exactly when pages can.
@@ -91,13 +92,16 @@ export function createPageCacheMiddleware(root: string, cache = new PageCache(),
 			request.method !== "GET" ||
 			SKIP_PATH.test(url.pathname) ||
 			params.has("wuppy-preview") ||
-			params.has("wuppy-edit")
+			params.has("wuppy-edit") ||
+			params.has("wuppy-visual")
 		) {
 			return next();
 		}
 		const key = url.pathname + url.search;
-		const version = await contentVersion(root);
-		if (!version) return next();
+		const commit = await contentVersion(root);
+		if (!commit) return next();
+		// Theme element edits waiting for a build change pages too (see themes/overlay.ts).
+		const version = `${commit}:${await overlayStamp(root)}`;
 		const reply = (e: { etag: string; body: string; headers: Array<[string, string]> }) => {
 			const headers = new Headers(e.headers);
 			headers.set("ETag", e.etag);

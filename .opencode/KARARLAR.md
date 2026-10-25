@@ -734,3 +734,94 @@ Kullanıcı: "wuppycms.com ana şey de wuppycms'de çalışmalı". `landing/` ar
 arayüz etiketleri kodda. Sunucuda aynı imajın `landing` servisi (kendi `.env.landing`, ayrı `WUPPY_SECRET`, 4 volume),
 Caddy `wuppycms.com` → `landing:4321`; admin `wuppycms.com/admin`. İlk admin sunucuda oluşturuldu (kayıt kapalı),
 geçici parola yalnızca `/opt/wuppy/landing-admin-password.txt` (root, 600). Statik `/srv/landing` artık kullanılmıyor.
+
+## Ek 20 — Tema öğeleri production'da da düzenlenir (2026-10-25)
+
+Kullanıcı (wuppycms.com/admin görsel editörü, wuppy-astro teması): "neden editlenebilir gelmedi?" Neden: Astro
+`annotateSourceFile`'ı yalnız `astro dev`'de açar (`viteConfig.command === "serve"`); production tema build'inde
+`data-astro-source-*` yok, Layers yalnız "body Page" gösteriyordu.
+
+- `sourceMarksPlugin` (`core/src/astro/source-marks.ts`, yalnız build, tema bir site için çalışırken): her HTML öğesine
+  Astro'nun konum kuralıyla (`astro-edit.ts` `locOf`) `data-wuppy-file` (tema köküne göre göreli yol, mutlak yol sızmaz)
+  ve `data-wuppy-loc` yazar; bileşenler ve head/script/style/slot atlanır. Test Astro derleyicisinin kendi çıktısıyla
+  aynı öğe/konum listesini doğrular. theme-pages dönüşümünden sonra çalışır (satır kayması dev ile aynı kalır).
+- Ziyaretçilere gitmez: visual middleware işaretleri `?wuppy-visual` (ve `/_wuppy/`) dışında siler; tuval iframe'i bu
+  parametreyle açılır, page cache bu parametreyi atlar.
+- Tema build'ine `WUPPY_BASE_ROOT` (site klasörü, gizli değil) verilir: önceden build'de `site` boştu, yani tema
+  Markdown sayfaları ve theme-seo middleware'i production build'de devreye girmiyordu.
+- Production'da öğeleri kaydıran (quiet olmayan) düzenlemeden sonra dosya Rebuild'e kadar kilitlenir (eski build eski
+  konumları taşır, yanlış öğeye yazılabilirdi). Kısayol: kilit bellekte; Rebuild'siz restart unutturur.
+
+## Ek 21 — Tema React bileşenlerinin öğeleri de düzenlenir (2026-10-25)
+
+Kullanıcı (wuppy-astro: bölümlerin çoğu `.tsx`): "çoğu şey hala düzenlenebilir değil". Astro React bileşenlerini hiç
+işaretlemez; editör de yalnız `.astro` düzenliyordu.
+
+- `sourceMarksPlugin` tema içindeki `.tsx`/`.jsx` dosyalarının küçük harfli JSX öğelerini dev'de ve build'de işaretler
+  (`.astro` yalnız build'de; dev'de Astro işaretler).
+- `jsx-elements.ts` TypeScript ayrıştırıcısıyla Astro ağacıyla aynı biçimde öğe listesi üretir; `editAstroElement`
+  `jsx` bayrağıyla aynı motoru kullanır: `class`→`className`, `for`→`htmlFor`, `style` CSS metninden nesneye; yalnız düz
+  değerli `style={{…}}` üzerine yazılır, `className={cn(...)}` gibi kodla üretilenler salt okunur. Eklenen HTML JSX'e
+  çevrilir (boş etiketler kendini kapatır).
+- `typescript` `wuppycms`'in çalışma zamanı bağımlılığı oldu (ayrı ayrıştırıcı eklenmedi).
+- Bilinen sınır: `client:` ile hydrate edilen adalarda ziyaretçi HTML'inden işaretler silinir ama istemci yeniden
+  ekler (hydration uyarısı olabilir).
+- Düzeltme (kullanıcı "bir şey değiştirdiğimde __filename is not defined in ES module scope verdi"): tema build'i
+  sunucu kodunu tema `dist/`'ine paketliyordu; TypeScript (CJS) ve compiler-rs native binding orada çalışmaz.
+  `importInstalled` (themes/installed-dep.ts) ikisini site `node_modules/wuppycms` konumundan dosya URL'siyle yükler,
+  bundler dokunmaz (chunk 7.9 MB → 13 KB).
+- Kullanıcı kilit mesajını ("Rebuild the theme, then edit it again") görünce: production'da her tema öğesi düzenlemesi
+  4 sn duraklamadan sonra temayı kendiliğinden yeniden derler (`rebuildSoon`), bitince sunucu yeniden başlar ve kilit
+  kalkar. Mesaj artık "tema yeniden derleniyor, bir dakika sonra sayfayı yenileyin" der.
+- Kullanıcı ("This text is made by code … neden veriyor"): wuppy-astro başlıkları prop'tan gelir
+  (`<SectionHeader title="…">` → `<h2>{title}</h2>`). Metin düzenlemesi artık eski metni (`from`) de gönderir; öğe
+  metni koddan alıyorsa sunucu temanın `src/` kodunda bu metni tırnak içinde arar, tam bir yerde geçiyorsa orayı
+  değiştirir (öznitelikse kaçışsız, JS stringiyse JSON kaçışlı), birden çok yerdeyse sayıyla Code view'a yönlendirir.
+
+## Ek 22 — Production tema düzenlemeleri anında görünür (overlay) (2026-10-25)
+
+Kullanıcı: "hayır anında olmalı astro ve tailwind kullanınca direkt oluyordu react tsx için de direkt olmalı". Production
+sunucusu temanın build'ini çalıştırır; dosyaya yazılan düzenleme yeniden derlemeye (≈1 dk) kadar görünmüyordu.
+
+- Her düzenleme dosyaya yazılır ve `.wuppy/themes/overlay.json`'a bir işlem olarak eklenir; görsel middleware sayfayı
+  render ettikten sonra işlemleri build'in işaretleriyle (`data-wuppy-file`/`loc`) HTML'e uygular, işaretleri ziyaretçi
+  için sonra siler. Sayfa önbelleği sürümü overlay'in mtime'ını içerir.
+- Sayfa build konumlarını taşıdığı için değişen dosyada öğe "gölge" kopyayla bulunur: dosya + her öğede build konumu
+  (`data-wuppy-o`). Düzenleme gölgeye yapılır, gölgesiz hali dosyaya yazılır. Code view dosyayı değiştirdiyse düzenleme
+  reddedilir ve derleme tetiklenir. Eklenen öğe `0:n` konumu alır (build bunu hiç vermez), derlemeden önce de düzenlenir.
+- Yeni Tailwind class'larının CSS'i temanın `@tailwindcss/node`'u ve kendi giriş CSS'iyle üretilip `<style>` olarak eklenir.
+- Tema 90 sn düzenlemesiz kalınca arka planda `dist-next`'e derlenir, bitince `dist` ile yer değiştirir (site derleme
+  sırasında bozulmaz), overlay temizlenir, sunucu yeniden başlar.
+- Kullanıcı (AI asistanı bento grid yaparken "The theme is being built… edit again in a minute"): derleme sırasında
+  düzenleme artık engellenmez. Derleme başlarken overlay işlem sayısı alınır; bitince değiştiyse yeni build
+  değiştirilmez (dist-next silinir), overlay ve çalışan build kalır, sonraki derleme hepsini alır.
+- Reddedilen: düzenlemeyi derlemeden hemen sonra canlıya almak için dev sunucusu çalıştırmak (909 MB RAM'e sığmaz).
+- Kullanıcı ("This file was changed in Code view … diyor"): Code view / AI geri alma dosyayı değiştirince gölge artık
+  reddedilmez; değişen kısmın önündeki ve arkasındaki işaretler yeni dosyaya taşınır (ortak önek/sonek), yalnız değişen
+  kısımdaki öğeler derlemeyi bekler. Production düzenlemeleri sırayla işlenir (overlay+dosya yarışı olmasın), Code view
+  kaydı da derlemeyi tetikler.
+- Aynı turda bulunan: production'da Tailwind CSS `<link>` ile geldiği için editör temayı Tailwind'siz sanıyor, AI ve
+  stil panelleri inline `style` yazıyordu (bento denemesi `style={{display:"grid"}}` + tanımsız `bento-grid` yazdı).
+  Artık bağlı stil sayfalarında `utilities` katmanı da aranır.
+- Kullanıcı ("bir div seçiyorum diğerleri de seçiliyor … filtre gibi dinamik yapılarda bu olabilir ama burda … düzeltmen
+  lazım" + "className is set by code"): bileşen kullanımı, öğeyi başka dosyadan gelen en yakın atası (host) ve host'un
+  başka dosyalı çocukları arasındaki sırası (slot/count) ile ayrılır; tuval/Layers seçimi yalnız o kullanımı tutar.
+  Dış öğenin class/taşı/çoğalt/sil/ekle düzenlemesi host dosyasındaki çağrıya yazılır (`className` = fark, bileşen
+  class'ı temanın tailwind-merge'üyle değişir; değiştirilmeden kaldırılan bileşen class'ı hata). Host'ta kod öğe
+  üretebiliyorsa (`{x.map()}`) ya da sayı tutmazsa vazgeçilir. `.map()` kopyaları birlikte seçilir. `cn(...)` className'i
+  string literallerinde düzenlenir (karşılaştırma literalleri atlanır).
+- Reddedilen: bileşene her kullanım için yeni prop eklemek (bileşen arayüzünü değiştirir); bileşeni kopyalayıp ayırmak.
+- Kullanıcı ("temamızda .tsx kaldırdık push ettik ama rebuild aldığımızda hala eskisi duruyor"): Themes sayfasındaki
+  Rebuild (install yolu, token'lı tek derleme) artık `git fetch origin HEAD` ile çeker. init'in değiştirdiği dosyalar
+  (package.json, lock, .gitignore, astro/content config) geri alınır, sunucu düzenlemeleri stash'lenir, `reset --hard
+  FETCH_HEAD`, stash geri uygulanır; çakışan/silinen dosyada GitHub kazanır, stash kanıt olarak kalır. Sonra init
+  `--force` ile yeniden sarar, mevcut wuppy.config.mjs korunur. Code view'daki otomatik/elle rebuild çekmez (token yok).
+- Reddedilen: merge (sunucu commit atmaz, yerel commit yok); temayı silip yeniden klonlamak (sunucu düzenlemeleri gider).
+- Kullanıcı (AI bento'da "span sınıflarını sizin eklemeniz gerekebilir" dedi, "bunu senin eklemen lazım" deyince
+  "answered without changes / Failed"): AI yalnız seçilen öğeyi görüyordu. Seçilen tema öğesinin alt öğeleri (etiket +
+  class, salt okunur) gönderilir; prompt alt öğeleri üst öğenin class'ında `[&>:nth-child(n)]:` / `*:` varyantlarıyla
+  biçimlendirmeyi söyler (`.map()` kartlarında da çalışır, tek dosya yazımı). JSON'suz cevap reply olarak döner.
+- Reddedilen: alt öğeleri ayrı ref'lerle düzenlenebilir göndermek (.map() kopyaları ayrı span alamaz, çok dosya yazımı).
+- Kullanıcı ("editörde yapmış ama live'da neden olmadı"): öznitelik yazımı `&`'yi `&amp;` yapıyordu; Astro tırnaklı
+  öznitelikte entity'yi çözmez, class canlıda `sm:[&amp;>*]` oldu. `&` ya da `"` içeren değer artık `{"…"}` JS string
+  olarak yazılır (Astro + JSX aynı); `{"…"}` düz değer sayılır (`plainValue`), sonraki düzenlemeler "set by code" demez.
