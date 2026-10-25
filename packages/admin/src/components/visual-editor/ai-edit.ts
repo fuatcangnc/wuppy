@@ -38,6 +38,50 @@ export interface AiInsertion {
 	after?: string;
 }
 
+export interface AiDesignSystem {
+	name: string;
+	content: string;
+}
+
+const DESIGN_KEY = "wuppy.visual.ai-design-system";
+const MAX_DESIGN_SYSTEM = 100_000;
+
+function readDesignSystem(): AiDesignSystem | null {
+	if (typeof localStorage === "undefined") return null;
+	try {
+		const parsed: unknown = JSON.parse(localStorage.getItem(DESIGN_KEY) ?? "null");
+		if (!parsed || typeof parsed !== "object") return null;
+		const { name, content } = parsed as { name?: unknown; content?: unknown };
+		if (typeof name !== "string" || typeof content !== "string" || !content.trim()) return null;
+		return { name: name.slice(0, 200), content: content.slice(0, MAX_DESIGN_SYSTEM) };
+	} catch (e) {
+		if (!(e instanceof SyntaxError)) throw e;
+		return null;
+	}
+}
+
+/** A design system Markdown file the user uploaded for the AI (kept in this browser, like chats). */
+export const $aiDesignSystem = atom<AiDesignSystem | null>(readDesignSystem());
+
+export function setDesignSystem(next: AiDesignSystem): void {
+	const value = { name: next.name.slice(0, 200), content: next.content.slice(0, MAX_DESIGN_SYSTEM) };
+	$aiDesignSystem.set(value);
+	try {
+		if (typeof localStorage !== "undefined") localStorage.setItem(DESIGN_KEY, JSON.stringify(value));
+	} catch {
+		// A full or blocked storage only loses persistence; the current chat still uses the file.
+	}
+}
+
+export function clearDesignSystem(): void {
+	$aiDesignSystem.set(null);
+	try {
+		if (typeof localStorage !== "undefined") localStorage.removeItem(DESIGN_KEY);
+	} catch {
+		// see setDesignSystem
+	}
+}
+
 export const $aiPicks = atom<AiPick[]>([]);
 /** While on, each element picked on the canvas or in Layers is added to (or, if there already, removed from) the picks. */
 export const $aiPicking = atom(false);
@@ -385,6 +429,7 @@ export async function askAi(model: string, prompt: string, history: AiTurn[]) {
 		prompt,
 		elements: targets.map((t, i) => describePick(t, `e${i + 1}`)),
 		page: pageContext(),
+		designSystem: $aiDesignSystem.get()?.content,
 		history: history.slice(-10).map(({ role, content, note }) => ({
 			role,
 			content: (note ? `${content}\n[Editor: ${note}]` : content).slice(0, 5000),

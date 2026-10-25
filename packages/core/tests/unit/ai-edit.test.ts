@@ -58,6 +58,22 @@ describe("visual editor AI edits", () => {
 		});
 	});
 
+	it("passes an uploaded design system to the model", async () => {
+		let sent: { messages?: Array<{ content?: string }> } = {};
+		const capture = (async (_url: string, init: RequestInit) => {
+			sent = JSON.parse(String(init.body)) as typeof sent;
+			return Response.json({
+				choices: [{ message: { role: "assistant", content: '{"reply":"ok","edits":[],"insertions":[]}' } }],
+			});
+		}) as unknown as typeof fetch;
+		await planEdits(
+			{ baseUrl: "x", models: ["m"], fetch: capture },
+			{ ...input, designSystem: "# Design system\nUse the container-page class and Space Grotesk." },
+		);
+		expect(sent.messages?.[0]?.content).toContain("Uploaded design system (authoritative)");
+		expect(sent.messages?.[0]?.content).toContain("container-page");
+	});
+
 	it("shows an answer without JSON as the reply", async () => {
 		const out = await planEdits({ baseUrl: "x", models: ["m"], fetch: answer(" Which card? ") }, input);
 		expect(out).toEqual({ reply: "Which card?", edits: [], insertions: [] });

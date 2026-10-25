@@ -446,9 +446,11 @@ export function createApp({
 		const examples = exampleFiles.map((f) => `--- ${f.path} ---\n${f.content.slice(0, 4500)}`).join("\n\n");
 		const containerFromMarkup = /class="[^"]*\b([a-z][a-z0-9-]*container[a-z0-9-]*)\b/.exec(examples)?.[1];
 		const containerClass = containerFromCss ?? containerFromMarkup;
+		const themeDesignSystem = source.files.find((f) => f.path === "design-system.md");
 		const design = [
 			`Theme: ${source.repo}`,
 			containerClass ? `Container class: ${containerClass}` : "",
+			themeDesignSystem ? `Theme design system (design-system.md):\n${themeDesignSystem.content.slice(0, 30_000)}` : "",
 			"CSS design tokens and classes:",
 			cssExcerpt,
 			"Example theme markup:",
@@ -908,6 +910,8 @@ export function createApp({
 									.default([]),
 							})
 							.optional(),
+						/** A design system Markdown file the user uploaded for the AI; authoritative for style. */
+						designSystem: z.string().max(100_000).optional(),
 						history: z
 							.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().max(5000) }))
 							.max(20)

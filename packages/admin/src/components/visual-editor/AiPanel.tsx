@@ -1,17 +1,20 @@
-import { ArrowUp, History, MousePointer2, Plus, Trash2, Undo2, X } from "@react-zero-ui/icon-sprite";
+import { ArrowUp, FileText, History, MousePointer2, Plus, Trash2, Undo2, Upload, X } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
 import { useEffect, useRef, useState } from "react";
 import { apiData } from "../../lib/api.ts";
 import { IconButton, toast } from "../../ui/index.tsx";
 import {
 	$aiChats,
+	$aiDesignSystem,
 	$aiPicking,
 	$aiPicks,
 	aiTargets,
 	askAi,
+	clearDesignSystem,
 	pickKey,
 	pickLabel,
 	saveChat,
+	setDesignSystem,
 	togglePick,
 	undoAiEdits,
 	type AiTurn,
@@ -44,8 +47,10 @@ export function AiPanel() {
 	const [chatId, setChatId] = useState<string>(() => crypto.randomUUID());
 	const [showHistory, setShowHistory] = useState(false);
 	const chats = useStore($aiChats);
+	const designSystem = useStore($aiDesignSystem);
 	const [busy, setBusy] = useState(false);
 	const end = useRef<HTMLDivElement>(null);
+	const designInput = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		apiData<AiConfig>("GET", "/api/ai/config")
@@ -92,6 +97,31 @@ export function AiPanel() {
 			setBusy(false);
 		}
 	};
+	const uploadDesignSystem = async (file?: File | null) => {
+		if (!file) return;
+		if (!/\.(md|markdown)$/i.test(file.name)) {
+			toast("Upload a Markdown (.md) design system file", "error");
+			return;
+		}
+		if (file.size > 100_000) {
+			toast("The design system file must be at most 100 KB", "error");
+			return;
+		}
+		try {
+			const content = await file.text();
+			if (!content.trim()) {
+				toast("The design system file is empty", "error");
+				return;
+			}
+			setDesignSystem({ name: file.name, content });
+			toast("Design system loaded");
+		} catch (e) {
+			toast((e as Error).message, "error");
+		} finally {
+			if (designInput.current) designInput.current.value = "";
+		}
+	};
+
 	const targets = aiTargets();
 	const send = async () => {
 		const prompt = draft.trim();
@@ -138,6 +168,13 @@ export function AiPanel() {
 				<h2 className="text-sm font-semibold">AI</h2>
 				<div className="flex gap-1">
 					<IconButton
+						label={designSystem ? "Replace design system (.md)" : "Upload design system (.md)"}
+						size="icon-sm"
+						onClick={() => designInput.current?.click()}
+					>
+						<Upload size={14} />
+					</IconButton>
+					<IconButton
 						label="Chat history"
 						size="icon-sm"
 						aria-pressed={showHistory}
@@ -150,6 +187,14 @@ export function AiPanel() {
 					</IconButton>
 				</div>
 			</div>
+			<input
+				ref={designInput}
+				type="file"
+				accept=".md,.markdown,text/markdown,text/plain"
+				className="hidden"
+				aria-label="Upload design system file"
+				onChange={(e) => void uploadDesignSystem(e.target.files?.[0])}
+			/>
 			{showHistory && (
 				<ul className="grid gap-1 text-sm">
 					{chats.map((c) => (
@@ -226,6 +271,32 @@ export function AiPanel() {
 						<span className="text-xs text-muted-foreground">No element picked · the AI can add a section</span>
 					)}
 				</div>
+				{designSystem ? (
+					<div className="flex items-center gap-1.5 rounded-md border border-emerald-400/20 bg-emerald-400/[0.08] px-2 py-1 text-[11px] text-emerald-300/80">
+						<FileText size={12} className="shrink-0" />
+						<span className="min-w-0 flex-1 truncate" title={designSystem.name}>
+							{designSystem.name}
+						</span>
+						<span className="shrink-0 text-[10px] text-emerald-300/50">design system</span>
+						<button
+							type="button"
+							aria-label="Remove design system"
+							title="Remove the design system from the AI"
+							onClick={clearDesignSystem}
+							className="shrink-0 text-emerald-300/60 hover:text-white"
+						>
+							<X size={10} />
+						</button>
+					</div>
+				) : (
+					<button
+						type="button"
+						onClick={() => designInput.current?.click()}
+						className="inline-flex w-fit items-center gap-1 text-[11px] text-muted-foreground hover:text-white"
+					>
+						<Upload size={11} /> Upload design system (.md)
+					</button>
+				)}
 				<textarea
 					aria-label="Ask the AI"
 					rows={3}

@@ -66,6 +66,8 @@ const answerSchema = z.object({
 	insertions: z.array(insertionSchema).max(5).default([]),
 });
 
+const MAX_DESIGN_SYSTEM = 100_000;
+
 const SYSTEM = `You edit a web page in a visual editor. The user may pick elements (listed below as JSON) and may also ask for new sections.
 Answer with ONLY a JSON object, no other text:
 {"reply": "one or two short sentences in the user's language", "edits": [{"ref": "...", ...changes}], "insertions": [{"html": "<section ...>...</section>"}]}
@@ -76,6 +78,9 @@ Each edit names a picked element by its "ref" and may set:
 - "attrs": HTML attributes to set (theme elements only); null removes one
 - "tag": a new HTML tag name (theme elements only)
 For theme elements with "tailwind": true prefer Tailwind 4 utilities in "classes". Change only what was asked.
+
+DESIGN SYSTEM:
+When an "Uploaded design system" section is present, it is the author's own design system. Follow its tokens, classes, layout and content rules; it wins over the page examples and the theme CSS below.
 
 NEW SECTIONS:
 - When the user asks for a new section, return it in "insertions". A picked element never prevents adding a section, even when it is a small element such as <hr>. Do not refuse because the picked element cannot contain a section.
@@ -110,7 +115,15 @@ function jsonIn(text: string): unknown {
 
 export async function planEdits(
 	config: AiConfig,
-	input: { model: string; prompt: string; elements: EditElement[]; page?: PageContext; history: ChatMessage[] },
+	input: {
+		model: string;
+		prompt: string;
+		elements: EditElement[];
+		page?: PageContext;
+		/** A design system Markdown file the user uploaded in the AI panel; authoritative for style. */
+		designSystem?: string;
+		history: ChatMessage[];
+	},
 ): Promise<{ reply: string; edits: ElementPatch[]; insertions: AiInsertion[] }> {
 	const message = await complete(
 		config,
@@ -118,7 +131,11 @@ export async function planEdits(
 		[
 			{
 				role: "system",
-				content: `${SYSTEM}\n\nPage context:\n${JSON.stringify(input.page ?? {})}\n\nPicked elements:\n${JSON.stringify(input.elements)}`,
+				content: `${SYSTEM}\n\nPage context:\n${JSON.stringify(input.page ?? {})}\n\n${
+					input.designSystem?.trim()
+						? `Uploaded design system (authoritative):\n${input.designSystem.slice(0, MAX_DESIGN_SYSTEM)}\n\n`
+						: ""
+				}Picked elements:\n${JSON.stringify(input.elements)}`,
 			},
 			...input.history,
 			{ role: "user", content: input.prompt },
