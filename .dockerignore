@@ -9,3 +9,6 @@ templates/starter/public/uploads
 e2e/test-results
 e2e/playwright-report
 graphify-out
+
+# Design source for the starter look; it is not a workspace package or part of the server image.
+templates/astrojs-boilerplate
