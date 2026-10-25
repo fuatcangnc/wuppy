@@ -43,6 +43,7 @@ interface MenuLink {
 	label: string;
 	href: string;
 	kind?: string;
+	description?: string;
 }
 interface MenuItem extends MenuLink {
 	children: MenuLink[];

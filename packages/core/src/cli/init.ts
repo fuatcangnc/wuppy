@@ -5,6 +5,7 @@ import { join, relative, resolve } from "node:path";
 import { promisify } from "node:util";
 import type { FieldType } from "../content-types/index.ts";
 import { parseDocument } from "../content/parsers/frontmatter.ts";
+import { THEME_GUIDE } from "./theme-guide.ts";
 
 const exec = promisify(execFile);
 
@@ -289,7 +290,7 @@ const IGNORE = [
 
 export async function init(
 	root: string,
-	{ force = false, version = "latest" } = {},
+	{ force = false, version = "latest", agents = true } = {},
 ): Promise<{ code: number; stdout: string; stderr: string }> {
 	const astro = await findAstroConfig(root);
 	if (!astro)
@@ -361,6 +362,12 @@ export async function init(
 			`${env.replace(/\n?$/, env ? "\n" : "")}WUPPY_SECRET=${randomBytes(32).toString("base64url")}\nWUPPY_URL=http://localhost:4321\n`,
 			{ mode: 0o600 },
 		);
+
+	// A guide for AI coding agents; one the project already has is left alone.
+	if (agents && !(await exists(join(root, "AGENTS.md")))) {
+		await writeFile(join(root, "AGENTS.md"), THEME_GUIDE);
+		lines.push("Wrote AGENTS.md: how AI coding agents should work on this Wuppy site");
+	}
 
 	for (const w of plan.warnings) lines.push(`warning: ${w}`);
 	lines.push("", "Next: install dependencies (npm install / pnpm install), then run the dev server and open /admin.");

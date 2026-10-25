@@ -1,6 +1,11 @@
 import type { Context } from "hono";
 import { ZodError } from "zod";
-import { ContentExistsError, DisallowedContentError, UnknownCollectionError } from "../content/service.ts";
+import {
+	ContentExistsError,
+	DisallowedContentError,
+	UniqueFieldError,
+	UnknownCollectionError,
+} from "../content/service.ts";
 import { MediaTooLargeError, UnsupportedMediaError } from "../media/index.ts";
 import { redact } from "../security/redact.ts";
 import { UnsafePathError } from "../content/validation/path.ts";
@@ -28,6 +33,10 @@ export function onError(err: Error, c: Context) {
 		const fields = [...new Set(err.issues.map((i) => i.path.join(".")).filter(Boolean))].join(", ");
 		return fail(c, 422, "VALIDATION_ERROR", fields ? `Invalid input: ${fields}` : "Invalid input", err.issues);
 	}
+	if (err instanceof UniqueFieldError)
+		return fail(c, 422, "VALIDATION_ERROR", `Invalid input: ${err.field}`, [
+			{ code: "custom", path: [err.field], message: err.message, input: err.value },
+		]);
 	if (err instanceof ContentExistsError) return fail(c, 409, "SLUG_TAKEN", err.message);
 	if (err instanceof DisallowedContentError) return fail(c, 422, "DISALLOWED_CONTENT", err.message, err.found);
 	if (err instanceof UnsafePathError) return fail(c, 400, "BAD_REQUEST", "Invalid slug");

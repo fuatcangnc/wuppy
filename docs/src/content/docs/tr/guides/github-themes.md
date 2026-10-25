@@ -76,6 +76,12 @@ sayfanın başlığını, `template` alanını (dosya, ör. `src/pages/index.ast
 Sitede aynı adla bir sayfa varsa o korunur ve tema sayfası onun için listelenmez. Parametreli sayfalar
 (`[slug].astro`), `_` ile başlayan dosyalar ve uç noktalar (`rss.xml.js`) listelenmez: Code görünümünde düzenlenir.
 
+**Pages**'te eklenen ve temada karşılığı olmayan bir sayfa (örneğin `/test`) temanın ana sayfasının
+(`src/pages/index.astro`) düzeninde gösterilir: başlık ve alt bilgi kalır, ana sayfanın `<main>` içindekilerin yerine
+sayfanın gövdesi gelir. Başlığı sayfanın başlığıdır (ya da SEO başlığı). Görsel editörde bloklar ve tema bileşenleriyle
+doldurulur. Ana sayfasında `<main>` olmayan ya da ana sayfası `.astro` olmayan bir tema bu sayfalar için 404 döner;
+taslak ya da zamanlanmış sayfa yayınlanana kadar 404'tür.
+
 ## Gereksinimler
 
 - Sunucu `node serve.mjs` ile başlatılmalı (Docker imajı bunu yapar) ve kapanınca onu yeniden başlatan bir süreç yöneticisi olmalı; örneğin Docker'ın `restart: unless-stopped` ayarı. Geliştirmede `pnpm dev` (`node dev.mjs`) `astro dev`'i etkin temanın içinde sitenin içeriğiyle çalıştırır; önizleme temadır. Admin'de tema değiştirince yeni temayla kendiliğinden yeniden başlar.

@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { markSource } from "../../src/astro/source-marks.ts";
 import type { ElementEdit } from "../../src/themes/astro-edit.ts";
 import { GithubThemes } from "../../src/themes/github.ts";
-import { applyOverlay, htmlElements, readOverlay, rebaseShadow } from "../../src/themes/overlay.ts";
+import { applyOverlay, htmlElements, missingClasses, readOverlay, rebaseShadow } from "../../src/themes/overlay.ts";
 
 const HERO = `const title = "Welcome";
 export function Hero() {
@@ -181,6 +181,14 @@ describe("htmlElements", () => {
 			["img", '<img src="a">'],
 			["script", '<script>if (a < b) "</div>"</script>'],
 			["p", "<p>x</p>"],
+		]);
+	});
+
+	it("makes CSS only for classes the build has no rule for", () => {
+		const css = ".flex-col{flex-direction:column}.sm\\:grid{display:grid}.md\\:\\[\\&\\>\\*\\]\\:h-full>*{height:100%}";
+		expect(missingClasses(css, ["flex", "flex-col", "sm:grid", "md:[&>*]:h-full", "sm:grid-cols-4"])).toEqual([
+			"flex",
+			"sm:grid-cols-4",
 		]);
 	});
 });

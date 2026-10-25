@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { collectionSchema } from "../content-types/index.ts";
+import { collectionSchema, relationSchema } from "../content-types/index.ts";
 import { defaultVisualData, visualDataSchema } from "@wuppycms/visual-editor";
 import { webhooksSchema } from "../webhooks/index.ts";
 
@@ -11,6 +11,8 @@ const href = z
 		(v) => (v.startsWith("/") && !v.startsWith("//")) || /^https?:\/\//i.test(v),
 		"Expected a path or http(s) URL",
 	);
+
+const description = z.string().max(300).optional();
 
 export const menuSchema = z.object({
 	name: id,
@@ -25,8 +27,10 @@ export const menuSchema = z.object({
 				href,
 				/** Optional source hint for the admin badge (page, post, category, custom…). */
 				kind: z.string().max(40).optional(),
+				/** Optional short text a theme can show under the label, as in a dropdown. */
+				description,
 				children: z
-					.array(z.object({ label: z.string().min(1), href, kind: z.string().max(40).optional() }))
+					.array(z.object({ label: z.string().min(1), href, kind: z.string().max(40).optional(), description }))
 					.default([]),
 			}),
 		)
@@ -237,6 +241,7 @@ export const dataSchemas = {
 	"byline-schema": z.array(bylineFieldSchema),
 	themes: z.array(themeSchema),
 	"content-types": z.array(collectionSchema),
+	relations: z.array(relationSchema),
 	webhooks: webhooksSchema,
 	visual: visualDataSchema,
 } as const;
@@ -257,6 +262,7 @@ export const dataDefaults: Record<DataName, unknown> = {
 	"byline-schema": [],
 	themes: [],
 	"content-types": [],
+	relations: [],
 	webhooks: [],
 	visual: defaultVisualData(),
 };

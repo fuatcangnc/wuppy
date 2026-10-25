@@ -5,11 +5,21 @@ export interface MenuLink {
 	href: string;
 	/** Source hint shown as a badge in the editor. */
 	kind?: string;
+	/** Short text a theme can show under the label. */
+	description?: string;
 }
 export interface MenuItem extends MenuLink {
 	children: MenuLink[];
 }
 export type Path = [number] | [number, number];
+
+/** The link without its children. */
+const linkOf = ({ label, href, kind, description }: MenuLink): MenuLink => ({
+	label,
+	href,
+	...(kind ? { kind } : {}),
+	...(description ? { description } : {}),
+});
 
 const clone = (items: MenuItem[]): MenuItem[] =>
 	items.map((i) => ({ ...i, children: i.children.map((c) => ({ ...c })) }));
@@ -61,9 +71,7 @@ export function indent(items: MenuItem[], path: Path): MenuItem[] {
 	const taken = take(items, path);
 	if (!taken) return items;
 	taken.rest[path[0] - 1]!.children.push({
-		label: item.label,
-		href: item.href,
-		...(item.kind ? { kind: item.kind } : {}),
+		...linkOf(item),
 	});
 	return taken.rest;
 }
@@ -74,9 +82,7 @@ export function outdent(items: MenuItem[], path: Path): MenuItem[] {
 	const taken = take(items, path);
 	if (!taken) return items;
 	taken.rest.splice(path[0] + 1, 0, {
-		label: taken.link.label,
-		href: taken.link.href,
-		...(taken.link.kind ? { kind: taken.link.kind } : {}),
+		...linkOf(taken.link),
 		children: [],
 	});
 	return taken.rest;
@@ -101,17 +107,13 @@ export function relocate(items: MenuItem[], from: Path, to: Path): MenuItem[] {
 	const index = sameList && fromAt < toAt ? toAt - 1 : toAt;
 	if (to.length === 1)
 		rest.splice(index, 0, {
-			label: taken.link.label,
-			href: taken.link.href,
-			...(taken.link.kind ? { kind: taken.link.kind } : {}),
+			...linkOf(taken.link),
 			children: (taken.link as MenuItem).children ?? [],
 		});
 	else {
 		const parent = from.length === 1 && from[0] < to[0] ? to[0] - 1 : to[0];
 		rest[parent]?.children.splice(index, 0, {
-			label: taken.link.label,
-			href: taken.link.href,
-			...(taken.link.kind ? { kind: taken.link.kind } : {}),
+			...linkOf(taken.link),
 		});
 	}
 	return rest;

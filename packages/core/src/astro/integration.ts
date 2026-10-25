@@ -1,14 +1,14 @@
 import { fileURLToPath } from "node:url";
 import type { AstroConfig, AstroIntegration } from "astro";
 import { existsSync } from "node:fs";
-import { mkdir, writeFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, join, resolve } from "node:path";
 import { listThemeComponents } from "../themes/components.ts";
 import { isLiveRoute, liveContentPlugin } from "./live-content.ts";
 import { quietHmrPlugin } from "./quiet-hmr.ts";
 import { mapSource, themeComponentsPlugin } from "./theme-components.ts";
 import { sourceMarksPlugin } from "./source-marks.ts";
-import { themePageRel, themePagesPlugin } from "./theme-pages.ts";
+import { sitePageSource, themePageRel, themePagesPlugin } from "./theme-pages.ts";
 
 // Source runs as .ts (workspace dev); the published build is .mjs. Entrypoints sit next to this file in both layouts.
 const ext = import.meta.url.endsWith(".ts") ? "ts" : "mjs";
@@ -31,6 +31,8 @@ export default function wuppycms(options: WuppyIntegrationOptions = {}): AstroIn
 	const liveRoutes = new Set<string>();
 	let live = false;
 	let site: string | undefined;
+	let runtime = "";
+	let sitePageFile: string | undefined;
 	// Plugins (functions) cannot cross into the runtime module; the rest of the settings can.
 	const settings = () =>
 		JSON.parse(
@@ -52,7 +54,7 @@ export default function wuppycms(options: WuppyIntegrationOptions = {}): AstroIn
 				root = fileURLToPath(config.root);
 				// Reading wuppy.config here is not possible (Astro's config loader is closed by now); the runtime reads it.
 				live = options.live !== false && CONFIG_FILES.some((f) => existsSync(join(root, f)));
-				const runtime = fileURLToPath(entry("live-runtime"));
+				runtime = fileURLToPath(entry("live-runtime"));
 				site =
 					process.env.WUPPY_BASE_ROOT && resolve(process.env.WUPPY_BASE_ROOT) !== resolve(root)
 						? process.env.WUPPY_BASE_ROOT
@@ -90,6 +92,11 @@ export default function wuppycms(options: WuppyIntegrationOptions = {}): AstroIn
 				injectRoute({ pattern: "/uploads/[...path]", entrypoint: entry("routes/uploads") });
 				injectRoute({ pattern: "/admin/[...path]", entrypoint: entry("routes/admin") });
 				injectRoute({ pattern: "/icons.svg", entrypoint: entry("routes/icons") });
+				// Pages added in the admin, which a theme has no page for, render in its home page's layout.
+				if (live && site) {
+					sitePageFile = await writeSitePage(root, runtime, settings());
+					if (sitePageFile) injectRoute({ pattern: "/[...wuppyPage]", entrypoint: sitePageFile });
+				}
 				const preview = await componentPreview(root);
 				if (preview) injectRoute({ pattern: "/_wuppy/component/[name]", entrypoint: preview });
 			},
@@ -101,9 +108,11 @@ export default function wuppycms(options: WuppyIntegrationOptions = {}): AstroIn
 				route.prerender = false;
 				liveRoutes.add(route.component);
 			},
-			"astro:config:done": ({ config, logger }) => {
+			"astro:config:done": async ({ config, logger }) => {
 				markdown = config.markdown;
 				image = config.image;
+				// Again, now that the Markdown settings are known.
+				if (sitePageFile) await writeSitePage(root, runtime, settings());
 				if (live && config.markdown.processor?.name !== "satteri")
 					logger.warn(
 						`Live content renders edited Markdown with Astro's default processor, not "${config.markdown.processor?.name}"; plugins from it apply after the next build.`,
@@ -139,5 +148,28 @@ export async function componentPreview(root: string): Promise<string | undefined
 			"",
 		].join("\n"),
 	);
+	return file;
+}
+
+/** Writes the page for site Pages entries without a theme page (see sitePageSource); undefined when there is none. */
+async function writeSitePage(
+	root: string,
+	runtime: string,
+	settings: Record<string, unknown>,
+): Promise<string | undefined> {
+	const index = join(root, "src/pages/index.astro");
+	// shortcut: only a home page in .astro gives the layout; a theme without one keeps 404 for new pages.
+	const source = await readFile(index, "utf8").catch(() => null);
+	if (source === null) return undefined;
+	const list = await listThemeComponents(root);
+	const code = sitePageSource(source, dirname(index), {
+		runtime,
+		components: list.length ? mapSource(list.map((c) => ({ ...c, path: join(root, c.path) }))) : "",
+		settings,
+	});
+	if (!code) return undefined;
+	const file = join(root, "node_modules", ".wuppy", "site-page.astro");
+	await mkdir(dirname(file), { recursive: true });
+	await writeFile(file, code);
 	return file;
 }

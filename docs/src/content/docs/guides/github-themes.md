@@ -76,6 +76,12 @@ holds the page's title, its `template` (the file, e.g. `src/pages/index.astro`),
 A site page with the same name is kept and the theme page is not listed for it. Pages with parameters
 (`[slug].astro`), files starting with `_` and endpoints (`rss.xml.js`) are not listed: edit them in Code view.
 
+A page added in **Pages** that the theme has no page for (say `/test`) is shown in the layout of the theme's home page
+(`src/pages/index.astro`): its header and footer stay, and the page's body takes the place of what the home page has in
+its `<main>`. Its title is the page's title (or its SEO title). Build it with blocks and theme components in the visual
+editor. A theme whose home page has no `<main>`, or is not an `.astro` file, answers 404 for such pages; a draft or
+scheduled page is 404 until it is published.
+
 ## Requirements
 
 - The server must be started with `node serve.mjs` (the Docker image does this) and a process manager that starts it again after it exits, such as Docker's `restart: unless-stopped`. In development, `pnpm dev` (`node dev.mjs`) runs `astro dev` inside the active theme with the site's content, so the preview is the theme; switching themes in the admin restarts it in the new theme by itself.

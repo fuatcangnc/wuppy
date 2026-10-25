@@ -1,7 +1,7 @@
 import { access, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { loadConfig, type WuppyConfig } from "../config/index.ts";
-import type { Collection } from "../content-types/index.ts";
+import { kindOf, siteCollections, type Collection, type Relation } from "../content-types/index.ts";
 import { parseDocument, serializeDocument } from "../content/parsers/frontmatter.ts";
 import { stripComponentImports } from "../markdown/index.ts";
 
@@ -17,8 +17,6 @@ export const siteRoot = (): string => process.env.WUPPY_BASE_ROOT || process.cwd
 /** The running theme's folder, or undefined when the site runs itself. */
 export const themeRoot = (): string | undefined =>
 	resolve(process.cwd()) === resolve(siteRoot()) ? undefined : process.cwd();
-
-const kindOf = (c: Collection) => c.kind ?? (c.name === "posts" || c.name === "pages" ? c.name : undefined);
 
 /** One theme collection and where its entries live, relative to the site. `rename` is site field -> theme field. */
 export interface ThemeLink {
@@ -53,10 +51,29 @@ export function linkTheme(site: Collection[], theme: Collection[]): { collection
 
 /** The site's config; with a theme, its collections linked in (`links` says where the theme reads). */
 export async function loadSiteConfig(site: string, theme?: string): Promise<WuppyConfig & { links: ThemeLink[] }> {
-	const config = await loadConfig(site);
+	const loaded = await loadConfig(site);
+	const config = {
+		...loaded,
+		collections: siteCollections(
+			loaded.collections,
+			await siteData<Collection[]>(site, "content-types"),
+			await siteData<Relation[]>(site, "relations"),
+		),
+	};
 	if (!theme) return { ...config, links: [] };
 	const linked = linkTheme(config.collections, (await loadConfig(theme)).collections);
 	return { ...config, collections: linked.collections, links: linked.links };
+}
+
+/** A list the admin saved in `.wuppy/data` (content types, relations), or none. */
+async function siteData<T>(site: string, name: string): Promise<T> {
+	return readFile(join(site, ".wuppy/data", `${name}.json`), "utf8").then(
+		(text) => JSON.parse(text) as T,
+		(error: NodeJS.ErrnoException) => {
+			if (error.code === "ENOENT") return [] as T;
+			throw error;
+		},
+	);
 }
 
 /** Theme frontmatter as the site stores it, or the reverse with an inverted map. */
@@ -104,6 +121,33 @@ export async function importDemo(site: string, theme: string): Promise<string[]>
 /** The site's Pages collection folder (`kind: "pages"`, or the collection named `pages`), if it has one. */
 export const pagesDir = (collections: Collection[]): string | undefined =>
 	collections.find((c) => kindOf(c) === "pages")?.dir;
+
+/**
+ * The entry a URL path stands for by its collection's `route` (`/projects/{slug}`), the most specific route first; for
+ * the site page route, which renders entries the theme has no page for.
+ */
+export async function routedEntry(
+	site: string,
+	theme: string | undefined,
+	path: string,
+): Promise<{ file: string; source: string; kind?: "posts" | "pages" } | undefined> {
+	const clean = `/${path.replace(/^\/+|\/+$/g, "")}`;
+	const routes = (await loadSiteConfig(site, theme)).collections
+		.map((c) => ({ c, route: c.route ?? `/${c.name}/{slug}` }))
+		.toSorted((a, b) => b.route.indexOf("{slug}") - a.route.indexOf("{slug}"));
+	for (const { c, route } of routes) {
+		const [pre = "", post = ""] = route.split("{slug}");
+		if (!clean.startsWith(pre) || !clean.endsWith(post) || clean.length <= pre.length + post.length) continue;
+		const slug = clean.slice(pre.length, clean.length - post.length);
+		if (slug.split("/").some((part) => !part || part.startsWith(".") || part.startsWith("_"))) continue;
+		for (const ext of [".mdx", ".md"]) {
+			const file = join(site, c.dir, slug + ext);
+			const source = await readFile(file, "utf8").catch(() => null);
+			if (source !== null) return { file, source, kind: kindOf(c) };
+		}
+	}
+	return undefined;
+}
 
 /** A theme's static pages (`src/pages/about.md`, `index.astro`): no `[param]` routes, `_partials` or endpoints. */
 export async function themePageFiles(theme: string): Promise<string[]> {

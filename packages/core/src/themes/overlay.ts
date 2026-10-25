@@ -322,6 +322,23 @@ async function tailwindEntry(theme: string): Promise<string | undefined> {
 	return undefined;
 }
 
+/**
+ * The classes a built stylesheet has no rule for. Only those get overlay CSS: a rule made again comes after the
+ * build's own, so `.flex` would beat `sm:grid` on every element that has both.
+ */
+export function missingClasses(css: string, classes: string[]): string[] {
+	return classes.filter(
+		(c) => !new RegExp(`\\.${escapeRe(c.replace(/[^\w-]/g, (ch) => `\\${ch}`))}(?![\\w\\\\-])`).test(css),
+	);
+}
+
+const builtCss = async (theme: string) => {
+	const dir = join(theme, "dist", "client");
+	const names = await readdir(dir, { recursive: true }).catch(() => [] as string[]);
+	const sheets = names.filter((n) => n.endsWith(".css")).map((n) => readFile(join(dir, n), "utf8").catch(() => ""));
+	return (await Promise.all(sheets)).join("\n");
+};
+
 /** The theme's own Tailwind (a theme dependency, not Wuppy's). */
 const THEME_TAILWIND = "@tailwindcss/node";
 const cssCache = new Map<string, Promise<string>>();
@@ -353,7 +370,8 @@ export function overlayCss(theme: string, ops: OverlayOp[]): Promise<string> {
 				base: dirname(entry),
 				onDependency: () => undefined,
 			});
-			return layers(compiler.build(classes), ["theme", "utilities"]);
+			const missing = missingClasses(await builtCss(theme), classes);
+			return missing.length ? layers(compiler.build(missing), ["theme", "utilities"]) : "";
 		})().catch(() => "");
 		cssCache.clear();
 		cssCache.set(key, job);

@@ -44,6 +44,7 @@ Bu, [GitHub CLI](https://cli.github.com/) kullanır; özel depolar kendi girişi
 - `wuppy.config.mjs` dosyasını yazar, `astro.config` içindeki `integrations`'a `wuppycms()` ekler, adapter yoksa Node adapter'ı ekler.
 - `@astrojs/mdx` ekler, `.md` glob'larını `.mdx` için genişletir ve `.mdx` dosyalarında bulduğu bileşenleri izin listesine alır. `wuppycms mdx-to-md` bileşen içermeyen `.mdx` dosyalarını hâlâ `.md`'ye çevirebilir.
 - `package.json`'a `wuppycms` (gerekirse `@astrojs/node`), `.gitignore`'a Wuppy satırlarını, `.env`'e rastgele bir `WUPPY_SECRET` ekler.
+- Projede yoksa `AGENTS.md` yazar: yapay zekâ kod ajanlarına (Claude Code, Cursor, opencode…) Wuppy sitesinde nasıl çalışacaklarını anlatan bir rehber. Bkz. [Temada kod ajanları](/tr/ai/theme-agents/).
 
 Hiçbir şeyin üzerine yazılmaz: `wuppy.config.mjs` zaten varsa komut `--force` verilmedikçe durur. `astro.config` güvenle değiştirilemeyecek biçimdeyse elle eklenecek satırı yazdırır.
 

@@ -48,6 +48,10 @@ export interface FieldOptions {
 	/** Block types of a `blocks` field: each type has its own fields. */
 	blocks?: Record<string, Record<string, FieldType>>;
 	showIf?: ShowIf;
+	/** No two entries of the collection may hold the same value (for a list: share one). */
+	unique?: boolean;
+	/** Set on the reference field a relation adds (see `relationSchema`); the relation decides its target and limits. */
+	relation?: string;
 }
 
 export type FieldType = FieldKind | FieldOptions;
@@ -67,6 +71,8 @@ const fieldOptionsSchema: z.ZodType<FieldOptions, unknown> = z.lazy(() =>
 		fields: z.record(z.string(), fieldTypeSchema).optional(),
 		blocks: z.record(z.string(), z.record(z.string(), fieldTypeSchema)).optional(),
 		showIf: z.object({ field: z.string(), equals: z.unknown() }).optional(),
+		unique: z.boolean().optional(),
+		relation: z.string().optional(),
 	}),
 );
 
@@ -148,6 +154,9 @@ export function fieldSchema(field: FieldType): z.ZodType {
 		if (min !== undefined) a = a.min(min);
 		if (max !== undefined) a = a.max(max);
 		schema = a;
+	} else if (f.type === "reference" && f.relation) {
+		// A relation's limit: one slug, or a list of them.
+		schema = f.multiple ? z.array(z.string().max(200)).max(f.max ?? 50) : z.string().max(200);
 	} else if ((f.type === "string" || f.type === "text") && (min !== undefined || max !== undefined)) {
 		let t = z.string();
 		if (min !== undefined) t = t.min(min);
@@ -174,3 +183,92 @@ export const dataSchema = (c: Collection) =>
 	});
 
 export const fieldKind = (field: FieldType): FieldKind => normalize(field).type;
+
+/** The admin section a collection fills: `kind`, else its name (`posts`, `pages`). */
+export const kindOf = (c: Collection): "posts" | "pages" | undefined =>
+	c.kind ?? (c.name === "posts" || c.name === "pages" ? c.name : undefined);
+
+/**
+ * How entries of two collections link (like EmDash's relations). Entries of `from` hold the slugs of `to` entries in a
+ * reference field named `name`; the `to` side reads them back (see `linkedFrom`). `toMany`: a `from` entry may link to
+ * several; `fromMany`: a `to` entry may be linked from several `from` entries.
+ */
+export const relationSchema = z.object({
+	name: z
+		.string()
+		.max(60)
+		.regex(/^[a-z][a-z0-9_]*$/, "Lowercase letters, numbers and underscores"),
+	from: z.string().min(1),
+	to: z.string().min(1),
+	fromLabel: z.string().trim().min(1).max(60),
+	toLabel: z.string().trim().min(1).max(60),
+	toMany: z.boolean().default(true),
+	fromMany: z.boolean().default(true),
+});
+export type Relation = z.infer<typeof relationSchema>;
+
+/** Pages and Posts every site has, as in EmDash or WordPress: added when the config has no collection of that kind. */
+const DEFAULTS: Collection[] = [
+	{
+		name: "posts",
+		dir: "content/posts",
+		format: "mdx",
+		route: "/posts/{slug}",
+		fields: {
+			title: "string",
+			date: "date",
+			draft: "boolean",
+			publishAt: "date",
+			cover: "image",
+			seoTitle: "string",
+			seoDescription: "text",
+		},
+	},
+	{
+		name: "pages",
+		dir: "content/pages",
+		format: "mdx",
+		route: "/{slug}",
+		fields: { title: "string", draft: "boolean", seoTitle: "string", seoDescription: "text" },
+	},
+];
+
+/**
+ * The site's collections: wuppy.config's, the content types made in the admin (same name replaces), Pages/Posts when
+ * missing, and a reference field on the `from` side of each relation.
+ */
+export function siteCollections(config: Collection[], types: Collection[], relations: Relation[] = []): Collection[] {
+	const out = config.map((c) => ({ ...c, fields: { ...c.fields } }));
+	for (const t of types) {
+		const i = out.findIndex((c) => c.name === t.name);
+		const copy = { ...t, fields: { ...t.fields } };
+		if (i === -1) out.push(copy);
+		else out[i] = copy;
+	}
+	for (const d of DEFAULTS)
+		if (!out.some((c) => c.name === d.name || kindOf(c) === d.name)) out.push(structuredClone(d));
+	for (const r of relations) {
+		const from = out.find((c) => c.name === r.from);
+		if (!from || !out.some((c) => c.name === r.to)) continue;
+		from.fields[r.name] = {
+			type: "reference",
+			collection: r.to,
+			multiple: r.toMany,
+			required: false,
+			relation: r.name,
+			...(r.fromMany ? {} : { unique: true }),
+		};
+	}
+	return out;
+}
+
+const folder = (dir: string) => `${dir.replace(/\\/g, "/").replace(/^\.?\/+|\/+$/g, "")}/`;
+
+/** Two collections whose folders are the same or nested (one would list the other's entries), as a message. */
+export function dirClash(collections: Pick<Collection, "name" | "dir">[]): string | undefined {
+	for (const [i, a] of collections.entries())
+		for (const b of collections.slice(i + 1))
+			if (folder(a.dir).startsWith(folder(b.dir)) || folder(b.dir).startsWith(folder(a.dir)))
+				return `"${a.name}" (${a.dir}) and "${b.name}" (${b.dir}) share a folder; give each its own, like content/${a.name}`;
+	return undefined;
+}

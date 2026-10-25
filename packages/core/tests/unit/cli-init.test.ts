@@ -3,6 +3,7 @@ import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { astroRepos, importRepo, inferField, init, patchAstroConfig } from "../../src/cli/init.ts";
+import { THEME_GUIDE, THEME_PROMPTS } from "../../src/cli/theme-guide.ts";
 
 const line = (repo: string, pkg: string) => JSON.stringify({ repo, private: repo.endsWith("b"), description: "", pkg });
 
@@ -40,6 +41,26 @@ describe("wuppycms init helpers", () => {
 		expect(r.code).toBe(0);
 		expect(r.stdout).toContain("no Markdown/MDX content collections found");
 		expect(await readFile(join(root, "wuppy.config.mjs"), "utf8")).toContain('"collections": []');
+	});
+
+	it("writes the agents guide once, leaves a project's own AGENTS.md alone, and matches the shipped skill", async () => {
+		const root = await mkdtemp(join(tmpdir(), "wuppy-init-"));
+		await writeFile(join(root, "astro.config.mjs"), `export default {};\n`);
+		await writeFile(join(root, "package.json"), '{"name":"site"}');
+		await init(root);
+		expect(await readFile(join(root, "AGENTS.md"), "utf8")).toBe(THEME_GUIDE);
+		await writeFile(join(root, "AGENTS.md"), "mine");
+		await init(root, { force: true });
+		expect(await readFile(join(root, "AGENTS.md"), "utf8")).toBe("mine");
+		const skill = await readFile(new URL("../../../../skills/wuppy-theme/SKILL.md", import.meta.url), "utf8");
+		expect(skill.endsWith(`---\n\n${THEME_GUIDE}`)).toBe(true);
+	});
+
+	it("lists every theme prompt in the docs, in both languages", async () => {
+		for (const page of ["ai/theme-agents.md", "tr/ai/theme-agents.md"]) {
+			const docs = await readFile(new URL(`../../../../docs/src/content/docs/${page}`, import.meta.url), "utf8");
+			for (const p of THEME_PROMPTS) expect(docs).toContain(p.prompt);
+		}
 	});
 
 	it("lists only Astro repos from GitHub and clones the picked one with gh", async () => {

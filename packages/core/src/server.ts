@@ -19,6 +19,7 @@ import { NoopGit, RealGit } from "@wuppycms/git";
 import { Hono } from "hono";
 import { createApp } from "./api/app.ts";
 import { loadConfig } from "./config/index.ts";
+import { siteCollections, type Collection, type Relation } from "./content-types/index.ts";
 import { loadDotEnv } from "./config/env.ts";
 import { resolveOAuthProviders } from "./config/oauth.ts";
 import { resolvePasskeyOptions } from "./config/passkey.ts";
@@ -147,14 +148,17 @@ export async function createServer({
 	const comments = new CommentService(db);
 	const redirects = new RedirectService(json, db, config.redirects);
 	const tokens = new ApiTokenService(db);
-	const extraTypes = (await json.read("content-types", [])) as typeof config.collections;
-	let collections = [...config.collections];
-	for (const type of extraTypes) {
-		const index = collections.findIndex((c) => c.name === type.name);
-		if (index === -1) collections.push(type);
-		else collections[index] = type;
-	}
-	if (theme) collections = linkTheme(collections, (await loadConfig(theme)).collections).collections;
+	const themeCollections = theme ? (await loadConfig(theme)).collections : [];
+	// Content types and relations made in the admin; saving them calls this again, no restart.
+	const siteTypes = async () => {
+		const merged = siteCollections(
+			config.collections,
+			(await json.read("content-types", [])) as Collection[],
+			(await json.read("relations", [])) as Relation[],
+		);
+		return theme ? linkTheme(merged, themeCollections).collections : merged;
+	};
+	const collections = await siteTypes();
 	// A theme's `.astro` components are trusted design code; allow them in MDX without repeating every name in config.
 	// A site's internal components are not exposed automatically: many require props and would break a page if inserted.
 	const autoComponents = theme ? await themeComponentNames(theme) : [];
@@ -312,6 +316,7 @@ export async function createServer({
 				acceptInvitation: (input) => acceptInvitationRecord(db, input),
 				userCount: () => (db.prepare("SELECT COUNT(*) AS n FROM user").get() as { n: number }).n,
 				pluginManager: plugins,
+				siteTypes,
 				themes: new GithubThemes({
 					base: root,
 					// serve.mjs (with Docker's restart policy) and the starter's dev.mjs start the server again after this exit.

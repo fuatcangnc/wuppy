@@ -11,6 +11,7 @@ import { ContentService } from "../../src/content/service.ts";
 import { JsonStore } from "../../src/data/store.ts";
 import { MediaService } from "../../src/media/index.ts";
 import { RedirectService } from "../../src/redirects/service.ts";
+import type { GithubThemes } from "../../src/themes/github.ts";
 
 const ADMIN: User = {
 	id: "admin",
@@ -48,8 +49,9 @@ let json: JsonStore;
 let comments: CommentService;
 let redirects: RedirectService;
 const H = { "X-Wuppy-Request": "1", "Content-Type": "application/json" };
-const app = () =>
+const app = (themes?: GithubThemes) =>
 	createApp({
+		themes,
 		service,
 		media: new MediaService(root, git, undefined, json),
 		json,
@@ -111,6 +113,33 @@ describe("site data", () => {
 		const res = await app().request("/api/data/menus");
 		expect((await res.json()).data).toEqual([menu]);
 		expect(await readFile(join(root, ".wuppy/data/menus.json"), "utf8")).toContain('"main"');
+	});
+
+	it("keeps link descriptions and has the theme built again after a change of data it renders", async () => {
+		let changed = 0;
+		const themes = { dataChanged: () => changed++ } as unknown as GithubThemes;
+		const items = [
+			{
+				label: "Product",
+				href: "/#top",
+				description: "All of it",
+				children: [{ label: "AI", href: "/#ai", description: "Agents" }],
+			},
+		];
+		const put = await app(themes).request("/api/data/menus", {
+			method: "PUT",
+			headers: H,
+			body: JSON.stringify({ data: [{ name: "main", label: "Main", location: "header", items }] }),
+		});
+		expect(put.status).toBe(200);
+		expect((await put.json()).data[0].items).toEqual(items);
+		expect(changed).toBe(1);
+		const put2 = (name: string, data: unknown) =>
+			app(themes).request(`/api/data/${name}`, { method: "PUT", headers: H, body: JSON.stringify({ data }) });
+		expect((await put2("sections", [{ slug: "cta", title: "CTA", body: "Hi" }])).status).toBe(200);
+		expect(changed).toBe(2);
+		expect((await put2("taxonomies", [])).status).toBe(200);
+		expect(changed).toBe(2);
 	});
 
 	it("checks section bodies as Markdown: markup is saved, unsafe HTML and components are refused", async () => {

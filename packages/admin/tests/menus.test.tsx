@@ -41,6 +41,13 @@ describe("menu tree", () => {
 		expect(shape(outdent(base(), [1, 0]))).toEqual(["Home", "Blog[Tips]", "News", "About"]);
 	});
 
+	it("keeps a link's description when it moves between levels", () => {
+		const items = update(base(), [2], { description: "Who we are" });
+		const child = indent(items, [2])[1]!.children[2]!;
+		expect(child.description).toBe("Who we are");
+		expect(outdent(indent(items, [2]), [1, 2])[2]!.description).toBe("Who we are");
+	});
+
 	it("relocates by drag: reorder, into a submenu, and out of one", () => {
 		expect(shape(relocate(base(), [2], [0]))).toEqual(["About", "Home", "Blog[News,Tips]"]);
 		expect(shape(relocate(base(), [0], [2]))).toEqual(["Blog[News,Tips]", "Home", "About"]);

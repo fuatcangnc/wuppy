@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { collectionSchema, dataSchema } from "../../src/content-types/index.ts";
+import {
+	collectionSchema,
+	dataSchema,
+	dirClash,
+	relationSchema,
+	siteCollections,
+} from "../../src/content-types/index.ts";
 
 const posts = collectionSchema.parse({
 	name: "posts",
@@ -69,5 +75,55 @@ describe("rich fields", () => {
 		expect(ok(s, { meta: { a: [1, "b"] }, draft: false })).toBe(true);
 		expect(ok(s, { draft: true })).toBe(false);
 		expect(ok(s, { draft: true, publishAt: "2030-01-01" })).toBe(true);
+	});
+});
+
+describe("siteCollections", () => {
+	it("adds Pages/Posts when missing, lets saved types replace, and gives a relation's from side its field", () => {
+		const config = [collectionSchema.parse({ name: "landing", kind: "pages", dir: "content/landing", fields: {} })];
+		const types = [collectionSchema.parse({ name: "authors", dir: "content/authors", fields: {} })];
+		const relations = [
+			relationSchema.parse({
+				name: "posts_authors",
+				from: "posts",
+				to: "authors",
+				fromLabel: "Posts",
+				toLabel: "Authors",
+				fromMany: false,
+			}),
+			relationSchema.parse({ name: "gone", from: "posts", to: "nope", fromLabel: "P", toLabel: "N" }),
+		];
+		const out = siteCollections(config, types, relations);
+		expect(out.map((c) => c.name)).toEqual(["landing", "authors", "posts"]);
+		const linking = out.find((c) => c.name === "posts")!;
+		expect(linking.fields.posts_authors).toMatchObject({
+			type: "reference",
+			collection: "authors",
+			multiple: true,
+			unique: true,
+		});
+		expect(linking.fields.gone).toBeUndefined();
+		expect(config[0]!.fields).toEqual({});
+	});
+
+	it("finds collections whose folders nest", () => {
+		expect(
+			dirClash([
+				{ name: "a", dir: "content/a" },
+				{ name: "b", dir: "content/b" },
+			]),
+		).toBeUndefined();
+		expect(
+			dirClash([
+				{ name: "a", dir: "content/a" },
+				{ name: "t", dir: "content/" },
+			]),
+		).toMatch(/share a folder/);
+		expect(
+			dirClash([
+				{ name: "a", dir: "./content/a/" },
+				{ name: "b", dir: "content/a" },
+			]),
+		).toMatch(/share a folder/);
 	});
 });

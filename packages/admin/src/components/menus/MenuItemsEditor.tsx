@@ -108,6 +108,13 @@ export function MenuItemsEditor({ items, onChange }: { items: MenuItem[]; onChan
 								onChange={(event) => onChange(update(items, path, { href: event.target.value }))}
 							/>
 						</div>
+						<Input
+							aria-label={`Description of ${name}`}
+							placeholder="Description (optional, shown by themes that support it)"
+							maxLength={300}
+							value={link.description ?? ""}
+							onChange={(event) => onChange(update(items, path, { description: event.target.value || undefined }))}
+						/>
 						<div className="flex flex-wrap items-center gap-1">
 							<Button
 								size="icon-sm"

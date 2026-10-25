@@ -1,7 +1,8 @@
-import { FileText, Plus, Search } from "@react-zero-ui/icon-sprite";
+import { FileText, Link2, Plus, Search } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
 import { useEffect, useState } from "react";
 import { apiData } from "../../lib/api.ts";
+import { loadCollections } from "../../stores/content.ts";
 import { $data, $dataErrors, loadData, saveData } from "../../stores/dashboard.ts";
 import { Button, Checkbox, EmptyState, ErrorText, Input, Select, Textarea, toast } from "../../ui/index.tsx";
 import { WorkspaceLayout, WorkspacePanel, WorkspaceSidebar } from "../shared/WorkspaceLayout.tsx";
@@ -51,10 +52,30 @@ export function compactField(f: { type: string } & Record<string, unknown>): Fie
 
 export const blankType = (): ContentType => ({
 	name: "",
-	dir: "content/",
+	dir: "",
 	format: "mdx",
-	route: "/{slug}",
+	route: "",
 	fields: {},
+});
+
+export interface Relation {
+	name: string;
+	from: string;
+	to: string;
+	fromLabel: string;
+	toLabel: string;
+	toMany: boolean;
+	fromMany: boolean;
+}
+
+const label = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
+/** A new type gets its own folder and URL from its name until they are typed in. */
+const typePath = (name: string) => ({ dir: name ? `content/${name}` : "", route: name ? `/${name}/{slug}` : "" });
+/** A field a relation adds: shown with the relation, never saved with the type. */
+const fromRelation = (f: FieldDef) => typeof f === "object" && typeof f.relation === "string";
+const ownFields = (t: ContentType): ContentType => ({
+	...t,
+	fields: Object.fromEntries(Object.entries(t.fields).filter(([, f]) => !fromRelation(f))),
 });
 
 export function ContentTypesPage() {
@@ -66,22 +87,30 @@ export function ContentTypesPage() {
 	const [asJson, setAsJson] = useState(false);
 	const [jsonText, setJsonText] = useState("");
 	const [impact, setImpact] = useState<Impact | null>(null);
-	const [collections, setCollections] = useState<string[]>([]);
+	const [live, setLive] = useState<ContentType[]>([]);
+	const collections = live.map((c) => c.name);
+	const relations = (useStore($data).relations as Relation[] | undefined) ?? [];
 	const [query, setQuery] = useState("");
+	const [fromConfig, setFromConfig] = useState(false);
 
+	// Every collection the site has (its config's, Pages and Posts included), not only the ones made here.
+	const refresh = () =>
+		apiData<ContentType[]>("GET", "/api/collections")
+			.then(setLive)
+			.catch(() => undefined);
 	useEffect(() => {
 		void loadData<ContentType[]>("content-types").catch(() => undefined);
-		void apiData<Array<{ name: string }>>("GET", "/api/collections")
-			.then((all) => setCollections(all.map((c) => c.name)))
-			.catch(() => undefined);
+		void loadData<Relation[]>("relations").catch(() => undefined);
+		void refresh();
 	}, []);
 	useEffect(() => {
 		if (Array.isArray(stored)) setItems(stored);
 	}, [stored]);
 
-	const open = (item: ContentType, i: number | null) => {
-		setEditing(structuredClone(item));
+	const open = (item: ContentType, i: number | null, config = false) => {
+		setEditing(structuredClone(ownFields(item)));
 		setIndex(i);
+		setFromConfig(config);
 		setImpact(null);
 		setAsJson(false);
 	};
@@ -124,7 +153,9 @@ export function ContentTypesPage() {
 			setItems(saved);
 			setIndex(nextIndex);
 			setEditing(saved[nextIndex] ? structuredClone(saved[nextIndex]!) : null);
-			toast("Content types saved. Restart the server to apply them.");
+			setFromConfig(false);
+			await Promise.all([refresh(), loadCollections()]);
+			toast("Content type saved");
 		} catch (e) {
 			toast((e as Error).message, "error");
 		}
@@ -142,17 +173,24 @@ export function ContentTypesPage() {
 			setItems(saved);
 			setIndex(null);
 			setEditing(null);
+			await Promise.all([refresh(), loadCollections()]);
 			toast("Content type removed");
 		} catch (e) {
 			toast((e as Error).message, "error");
 		}
 	};
 
-	const visible = items
-		.map((item, i) => ({ item, i }))
-		.filter(
-			({ item }) => !query.trim() || `${item.name} ${item.dir}`.toLowerCase().includes(query.trim().toLowerCase()),
-		);
+	// The site's collections in order, each the saved type when one was made here (it replaces the config's).
+	const rows = [
+		...live.map((c) => {
+			const i = items.findIndex((t) => t.name === c.name);
+			return { item: i === -1 ? c : items[i]!, i: i === -1 ? null : i };
+		}),
+		...items.flatMap((item, i) => (live.some((c) => c.name === item.name) ? [] : [{ item, i: i as number | null }])),
+	];
+	const visible = rows.filter(
+		({ item }) => !query.trim() || `${item.name} ${item.dir}`.toLowerCase().includes(query.trim().toLowerCase()),
+	);
 
 	return (
 		<WorkspaceLayout sidebarWidth={340}>
@@ -160,7 +198,7 @@ export function ContentTypesPage() {
 				<div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
 					<div className="grid gap-0.5">
 						<h1 className="text-base font-semibold">Content types</h1>
-						<p className="text-[11px] text-muted-foreground">{items.length} collections · restart after saving</p>
+						<p className="text-[11px] text-muted-foreground">{rows.length} collections</p>
 					</div>
 					<Button
 						variant="secondary"
@@ -195,8 +233,8 @@ export function ContentTypesPage() {
 				<div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto p-2">
 					{visible.length === 0 ? (
 						<EmptyState
-							title={items.length === 0 ? "No custom content types yet" : "No matches"}
-							description={items.length === 0 ? "Create a collection definition." : "Try a different search."}
+							title={rows.length === 0 ? "No content types yet" : "No matches"}
+							description={rows.length === 0 ? "Create a collection definition." : "Try a different search."}
 							action={<Button onClick={() => open(blankType(), null)}>+ New content type</Button>}
 						/>
 					) : (
@@ -206,10 +244,10 @@ export function ContentTypesPage() {
 									key={item.name}
 									type="button"
 									aria-label={`Open ${item.name}`}
-									aria-current={index === i ? "true" : undefined}
-									onClick={() => open(item, i)}
+									aria-current={editing?.name === item.name ? "true" : undefined}
+									onClick={() => open(item, i, i === null)}
 									className={`flex w-full items-center gap-2 rounded-lg border px-2 py-2 text-left ${
-										index === i
+										editing?.name === item.name
 											? "border-primary/60 bg-tab text-foreground"
 											: "border-transparent text-muted-foreground hover:bg-muted/60"
 									}`}
@@ -222,7 +260,7 @@ export function ContentTypesPage() {
 											{item.name || "Untitled type"}
 										</span>
 										<span className="mt-0.5 block truncate text-[11px] text-muted-foreground">
-											{item.dir} · {Object.keys(item.fields).length} fields
+											{item.dir} · {Object.keys(item.fields).length} fields · {i === null ? "Config" : "Dashboard"}
 										</span>
 									</span>
 								</button>
@@ -238,7 +276,10 @@ export function ContentTypesPage() {
 						<header className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-5 py-4">
 							<div className="grid min-w-0 gap-1">
 								<h2 className="truncate text-xl font-semibold">{editing.name || "New content type"}</h2>
-								<p className="text-xs text-muted-foreground">{editing.dir}</p>
+								<p className="text-xs text-muted-foreground">
+									{editing.dir}
+									{fromConfig && " · from wuppy.config; saving keeps a copy here that replaces it"}
+								</p>
 							</div>
 							<div className="flex flex-wrap items-center gap-1">
 								<Button variant="secondary" size="sm" onClick={() => void check()}>
@@ -260,8 +301,17 @@ export function ContentTypesPage() {
 									<Input
 										label="Name"
 										value={editing.name}
-										disabled={index !== null}
-										onChange={(e) => setEditing({ ...editing, name: e.target.value })}
+										disabled={index !== null || fromConfig}
+										onChange={(e) => {
+											const name = e.target.value;
+											const was = typePath(editing.name);
+											setEditing({
+												...editing,
+												name,
+												dir: editing.dir === was.dir ? typePath(name).dir : editing.dir,
+												route: editing.route === was.route ? typePath(name).route : editing.route,
+											});
+										}}
 									/>
 									<Input
 										label="Directory"
@@ -373,6 +423,13 @@ export function ContentTypesPage() {
 																checked={o.required === true}
 																onChange={(e) => patch(name, { required: e.target.checked })}
 															/>
+															{!["repeater", "blocks", "json"].includes(o.type) && (
+																<Checkbox
+																	label="Unique"
+																	checked={o.unique === true}
+																	onChange={(e) => patch(name, { unique: e.target.checked })}
+																/>
+															)}
 															{["taxonomy", "reference", "select", "byline"].includes(o.type) && (
 																<Checkbox
 																	label="Multiple"
@@ -476,6 +533,9 @@ export function ContentTypesPage() {
 											</details>
 										</div>
 									)}
+									{(index !== null || fromConfig) && (
+										<RelationsPanel type={editing.name} collections={collections} relations={relations} />
+									)}
 								</div>
 							</div>
 						</div>
@@ -496,5 +556,156 @@ export function ContentTypesPage() {
 				)}
 			</WorkspacePanel>
 		</WorkspaceLayout>
+	);
+}
+
+/** The relations a type takes part in, and a form for a new one (like EmDash's). */
+function RelationsPanel({
+	type,
+	collections,
+	relations,
+}: {
+	type: string;
+	collections: string[];
+	relations: Relation[];
+}) {
+	const blank = (): Relation => ({
+		name: "",
+		from: type,
+		to: "",
+		fromLabel: label(type),
+		toLabel: "",
+		toMany: true,
+		fromMany: true,
+	});
+	const [draft, setDraft] = useState<Relation | null>(null);
+	const mine = relations.filter((r) => r.from === type || r.to === type);
+	const store = async (next: Relation[], done: string) => {
+		try {
+			await saveData("relations", next);
+			await loadCollections();
+			setDraft(null);
+			toast(done);
+		} catch (e) {
+			toast((e as Error).message, "error");
+		}
+	};
+	const pick = (to: string) =>
+		draft &&
+		setDraft({
+			...draft,
+			to,
+			toLabel: draft.toLabel || label(to),
+			name: draft.name || `${type}_${to}`.replace(/-/g, "_"),
+		});
+	return (
+		<section className="grid gap-2 rounded-md border p-3" aria-label="Relations">
+			<div className="flex items-center justify-between">
+				<div>
+					<h3 className="text-sm font-medium">Relations</h3>
+					<p className="text-xs text-muted-foreground">
+						{mine.length} relations this content type takes part in. A relation lets entries here link to entries of
+						another content type.
+					</p>
+				</div>
+				{!draft && (
+					<Button size="sm" variant="secondary" onClick={() => setDraft(blank())}>
+						<Link2 size={14} /> New relation
+					</Button>
+				)}
+			</div>
+			{mine.map((r) => (
+				<div
+					key={r.name}
+					className="flex items-center justify-between gap-2 rounded-md bg-muted/40 px-2 py-1.5 text-sm"
+				>
+					<span>
+						<strong>{r.fromLabel}</strong> → <strong>{r.toLabel}</strong>{" "}
+						<span className="text-xs text-muted-foreground">
+							{r.name} · each {r.from} links to {r.toMany ? "any number" : "one"}; each {r.to} is linked from{" "}
+							{r.fromMany ? "any number" : "one"}
+						</span>
+					</span>
+					<Button
+						size="sm"
+						variant="ghost"
+						className="text-destructive"
+						aria-label={`Delete relation ${r.name}`}
+						onClick={() => {
+							if (confirm(`Delete the "${r.name}" relation? The links stay in the entries' files.`))
+								void store(
+									relations.filter((x) => x.name !== r.name),
+									"Relation deleted",
+								);
+						}}
+					>
+						✕
+					</Button>
+				</div>
+			))}
+			{draft && (
+				<div className="grid gap-2 rounded-md border p-2">
+					<div className="grid grid-cols-2 gap-2">
+						<Input label="Links from" value={draft.from} disabled />
+						<Select label="Links to" value={draft.to} onChange={(e) => pick(e.target.value)}>
+							<option value="">Select a content type</option>
+							{collections.map((c) => (
+								<option key={c} value={c}>
+									{c}
+								</option>
+							))}
+						</Select>
+						<Input
+							label="Linking side"
+							value={draft.fromLabel}
+							onChange={(e) => setDraft({ ...draft, fromLabel: e.target.value })}
+						/>
+						<Input
+							label="Linked side"
+							value={draft.toLabel}
+							onChange={(e) => setDraft({ ...draft, toLabel: e.target.value })}
+						/>
+					</div>
+					<Input
+						label="Slug"
+						hint="Lowercase letters, numbers and underscores. The linking entries store the links in a field of this name."
+						value={draft.name}
+						onChange={(e) => setDraft({ ...draft, name: e.target.value })}
+					/>
+					<div className="grid grid-cols-2 gap-2">
+						<Select
+							label={`Each ${draft.from} links to`}
+							value={draft.toMany ? "many" : "one"}
+							onChange={(e) => setDraft({ ...draft, toMany: e.target.value === "many" })}
+						>
+							<option value="many">Any number</option>
+							<option value="one">One</option>
+						</Select>
+						<Select
+							label={`Each ${draft.to || "linked entry"} is linked from`}
+							value={draft.fromMany ? "many" : "one"}
+							onChange={(e) => setDraft({ ...draft, fromMany: e.target.value === "many" })}
+						>
+							<option value="many">Any number</option>
+							<option value="one">One</option>
+						</Select>
+					</div>
+					<div className="flex justify-end gap-2">
+						<Button size="sm" variant="ghost" onClick={() => setDraft(null)}>
+							Cancel
+						</Button>
+						<Button
+							size="sm"
+							disabled={
+								!draft.to || !/^[a-z][a-z0-9_]*$/.test(draft.name) || !draft.fromLabel.trim() || !draft.toLabel.trim()
+							}
+							onClick={() => void store([...relations, draft], "Relation created")}
+						>
+							Create relation
+						</Button>
+					</div>
+				</div>
+			)}
+		</section>
 	);
 }

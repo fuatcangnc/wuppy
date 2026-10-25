@@ -4,21 +4,24 @@ import {
 	ChevronRight,
 	Copy,
 	Database,
+	FileText,
 	Link as LinkIcon,
 	Settings2,
 	Sparkles,
 } from "@react-zero-ui/icon-sprite";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { apiData } from "../../lib/api.ts";
 import { Button, Input, toast } from "../../ui/index.tsx";
 import { StudioBar } from "../shared/StudioBar.tsx";
 
-type Section = "providers" | "defaults" | "mcp" | "audit";
+type Section = "providers" | "defaults" | "mcp" | "prompts" | "audit";
 type ProviderId = "anthropic" | "openai" | "openrouter" | "ollama" | "custom";
 
 const SECTIONS = [
 	{ id: "providers", label: "Providers", icon: Database },
 	{ id: "defaults", label: "Defaults", icon: Settings2 },
 	{ id: "mcp", label: "MCP connections", icon: LinkIcon },
+	{ id: "prompts", label: "Theme prompts", icon: FileText },
 	{ id: "audit", label: "Audit", icon: ChartNoAxesColumn },
 ] as const;
 
@@ -358,6 +361,81 @@ function McpSection() {
 	);
 }
 
+interface ThemePrompts {
+	guide: string;
+	prompts: { id: string; label: string; prompt: string }[];
+}
+
+const copy = (text: string, done: string) =>
+	void navigator.clipboard.writeText(text).then(
+		() => toast(done),
+		() => toast("Copy failed; select the text and copy it by hand"),
+	);
+
+/** Prompts for a coding agent (Claude Code, Cursor…) that adapts the theme; each is copied with the guide it follows. */
+function PromptsSection() {
+	const [data, setData] = useState<ThemePrompts | null>(null);
+	const [error, setError] = useState("");
+	useEffect(() => {
+		void apiData<ThemePrompts>("GET", "/api/ai/theme-prompts").then(setData, (e: Error) => setError(e.message));
+	}, []);
+	return (
+		<div className="min-h-0 flex-1 overflow-y-auto bg-[#1d1d1f] px-10 py-8">
+			<div className="mx-auto grid max-w-3xl gap-6">
+				<div className="grid gap-1">
+					<p className="text-[10px] font-semibold tracking-[0.12em] text-[#a1a1aa] uppercase">Coding agents</p>
+					<h2 className="text-2xl font-semibold text-white">Theme prompts</h2>
+					<p className="text-sm text-[#a1a1aa]">
+						Paste one into Claude Code, Cursor, opencode or ChatGPT inside your theme's repository. Each prompt is
+						copied together with the WuppyCMS theme guide, so the agent knows how Wuppy stores menus, settings and
+						content. Push the result, then press Rebuild under Themes.
+					</p>
+				</div>
+				{error && <p className="text-sm text-red-400">{error}</p>}
+				{data && (
+					<>
+						<div className="flex items-center justify-between gap-4 rounded-xl bg-[#262628] px-5 py-4">
+							<div>
+								<p className="text-sm font-semibold text-white">Theme guide (AGENTS.md)</p>
+								<p className="mt-1 text-xs text-[#a1a1aa]">
+									Save it as AGENTS.md in the theme; agents then read it by themselves.
+								</p>
+							</div>
+							<Button
+								size="sm"
+								variant="secondary"
+								className="shrink-0 rounded-md border-[#3f3f42] bg-[#303033] text-[#e4e4e7]"
+								onClick={() => copy(data.guide, "Guide copied")}
+							>
+								<Copy size={13} /> Copy guide
+							</Button>
+						</div>
+						<ul className="grid gap-3" aria-label="Theme prompts">
+							{data.prompts.map((p) => (
+								<li key={p.id} className="grid gap-3 rounded-xl border border-[#2f2f31] bg-[#1b1b1d] p-4">
+									<div className="flex items-center justify-between gap-4">
+										<h3 className="text-sm font-semibold text-white">{p.label}</h3>
+										<Button
+											size="sm"
+											variant="secondary"
+											aria-label={`Copy prompt: ${p.label}`}
+											className="shrink-0 rounded-md border-[#3f3f42] bg-[#303033] text-[#e4e4e7]"
+											onClick={() => copy(`${p.prompt}\n\n---\n\n${data.guide}`, "Prompt copied")}
+										>
+											<Copy size={13} /> Copy
+										</Button>
+									</div>
+									<p className="text-sm text-[#d4d4d8]">{p.prompt}</p>
+								</li>
+							))}
+						</ul>
+					</>
+				)}
+			</div>
+		</div>
+	);
+}
+
 function AuditSection() {
 	const [surface, setSurface] = useState("all");
 	return (
@@ -426,6 +504,7 @@ export function AiPage() {
 				{section === "providers" && <ProvidersSection onDefaults={() => setSection("defaults")} />}
 				{section === "defaults" && <DefaultsSection onProviders={() => setSection("providers")} />}
 				{section === "mcp" && <McpSection />}
+				{section === "prompts" && <PromptsSection />}
 				{section === "audit" && <AuditSection />}
 			</div>
 		</div>

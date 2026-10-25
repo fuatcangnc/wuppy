@@ -182,6 +182,31 @@ const reloadCanvas = () => {
 		f.contentWindow?.location.reload();
 };
 
+/**
+ * Takes the overlay CSS (classes new to the theme, see core's overlay.ts) from the server's page again, so a production
+ * class edit shows without reloading the canvas.
+ */
+async function refreshOverlayCss(): Promise<void> {
+	for (const f of document.querySelectorAll<HTMLIFrameElement>('iframe[title^="Page canvas"]')) {
+		const d = f.contentDocument;
+		const url = f.contentWindow?.location.href;
+		if (!d || !url) continue;
+		const res = await fetch(url, { credentials: "same-origin", cache: "no-store" });
+		if (!res.ok) continue;
+		const css = /<style data-wuppy-overlay>([\s\S]*?)<\/style>/.exec(await res.text())?.[1] ?? "";
+		let style = d.querySelector("style[data-wuppy-overlay]");
+		if (!style) {
+			style = d.createElement("style");
+			style.setAttribute("data-wuppy-overlay", "");
+			// Where the server puts it: before the visual editor's own styles.
+			const visual = d.head.querySelector('link[href^="/api/public/visual.css"]');
+			if (visual) visual.before(style);
+			else d.head.append(style);
+		}
+		style.textContent = css;
+	}
+}
+
 /** Shows a text or attribute edit on the canvas right away, before the file is written. */
 function previewThemeEdit(el: ThemeElement, edit: LiveEdit): void {
 	for (const node of copiesOf(el)) {
@@ -211,8 +236,15 @@ export async function applyThemeEdit(el: ThemeElement, edit: ThemeEdit, live = f
 	});
 	if (out.slot !== undefined && el.host && out.slot !== el.host.slot)
 		el = { ...el, host: { ...el.host, slot: out.slot } };
-	// A production server shows the edit on the page it renders; there is no dev server to reload it.
-	if (out.refresh) reloadCanvas();
+	// A production server shows the edit on the page it renders; there is no dev server to reload it. A class or a
+	// deletion is shown here instead, so the canvas keeps its place.
+	if (out.refresh) {
+		if (edit.action === "attrs") {
+			previewThemeEdit(el, edit);
+			await refreshOverlayCss().catch(reloadCanvas);
+		} else if (edit.action === "delete") for (const node of copiesOf(el)) node.remove();
+		else reloadCanvas();
+	}
 	// Without a reload the canvas keeps the old location on the element; later edits find it by the new one.
 	if (out.loc && out.loc !== el.loc) for (const node of copiesOf(el)) node.setAttribute("data-wuppy-loc", out.loc);
 	return out.loc ? { ...el, ...patchOf(el, edit), loc: out.loc } : null;

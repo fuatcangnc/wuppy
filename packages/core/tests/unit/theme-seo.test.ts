@@ -1,5 +1,8 @@
+import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { withSeo } from "../../src/astro/theme-seo.ts";
+import { createThemeSeoMiddleware, withSeo } from "../../src/astro/theme-seo.ts";
 import { templateUrl } from "../../src/themes/site.ts";
 
 describe("theme page SEO", () => {
@@ -17,5 +20,32 @@ describe("theme page SEO", () => {
 		expect(out).not.toContain("old");
 		expect(out).toContain('<meta name="robots" content="noindex"></head>');
 		expect(withSeo(html, { title: "x" })).toBe(html);
+	});
+
+	it("titles a page added in the admin by its title, and a theme page by its SEO title only", async () => {
+		const site = await mkdtemp(join(tmpdir(), "wuppy-seo-"));
+		const theme = join(site, "theme");
+		await mkdir(join(site, "content/pages"), { recursive: true });
+		await mkdir(theme);
+		await writeFile(
+			join(site, "wuppy.config.mjs"),
+			'export default { collections: [{ name: "pages", kind: "pages", dir: "content/pages", format: "md", route: "/{slug}", fields: { title: "string" } }] };',
+		);
+		await writeFile(join(theme, "wuppy.config.mjs"), "export default { collections: [] };");
+		await writeFile(join(site, "content/pages/test.md"), "---\ntitle: Test page\n---\n");
+		await writeFile(join(site, "content/pages/index.md"), "---\ntitle: Home\ntemplate: src/pages/index.astro\n---\n");
+		const seo = createThemeSeoMiddleware(site, theme);
+		const page = async (path: string) =>
+			(
+				await seo(
+					{ request: new Request(`http://x${path}`), url: new URL(`http://x${path}`) },
+					async () =>
+						new Response("<html><head><title>Theme</title></head></html>", {
+							headers: { "content-type": "text/html" },
+						}),
+				)
+			).text();
+		expect(await page("/test")).toContain("<title>Test page</title>");
+		expect(await page("/")).toContain("<title>Theme</title>");
 	});
 });

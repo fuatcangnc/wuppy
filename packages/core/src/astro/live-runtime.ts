@@ -2,8 +2,9 @@ import { readdir, readFile, stat } from "node:fs/promises";
 import { join, relative, resolve, sep } from "node:path";
 import { loadConfig } from "../config/index.ts";
 import { parseDocument } from "../content/parsers/frontmatter.ts";
+import { isPublished } from "../publishing/index.ts";
 import { markdownContent, mdxContent, type MarkdownHeading, type MarkdownSettings } from "../markdown/render.ts";
-import { loadSiteConfig, pagesDir, renameFields } from "../themes/site.ts";
+import { loadSiteConfig, pagesDir, renameFields, routedEntry } from "../themes/site.ts";
 
 /**
  * Runtime half of live content. The site's pages keep calling `getCollection()` / `getEntry()` from `astro:content`;
@@ -94,6 +95,20 @@ export async function themeBody(rel: string, markdown?: MarkdownSettings): Promi
 		return renderBody(file, source, markdown);
 	}
 	return undefined;
+}
+
+/**
+ * An entry the theme has no page for (a page or a content type's entry added in the admin), by its URL path
+ * (`about`, `projects/one`), for the site page route (see sitePageSource). Undefined when there is none, it is not
+ * published, or it is a Pages entry that stands for a theme page (`template`).
+ */
+export async function sitePage(path: string, markdown?: MarkdownSettings): Promise<PageBody | undefined> {
+	const found = await routedEntry(process.env.WUPPY_BASE_ROOT || process.cwd(), process.cwd(), path);
+	if (!found) return undefined;
+	const { data } = parseDocument(found.source);
+	// shortcut: a draft 404s here, on the editor's canvas too; let signed-in editors see it if drafts need a canvas.
+	if ((found.kind === "pages" && typeof data.template === "string") || !isPublished(data)) return undefined;
+	return renderBody(found.file, found.source, markdown);
 }
 
 async function files(dir: string): Promise<string[]> {

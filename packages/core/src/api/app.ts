@@ -48,7 +48,7 @@ import { schemaImpact } from "../content-types/impact.ts";
 import { validateBylines } from "../bylines/index.ts";
 import { entryStatus } from "../publishing/index.ts";
 import { importOptionsSchema, type ImportJobs } from "../import/job.ts";
-import { collectionSchema, fieldKind } from "../content-types/index.ts";
+import { collectionSchema, dirClash, fieldKind, type Collection, type Relation } from "../content-types/index.ts";
 import { retagEntries, termCounts } from "../taxonomies/index.ts";
 import type { SiteStore, ManagedSite } from "../sites/store.ts";
 import { AGENCY_SCOPE, SITE_ROLES } from "../sites/store.ts";
@@ -61,6 +61,7 @@ import { buildReport, monthOf, previousMonth, remoteGet, reportHtml, scanSite } 
 import { streamSSE } from "hono/streaming";
 import { handleMcp } from "../mcp/server.ts";
 import type { ApiCall } from "../mcp/tools.ts";
+import { THEME_GUIDE, THEME_PROMPTS } from "../cli/theme-guide.ts";
 
 export interface User {
 	id: string;
@@ -123,6 +124,8 @@ export interface AppOptions {
 	themes?: GithubThemes;
 	/** Users' GitHub connections (OAuth device flow) for listing and cloning their repositories. */
 	github?: GithubAccounts;
+	/** The site's collections from its config and the saved content types and relations; applied on their save. */
+	siteTypes?: () => Promise<Collection[]>;
 }
 
 type Env = { Variables: { user: User } };
@@ -207,6 +210,7 @@ const readPermissions: Record<DataName, Permission> = {
 	"byline-schema": "bylines:manage",
 	themes: "themes:manage",
 	"content-types": "content-types:manage",
+	relations: "content-types:manage",
 	webhooks: "site:settings",
 	visual: "content:write",
 };
@@ -225,6 +229,8 @@ type WebhookRow = { url: string; secret?: string | undefined; events?: string[] 
 const maskSecrets = (rows: WebhookRow[]) => rows.map((h) => (h.secret ? { ...h, secret: SECRET_MASK } : h));
 
 const isDataName = (value: string): value is DataName => (dataNames as string[]).includes(value);
+/** Site data a theme renders: saving it builds the active GitHub theme again. */
+const THEME_DATA = new Set<string>(["menus", "settings", "sections", "widgets"]);
 
 const commentStatus = z.enum(["pending", "approved", "spam", "trash"]);
 
@@ -278,6 +284,7 @@ export function createApp({
 	chats,
 	themes,
 	github,
+	siteTypes,
 }: AppOptions) {
 	const record = (c: { get: (k: "user") => User }, type: string, extra: { email?: string; detail?: string } = {}) => {
 		const actingEmail = c.get("user").hub?.actingEmail;
@@ -728,6 +735,10 @@ export function createApp({
 				record(c, "agency.context");
 				return c.json({ data: siteStore().setContext(AGENCY_SCOPE, text) });
 			})
+			// The guide and task prompts for a coding agent working on the theme (Admin › AI › Theme prompts).
+			.get("/api/ai/theme-prompts", need("site:settings"), (c) =>
+				c.json({ data: { guide: THEME_GUIDE, prompts: THEME_PROMPTS } }),
+			)
 			.get("/api/ai/config", (c) =>
 				c.json({
 					data: {
@@ -961,6 +972,24 @@ export function createApp({
 			})
 			.get("/api/editor/components", need("content:read"), (c) => c.json({ data: service.allowedComponents }))
 			.get("/api/collections", need("content:read"), (c) => c.json({ data: service.collections }))
+			// The other side of each relation: the entries that link to this one.
+			.get("/api/relations/linked/:collection/:slug", need("content:read"), async (c) => {
+				const { collection, slug } = c.req.param();
+				const relations = dataSchemas.relations.parse(await json.read("relations", []));
+				const data = await Promise.all(
+					relations
+						.filter((r) => r.to === collection && service.collections.some((x) => x.name === r.from))
+						.map(async (r) => ({
+							relation: r.name,
+							label: r.fromLabel,
+							collection: r.from,
+							entries: (await service.listEntries(r.from))
+								.filter((e) => [e.data[r.name]].flat().includes(slug))
+								.map((e) => ({ slug: e.slug, title: typeof e.data.title === "string" ? e.data.title : e.slug })),
+						})),
+				);
+				return c.json({ data });
+			})
 			// The visual editor's canvas shows Markdown blocks as the site renders them (same checks as a save).
 			.post("/api/editor/markdown", need("content:write"), async (c) => {
 				const { source } = z.object({ source: z.string().max(200_000) }).parse(await c.req.json().catch(() => ({})));
@@ -1335,8 +1364,30 @@ export function createApp({
 					if (issues.length)
 						throw new ApiError(422, "VALIDATION_ERROR", issues.map((i) => `${i.slug}: ${i.message}`).join("; "));
 				}
+				const types = name === "content-types" || name === "relations";
+				if (name === "content-types") {
+					const own = parsed as Collection[];
+					const clash = dirClash([
+						...service.collections.filter((type) => !own.some((t) => t.name === type.name)),
+						...own,
+					]);
+					if (clash) throw new ApiError(422, "VALIDATION_ERROR", clash);
+				}
+				if (name === "relations") {
+					const names = new Set(service.collections.map((type) => type.name));
+					const seen = new Set<string>();
+					for (const r of parsed as Relation[]) {
+						const missing = [r.from, r.to].find((n) => !names.has(n));
+						if (missing) throw new ApiError(422, "VALIDATION_ERROR", `${r.name}: no content type "${missing}"`);
+						if (seen.has(r.name)) throw new ApiError(422, "VALIDATION_ERROR", `Two relations are named ${r.name}`);
+						seen.add(r.name);
+					}
+				}
 				await json.write(name, parsed, `${name}: update`);
 				record(c, `${name}.update`);
+				if (types && siteTypes) service.setCollections(await siteTypes());
+				// A theme's pages are built ahead, so a change of data it renders shows after the next build.
+				if (THEME_DATA.has(name)) themes?.dataChanged();
 				return c.json({ data: name === "webhooks" ? maskSecrets(parsed as WebhookRow[]) : parsed });
 			})
 			.post("/api/content-types/impact", need("content-types:manage"), async (c) => {

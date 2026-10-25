@@ -21,6 +21,18 @@ export class DisallowedContentError extends Error {
 		super(`Disallowed content: ${found.join(", ")}`);
 	}
 }
+/** JSON-encoded values, so a string and a number with the same text do not collide. */
+const uniqueValues = (value: unknown) => (Array.isArray(value) ? value : [value]).map((item) => JSON.stringify(item));
+
+export class UniqueFieldError extends Error {
+	constructor(
+		readonly field: string,
+		readonly value: unknown,
+		readonly entrySlug: string,
+	) {
+		super(`${JSON.stringify(value)} is already used by ${entrySlug}`);
+	}
+}
 
 /** File-backed content where every mutation becomes a Git commit. */
 export class ContentService {
@@ -63,8 +75,17 @@ export class ContentService {
 			listCacheMs?: number;
 		} = {},
 	) {
-		for (const c of collections) {
-			this.stores.set(c.name, new FilesystemContent(root, c));
+		this.setCollections(collections);
+	}
+
+	/** Replaces the collections in place (`collections` stays the same array), e.g. after content types are saved. */
+	setCollections(next: Collection[]): void {
+		this.collections.splice(0, this.collections.length, ...next);
+		this.stores.clear();
+		this.schemas.clear();
+		this.listed.clear();
+		for (const c of next) {
+			this.stores.set(c.name, new FilesystemContent(this.root, c));
 			this.schemas.set(c.name, dataSchema(c));
 		}
 	}
@@ -156,10 +177,27 @@ export class ContentService {
 		return doc;
 	}
 
+	/** A `unique` field's value (or any item of a list) held by another entry is refused. */
+	private async checkUnique(collection: string, slug: string, data: Record<string, unknown>): Promise<void> {
+		const fields = Object.entries(this.store(collection).collection.fields).filter(
+			([name, f]) => typeof f === "object" && f.unique && data[name] !== undefined,
+		);
+		if (!fields.length) return;
+		for (const entry of await this.listEntries(collection)) {
+			if (entry.slug === slug) continue;
+			for (const [name] of fields) {
+				const taken = uniqueValues(entry.data[name]);
+				const hit = uniqueValues(data[name]).find((value) => taken.includes(value));
+				if (hit) throw new UniqueFieldError(name, data[name], entry.slug);
+			}
+		}
+	}
+
 	async create(collection: string, slug: string, doc: ParsedDocument, message?: string): Promise<void> {
 		const s = this.store(collection);
 		doc = await this.checked(collection, slug, doc, true);
 		doc = { ...doc, data: this.schemas.get(collection)!.parse(doc.data) };
+		await this.checkUnique(collection, slug, doc.data);
 		await this.serial(async () => {
 			if (await s.get(slug)) throw new ContentExistsError(collection, slug);
 			await s.put(slug, doc);
@@ -175,6 +213,7 @@ export class ContentService {
 		const isNew = this.options.beforeSave ? !(await s.get(slug)) : false;
 		doc = await this.checked(collection, slug, doc, isNew);
 		doc = { ...doc, data: this.schemas.get(collection)!.parse(doc.data) };
+		await this.checkUnique(collection, slug, doc.data);
 		const before = s.formatOf(slug);
 		// A Markdown entry in an MDX collection is promoted when it starts using a component; the old file goes away
 		// in the same commit so the collection never lists the slug twice.

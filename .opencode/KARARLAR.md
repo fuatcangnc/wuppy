@@ -825,3 +825,44 @@ sunucusu temanın build'ini çalıştırır; dosyaya yazılan düzenleme yeniden
 - Kullanıcı ("editörde yapmış ama live'da neden olmadı"): öznitelik yazımı `&`'yi `&amp;` yapıyordu; Astro tırnaklı
   öznitelikte entity'yi çözmez, class canlıda `sm:[&amp;>*]` oldu. `&` ya da `"` içeren değer artık `{"…"}` JS string
   olarak yazılır (Astro + JSX aynı); `{"…"}` düz değer sayılır (`plainValue`), sonraki düzenlemeler "set by code" demez.
+- Kullanıcı ("flex … bu componenti kullanan diğerlerinde de yapıyor ama .map gibi filtreler olmamasına rağmen"): düzenleme
+  tek öğeye gidiyordu; overlay CSS `.flex`'i build CSS'inin arkasına yeniden yazınca `flex sm:grid` olan her öğede
+  `sm:grid`'i eziyordu. Overlay CSS artık yalnız build CSS'inde kuralı olmayan class'lar için üretilir (`missingClasses`).
+- Kullanıcı ("herhangi bir değişiklik yaptığımızda visual editor'de f5 gibi bir şey atıp duruyor"): production'da class
+  düzenlemesi ve silme tuvali yeniden yüklüyordu. Artık class tuvalde uygulanır, yeni class'ların overlay CSS'i sayfanın
+  HTML'inden alınıp `<style data-wuppy-overlay>`'e konur; silme öğeyi DOM'dan kaldırır. Etiket/taşı/çoğalt/ekle yeniler.
+- Kullanıcı ("menüler /admin/menus buradaki ile nasıl dinamik olacak"): menü bağlantılarına isteğe bağlı `description`
+  eklendi (açılır menü açıklaması); `PUT /api/data/menus` aktif GitHub temasını `rebuildSoon` ile yeniden derletir
+  (temalar önceden derlenir, sayfa her istekte render edilmez). wuppy-astro teması `.wuppy/data/menus.json`'u
+  `WUPPY_BASE_ROOT`'tan doğrudan okur (`wuppycms` bağımlılığı yok, Wuppy dışında da derlenir), yoksa kendi
+  linklerine döner; header konumu üst menü, footer konumu sütunlar.
+- Kullanıcı ("import edilen astro temaları için .skills veya prompt var değil mi"): yoktu. Tek kaynak
+  `skills/wuppy-theme/SKILL.md`; gövdesi `cli/theme-guide.ts`'teki `THEME_GUIDE` ile aynı (test eşitliği denetler).
+  `wuppycms init`/`import` projede yoksa `AGENTS.md` yazar; sunucudaki GitHub teması sarmalamasında yazılmaz
+  (`agents: false`, kullanıcının yerel deposunda işe yarar). Rehber `wuppycms`'e bağımlı olmayan dosya okumayı önerir.
+  Tema yeniden derlemesi artık settings/sections/widgets kaydında da tetiklenir (`THEME_DATA`).
+- Kullanıcı ("docs'a ekle ve /admin panelinde bu promptları kopyalama da olsun ai kısmında"): `THEME_PROMPTS`
+  (`cli/theme-guide.ts`) tek kaynak; `GET /api/ai/theme-prompts` rehber + prompt'ları döner, Admin › AI › Theme prompts
+  her prompt'u rehberle birlikte kopyalar (AGENTS.md'siz projede/sohbette de çalışsın), "Copy guide" yalnız rehberi.
+  Docs `ai/theme-agents` aynı metinleri listeler; test eşitliği denetler.
+- Kullanıcı ("test sayfası oluşturdum boş çıktı ve + tıklayınca component de eklenmiyor"): GitHub temasında karşılığı
+  olmayan Pages girdisi 404'tü (canvas boş, katman ağacı önceki sayfadan kalmıştı). Tema için
+  `node_modules/.wuppy/site-page.astro` üretilir (`sitePageSource`): ana sayfa `index.astro`'nun `<main>` içi girdinin
+  gövdesiyle (`<!--wuppy:body-->`) değişir, göreli importlar mutlak yapılır; `/[...wuppyPage]` olarak enjekte edilir,
+  istekte render edilir. `sitePage` yalnız yayında olan, `template`'siz girdiyi verir; theme-seo bu sayfalara girdi
+  başlığını koyar. Seçenekler: tema şablonu seçtirmek (daha çok UI) ya da 404'ü bırakmak — ana sayfa düzeni en az iş.
+
+## Ek 23 — İçerik tipleri: hazır Pages/Posts, yeniden başlatmasız kayıt, ilişkiler (2026-10-25)
+
+- `siteCollections(config, content-types, relations)` tek birleştirme: config, admin tipleri (aynı ad değiştirir),
+  eksikse hazır Pages/Posts (EmDash/WordPress gibi), her ilişkinin `from` tarafına `relation` işaretli reference alanı.
+  Sunucu (`siteTypes`) ve tema çalışma zamanı (`loadSiteConfig`) aynısını kullanır.
+- Kayıt yeniden başlatma istemez: `ContentService.setCollections` diziyi yerinde değiştirir.
+- İç içe klasörlü tipler reddedilir (`dirClash`); yeni tipin klasörü/route'u adından gelir. (Panelde `test` tipi
+  `content/` klasörüyle landing'i kapsıyordu.)
+- İlişki dosya tabanlı: bağlantılar bağlayan girdinin frontmatter'ında slug olarak; ters taraf `GET
+  /api/relations/linked/:collection/:slug` ile okunur (salt okunur "Linked from"). EmDash'teki gibi iki taraftan
+  düzenleme ve join tablosu yok: diğer dosyalara yazmak gerekirdi. "Each linked entry linked from one" = alanın
+  `unique` seçeneği, kayıtta kontrol.
+- Site sayfası route'u artık her koleksiyonun route'una bakar (`routedEntry`): temada sayfası olmayan tip girdisi ana
+  sayfa düzeninde açılır, görsel editörde düzenlenir.

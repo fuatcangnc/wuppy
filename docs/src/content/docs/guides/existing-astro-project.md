@@ -44,6 +44,7 @@ This uses the [GitHub CLI](https://cli.github.com/), so private repositories wor
 - Writes `wuppy.config.mjs`, adds `wuppycms()` to `integrations` in `astro.config`, and adds the Node adapter if there is no adapter yet.
 - Adds `@astrojs/mdx`, widens `.md` globs to `.mdx`, and imports the components it finds in `.mdx` files into the allowlist. `wuppycms mdx-to-md` can still convert component-free `.mdx` files to `.md`.
 - Adds `wuppycms` (and `@astrojs/node` when needed) to `package.json`, Wuppy's ignore lines to `.gitignore`, and a random `WUPPY_SECRET` to `.env`.
+- Writes `AGENTS.md`, a guide for AI coding agents (Claude Code, Cursor, opencode…) on how to work on a Wuppy site, unless the project already has one. See [Coding agents on a theme](/ai/theme-agents/).
 
 Nothing is overwritten: an existing `wuppy.config.mjs` stops the command unless you pass `--force`. When `astro.config` has a shape it cannot patch safely, it prints the line to add by hand.
 

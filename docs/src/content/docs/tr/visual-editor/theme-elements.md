@@ -28,7 +28,7 @@ değişiklik o derlemeden sonra görünür; dokunmadığı öğeler bu arada dü
   çoğaltın, silin ya da dosyayı [Code görünümünde](/tr/visual-editor/code-view/) açın. Yalnız metin içeren bir öğeye çift
   tıklayınca yerinde düzenlenir.
 - Metin, class, stil ve öznitelikler yazarken tuvalde değişir ve kısa bir duraklamadan sonra sayfa yenilenmeden temanın
-  `.astro` dosyasına yazılır. Etiket ya da yer değişikliği (taşı, çoğalt, sil) sayfayı yeniler.
+  `.astro` dosyasına yazılır. Etiket değiştirmek, taşımak ya da çoğaltmak sayfayı yeniler; silmek yenilemez.
 - Layers'ta bir tema satırını sürükleyerek öğeyi kendi dosyası içinde taşıyın (bloklardaki kenarlarla aynı). Sağ tık
   menüsünde Insert module after, Duplicate, Move up/down, Select parent, Open in Code ve Delete vardır.
 - Bir tema öğesi seçiliyken Add'den ya da Layers'tan eklenen modül tema dosyasına hemen onun arkasına (inline stilli düz

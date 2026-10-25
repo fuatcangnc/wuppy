@@ -342,7 +342,8 @@ export class GithubThemes {
 		const wuppyConfig = existsSync(configPath) ? await readFile(configPath, "utf8") : null;
 		if (wuppyConfig === null || pulled) {
 			const hadEnv = existsSync(join(dir, ".env"));
-			const r = await init(dir, { force: true });
+			// The server copy needs no guide for coding agents.
+			const r = await init(dir, { force: true, agents: false });
 			if (r.code !== 0) throw new Error(r.stderr || "wuppycms init failed");
 			// The config made at install, and edited since, stays.
 			if (wuppyConfig !== null) await writeFile(configPath, wuppyConfig);
@@ -479,6 +480,11 @@ export class GithubThemes {
 				if (this.job?.status === "running") this.rebuildSoon();
 			});
 		}, REBUILD_AFTER);
+	}
+
+	/** Site data the theme renders (menus) changed: a production server builds the theme again soon. */
+	dataChanged(): void {
+		if (PRODUCTION) this.rebuildSoon();
 	}
 
 	/** Source files for the code view; only admins may call this through the API. */

@@ -54,3 +54,48 @@ describe("ContentTypesPage", () => {
 		expect(saved[0]!.fields).toEqual({ title: "string", field1: { type: "number", required: true } });
 	});
 });
+
+describe("ContentTypesPage built-in types and relations", () => {
+	it("lists the config's Pages, gives a new type its own folder, and creates a relation", async () => {
+		const puts: Array<{ url: string; data: unknown }> = [];
+		const live = [
+			{ name: "pages", dir: "content/pages", format: "mdx", route: "/{slug}", fields: { title: "string" } },
+			{ name: "authors", dir: "content/authors", format: "md", fields: {} },
+		];
+		vi.stubGlobal("fetch", async (url: string, init: RequestInit = {}) => {
+			if (init.method === "PUT") {
+				const data = (JSON.parse(String(init.body)) as { data: unknown }).data;
+				puts.push({ url, data });
+				return new Response(JSON.stringify({ data }));
+			}
+			return new Response(JSON.stringify({ data: url.endsWith("/api/collections") ? live : [] }));
+		});
+		vi.spyOn(window, "confirm").mockReturnValue(true);
+		render(<ContentTypesPage />);
+		const user = userEvent.setup();
+		expect(await screen.findByText(/content\/pages · 1 fields · Config/)).toBeInTheDocument();
+
+		await user.click(screen.getByRole("button", { name: "Create content type" }));
+		await user.type(screen.getByLabelText("Name"), "projects");
+		expect(screen.getByLabelText("Directory")).toHaveValue("content/projects");
+		expect(screen.getByLabelText("Route")).toHaveValue("/projects/{slug}");
+
+		await user.click(screen.getByRole("button", { name: "Open pages" }));
+		await user.click(screen.getByRole("button", { name: "New relation" }));
+		await chooseSelect(user, "Links to", "authors");
+		expect(screen.getByLabelText("Slug")).toHaveValue("pages_authors");
+		await user.click(screen.getByRole("button", { name: "Create relation" }));
+		await waitFor(() => expect(puts.some((p) => p.url.endsWith("/api/data/relations"))).toBe(true));
+		expect(puts.find((p) => p.url.endsWith("/relations"))!.data).toEqual([
+			{
+				name: "pages_authors",
+				from: "pages",
+				to: "authors",
+				fromLabel: "Pages",
+				toLabel: "Authors",
+				toMany: true,
+				fromMany: true,
+			},
+		]);
+	});
+});

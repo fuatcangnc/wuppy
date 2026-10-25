@@ -107,6 +107,47 @@ export default createComponent(async (result) => {
 `;
 }
 
+/**
+ * The route for the site's Pages entries the theme has no page for (a page added in the admin): the theme's home page
+ * (`index`, in `dir`) with its `<main>` holding the entry's body between the visual editor's markers, so a new page
+ * keeps the theme's header, footer and layout. Undefined when the home page has no `<main>`.
+ */
+export function sitePageSource(
+	index: string,
+	dir: string,
+	o: { runtime: string; components: string; settings: Record<string, unknown> },
+): string | undefined {
+	const front = /^\s*---\r?\n([\s\S]*?)\r?\n---[ \t]*\r?\n/.exec(index);
+	const template = front ? index.slice(front[0].length) : index;
+	const open = /<main\b[^>]*>/.exec(template);
+	const close = template.lastIndexOf("</main>");
+	if (!open || close < open.index) return undefined;
+	// The file is generated elsewhere, so the home page's relative imports are made absolute.
+	// shortcut: relative paths in the markup itself (`<img src="./a.png">`) are left as they are; rare in a home page.
+	const script = (front?.[1] ?? "")
+		.replace(
+			/(\bfrom\s*|\bimport\s*\(?\s*)(["'])(\.\.?\/[^"'\n]*)\2/g,
+			(_m, lead: string, _q: string, spec: string) => `${lead}${JSON.stringify(join(dir, spec))}`,
+		)
+		.replace(/^\s*export\s+const\s+prerender\s*=.*$/gm, "");
+	const at = open.index + open[0].length;
+	return [
+		"---",
+		`import { sitePage as __wuppySitePage } from ${JSON.stringify(o.runtime)};`,
+		o.components || "const __wuppyComponents = {};",
+		script,
+		"export const prerender = false;",
+		`const __wuppyPage = await __wuppySitePage(Astro.params.wuppyPage ?? "", ${JSON.stringify(o.settings)});`,
+		"if (!__wuppyPage) return new Response(null, { status: 404 });",
+		'Astro.response.headers.set("x-wuppy-site-page", "1");',
+		"const WuppySitePageContent = __wuppyPage.Content;",
+		"---",
+		template.slice(0, at) +
+			'<Fragment set:html={"<!--wuppy:body-->"} />{WuppySitePageContent ? <WuppySitePageContent components={__wuppyComponents} /> : <Fragment set:html={__wuppyPage.html} />}<Fragment set:html={"<!--/wuppy:body-->"} />' +
+			template.slice(close),
+	].join("\n");
+}
+
 export function themePagesPlugin(o: ThemePagesOptions) {
 	return {
 		name: "wuppy:theme-pages",

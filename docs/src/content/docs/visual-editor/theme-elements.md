@@ -26,7 +26,7 @@ shows after that build; the elements it did not touch stay editable meanwhile.
 - Edit its text, classes, inline style and attributes, change its tag, move it up/down, duplicate or delete it, or open
   the file in [Code view](/visual-editor/code-view/). Double-click an element with only text in it to edit it in place.
 - Text, classes, styles and attributes change on the canvas as you type and are written to the theme's `.astro` file
-  after a short pause, without reloading the page. Changing the tag or position (move, duplicate, delete) reloads it.
+  after a short pause, without reloading the page. Changing the tag, moving or duplicating reloads it; deleting does not.
 - Drag a theme row in Layers to move the element within its own file (same edges as blocks). Its right-click menu has
   Insert module after, Duplicate, Move up/down, Select parent, Open in Code and Delete.
 - With a theme element selected, a module added from Add or Layers is written into the theme file right after it (as

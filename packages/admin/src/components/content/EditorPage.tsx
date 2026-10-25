@@ -28,6 +28,7 @@ import { loadHistory } from "../../stores/git.ts";
 import { $collections, loadCollections, uploadImage } from "../../stores/content.ts";
 import { Badge, Button, Card, CardHeader, Checkbox, ErrorText, Input, PageHeader, Textarea } from "../../ui/index.tsx";
 import { FieldsForm } from "./FieldsForm.tsx";
+import { LinkedFrom } from "./LinkedFrom.tsx";
 import { SeoPreview } from "./SeoPreview.tsx";
 import { MarkdownEditor } from "../editor/MarkdownEditor.tsx";
 import { HistoryPanel } from "../git/HistoryPanel.tsx";
@@ -114,6 +115,12 @@ export function EditorPage() {
 						<a href={siteUrl} target="_blank" rel="noreferrer" className="contents">
 							<Button variant="secondary">View on site</Button>
 						</a>
+						<Button
+							variant="secondary"
+							onClick={() => void navigate({ to: "/v/$collection/$", params: { collection, _splat: slug } })}
+						>
+							Edit with Visual
+						</Button>
 						<Button
 							variant="secondary"
 							onClick={() =>
@@ -224,6 +231,7 @@ export function EditorPage() {
 							<FieldsForm fields={fields} data={doc.data} onChange={setField} onUpload={uploadImage} />
 						</div>
 					</Card>
+					<LinkedFrom collection={collection} slug={slug} />
 					{template && (
 						<Card>
 							<CardHeader

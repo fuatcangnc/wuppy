@@ -841,6 +841,8 @@ temel → uzak taraf → hub → proxy → UI → client → test.
 + [x] Themes › Rebuild GitHub'dan çeker; sunucu düzenlemeleri korunur, çakışmada GitHub kazanır (stash'te kalır) (Ek 22)
 + [x] Görsel editör AI'ı alt öğeleri görür ve üst öğeden Tailwind varyantlarıyla biçimlendirir (bento span'leri); JSON'suz cevap hata değil cevaptır (Ek 22)
 + [x] `&`/`"` içeren öznitelik `{"…"}` olarak yazılır (Astro `&amp;`'yi çözmüyordu; bento class'ları canlıda bozuktu) (Ek 22)
++ [x] Overlay CSS yalnız build'de olmayan class'lar için (yeniden yazılan `.flex` başka öğelerde `sm:grid`'i eziyordu) (Ek 22)
++ [x] Production'da class düzenlemesi ve silme tuvali yenilemez (overlay CSS yerinde güncellenir) (Ek 22)
 + [x] Tema öğesi Properties'i Instatic'in tüm bölümleriyle: metin, etiket, Layout…Interaction stilleri (Tailwind 4 class'ı; breakpoint/state → `max-[Npx]:`/`hover:`; Tailwind yoksa inline style) ve HTML öznitelikleri
 + [x] Görsel editörde AI paneli (Selectors altında): Select ile öğe seç/bırak, istek yaz; model (`POST /api/ai/edit`) düzenleme JSON'u döner, editör blokları tek undo adımında, tema öğelerini tema dosyasına uygular
 + [x] Layers tema sayfasında temanın tüm öğelerini (bloklar body yerinde) gösterir; tema öğesi seçiliyken eklenen modül tema dosyasına o öğenin altına yazılır (`insert` eylemi)
@@ -867,3 +869,8 @@ temel → uzak taraf → hub → proxy → UI → client → test.
 + [x] Production tema öğesi düzenlemesindeki "__filename is not defined" hatası: compiler-rs ve typescript kurulu yerinden yükleniyor
 + [x] Production tema öğesi düzenlemesi temayı otomatik yeniden derliyor (elle Rebuild gerekmiyor)
 + [x] Koddan gelen tema metinleri (prop / veri dizisi) görsel editörde düzenlenebiliyor (tek geçen string bulunup değiştiriliyor)
++ [x] Admin › Menus temaya bağlandı: bağlantı açıklaması, menü kaydı GitHub temasını yeniden derler; wuppy-astro Nav/Footer menüleri okuyor
++ [x] Temalar için ajan rehberi: wuppy-theme skill'i + wuppycms init AGENTS.md yazar; ayar/bölüm/widget kaydı da temayı yeniden derler
++ [x] Admin › AI › Theme prompts: tema ajan prompt'ları rehberle kopyalanıyor; docs ai/theme-agents prompt listesi
++ [x] GitHub temasında admin'de eklenen sayfa ana sayfa düzeninde açılıyor (404 yerine); görsel editör gövdeyi düzenleyebiliyor
++ [x] İçerik tipleri: hazır Pages/Posts, tüm koleksiyonlar listede, kayıt yeniden başlatmasız, ilişkiler (Relations) + Linked from, tip girdileri sitede/görsel editörde
