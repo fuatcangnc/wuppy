@@ -8,6 +8,8 @@ export interface Tool {
 	description: string;
 	/** Changes something (content, email). Chat offers these only when the user allows changes. */
 	write: boolean;
+	/** The same schema as `inputSchema`, kept as Zod for the MCP server SDK. */
+	schema: z.ZodType;
 	inputSchema: Record<string, unknown>;
 	run: (call: ApiCall, args: unknown) => Promise<unknown>;
 }
@@ -71,6 +73,7 @@ function tool<S extends z.ZodType>(def: {
 		name: def.name,
 		description: def.description,
 		write: def.write ?? false,
+		schema: def.input,
 		inputSchema,
 		run: async (call, args) => {
 			const parsed = def.input.safeParse(args ?? {});

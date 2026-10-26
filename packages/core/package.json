@@ -38,6 +38,7 @@
 	},
 	"dependencies": {
 		"@astrojs/compiler-rs": "^0.5.2",
+		"@modelcontextprotocol/server": "2.4.0",
 		"@wuppycms/admin": "workspace:*",
 		"@wuppycms/auth": "workspace:*",
 		"@wuppycms/git": "workspace:*",

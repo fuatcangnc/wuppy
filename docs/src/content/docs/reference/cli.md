@@ -13,6 +13,7 @@ description: The wuppy and wuppycms-plugin commands.
 | `wuppycms doctor` | Checks the config, content folders, Git and `WUPPY_SECRET`. Exits with 1 on a problem. |
 | `wuppycms types` | Writes `wuppy-env.d.ts` with types for every collection. |
 | `wuppycms mdx-to-md [dir]` | Converts `.mdx` entries without components or expressions to `.md`; files that still need MDX are kept and listed. |
+| `wuppycms mcp` | Runs a local MCP server over stdio for Claude Code, Cursor, Codex and opencode. Reads `WUPPY_URL` and `WUPPY_TOKEN`. See [OpenAI API and MCP](/ai/api-mcp/). |
 | `wuppycms upgrade [--force]` | Applies data migrations after a package update. See [Upgrading](/deployment/upgrading/). |
 | `wuppycms plugin hash <dir>` | Prints a plugin's capabilities and the hash to approve it in `wuppy.config`. |
 

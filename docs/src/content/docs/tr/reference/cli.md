@@ -13,6 +13,7 @@ description: wuppy ve wuppycms-plugin komutları.
 | `wuppycms doctor` | Yapılandırmayı, içerik klasörlerini, Git'i ve `WUPPY_SECRET` değerini kontrol eder. Sorun varsa 1 ile çıkar. |
 | `wuppycms types` | Her koleksiyon için tipleri içeren `wuppy-env.d.ts` dosyasını yazar. |
 | `wuppycms mdx-to-md [dir]` | Bileşen veya ifade içermeyen `.mdx` girdilerini `.md`'ye çevirir; MDX kalması gereken dosyaları saklar ve listeler. |
+| `wuppycms mcp` | Claude Code, Cursor, Codex ve opencode için stdio üzerinden yerel bir MCP sunucusu çalıştırır. `WUPPY_URL` ve `WUPPY_TOKEN` okur. Bkz. [OpenAI API ve MCP](/tr/ai/api-mcp/). |
 | `wuppycms upgrade [--force]` | Paket güncellemesinden sonra veri geçişlerini uygular. Bkz. [Yükseltme](/tr/deployment/upgrading/). |
 | `wuppycms plugin hash <dir>` | Bir eklentinin yeteneklerini ve `wuppy.config` içinde onaylamak için hash'i yazdırır. |
 

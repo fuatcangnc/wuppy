@@ -22,7 +22,11 @@ import { proxyPath } from "../../src/sites/proxy.ts";
 import { SiteStore } from "../../src/sites/store.ts";
 
 const H = { "X-Wuppy-Request": "1", "Content-Type": "application/json" };
-const BEARER = { authorization: "Bearer wuppy_test", "content-type": "application/json" };
+const BEARER = {
+	authorization: "Bearer wuppy_test",
+	"content-type": "application/json",
+	accept: "application/json, text/event-stream",
+};
 
 function makeApp(root: string, db: DatabaseSync, extra: Partial<Parameters<typeof createApp>[0]>) {
 	const git = new NoopGit();
@@ -128,13 +132,26 @@ interface Rpc {
 	};
 	error: { code: number };
 }
+/** Streamable HTTP replies are SSE for the SDK's legacy transport; strip the event framing before parsing. */
+const parseMcp = async (res: Response): Promise<Rpc> => {
+	const text = await res.text();
+	if (res.headers.get("content-type")?.includes("text/event-stream")) {
+		const data = text
+			.split(/\r?\n/)
+			.filter((line) => line.startsWith("data:"))
+			.map((line) => line.slice(5).trim())
+			.join("");
+		return JSON.parse(data) as Rpc;
+	}
+	return JSON.parse(text) as Rpc;
+};
 const mcp = async (method: string, params?: unknown, id: number | null = 1) => {
 	const res = await hub.request("/api/mcp", {
 		method: "POST",
 		headers: BEARER,
 		body: JSON.stringify({ jsonrpc: "2.0", ...(id === null ? {} : { id }), method, params }),
 	});
-	return { status: res.status, body: res.status === 202 ? null : ((await res.json()) as Rpc) };
+	return { status: res.status, body: res.status === 202 ? null : await parseMcp(res) };
 };
 const callTool = async (name: string, args: unknown) => {
 	const { body } = await mcp("tools/call", { name, arguments: args });
@@ -143,7 +160,11 @@ const callTool = async (name: string, args: unknown) => {
 
 describe("MCP server", () => {
 	it("speaks the protocol: initialize, notifications, tools/list, unknown methods", async () => {
-		const init = await mcp("initialize", { protocolVersion: "2025-03-26", capabilities: {} });
+		const init = await mcp("initialize", {
+			protocolVersion: "2025-03-26",
+			capabilities: {},
+			clientInfo: { name: "test", version: "1.0.0" },
+		});
 		expect(init.body!.result.protocolVersion).toBe("2025-03-26");
 		expect(init.body!.result.capabilities.tools).toBeDefined();
 		expect((await mcp("notifications/initialized", undefined, null)).status).toBe(202);

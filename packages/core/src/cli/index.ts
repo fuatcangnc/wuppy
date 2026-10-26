@@ -5,6 +5,7 @@ import { generateTypes } from "../content-types/generate.ts";
 import { loadConfig } from "../config/index.ts";
 import { capabilityHash } from "../plugins/loader.ts";
 import { importRepo, init } from "./init.ts";
+import { exportSite } from "./export.ts";
 import { convertMdx } from "./mdx-to-md.ts";
 import { upgrade } from "./upgrade.ts";
 
@@ -15,7 +16,7 @@ export interface CliResult {
 }
 
 const USAGE =
-	"Usage: wuppycms init [--force] | wuppycms import [<git-url> <dir>] | wuppycms plugin hash <plugin-dir> | wuppycms doctor | wuppycms types | wuppycms upgrade [--force] | wuppycms mdx-to-md [<dir>]";
+	"Usage: wuppycms init [--force] | wuppycms import [<git-url> <dir>] | wuppycms plugin hash <plugin-dir> | wuppycms doctor | wuppycms types | wuppycms upgrade [--force] | wuppycms mdx-to-md [<dir>] | wuppycms export [--out <dir>] | wuppycms mcp";
 
 const exists = (p: string) =>
 	access(p).then(
@@ -51,6 +52,7 @@ async function doctor(cwd: string, env: NodeJS.ProcessEnv): Promise<CliResult> {
 export async function run(argv: string[], cwd: string, env: NodeJS.ProcessEnv = process.env): Promise<CliResult> {
 	const [cmd, sub, dir] = argv;
 	if (cmd === "doctor") return doctor(cwd, env);
+	if (cmd === "export") return exportSite(cwd, argv, env);
 	if (cmd === "init") return init(cwd, { force: argv.includes("--force") });
 	if (cmd === "mdx-to-md") return convertMdx(cwd, sub);
 	if (cmd === "import") return importRepo(sub ?? "", dir ?? "", cwd);

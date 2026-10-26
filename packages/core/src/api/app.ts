@@ -59,7 +59,7 @@ import { AGENTS, AiError, chat, type AgentId, type AiConfig, type ChatEvent } fr
 import type { ChatHistory } from "../ai/history.ts";
 import { buildReport, monthOf, previousMonth, remoteGet, reportHtml, scanSite } from "../sites/care.ts";
 import { streamSSE } from "hono/streaming";
-import { handleMcp } from "../mcp/server.ts";
+import { createMcpHttpHandler } from "../mcp/server.ts";
 import type { ApiCall } from "../mcp/tools.ts";
 import { THEME_GUIDE, THEME_PROMPTS } from "../cli/theme-guide.ts";
 
@@ -463,6 +463,8 @@ export function createApp({
 	};
 
 	const app = new Hono<Env>().onError(onError);
+	// Streamable HTTP MCP. Each request builds a server around the caller's token, so tools see the same permissions.
+	const mcp = createMcpHttpHandler(callAs, String(HUB_API_VERSION));
 
 	// Public, unauthenticated surfaces. Registered before the auth middleware.
 	app.get("/api/public/comments/:collection/:slug{.+}", async (c) => {
@@ -1040,9 +1042,7 @@ export function createApp({
 			.post("/api/mcp", async (c) => {
 				if (!c.req.header("authorization")?.startsWith("Bearer "))
 					throw new ApiError(401, "UNAUTHORIZED", "MCP needs an API token (Authorization: Bearer)");
-				const message = await c.req.json().catch(() => undefined);
-				const reply = await handleMcp(message ?? {}, callAs(c.req.raw), String(HUB_API_VERSION));
-				return reply ? c.json(reply) : c.body(null, 202);
+				return mcp.fetch(c.req.raw);
 			})
 			.get("/api/editor/components", need("content:read"), (c) => c.json({ data: service.allowedComponents }))
 			.get("/api/collections", need("content:read"), (c) => c.json({ data: service.collections }))
