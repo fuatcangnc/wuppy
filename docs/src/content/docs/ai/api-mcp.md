@@ -101,16 +101,16 @@ header, or when you prefer a local process. It reads `WUPPY_URL` and `WUPPY_TOKE
 site's `.env`:
 
 ```sh
-WUPPY_URL=https://hub.example.com WUPPY_TOKEN=wuppy_... npx -y wuppycms mcp
+WUPPY_URL=https://hub.example.com WUPPY_TOKEN=wuppy_... pnpm dlx wuppycms@0.3.0 mcp
 ```
 
-It needs a WuppyCMS version with the `mcp` command. The process writes logs to stderr and speaks MCP on stdout.
+The first run downloads WuppyCMS 0.3.0. The process writes logs to stderr and speaks MCP on stdout.
 
 **Claude Code**
 
 ```sh
 claude mcp add --env WUPPY_URL=https://hub.example.com --env WUPPY_TOKEN=wuppy_... \
-  --transport stdio wuppy -- npx -y wuppycms mcp
+  --transport stdio wuppy -- pnpm dlx wuppycms@0.3.0 mcp
 ```
 
 **Cursor**
@@ -120,8 +120,8 @@ claude mcp add --env WUPPY_URL=https://hub.example.com --env WUPPY_TOKEN=wuppy_.
 	"mcpServers": {
 		"wuppy": {
 			"type": "stdio",
-			"command": "npx",
-			"args": ["-y", "wuppycms", "mcp"],
+			"command": "pnpm",
+			"args": ["dlx", "wuppycms@0.3.0", "mcp"],
 			"env": {
 				"WUPPY_URL": "https://hub.example.com",
 				"WUPPY_TOKEN": "${env:WUPPY_TOKEN}"
@@ -135,8 +135,8 @@ claude mcp add --env WUPPY_URL=https://hub.example.com --env WUPPY_TOKEN=wuppy_.
 
 ```toml
 [mcp_servers.wuppy]
-command = "npx"
-args = ["-y", "wuppycms", "mcp"]
+command = "pnpm"
+args = ["dlx", "wuppycms@0.3.0", "mcp"]
 env_vars = ["WUPPY_URL", "WUPPY_TOKEN"]
 ```
 
@@ -148,7 +148,7 @@ env_vars = ["WUPPY_URL", "WUPPY_TOKEN"]
 	"mcp": {
 		"wuppy": {
 			"type": "local",
-			"command": ["npx", "-y", "wuppycms", "mcp"],
+			"command": ["pnpm", "dlx", "wuppycms@0.3.0", "mcp"],
 			"environment": {
 				"WUPPY_URL": "https://hub.example.com",
 				"WUPPY_TOKEN": "wuppy_..."
