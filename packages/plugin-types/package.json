@@ -1,6 +1,6 @@
 {
 	"name": "@wuppycms/plugin-types",
-	"version": "0.2.4",
+	"version": "0.3.0",
 	"description": "Types and the API contract for WuppyCMS plugins.",
 	"keywords": [
 		"wuppycms",

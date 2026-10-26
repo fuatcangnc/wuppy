@@ -1,5 +1,12 @@
 # create-wuppy
 
+## 0.3.0
+
+### Patch Changes
+
+- Publish a site on Cloudflare: `wuppycms export` saves the built site as static files, and new sites get a `build:cloudflare` script and a `wrangler.jsonc`.
+- A site created with `npm create wuppycms` and installed with pnpm now serves `/admin` (it answered 404: the admin files were looked up only in the site's own `node_modules`). New sites also get their `.gitignore` back (npm drops it from the published template) and `site.url` set to the `--url` given.
+
 ## 0.2.4
 
 No changes in this release.

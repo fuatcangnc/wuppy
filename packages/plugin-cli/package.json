@@ -1,6 +1,6 @@
 {
 	"name": "@wuppycms/plugin-cli",
-	"version": "0.2.4",
+	"version": "0.3.0",
 	"description": "Build and package WuppyCMS plugins.",
 	"keywords": [
 		"wuppycms",

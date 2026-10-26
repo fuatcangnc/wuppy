@@ -47,19 +47,28 @@ export async function serveAdmin(dist: string, rel: string): Promise<Response> {
 	}
 }
 
-const findAdminDist = (): string => {
-	const req = createRequire(import.meta.url);
-	const candidates: string[] = [];
+/** `id` resolved from `from` (a file path or URL), or undefined when it is not installed there. */
+const resolveFrom = (from: string, id: string): string | undefined => {
 	try {
-		const pkg = req.resolve("wuppycms/package.json");
+		return createRequire(from).resolve(id);
+	} catch {
+		return undefined;
+	}
+};
+
+const findAdminDist = (): string => {
+	// The way wuppycms imports it: pnpm keeps @wuppycms/admin next to wuppycms, not in the site's node_modules.
+	const viaCore = resolveFrom(import.meta.url, "@wuppycms/admin/dist/index.html");
+	const pkg = resolveFrom(import.meta.url, "wuppycms/package.json");
+	const viaPackage = pkg && resolveFrom(pkg, "@wuppycms/admin/dist/index.html");
+	const candidates = [viaCore, viaPackage].flatMap((file) => (file ? [dirname(file)] : []));
+	if (pkg) {
 		const dir = dirname(pkg);
 		candidates.push(
 			join(dir, "node_modules", "@wuppycms", "admin", "dist"),
 			join(dir, "..", "admin", "dist"),
 			join(dir, "..", "..", "packages", "admin", "dist"),
 		);
-	} catch {
-		// published layouts where only the package entry is resolvable
 	}
 	candidates.push(
 		join(process.cwd(), "node_modules", "@wuppycms", "admin", "dist"),

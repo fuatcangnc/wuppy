@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -22,6 +22,8 @@ describe("scaffold", () => {
 		const secret = /^WUPPY_SECRET=(.+)$/m.exec(env)?.[1];
 		expect(secret?.length).toBeGreaterThanOrEqual(32);
 		expect(env).toContain("WUPPY_URL=http://localhost:4321");
+		expect(await readFile(join(target, "wuppy.config.mjs"), "utf8")).toContain('url: "http://localhost:4321"');
+		expect(await readFile(join(target, "wrangler.jsonc"), "utf8")).toContain('"name": "my-site"');
 		expect((await stat(join(target, "content/posts/hello.md"))).isFile()).toBe(true);
 		await expect(stat(join(target, "node_modules"))).rejects.toThrow();
 		await expect(stat(join(target, ".wuppy"))).rejects.toThrow();
@@ -48,6 +50,19 @@ describe("scaffold", () => {
 		await scaffold({ template: TEMPLATE, target, name: "pinned", url: "http://x", wuppyVersion: "^1.2.3" });
 		const pkg = JSON.parse(await readFile(join(target, "package.json"), "utf8"));
 		expect(pkg.dependencies.wuppycms).toBe("^1.2.3");
+	});
+
+	it("restores .gitignore from the published template's gitignore", async () => {
+		const published = join(base, "template");
+		await cp(TEMPLATE, published, {
+			recursive: true,
+			filter: (src) => !/node_modules|[\\/]\.(wuppy|astro)|[\\/]dist/.test(src.slice(TEMPLATE.length)),
+		});
+		await rename(join(published, ".gitignore"), join(published, "gitignore"));
+		const target = join(base, "from-npm");
+		await scaffold({ template: published, target, name: "from-npm", url: "http://x" });
+		expect(await readFile(join(target, ".gitignore"), "utf8")).toMatch(/^\.env$/m);
+		await expect(stat(join(target, "gitignore"))).rejects.toThrow();
 	});
 
 	it("generates a different secret every time", async () => {

@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "node dev.mjs",
 		"build": "astro build",
+		"build:cloudflare": "astro build && wuppycms export",
 		"preview": "astro preview",
 		"start": "node serve.mjs"
 	},

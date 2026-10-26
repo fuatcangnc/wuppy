@@ -1,6 +1,6 @@
 {
 	"name": "@wuppycms/visual-editor",
-	"version": "0.2.4",
+	"version": "0.3.0",
 	"description": "Data model and CSS of the WuppyCMS visual editor.",
 	"keywords": [
 		"wuppycms",

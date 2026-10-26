@@ -1,5 +1,39 @@
 # wuppy
 
+## 0.3.0
+
+### Minor Changes
+
+- f851b54: The MCP endpoint now uses the official MCP SDK and speaks the 2026-07-28 Streamable HTTP protocol (older clients still work). `wuppycms mcp` serves the same tools over stdio, so Claude Code, Cursor, Codex and opencode can connect with either transport. After creating an API token, the Users page shows copy-ready configs for all four clients.
+
+### Patch Changes
+
+- 5cf3d1d: The visual editor AI follows the uploaded design system's approved section layouts, so an About section uses the two-column template instead of inventing numbered build-step panels.
+- 18ea7d4: The visual editor AI receives the active theme's CSS, markup and container class, so generated sections use the site's real design system and content width. The editor also wraps generated content in the site's container when the model misses it.
+- 1b39961: The visual editor AI panel can upload a design system Markdown file. It is kept in the browser, sent as authoritative style context, and can be removed. A theme's own `design-system.md` is also picked up automatically.
+- 92b168b: The visual editor AI can add a new section without a picked element, and it can add one even when a small element is selected.
+- Publish a site on Cloudflare: `wuppycms export` saves the built site as static files, and new sites get a `build:cloudflare` script and a `wrangler.jsonc`.
+- 0bdfeea: Content types: Pages and Posts are built in, every collection is listed (Config or Dashboard), a new type gets its own folder, saving applies without a restart, and entries of a type the theme has no page for open at their route and in the visual editor. New: relations between content types, with a "Linked from" list on the linked entry and a "unique" field option.
+- A site created with `npm create wuppycms` and installed with pnpm now serves `/admin` (it answered 404: the admin files were looked up only in the site's own `node_modules`). New sites also get their `.gitignore` back (npm drops it from the published template) and `site.url` set to the `--url` given.
+- 0bdfeea: Menu links can have a description, and saving a menu builds the active GitHub theme again so the change goes live.
+- 0bdfeea: An instant production edit no longer changes other elements: the overlay CSS is made only for classes the theme's build has no rule for. Before, adding `flex` to one element made `.flex` again after the build's CSS, so it beat `sm:grid` on every element that had both.
+- 0bdfeea: `wuppycms init` writes an `AGENTS.md` guide for AI coding agents (and the same guide ships as the `wuppy-theme` skill); saving settings, sections or widgets also builds the active GitHub theme again.
+- 0bdfeea: AI › Theme prompts in the admin copies ready prompts for a coding agent that adapts the theme, each with the WuppyCMS theme guide.
+- 0bdfeea: A page added in the admin that a GitHub theme has no page for renders in the theme's home page layout (header and footer kept, the body in `<main>`), instead of 404, so the visual editor can build it.
+- Updated dependencies [18ea7d4]
+- Updated dependencies [1b39961]
+- Updated dependencies [92b168b]
+- Updated dependencies [0bdfeea]
+- Updated dependencies [f851b54]
+- Updated dependencies [0bdfeea]
+- Updated dependencies [0bdfeea]
+- Updated dependencies [0bdfeea]
+  - @wuppycms/admin@0.3.0
+  - @wuppycms/auth@0.3.0
+  - @wuppycms/git@0.3.0
+  - @wuppycms/plugin-types@0.3.0
+  - @wuppycms/visual-editor@0.3.0
+
 ## 0.2.4
 
 ### Patch Changes

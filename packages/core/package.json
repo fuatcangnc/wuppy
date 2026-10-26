@@ -1,6 +1,6 @@
 {
 	"name": "wuppycms",
-	"version": "0.2.4",
+	"version": "0.3.0",
 	"description": "WuppyCMS: a file-based, Git-backed CMS and admin panel for Astro.",
 	"keywords": [
 		"astro",
@@ -97,7 +97,8 @@
 			"./mdx": {
 				"types": "./dist/mdx.d.mts",
 				"import": "./dist/mdx.mjs"
-			}
+			},
+			"./package.json": "./package.json"
 		},
 		"bin": {
 			"wuppycms": "./dist/cli.mjs"

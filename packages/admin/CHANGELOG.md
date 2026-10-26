@@ -1,5 +1,22 @@
 # @wuppycms/admin
 
+## 0.3.0
+
+### Minor Changes
+
+- f851b54: The MCP endpoint now uses the official MCP SDK and speaks the 2026-07-28 Streamable HTTP protocol (older clients still work). `wuppycms mcp` serves the same tools over stdio, so Claude Code, Cursor, Codex and opencode can connect with either transport. After creating an API token, the Users page shows copy-ready configs for all four clients.
+
+### Patch Changes
+
+- 18ea7d4: The visual editor AI receives the active theme's CSS, markup and container class, so generated sections use the site's real design system and content width. The editor also wraps generated content in the site's container when the model misses it.
+- 1b39961: The visual editor AI panel can upload a design system Markdown file. It is kept in the browser, sent as authoritative style context, and can be removed. A theme's own `design-system.md` is also picked up automatically.
+- 92b168b: The visual editor AI can add a new section without a picked element, and it can add one even when a small element is selected.
+- 0bdfeea: Content types: Pages and Posts are built in, every collection is listed (Config or Dashboard), a new type gets its own folder, saving applies without a restart, and entries of a type the theme has no page for open at their route and in the visual editor. New: relations between content types, with a "Linked from" list on the linked entry and a "unique" field option.
+- 0bdfeea: Menu links can have a description, and saving a menu builds the active GitHub theme again so the change goes live.
+- 0bdfeea: On a production server, class edits and deleting a theme element no longer reload the canvas: the class is applied in place and the CSS of new classes is fetched from the page, a deleted element is removed in place.
+- 0bdfeea: AI › Theme prompts in the admin copies ready prompts for a coding agent that adapts the theme, each with the WuppyCMS theme guide.
+- @wuppycms/visual-editor@0.3.0
+
 ## 0.2.4
 
 ### Patch Changes

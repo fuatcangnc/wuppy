@@ -1,0 +1,10 @@
+// Cloudflare Workers: serves the static copy made by `npm run build:cloudflare`. The admin is not part of it;
+// edit with `npm run dev`, push to Git, and Cloudflare builds again. See docs.wuppycms.com/deployment/cloudflare/.
+{
+	"name": "wuppy-starter",
+	"compatibility_date": "2026-10-01",
+	"assets": {
+		"directory": "./dist-static",
+		"not_found_handling": "404-page",
+	},
+}

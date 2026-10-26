@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { cp, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { cp, mkdir, readdir, readFile, rename, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 // shortcut: Astro-side versions are pinned here; bump them with the starter template.
@@ -57,6 +57,23 @@ export async function scaffold({
 		}
 	}
 	await writeFile(pkgPath, JSON.stringify(pkg, null, "\t") + "\n");
+
+	// The published template carries `gitignore` (npm drops `.gitignore`); without it `.env` could be committed.
+	const ignore = join(target, "gitignore");
+	if (
+		await readFile(ignore).then(
+			() => true,
+			() => false,
+		)
+	)
+		await rename(ignore, join(target, ".gitignore"));
+	const configPath = join(target, "wuppy.config.mjs");
+	const config = await readFile(configPath, "utf8");
+	await writeFile(configPath, config.replace(/url: "http:\/\/127\.0\.0\.1:4444"/, `url: ${JSON.stringify(url)}`));
+
+	const wranglerPath = join(target, "wrangler.jsonc");
+	const wrangler = await readFile(wranglerPath, "utf8");
+	await writeFile(wranglerPath, wrangler.replace(/"name": "wuppy-starter"/, `"name": ${JSON.stringify(name)}`));
 
 	const secret = randomBytes(32).toString("base64url");
 	await writeFile(join(target, ".env"), `WUPPY_SECRET=${secret}\nWUPPY_URL=${url}\n`, { mode: 0o600 });

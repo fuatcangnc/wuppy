@@ -13,4 +13,5 @@ const tracked = execFileSync("git", ["ls-files", "-z", "."], { cwd: from, encodi
 if (!tracked.includes("package.json")) throw new Error("templates/starter has no tracked package.json");
 
 await rm(to, { recursive: true, force: true });
-for (const file of tracked) await cp(resolve(from, file), resolve(to, file));
+// npm leaves `.gitignore` out of a published package, so it ships as `gitignore` and scaffold() renames it back.
+for (const file of tracked) await cp(resolve(from, file), resolve(to, file === ".gitignore" ? "gitignore" : file));
