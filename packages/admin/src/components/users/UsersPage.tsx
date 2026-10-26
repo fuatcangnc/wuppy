@@ -1,6 +1,7 @@
 import {
 	ChevronLeft,
 	ChevronRight,
+	Copy,
 	Mail,
 	Plus,
 	Search,
@@ -23,6 +24,7 @@ import {
 	Input,
 	Select,
 	Table,
+	Tabs,
 	Td,
 	Th,
 	toast,
@@ -76,6 +78,98 @@ const requestMagicLink = (user: UserRow) =>
 		.then(() => toast("Magic link requested"))
 		.catch((failure: Error) => toast(failure.message, "error"));
 
+const copyText = (text: string, done: string) => {
+	try {
+		void navigator.clipboard.writeText(text).then(
+			() => toast(done),
+			() => toast("Copy failed; select the text and copy it by hand", "error"),
+		);
+	} catch {
+		toast("Copy failed; select the text and copy it by hand", "error");
+	}
+};
+
+/** The admin dev server (4320) proxies /api to the site on 4321; MCP clients connect to the site itself. */
+const mcpOrigin = () => {
+	if (typeof window === "undefined") return "";
+	const url = new URL(window.location.origin);
+	if (url.port === "4320") url.port = "4321";
+	return url.origin;
+};
+
+type AgentClient = "opencode" | "cursor" | "codex" | "claude";
+
+const AGENT_CLIENTS: Array<{ value: AgentClient; label: string; target: string }> = [
+	{ value: "opencode", label: "opencode", target: "opencode.json" },
+	{ value: "cursor", label: "Cursor", target: ".cursor/mcp.json" },
+	{ value: "codex", label: "Codex", target: "~/.codex/config.toml" },
+	{ value: "claude", label: "Claude Code", target: "the terminal, then run `claude mcp list`" },
+];
+
+const agentSnippets = (endpoint: string, token: string): Record<AgentClient, string> => ({
+	opencode: JSON.stringify(
+		{
+			$schema: "https://opencode.ai/config.json",
+			mcp: {
+				wuppy: {
+					type: "remote",
+					url: endpoint,
+					oauth: false,
+					headers: { Authorization: `Bearer ${token}` },
+				},
+			},
+		},
+		null,
+		2,
+	),
+	cursor: JSON.stringify(
+		{
+			mcpServers: {
+				wuppy: {
+					url: endpoint,
+					headers: { Authorization: `Bearer ${token}` },
+				},
+			},
+		},
+		null,
+		2,
+	),
+	codex: `[mcp_servers.wuppy]\nurl = "${endpoint}"\nhttp_headers = { Authorization = "Bearer ${token}" }`,
+	claude: `claude mcp add --transport http wuppy ${endpoint} --header "Authorization: Bearer ${token}"`,
+});
+
+function AgentConfigs({ token }: { token: string }) {
+	const [client, setClient] = useState<AgentClient>("opencode");
+	const endpoint = `${mcpOrigin()}/api/mcp`;
+	const snippets = agentSnippets(endpoint, token);
+	const current = AGENT_CLIENTS.find((item) => item.value === client) ?? AGENT_CLIENTS[0]!;
+	return (
+		<div className="grid gap-2 border-t border-border pt-3">
+			<div className="flex flex-wrap items-end justify-between gap-2">
+				<div>
+					<p className="text-sm font-medium">Connect a coding agent</p>
+					<p className="text-xs text-muted-foreground">Copy a config with this token already filled in.</p>
+				</div>
+				<Tabs value={client} onChange={setClient} items={AGENT_CLIENTS.map(({ value, label }) => ({ value, label }))} />
+			</div>
+			<pre className="max-h-72 overflow-auto rounded-md border border-border bg-background p-3 text-xs leading-relaxed">
+				<code>{snippets[client]}</code>
+			</pre>
+			<div className="flex flex-wrap items-center justify-between gap-2">
+				<p className="text-xs text-muted-foreground">Add it to {current.target}.</p>
+				<Button
+					size="sm"
+					variant="secondary"
+					aria-label={`Copy ${current.label} config`}
+					onClick={() => copyText(snippets[client], `${current.label} config copied`)}
+				>
+					<Copy size={13} /> Copy config
+				</Button>
+			</div>
+		</div>
+	);
+}
+
 export function UsersPage() {
 	const session = useStore($session);
 	const currentUserId = session.status === "authed" ? session.user.id : null;
@@ -101,6 +195,7 @@ export function UsersPage() {
 		roles: Array<{ name: string; permissions: string[] }>;
 	} | null>(null);
 	const [createdToken, setCreatedToken] = useState<string | null>(null);
+	const [createdTokenScope, setCreatedTokenScope] = useState<keyof typeof TOKEN_SCOPES | null>(null);
 	const [invitations, setInvitations] = useState<InvitationRow[]>([]);
 	const [inviteOpen, setInviteOpen] = useState(false);
 	const [inviteForm, setInviteForm] = useState({ email: "", role: "viewer" });
@@ -599,6 +694,7 @@ export function UsersPage() {
 												})
 													.then((res) => {
 														setCreatedToken(res.data.token);
+														setCreatedTokenScope(tokenScope);
 														setTokenName("");
 														void load();
 													})
@@ -609,9 +705,28 @@ export function UsersPage() {
 										</Button>
 									</div>
 									{createdToken && (
-										<div className="grid gap-2 rounded-ui border border-border bg-secondary p-3">
-											<p className="text-sm font-medium">Copy this token now; it will not be shown again.</p>
-											<code className="break-all text-xs">{createdToken}</code>
+										<div className="grid gap-3 rounded-ui border border-border bg-secondary p-3">
+											<div className="flex flex-wrap items-start justify-between gap-2">
+												<div className="grid gap-1">
+													<p className="text-sm font-medium">Copy this token now; it will not be shown again.</p>
+													<code className="break-all text-xs">{createdToken}</code>
+												</div>
+												<Button
+													size="sm"
+													variant="secondary"
+													aria-label="Copy token"
+													onClick={() => copyText(createdToken, "Token copied")}
+												>
+													<Copy size={13} /> Copy token
+												</Button>
+											</div>
+											{createdTokenScope === "hub" ? (
+												<p className="text-xs text-muted-foreground">
+													Hub tokens connect this site to another Wuppy. Create a personal token for a coding agent.
+												</p>
+											) : (
+												<AgentConfigs token={createdToken} />
+											)}
 										</div>
 									)}
 									{tokens.length > 0 && (

@@ -32,7 +32,7 @@ System mesajları ajana ek bağlam olarak iletilir.
 eder, tarayıcı çerezlerini asla kabul etmez.
 
 Token'ı **Users → API tokens** altında, ajanın kullanacağı izinlerle oluşturun. Bir token sahibinin haklarından
-fazlasına sahip olamaz.
+fazlasına sahip olamaz. Aynı ekran, aşağıdaki istemciler için kopyalanmaya hazır config'ler de gösterir.
 
 ### Claude Code
 

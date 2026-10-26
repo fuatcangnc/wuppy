@@ -1,10 +1,11 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { TOKEN_SCOPES, UsersPage } from "../src/components/users/UsersPage.tsx";
 import { chooseSelect } from "./utils/select.ts";
 
 afterEach(() => {
+	vi.restoreAllMocks();
 	vi.unstubAllGlobals();
 	vi.useRealTimers();
 });
@@ -79,5 +80,26 @@ describe("roles matrix and API tokens", () => {
 		await user.type(await screen.findByLabelText("Token name"), "all");
 		await user.click(screen.getByRole("button", { name: "Create token" }));
 		await waitFor(() => expect(posted).toEqual([{ name: "all" }]));
+	});
+
+	it("offers copy-ready MCP configs for the new token", async () => {
+		server();
+		const writeText = vi.spyOn(navigator.clipboard, "writeText").mockResolvedValue();
+		render(<UsersPage />);
+		const user = userEvent.setup();
+		await user.type(await screen.findByLabelText("Token name"), "agent");
+		await user.click(screen.getByRole("button", { name: "Create token" }));
+		expect(await screen.findByText("wuppy_secret")).toBeInTheDocument();
+		expect(screen.getByRole("tab", { name: "opencode" })).toBeInTheDocument();
+		expect(screen.getByRole("tab", { name: "Cursor" })).toBeInTheDocument();
+		expect(screen.getByRole("tab", { name: "Codex" })).toBeInTheDocument();
+		expect(screen.getByRole("tab", { name: "Claude Code" })).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("tab", { name: "Claude Code" }));
+		fireEvent.click(screen.getByRole("button", { name: "Copy Claude Code config" }));
+		await waitFor(() =>
+			expect(writeText).toHaveBeenCalledWith(expect.stringContaining("claude mcp add --transport http wuppy")),
+		);
+		expect(writeText).toHaveBeenCalledWith(expect.stringContaining("wuppy_secret"));
+		expect(writeText).toHaveBeenCalledWith(expect.stringContaining("/api/mcp"));
 	});
 });

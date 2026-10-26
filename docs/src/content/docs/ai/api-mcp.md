@@ -32,7 +32,7 @@ the 2026-07-28 protocol and serves 2025-era clients from the same endpoint. MCP 
 browser cookies.
 
 Create the token under **Users → API tokens** with the permissions the agent may use. A token never has more rights
-than its owner.
+than its owner. The same screen then shows copy-ready configs for the clients below.
 
 ### Claude Code
 
