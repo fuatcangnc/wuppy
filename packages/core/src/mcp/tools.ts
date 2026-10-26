@@ -21,7 +21,7 @@ const site = z
 	.string()
 	.min(1)
 	.max(200)
-	.describe('Site id, name or host from list_sites, or "local" for this hub itself');
+	.describe('Site id, name or host from list_sites, or "local" for this server\'s own content');
 const collection = z.string().min(1).max(100).describe("Collection name from list_collections, e.g. posts");
 const slug = z.string().min(1).max(500);
 
