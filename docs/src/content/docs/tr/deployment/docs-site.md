@@ -36,7 +36,7 @@ docs.example.com {
 | `wuppycms.com` | WuppyCMS'i tanıtan giriş sayfası (`/` İngilizce, `/tr/` Türkçe). WuppyCMS ile çalışır: `/admin` adresinden düzenlenir. `www` buraya yönlenir. |
 | `docs.wuppycms.com` | Bu dokümanlar. |
 | `test.wuppycms.com` | Açık kaynak WuppyCMS'in kendi kurulumumuz; giriş `/admin` adresinde. |
-| `app.wuppycms.com` | Ücretli barındırılan hizmet WuppyCMS Cloud için ayrıldı; açılana kadar `test` adresine yönlendirir. |
+| `app.wuppycms.com` | Barındırılan hizmet WuppyCMS Cloud: giriş yapın, projelerinizi görün ve tek tıkla site kurun (kayıt açık). |
 
 Giriş sayfası deponun `landing/` paketidir: WuppyCMS'in kendisiyle çalışan bir Astro sitesi (Tailwind CSS 4 +
 bejamas/ui). Metinleri (başlık, özellikler, adımlar) `landing/content/landing/` içindeki `landing` koleksiyonudur, her

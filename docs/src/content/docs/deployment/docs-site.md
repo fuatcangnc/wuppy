@@ -36,7 +36,7 @@ docs.example.com {
 | `wuppycms.com` | The landing page that introduces WuppyCMS (English at `/`, Turkish at `/tr/`). It runs on WuppyCMS: edit it at `/admin`. `www` redirects here. |
 | `docs.wuppycms.com` | These docs. |
 | `test.wuppycms.com` | Our own install of open-source WuppyCMS; sign in at `/admin`. |
-| `app.wuppycms.com` | Reserved for WuppyCMS Cloud, the paid hosted service; until it opens, it redirects to `test`. |
+| `app.wuppycms.com` | WuppyCMS Cloud, the hosted service: sign in, list your projects and create a site with one click (open sign-up). |
 
 The landing page is the `landing/` package of the repository, an Astro site (Tailwind CSS 4 + bejamas/ui) that runs
 on WuppyCMS itself. Its copy (headline, features, steps) is the `landing` collection in `landing/content/landing/`, one
