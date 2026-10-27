@@ -281,7 +281,7 @@ function Shell() {
 			{isAdmin && (
 				<Group title="Admin">
 					<NavLink to="/content-types" icon={<Newspaper size={16} />}>
-						Content types
+						Custom Fields
 					</NavLink>
 					<NavLink to="/byline-schema" icon={<UserRound size={16} />}>
 						Byline schema

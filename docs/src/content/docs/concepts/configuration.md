@@ -42,8 +42,8 @@ export default {
 Fields can be required, have a default and help text, and can be shown only when another field has a value
 (for example hide `publishAt` while `draft` is on).
 
-Collections can also be created and edited in the admin under **Content Types**; see
-[Content types](/guides/content-types/).
+Collections can also be created and edited in the admin under **Custom Fields**; see
+[Custom Fields](/guides/content-types/).
 
 ## Posts and Pages
 

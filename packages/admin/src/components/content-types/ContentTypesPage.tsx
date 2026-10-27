@@ -155,7 +155,7 @@ export function ContentTypesPage() {
 			setEditing(saved[nextIndex] ? structuredClone(saved[nextIndex]!) : null);
 			setFromConfig(false);
 			await Promise.all([refresh(), loadCollections()]);
-			toast("Content type saved");
+			toast("Custom field saved");
 		} catch (e) {
 			toast((e as Error).message, "error");
 		}
@@ -174,7 +174,7 @@ export function ContentTypesPage() {
 			setIndex(null);
 			setEditing(null);
 			await Promise.all([refresh(), loadCollections()]);
-			toast("Content type removed");
+			toast("Custom field removed");
 		} catch (e) {
 			toast((e as Error).message, "error");
 		}
@@ -197,16 +197,16 @@ export function ContentTypesPage() {
 			<WorkspaceSidebar>
 				<div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
 					<div className="grid gap-0.5">
-						<h1 className="text-base font-semibold">Content types</h1>
-						<p className="text-[11px] text-muted-foreground">{rows.length} collections</p>
+						<h1 className="text-base font-semibold">Custom Fields</h1>
+						<p className="text-[11px] text-muted-foreground">{rows.length} custom fields</p>
 					</div>
 					<Button
 						variant="secondary"
 						size="icon-sm"
 						style={{ borderRadius: "200px" }}
 						className="border-border bg-white text-[#101011] shadow-sm hover:bg-zinc-200!"
-						aria-label="Create content type"
-						title="Create content type"
+						aria-label="Create custom field"
+						title="Create custom field"
 						onClick={() => open(blankType(), null)}
 					>
 						<Plus size="1em" />
@@ -219,23 +219,23 @@ export function ContentTypesPage() {
 							className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-sm text-muted-foreground"
 						/>
 						<Input
-							aria-label="Search content types"
+							aria-label="Search custom fields"
 							className="h-12 rounded-none border-transparent bg-transparent pr-4 pl-11 text-sm shadow-none focus-visible:border-transparent focus-visible:ring-0 dark:bg-transparent"
 							value={query}
 							onChange={(event) => setQuery(event.target.value)}
-							placeholder="Search content types..."
+							placeholder="Search custom fields..."
 						/>
 					</div>
 				</div>
 				<div className="border-b border-border px-3 py-2 text-[10px] font-medium tracking-wider text-muted-foreground uppercase">
-					{visible.length} {visible.length === 1 ? "type" : "types"}
+					{visible.length} {visible.length === 1 ? "field" : "fields"}
 				</div>
 				<div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto p-2">
 					{visible.length === 0 ? (
 						<EmptyState
-							title={rows.length === 0 ? "No content types yet" : "No matches"}
-							description={rows.length === 0 ? "Create a collection definition." : "Try a different search."}
-							action={<Button onClick={() => open(blankType(), null)}>+ New content type</Button>}
+							title={rows.length === 0 ? "No custom fields yet" : "No matches"}
+							description={rows.length === 0 ? "Create a custom field." : "Try a different search."}
+							action={<Button onClick={() => open(blankType(), null)}>+ New custom field</Button>}
 						/>
 					) : (
 						<div className="grid gap-1">
@@ -275,7 +275,7 @@ export function ContentTypesPage() {
 					<>
 						<header className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-5 py-4">
 							<div className="grid min-w-0 gap-1">
-								<h2 className="truncate text-xl font-semibold">{editing.name || "New content type"}</h2>
+								<h2 className="truncate text-xl font-semibold">{editing.name || "New custom field"}</h2>
 								<p className="text-xs text-muted-foreground">
 									{editing.dir}
 									{fromConfig && " · from wuppy.config; saving keeps a copy here that replaces it"}
@@ -546,10 +546,10 @@ export function ContentTypesPage() {
 							<span className="grid size-16 place-items-center rounded-full bg-secondary text-muted-foreground">
 								<FileText size={24} />
 							</span>
-							<p className="font-medium">Content types</p>
-							<p className="text-sm text-muted-foreground">Select a type or create a new collection definition.</p>
+							<p className="font-medium">Custom Fields</p>
+							<p className="text-sm text-muted-foreground">Select a custom field, or create a new one.</p>
 							<Button variant="secondary" size="sm" onClick={() => open(blankType(), null)}>
-								<Plus size={14} /> New content type
+								<Plus size={14} /> New custom field
 							</Button>
 						</div>
 					</div>
@@ -604,8 +604,8 @@ function RelationsPanel({
 				<div>
 					<h3 className="text-sm font-medium">Relations</h3>
 					<p className="text-xs text-muted-foreground">
-						{mine.length} relations this content type takes part in. A relation lets entries here link to entries of
-						another content type.
+						{mine.length} relations this custom field takes part in. A relation lets entries here link to entries of
+						another custom field.
 					</p>
 				</div>
 				{!draft && (
@@ -648,7 +648,7 @@ function RelationsPanel({
 					<div className="grid grid-cols-2 gap-2">
 						<Input label="Links from" value={draft.from} disabled />
 						<Select label="Links to" value={draft.to} onChange={(e) => pick(e.target.value)}>
-							<option value="">Select a content type</option>
+							<option value="">Select a custom field</option>
 							{collections.map((c) => (
 								<option key={c} value={c}>
 									{c}

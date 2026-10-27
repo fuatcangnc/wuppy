@@ -1,18 +1,18 @@
 ---
 title: MDX content
-description: Write posts, pages, content types and sections in MDX, and the rules that keep it safe.
+description: Write posts, pages, custom fields and sections in MDX, and the rules that keep it safe.
 sidebar:
   order: 2.5
 ---
 
-Posts, pages, your own content types and sections can all be written in [MDX](https://docs.astro.build/en/guides/integrations-guide/mdx/):
+Posts, pages, your own custom fields and sections can all be written in [MDX](https://docs.astro.build/en/guides/integrations-guide/mdx/):
 Markdown plus HTML and the components your site allows.
 
 ## Where MDX is used
 
 - **Posts and pages** in the starter are MDX collections (`format: "mdx"` in `wuppy.config.mjs`). New entries are saved
   as `.mdx`. Existing `.md` files keep working and stay `.md` until a component is inserted, when Wuppy promotes that entry to `.mdx`; the same collection can hold both.
-- **Content types** you create in the admin are MDX by default. You can still pick Markdown.
+- **Custom Fields** you create in the admin are MDX by default. You can still pick Markdown.
 - **Sections** store their body as MDX.
 - **Widgets**: a _custom_ widget's body is MDX; an _HTML_ widget gets the raw-HTML checks below before it is saved (and
   is still sanitised when shown). Text widgets are shown as plain text.

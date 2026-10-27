@@ -22,8 +22,10 @@ const kindLabel = (kind?: string) => {
 			return "Category";
 		case "language":
 			return "Language";
-		default:
+		case "custom":
 			return "Custom Link";
+		default:
+			return kind ? kind.replace(/[-_]/g, " ").replace(/\b\w/g, (character) => character.toUpperCase()) : "Custom Link";
 	}
 };
 

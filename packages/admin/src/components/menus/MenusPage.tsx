@@ -87,6 +87,7 @@ const LOCATIONS = [
 ];
 const LOCATION_LABEL = Object.fromEntries(LOCATIONS.map((location) => [location.id, location.label]));
 const hrefFor = (collection: CollectionInfo, slug: string) => collection.route?.replace("{slug}", slug) ?? `/${slug}`;
+const labelOf = (name: string) => name.replace(/[-_]/g, " ").replace(/\b\w/g, (character) => character.toUpperCase());
 const linksOf = (items: MenuItem[]): MenuLink[] => items.flatMap((item) => [item, ...item.children]);
 const sourceKey = (group: SourceGroup, item: SourceItem) => `${group.id}:${item.href}`;
 
@@ -136,27 +137,51 @@ export function MenusPage() {
 					apiData<TaxonomyRow[]>("GET", "/api/data/taxonomies").catch(() => []),
 				]);
 				const groups: SourceGroup[] = [];
-				for (const kind of ["pages", "posts"] as const) {
-					const collection = collections.find((item) => kindOf(item) === kind);
-					if (!collection) continue;
-					const name = collection.name;
-					let entries: EntrySummary[] = [];
+				const entriesOf = async (name: string): Promise<EntrySummary[]> => {
 					try {
 						const result = await api<{ data: EntrySummary[] }>("GET", `/api/content/${name}?limit=200&sort=title`);
-						entries = result.data;
+						return result.data;
 					} catch {
 						// Content read access can be narrower than menus: manage; keep the group empty.
+						return [];
 					}
+				};
+				const pages = collections.find((item) => kindOf(item) === "pages");
+				const posts = collections.find((item) => kindOf(item) === "posts");
+				for (const [collection, id, label, icon, kind] of [
+					[pages, "pages", "Pages", <FileText size={15} />, "page"],
+					[posts, "posts", "Posts", <Newspaper size={15} />, "post"],
+				] as const) {
+					if (!collection) continue;
+					const entries = await entriesOf(collection.name);
 					groups.push({
-						id: kind,
-						label: kind === "pages" ? "Pages" : "Posts",
-						icon: kind === "pages" ? <FileText size={15} /> : <Newspaper size={15} />,
+						id,
+						label,
+						icon,
 						items: entries.map((entry) => ({
 							label: String(entry.data.title ?? entry.slug),
 							href: hrefFor(collection, entry.slug),
-							kind: kind === "pages" ? "page" : "post",
+							kind,
 						})),
-						empty: `No ${kind} available.`,
+						empty: `No ${label.toLowerCase()} available.`,
+					});
+				}
+				// Every other collection is a custom field/content type; its entries belong in menus too.
+				const used = new Set([pages?.name, posts?.name].filter((name): name is string => Boolean(name)));
+				for (const collection of collections) {
+					if (used.has(collection.name)) continue;
+					const label = labelOf(collection.name);
+					const entries = await entriesOf(collection.name);
+					groups.push({
+						id: `collection:${collection.name}`,
+						label,
+						icon: <FileText size={15} />,
+						items: entries.map((entry) => ({
+							label: String(entry.data.title ?? entry.slug),
+							href: hrefFor(collection, entry.slug),
+							kind: collection.name,
+						})),
+						empty: `No ${label.toLowerCase()} entries yet.`,
 					});
 				}
 				groups.push({

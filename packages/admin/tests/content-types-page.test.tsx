@@ -75,7 +75,7 @@ describe("ContentTypesPage built-in types and relations", () => {
 		const user = userEvent.setup();
 		expect(await screen.findByText(/content\/pages · 1 fields · Config/)).toBeInTheDocument();
 
-		await user.click(screen.getByRole("button", { name: "Create content type" }));
+		await user.click(screen.getByRole("button", { name: "Create custom field" }));
 		await user.type(screen.getByLabelText("Name"), "projects");
 		expect(screen.getByLabelText("Directory")).toHaveValue("content/projects");
 		expect(screen.getByLabelText("Route")).toHaveValue("/projects/{slug}");

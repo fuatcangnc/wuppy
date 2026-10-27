@@ -128,6 +128,13 @@ describe("MenusPage", () => {
 					JSON.stringify({
 						data: [
 							{ name: "pages", dir: "content/pages", format: "md", route: "/{slug}", fields: { title: "string" } },
+							{
+								name: "services",
+								dir: "content/services",
+								format: "md",
+								route: "/services/{slug}",
+								fields: { title: "string" },
+							},
 						],
 					}),
 				);
@@ -136,6 +143,15 @@ describe("MenusPage", () => {
 				return new Response(
 					JSON.stringify({
 						data: [{ slug: "home", data: { title: "Home" }, body: "", modified: "2026-01-01T00:00:00Z" }],
+						total: 1,
+						nextCursor: null,
+					}),
+				);
+			}
+			if (url.startsWith("/api/content/services")) {
+				return new Response(
+					JSON.stringify({
+						data: [{ slug: "design", data: { title: "Design" }, body: "", modified: "2026-01-01T00:00:00Z" }],
 						total: 1,
 						nextCursor: null,
 					}),
@@ -156,10 +172,15 @@ describe("MenusPage", () => {
 
 		await user.click(await screen.findByLabelText("Add Home"));
 		await user.click(screen.getByRole("button", { name: /Add to menu/ }));
+
+		await user.click(screen.getByRole("button", { name: /Services/ }));
+		await user.click(screen.getByLabelText("Add Design"));
+		await user.click(screen.getByRole("button", { name: /Add to menu/ }));
 		await user.click(screen.getByRole("button", { name: "Save menu" }));
 		await waitFor(() => expect(writes.length).toBeGreaterThanOrEqual(2));
 		const saved = writes.at(-1)!.data[0]!;
 		expect(saved.name).toBe("main-menu");
 		expect(saved.items[0]).toMatchObject({ label: "Home", href: "/home", kind: "page" });
+		expect(saved.items[1]).toMatchObject({ label: "Design", href: "/services/design", kind: "services" });
 	});
 });

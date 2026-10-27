@@ -1,11 +1,11 @@
 ---
-title: İçerik tipleri
+title: Custom Fields
 description: Koleksiyonları ve alanlarını panelden oluşturun ve değiştirin.
 sidebar:
   order: 9
 ---
 
-**Content Types** her koleksiyonu listeler. Yeni bir tane oluşturun veya alanlarını düzenlemek için birini açın.
+**Custom Fields** her koleksiyonu listeler. Yeni bir tane oluşturun veya alanlarını düzenlemek için birini açın.
 
 - Her alan için tip seçin, zorunlu yapın, varsayılan değer ve yardım metni verin, alanları sıralayın.
 - Şemanın önizlemesini ve üretilen TypeScript tiplerini görün.
@@ -14,7 +14,7 @@ sidebar:
 
 Kullanılabilir alan tipleri [Yapılandırma](/tr/concepts/configuration/#alan-tipleri) sayfasında listelenir.
 
-Her içerik tipinin girdileri, koleksiyonun `format` değerine göre [MDX veya Markdown](/tr/guides/markdown/) dosyalarıdır.
+Her özel alanın girdileri, koleksiyonun `format` değerine göre [MDX veya Markdown](/tr/guides/markdown/) dosyalarıdır.
 
 ## Hazır Pages ve Posts
 
@@ -35,10 +35,10 @@ eklenebilir. Adres için kendi sayfası olan bir tema (`src/pages/projects/[slug
 
 ## İlişkiler (Relations)
 
-İlişki, EmDash'teki gibi iki içerik tipinin girdilerinin nasıl bağlandığını söyler. Bir tipi açın ve **New relation**
+İlişki, EmDash'teki gibi iki özel alanın girdilerinin nasıl bağlandığını söyler. Bir tipi açın ve **New relation**
 seçin:
 
-- **Links to**: diğer içerik tipi.
+- **Links to**: diğer özel alan.
 - **Linking side** ve **Linked side**: her tarafın adı.
 - **Slug**: bağlanan girdilerde bağlantıları tutan alan (`posts_authors`).
 - **How many**: bağlayan her girdinin bir mi yoksa istediği kadar mı girdiye bağlanacağı, ve bağlanan her girdiye bir

@@ -42,8 +42,8 @@ export default {
 Alanlar zorunlu olabilir, varsayılan değer ve yardım metni alabilir, başka bir alanın değerine göre gösterilebilir
 (örneğin `draft` açıkken `publishAt` gizlenir).
 
-Koleksiyonlar panelde **Content Types** altında da oluşturulup düzenlenebilir; bkz.
-[İçerik tipleri](/tr/guides/content-types/).
+Koleksiyonlar panelde **Custom Fields** altında da oluşturulup düzenlenebilir; bkz.
+[Custom Fields](/tr/guides/content-types/).
 
 ## Posts ve Pages
 

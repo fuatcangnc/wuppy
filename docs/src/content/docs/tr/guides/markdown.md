@@ -1,11 +1,11 @@
 ---
 title: MDX içerik
-description: Yazıları, sayfaları, içerik tiplerini ve bölümleri MDX ile yazın; güvenli tutan kurallar.
+description: Yazıları, sayfaları, özel alanları ve bölümleri MDX ile yazın; güvenli tutan kurallar.
 sidebar:
   order: 2.5
 ---
 
-Yazılar, sayfalar, kendi içerik tipleriniz ve bölümler [MDX](https://docs.astro.build/en/guides/integrations-guide/mdx/) ile
+Yazılar, sayfalar, kendi özel alanlarınız ve bölümler [MDX](https://docs.astro.build/en/guides/integrations-guide/mdx/) ile
 yazılabilir: Markdown, HTML ve sitenizin izin verdiği bileşenler.
 
 ## MDX nerede kullanılır
@@ -13,7 +13,7 @@ yazılabilir: Markdown, HTML ve sitenizin izin verdiği bileşenler.
 - Starter'daki **yazılar ve sayfalar** MDX koleksiyonlarıdır (`wuppy.config.mjs` içinde `format: "mdx"`). Yeni girdiler
   `.mdx` olarak kaydedilir. Mevcut `.md` dosyaları `.md` kalır ve çalışmaya devam eder; bir koleksiyon ikisini birden
   tutabilir.
-- Admin'de oluşturduğunuz **içerik tipleri** varsayılan olarak MDX'tir. İsterseniz Markdown seçebilirsiniz.
+- Admin'de oluşturduğunuz **Custom Fields** varsayılan olarak MDX'tir. İsterseniz Markdown seçebilirsiniz.
 - **Bölümler** (sections) gövdelerini MDX olarak saklar.
 - **Widget'lar**: _custom_ widget gövdesi MDX'tir; _HTML_ widget kaydedilmeden önce aşağıdaki ham HTML denetiminden
   geçer (gösterirken yine temizlenir). Metin widget'ları düz metin olarak gösterilir.

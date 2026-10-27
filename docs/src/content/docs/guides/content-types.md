@@ -1,11 +1,11 @@
 ---
-title: Content types
+title: Custom Fields
 description: Create and change collections and their fields from the admin.
 sidebar:
   order: 9
 ---
 
-**Content Types** lists every collection. Create a new one, or open one to edit its fields.
+**Custom Fields** lists every collection. Create a new one, or open one to edit its fields.
 
 - Pick a type for each field, mark it required, give a default and help text, and reorder fields.
 - See the schema as a preview, and the generated TypeScript types.
@@ -14,7 +14,7 @@ sidebar:
 
 The available field types are listed in [Configuration](/concepts/configuration/#field-types).
 
-Entries of every content type are [MDX or Markdown](/guides/markdown/) files, chosen by the collection's `format`.
+Entries of every custom field are [MDX or Markdown](/guides/markdown/) files, chosen by the collection's `format`.
 
 ## Built-in Pages and Posts
 
@@ -34,9 +34,9 @@ page. A theme that has its own page for the route (a `src/pages/projects/[slug].
 
 ## Relations
 
-A relation says how entries of two content types link, like EmDash's. Open a type and choose **New relation**:
+A relation says how entries of two custom fields link, like EmDash's. Open a type and choose **New relation**:
 
-- **Links to**: the other content type.
+- **Links to**: the other custom field.
 - **Linking side** and **Linked side**: what each side is called.
 - **Slug**: the field that holds the links on the linking entries (`posts_authors`).
 - **How many**: whether each linking entry links to one or any number of entries, and whether each linked entry may be

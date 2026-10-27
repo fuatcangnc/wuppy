@@ -1454,7 +1454,7 @@ export function createApp({
 					const seen = new Set<string>();
 					for (const r of parsed as Relation[]) {
 						const missing = [r.from, r.to].find((n) => !names.has(n));
-						if (missing) throw new ApiError(422, "VALIDATION_ERROR", `${r.name}: no content type "${missing}"`);
+						if (missing) throw new ApiError(422, "VALIDATION_ERROR", `${r.name}: no custom field "${missing}"`);
 						if (seen.has(r.name)) throw new ApiError(422, "VALIDATION_ERROR", `Two relations are named ${r.name}`);
 						seen.add(r.name);
 					}
