@@ -6,14 +6,17 @@ import { IconButton, toast } from "../../ui/index.tsx";
 import {
 	$aiChats,
 	$aiDesignSystem,
+	$aiLanguage,
 	$aiPicking,
 	$aiPicks,
+	AI_LANGUAGES,
 	aiTargets,
 	askAi,
 	clearDesignSystem,
 	pickKey,
 	pickLabel,
 	saveChat,
+	setAiLanguage,
 	setDesignSystem,
 	togglePick,
 	undoAiEdits,
@@ -48,6 +51,7 @@ export function AiPanel() {
 	const [showHistory, setShowHistory] = useState(false);
 	const chats = useStore($aiChats);
 	const designSystem = useStore($aiDesignSystem);
+	const language = useStore($aiLanguage);
 	const [busy, setBusy] = useState(false);
 	const end = useRef<HTMLDivElement>(null);
 	const designInput = useRef<HTMLInputElement>(null);
@@ -321,6 +325,19 @@ export function AiPanel() {
 						{config?.models.map((m) => (
 							<option key={m} value={m}>
 								{m}
+							</option>
+						))}
+					</select>
+					<select
+						aria-label="Output language"
+						title="Language the AI writes new page copy in; the chat reply stays in your language"
+						value={language}
+						onChange={(e) => setAiLanguage(e.target.value)}
+						className="w-[92px] shrink-0 truncate bg-transparent text-xs text-muted-foreground outline-none"
+					>
+						{AI_LANGUAGES.map((item) => (
+							<option key={item.value} value={item.value}>
+								{item.label}
 							</option>
 						))}
 					</select>

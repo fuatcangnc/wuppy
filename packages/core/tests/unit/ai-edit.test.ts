@@ -74,6 +74,33 @@ describe("visual editor AI edits", () => {
 		expect(sent.messages?.[0]?.content).toContain("container-page");
 	});
 
+	it("writes page copy in the selected language", async () => {
+		let sent: { messages?: Array<{ content?: string }> } = {};
+		const capture = (async (_url: string, init: RequestInit) => {
+			sent = JSON.parse(String(init.body)) as typeof sent;
+			return Response.json({
+				choices: [{ message: { role: "assistant", content: '{"reply":"ok","edits":[],"insertions":[]}' } }],
+			});
+		}) as unknown as typeof fetch;
+		await planEdits({ baseUrl: "x", models: ["m"], fetch: capture }, { ...input, language: "English" });
+		expect(sent.messages?.[0]?.content).toContain("Write every new or changed user-visible string in English");
+		expect(sent.messages?.[0]?.content).toContain("chat reply in the language of the user's prompt");
+	});
+
+	it("follows the page language in auto mode", async () => {
+		let sent: { messages?: Array<{ content?: string }> } = {};
+		const capture = (async (_url: string, init: RequestInit) => {
+			sent = JSON.parse(String(init.body)) as typeof sent;
+			return Response.json({
+				choices: [{ message: { role: "assistant", content: '{"reply":"ok","edits":[],"insertions":[]}' } }],
+			});
+		}) as unknown as typeof fetch;
+		await planEdits({ baseUrl: "x", models: ["m"], fetch: capture }, { ...input, language: "auto" });
+		expect(sent.messages?.[0]?.content).toContain(
+			"Auto. Write new user-visible text in the language of the page context",
+		);
+	});
+
 	it("shows an answer without JSON as the reply", async () => {
 		const out = await planEdits({ baseUrl: "x", models: ["m"], fetch: answer(" Which card? ") }, input);
 		expect(out).toEqual({ reply: "Which card?", edits: [], insertions: [] });

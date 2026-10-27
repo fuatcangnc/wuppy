@@ -125,16 +125,26 @@ export async function planEdits(
 		page?: PageContext;
 		/** A design system Markdown file the user uploaded in the AI panel; authoritative for style. */
 		designSystem?: string;
+		/** The language for generated page copy; "auto" follows the page context, then the prompt. */
+		language?: string;
 		history: ChatMessage[];
 	},
 ): Promise<{ reply: string; edits: ElementPatch[]; insertions: AiInsertion[] }> {
+	const language = input.language
+		?.trim()
+		.replace(/[\r\n]+/g, " ")
+		.slice(0, 80);
+	const languageRule =
+		language && language.toLowerCase() !== "auto"
+			? `OUTPUT LANGUAGE:\nWrite every new or changed user-visible string in ${language}. Keep the chat reply in the language of the user's prompt. Keep code, class names, URLs and HTML attributes unchanged, and do not translate existing text outside the requested change.`
+			: `OUTPUT LANGUAGE:\nAuto. Write new user-visible text in the language of the page context (its title and sections). If the page is not clearly in one language, use the language of the user's prompt. Keep the chat reply in the user's language. Keep code, class names, URLs and HTML attributes unchanged, and do not translate existing text outside the requested change.`;
 	const message = await complete(
 		config,
 		input.model,
 		[
 			{
 				role: "system",
-				content: `${SYSTEM}\n\nPage context:\n${JSON.stringify(input.page ?? {})}\n\n${
+				content: `${SYSTEM}\n\n${languageRule}\n\nPage context:\n${JSON.stringify(input.page ?? {})}\n\n${
 					input.designSystem?.trim()
 						? `Uploaded design system (authoritative):\n${input.designSystem.slice(0, MAX_DESIGN_SYSTEM)}\n\n`
 						: ""

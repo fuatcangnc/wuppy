@@ -23,6 +23,12 @@ biçimlendirir: "bunu bento grid yap" kapsayıcıyı grid'e çevirir ve her kart
 (`md:[&>:nth-child(1)]:col-span-2`), kartlar `.map()` ile üretilse de. Değişiklik içermeyen bir cevap (örneğin bir soru)
 cevap olarak gösterilir.
 
+## Çıktı dili
+
+Modelin yanındaki dil seçici, yeni sayfa metinlerinin dilini belirler. **Auto (page)** önce sayfanın mevcut dilini,
+sonra prompt'unuzun dilini izler. **English**, **Türkçe** veya başka bir dili seçerek bunu geçersiz kılabilirsiniz;
+seçim bu tarayıcıda saklanır. Sohbet cevabı ise sizin yazdığınız dilde kalır.
+
 ## Sohbetler ve geri alma
 
 - Sohbetler bu tarayıcıda saklanır: **Chat history** birini yeniden açar ya da siler, **New chat** yenisini başlatır.

@@ -24,6 +24,12 @@ Tailwind variants: "make this a bento grid" turns the container into a grid and 
 (`md:[&>:nth-child(1)]:col-span-2`), also when the cards come from a `.map()`. An answer without changes (a
 question, say) shows as the reply.
 
+## Output language
+
+The language selector next to the model chooses the language for new page copy. **Auto (page)** follows the page's
+existing language, then the language of your prompt. Pick **English**, **Türkçe** or another language to override it;
+the choice is kept in this browser. The chat reply stays in the language you write in.
+
 ## Chats and undo
 
 - Chats are kept in this browser: **Chat history** reopens or deletes one, **New chat** starts another.

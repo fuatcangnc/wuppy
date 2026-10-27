@@ -44,7 +44,52 @@ export interface AiDesignSystem {
 }
 
 const DESIGN_KEY = "wuppy.visual.ai-design-system";
+const LANGUAGE_KEY = "wuppy.visual.ai-language";
 const MAX_DESIGN_SYSTEM = 100_000;
+
+/** Page-copy languages offered in the AI panel; the chat reply follows the prompt's language. */
+export const AI_LANGUAGES = [
+	{ value: "auto", label: "Auto (page)" },
+	{ value: "English", label: "English" },
+	{ value: "Turkish", label: "Türkçe" },
+	{ value: "German", label: "Deutsch" },
+	{ value: "French", label: "Français" },
+	{ value: "Spanish", label: "Español" },
+	{ value: "Italian", label: "Italiano" },
+	{ value: "Portuguese", label: "Português" },
+	{ value: "Dutch", label: "Nederlands" },
+	{ value: "Polish", label: "Polski" },
+	{ value: "Arabic", label: "العربية" },
+	{ value: "Chinese", label: "中文" },
+	{ value: "Japanese", label: "日本語" },
+	{ value: "Korean", label: "한국어" },
+	{ value: "Russian", label: "Русский" },
+] as const;
+
+const languageValues = new Set<string>(AI_LANGUAGES.map((language) => language.value));
+
+function readLanguage(): string {
+	if (typeof localStorage === "undefined") return "auto";
+	try {
+		const value = localStorage.getItem(LANGUAGE_KEY) ?? "auto";
+		return languageValues.has(value) ? value : "auto";
+	} catch {
+		return "auto";
+	}
+}
+
+/** The language the AI writes page copy in; kept in this browser. */
+export const $aiLanguage = atom<string>(readLanguage());
+
+export function setAiLanguage(value: string): void {
+	const language = languageValues.has(value) ? value : "auto";
+	$aiLanguage.set(language);
+	try {
+		if (typeof localStorage !== "undefined") localStorage.setItem(LANGUAGE_KEY, language);
+	} catch {
+		// A blocked storage only loses persistence; this chat still uses the selected language.
+	}
+}
 
 function readDesignSystem(): AiDesignSystem | null {
 	if (typeof localStorage === "undefined") return null;
@@ -430,6 +475,7 @@ export async function askAi(model: string, prompt: string, history: AiTurn[]) {
 		elements: targets.map((t, i) => describePick(t, `e${i + 1}`)),
 		page: pageContext(),
 		designSystem: $aiDesignSystem.get()?.content,
+		language: $aiLanguage.get(),
 		history: history.slice(-10).map(({ role, content, note }) => ({
 			role,
 			content: (note ? `${content}\n[Editor: ${note}]` : content).slice(0, 5000),

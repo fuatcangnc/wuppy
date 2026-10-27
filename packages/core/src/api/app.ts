@@ -914,6 +914,8 @@ export function createApp({
 							.optional(),
 						/** A design system Markdown file the user uploaded for the AI; authoritative for style. */
 						designSystem: z.string().max(100_000).optional(),
+						/** Language for generated page copy; "auto" follows the page, then the prompt. */
+						language: z.string().trim().max(80).optional(),
 						history: z
 							.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().max(5000) }))
 							.max(20)
