@@ -121,8 +121,7 @@ function Shell() {
 	const fullWidth = useRouterState({
 		select: (state) =>
 			state.location.pathname === "/media" ||
-			state.location.pathname === "/c/pages" ||
-			state.location.pathname === "/c/posts" ||
+			state.location.pathname.startsWith("/c/") ||
 			state.location.pathname === "/redirects" ||
 			state.location.pathname === "/widgets" ||
 			state.location.pathname === "/sections" ||
