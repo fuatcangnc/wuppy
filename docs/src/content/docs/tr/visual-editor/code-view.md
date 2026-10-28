@@ -22,7 +22,8 @@ sidebar:
 
 - Sekmeler, satır numaralı ve renklendirmeli editör, **Saved/Unsaved** durumu ve Ctrl/⌘+S ile kayıt.
 - Site kayıtları tuvalle aynı Git tabanlı içerik ve görsel veri API'lerini kullanır.
-- Kaydedilen tema dosyası `pnpm dev` altında hemen görünür; production'da durum çubuğundaki **Rebuild** düğmesine basın.
+- Kaydedilen tema dosyası `pnpm dev` altında hemen görünür; production'da durum çubuğundaki **Rebuild** düğmesine basın. GitHub
+  bağlıysa tema dosyası kaydetmeleri otomatik commit edilip push edilir.
 - Yazdığınız tek satırlık HTML görsel bloklara çevrilir. Geçerli Tailwind utility'leri kayıtta derlenir (starter
   içeriği `@source` ile tarar) ve önizleme CSS'i yeniden yükler; `text-red-10` gibi geçersiz bir sınıf CSS üretmez.
 

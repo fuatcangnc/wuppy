@@ -37,6 +37,8 @@ WuppyCMS's file-based MDX content and Git commits.
 - A theme's `.astro` pages are listed in Pages as **Theme page** and open here too: their blocks render at the end of
   the page's `<main>`, and the theme's own markup is editable around them (see
   [GitHub themes](/guides/github-themes/#theme-pages)).
+- **Page settings** in the top bar opens the same General, Access control, SEO, Open Graph, site search, schema and custom
+  code panel as the classic editor.
 - **Back** returns to the collection, **Open live page** opens the page on the site, and a link switches to the classic
   editor.
 - While someone else edits the entry the toolbar shows **… is editing** and saving is off (edit lock). Leaving with
@@ -46,7 +48,7 @@ WuppyCMS's file-based MDX content and Git commits.
 
 | Area | What it does |
 | --- | --- |
-| Top bar | quick add **Container / Text / Image**, **Add** grid, **Code** view, search (Ctrl/⌘+K), undo/redo, settings, live page, classic editor, **Save** |
+| Top bar | quick add **Container / Text / Image**, **Add** grid, **Code** view, search (Ctrl/⌘+K), undo/redo, **Page settings**, editor settings, live page, classic editor, **Save** |
 | Left rail | **Explorer** (Layers, Site, Code, Media), **Framework**, **Selectors**, **AI** |
 | Canvas | the page in iframes, with the site's own styles |
 | Floating toolbar (top of the canvas) | favourite modules, **Add**, **Design/Live**, the device menu, zoom and fit |

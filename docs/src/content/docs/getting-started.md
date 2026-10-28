@@ -24,6 +24,8 @@ SEO tags, a sitemap, RSS, search and a 404 page.
 
 Already have an Astro site on GitHub? Run `npx wuppycms import` instead and pick it from the list; see [Existing Astro project](/guides/existing-astro-project/).
 
+Prefer to let Claude Code, Cursor or opencode do the setup? Copy a prompt from [Set up with a coding agent](/ai/setup-agents/).
+
 ## Set the environment
 
 Create `.env` next to `package.json`:

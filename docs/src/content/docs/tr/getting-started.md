@@ -24,6 +24,8 @@ site haritası, RSS, arama ve 404 sayfası olan bir Astro sitesi.
 
 GitHub'da zaten bir Astro siteniz mi var? Bunun yerine `npx wuppycms import` çalıştırıp listeden seçin; bkz. [Mevcut Astro projesi](/tr/guides/existing-astro-project/).
 
+Kurulumu Claude Code, Cursor veya opencode'a mı yaptırmak istersiniz? [Kodlama ajanıyla kurulum](/tr/ai/setup-agents/) sayfasından bir prompt kopyalayın.
+
 ## Ortamı ayarlayın
 
 `package.json` dosyasının yanına `.env` oluşturun:

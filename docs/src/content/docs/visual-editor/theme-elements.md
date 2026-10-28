@@ -78,5 +78,5 @@ inline `style`.
   elements itself, and an edit is written the React way: `class` becomes `className`, `style` an object
   (`style={{ "paddingTop": "1rem" }}`), inserted void tags self-close. A `className` or `style` made by code
   (`className={cn(...)}`) stays read-only; edit it in Code view.
-- Changing theme files needs an admin (the `site:settings` permission). Nothing is pushed to GitHub: edits stay in the
-  theme's folder on the server.
+- Changing theme files needs an admin (the `site:settings` permission). With GitHub connected, edits are committed and
+  pushed to the theme repository automatically; without it they stay in the theme's folder on the server.

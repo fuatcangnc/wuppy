@@ -22,13 +22,16 @@ The list has two layouts: **split** (list on the left, preview and details on th
 - The **slug** is created from the title while you type, with Turkish characters and accents normalised.
   Edit the slug yourself and it stops following the title. A slug that already exists is refused.
 - Insert images (Wuppy asks for alt text) and the content components your site allows.
-- The side panel shows status, date, author, language, taxonomies and **Page settings** for SEO, Open Graph, site search, schema markup and custom code.
+- The side panel shows status, date, author, language, taxonomies and **Page settings**: General, Access control, SEO,
+  Open Graph, site search, schema markup and custom code.
 
 ### Saving, publishing and scheduling
 
 - **Save** writes the file and makes a commit.
 - **Publish** / **Unpublish** is a separate button. Authors can save drafts but not publish.
 - **Publish at** schedules an entry. Clear the date to cancel the schedule.
+- **Access control** in Page settings switches a page between public and draft. Drafts open only through a signed
+  preview link; page-level password protection is not available in this release.
 
 ### Safety nets
 

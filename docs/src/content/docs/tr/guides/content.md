@@ -22,13 +22,16 @@ Listenin iki görünümü vardır: **bölünmüş** (solda liste, sağda önizle
 - **Slug**, başlığı yazarken otomatik oluşur; Türkçe karakterler ve aksanlar dönüştürülür. Slug'ı elle
   değiştirirseniz başlığı izlemeyi bırakır. Zaten var olan bir slug reddedilir.
 - Görsel ekleyin (Wuppy alt metin sorar) ve sitenizin izin verdiği içerik bileşenlerini kullanın.
-- Yan panel durum, tarih, yazar, dil, taksonomiler ve SEO, Open Graph, site araması, schema markup ve custom code için **Page settings** bölümünü gösterir.
+- Yan panel durum, tarih, yazar, dil, taksonomiler ve **Page settings** bölümünü gösterir: General, Access control, SEO,
+  Open Graph, site araması, schema markup ve custom code.
 
 ### Kaydetme, yayınlama ve zamanlama
 
 - **Save** dosyayı yazar ve bir commit oluşturur.
 - **Publish** / **Unpublish** ayrı bir düğmedir. Yazarlar taslak kaydedebilir ama yayınlayamaz.
 - **Publish at** kaydı zamanlar. Zamanlamayı iptal etmek için tarihi temizleyin.
+- Page settings içindeki **Access control**, sayfayı herkese açık veya taslak yapar. Taslaklar yalnızca imzalı önizleme
+  bağlantısıyla açılır; sayfa bazlı şifre koruması bu sürümde yoktur.
 
 ### Güvenlik ağları
 

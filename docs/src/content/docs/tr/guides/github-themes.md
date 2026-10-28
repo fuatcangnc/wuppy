@@ -55,11 +55,31 @@ Temanın `wuppy.config.mjs` dosyası hangi koleksiyonunun hangi site koleksiyonu
 - `route`: herkese açık adresleri tema belirler.
 - Yalnız temanın kullandığı alanlar (`description`, `pinned`) sitenin koleksiyonuna eklenir, editörler doldurabilir. Temanın zorunlu tuttuğu bir alanı eksik olan girdi, alan doldurulana kadar temada görünmez.
 
+## GitHub’a otomatik senkron
+
+GitHub bağlıyken ve bir tema etkinken Wuppy deponun iki tarafını da güncel tutar:
+
+- **Tema kaynağı**: Code view veya görsel editörde yapılan değişiklikler.
+- **Site içeriği ve ayarları**: sayfa/yazı, menü, widget, bölüm, taksonomi, byline, içerik tipi, ayar veya görsel editör
+  verisi kaydedildiğinde.
+
+Değişiklikler birkaç saniye bekletilip commit edilir ve push edilir. GitHub bu arada ilerlediyse Wuppy otomatik
+fetch + rebase yapar; çakışmada canlı tema korunur ve hata **Themes** ekranında görünür. Art arda gelen düzenlemeler
+tek commit olur.
+
+Site içeriği ve `.wuppy/data` ayarları tema deposundaki `wuppy-site/` klasörüne yansıtılır; böylece sayfa ayarları,
+menüler ve diğer admin CRUD işlemleri de GitHub’da görünür. Tema build’i bu klasörü yok sayar. Webhook sırları
+kopyalanmaz, medya dosyaları oraya çoğaltılmaz. Wuppy’nin tema için ürettiği yapılandırma dosyaları (`package.json`,
+`wuppy.config.mjs`, build config ve lockfile) push edilmez.
+
+**Themes → Push changes**, otomatik push açılmadan önce diskte kalan değişiklikleri gönderir veya hata sonrası yeniden
+dener. **Themes** ekranında `Pushing theme changes…`, son push zamanı veya hata görünür. Otomatik push için GitHub
+hesabı bağlı olmalıdır; bağlı değilse tema yerelde çalışmaya devam eder.
+
+Taslak veya özel içerik varsa özel (private) bir depo kullanın. Wuppy her tema sayfasına Open Graph ve Twitter
+etiketlerini kendisi ekler; temanın bu tekrarı yapmasına gerek yoktur.
+
 ## Tema sayfaları
-
-Temada **Code view** veya **görsel editörde** yapılan değişiklikler ve site içerik/ayar değişiklikleri kısa bir bekleyişten sonra bağlı GitHub deposuna otomatik commit edilip push edilir. Tema deposundaki `wuppy-site/` klasörü site içeriğini ve `.wuppy/data` ayarlarını yansıtır (webhook sırları hariç); tema build’i bu klasörü yok sayar. Otomatik push açılmadan önce diskte kalan değişiklikler için **Themes → Push changes** kullanılır.
-
-Taslak veya özel içerik varsa özel (private) bir depo kullanın. Wuppy her tema sayfasına Open Graph ve Twitter etiketlerini kendisi ekler; temanın bu tekrarı yapmasına gerek yoktur.
 
 Temanın Markdown sayfaları (`src/pages/about.md`, `src/pages/docs/intro.mdx`) da içeriktir. Tema etkinleştirilince
 sitenin **Pages** koleksiyonuna kopyalanır (temanın `layout` satırı olmadan); admin'de her sayfa gibi düzenlenir.
@@ -95,7 +115,7 @@ taslak ya da zamanlanmış sayfa yayınlanana kadar 404'tür.
 ## Bilinmesi gerekenler
 
 - Themes'i yalnız yöneticiler (admin) kullanabilir: kurulum, deponun kurulum betiklerini ve derlemesini sunucuda çalıştırır. Yalnız güvendiğiniz depoları kurun.
-- İçerik düzenlemeleri sitenin Git deposuna commit edilir. Görsel editörün Code görünümünde (**theme: owner/repo** kökü) düzenlenen tema kodu yalnız temanın klasörüne kaydedilir; GitHub'a hiçbir şey push edilmez.
+- İçerik düzenlemeleri sitenin Git deposuna commit edilir. GitHub bağlıysa tema kaynağı ve içerik/ayar değişiklikleri ayrıca tema deposuna otomatik commit edilip push edilir. GitHub yoksa sunucuda kalır.
 - Temanın göreli yolla (`../../assets/x.png`) gösterdiği örnek görseller içe aktarılan girdilerle gelmez; Media'dan değiştirin.
 - Derleme depodaki bir sorun yüzünden başarısız olursa (örneğin bir yazıda içerik şemasının zorunlu tuttuğu bir alan eksikse) sorunu GitHub'da düzeltip yeniden **Install**'a basın: hiç derlenmemiş tema baştan klonlanır.
 - Tema derlemesi, derlendiği Wuppy sürümünü içerir. Wuppy'yi güncelledikten sonra **Rebuild** düğmesine basın.

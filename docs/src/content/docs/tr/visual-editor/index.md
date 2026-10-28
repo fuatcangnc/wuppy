@@ -37,6 +37,8 @@ WuppyCMS'in dosya tabanlı MDX içeriği ve Git kayıtları üzerinde çalışı
 - Temanın `.astro` sayfaları Pages'te **Theme page** olarak listelenir ve burada da açılır: blokları sayfanın `<main>`
   öğesinin sonunda çizilir, temanın kendi işaretlemesi etraflarında düzenlenebilir (bkz.
   [GitHub temaları](/tr/guides/github-themes/#tema-sayfaları)).
+- Üst çubuktaki **Page settings**, klasik editördeki General, Access control, SEO, Open Graph, site araması, schema ve
+  custom code panelini açar.
 - **Back** koleksiyona döner, **Open live page** sitedeki sayfayı açar, bir bağlantı klasik editöre geçer.
 - Girdiyi başkası düzenlerken araç çubuğunda **… is editing** yazar ve kayıt kapalıdır (düzenleme kilidi).
   Kaydedilmemiş değişiklikle çıkarken önce sorulur.
@@ -45,7 +47,7 @@ WuppyCMS'in dosya tabanlı MDX içeriği ve Git kayıtları üzerinde çalışı
 
 | Alan | Görevi |
 | --- | --- |
-| Üst çubuk | hızlı ekleme **Container / Text / Image**, **Add** ızgarası, **Code** görünümü, arama (Ctrl/⌘+K), geri al/yinele, ayarlar, canlı sayfa, klasik editör, **Save** |
+| Üst çubuk | hızlı ekleme **Container / Text / Image**, **Add** ızgarası, **Code** görünümü, arama (Ctrl/⌘+K), geri al/yinele, **Page settings**, editör ayarları, canlı sayfa, klasik editör, **Save** |
 | Sol ray | **Explorer** (Layers, Site, Code, Media), **Framework**, **Selectors**, **AI** |
 | Tuval | sitenin kendi stilleriyle iframe'ler içinde sayfa |
 | Yüzen araç çubuğu (tuvalin üstü) | favori modüller, **Add**, **Design/Live**, cihaz menüsü, zoom ve sığdır |

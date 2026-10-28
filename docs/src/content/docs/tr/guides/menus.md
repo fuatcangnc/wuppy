@@ -7,7 +7,8 @@ sidebar:
 
 **Menus**; üst bilgi, alt bilgi, kenar çubuğu veya diğer konumlar için gezinme menüleri oluşturur.
 
-- **Pages**, **Posts**, **Categories** veya **Custom links** kaynaklarından öğe ekleyin.
+- **Pages**, **Posts**, **Categories**, **Custom links** veya herhangi bir **Custom Fields** koleksiyonundaki girdiler
+  arasından öğe ekleyin (her koleksiyon seçicide kendi grubunu alır).
 - Öğeleri sürükleyerek sıralayın, alt menü yapmak için iç içe yerleştirin ya da klavye kontrollerini kullanın.
 - Menü oluşturun, yeniden adlandırın, silin; **Manage locations** altında konumlara atayın.
 - Her dilin kendi menü varyantı olabilir.

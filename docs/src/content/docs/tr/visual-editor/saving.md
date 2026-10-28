@@ -24,6 +24,7 @@ Her üst düzey blok gövdede `data-ve="…"` ile işaretli tek satır HTML olar
 - Framework, seçiciler, componentler, layout'lar, breakpoint'ler ve site stylesheet'i `.wuppy/data/visual.json`'a
   kaydedilir. Site sayfaları bunları `/api/public/visual.css` ve sayfa başına üretilen küçük bir `<style>` ile alır.
 - Tema öğesi düzenlemeleri temanın `.astro` dosyalarına gider (bkz. [Tema öğeleri](/tr/visual-editor/theme-elements/)).
+  GitHub teması bağlıysa otomatik commit edilip push edilir.
 - Her içerik kaydı diğer içerik gibi bir Git commit'idir ve **History**'de görünür.
 
 ## Sınırlar

@@ -22,7 +22,8 @@ sidebar:
 
 - Tabs, an editor with line numbers and highlighting, **Saved/Unsaved** state, and Ctrl/⌘+S to save.
 - Site saves use the same Git-backed content and visual data APIs as the canvas.
-- A saved theme file shows at once under `pnpm dev`; in production press **Rebuild** in the status bar.
+- A saved theme file shows at once under `pnpm dev`; in production press **Rebuild** in the status bar. With GitHub
+  connected, theme file saves are committed and pushed automatically.
 - Single-line HTML you write becomes visual blocks. Valid Tailwind utilities are compiled on save (the starter scans
   content with `@source`) and the preview reloads its CSS; an invalid class such as `text-red-10` produces no CSS.
 

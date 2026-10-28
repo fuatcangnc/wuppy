@@ -24,7 +24,8 @@ Each top-level block is saved as one line of HTML marked with `data-ve="…"` in
   deleted in the editor.
 - The framework, selectors, components, layouts, breakpoints and site stylesheet are saved to
   `.wuppy/data/visual.json`. Site pages get them from `/api/public/visual.css` plus a small per-page `<style>`.
-- Theme element edits go to the theme's `.astro` files (see [Theme elements](/visual-editor/theme-elements/)).
+- Theme element edits go to the theme's `.astro` files (see [Theme elements](/visual-editor/theme-elements/)). With a
+  connected GitHub theme they are committed and pushed automatically.
 - Every content save is a Git commit like any other content, shown in **History**.
 
 ## Limits

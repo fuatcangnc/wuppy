@@ -80,5 +80,5 @@ inline `style` olur.
   işaretler ve düzenleme React'in yazımıyla kaydedilir: `class` `className` olur, `style` bir nesne
   (`style={{ "paddingTop": "1rem" }}`), eklenen boş etiketler kendini kapatır. Kodla üretilen `className` ya da `style`
   (`className={cn(...)}`) salt okunur kalır; Code görünümünde düzenleyin.
-- Tema dosyalarını değiştirmek admin (`site:settings` yetkisi) ister. GitHub'a hiçbir şey push edilmez: düzenlemeler
-  sunucuda temanın klasöründe kalır.
+- Tema dosyalarını değiştirmek admin (`site:settings` yetkisi) ister. GitHub bağlıysa değişiklikler otomatik olarak
+  commit edilip tema deposuna push edilir; bağlı değilse sunucudaki tema klasöründe kalır.

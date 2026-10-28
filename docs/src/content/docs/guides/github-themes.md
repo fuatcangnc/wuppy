@@ -55,11 +55,31 @@ The theme's `wuppy.config.mjs` says which of its collections reads which site co
 - `route`: the theme decides the public URLs.
 - Fields only the theme uses (`description`, `pinned`) are added to the site's collection, so editors can fill them. An entry missing a field the theme requires is not shown by the theme until it is filled in.
 
+## Automatic GitHub sync
+
+When GitHub is connected and a theme is active, Wuppy keeps both parts of the repository up to date:
+
+- **Theme source** edited in Code view or the visual editor.
+- **Site content and settings** saved as pages, posts, menus, widgets, sections, taxonomies, bylines, content types,
+  settings or visual-editor data.
+
+Changes are debounced for a few seconds and then committed and pushed. If GitHub moved in the meantime, Wuppy fetches
+and rebases automatically; conflicts keep the live theme and the error stays visible in **Themes**. Multiple edits
+become one commit.
+
+Site content and `.wuppy/data` settings are mirrored into `wuppy-site/` in the theme repository, so page settings,
+menus and other admin CRUD are visible in GitHub as well. The theme build ignores this folder. Webhook secrets are not
+copied, and media files are not duplicated there. Theme-level config written by Wuppy (`package.json`, `wuppy.config.mjs`,
+generated build config and lockfiles) is not pushed.
+
+**Themes → Push changes** pushes edits that were already on disk before auto-push was enabled, or retries after a
+failure. **Themes** shows `Pushing theme changes…`, the last push time, or the error. Auto-push requires a connected
+GitHub account; a disconnected theme still works locally.
+
+Use a private repository if the site has drafts or private content. Wuppy adds Open Graph and Twitter tags to every
+theme page itself, so themes do not have to repeat that boilerplate.
+
 ## Theme pages
-
-Theme edits made in **Code view** or the **visual editor**, and site content/settings changes, are committed and pushed to the connected GitHub repository automatically after a short pause. A `wuppy-site/` folder in the theme repo mirrors the site content and `.wuppy/data` settings (webhook secrets excluded); the theme build ignores it. **Themes → Push changes** pushes any edits that were already on disk before auto-push was enabled.
-
-Use a private repository if the site has drafts or private content. Wuppy adds Open Graph and Twitter tags to every theme page itself, so themes do not have to repeat that boilerplate.
 
 A theme's Markdown pages (`src/pages/about.md`, `src/pages/docs/intro.mdx`) are content too. When the theme is
 activated they are copied into the site's **Pages** (without the theme's `layout` line), so they are edited in the
@@ -95,7 +115,7 @@ scheduled page is 404 until it is published.
 ## What to know
 
 - Only admins can use Themes: installing runs the repository's install scripts and build on the server. Install only repositories you trust.
-- Content edits are committed in the site's Git repository. Theme code edited in the visual editor's Code view (root **theme: owner/repo**) is saved in the theme's folder only; nothing is pushed to GitHub.
+- Content edits are committed in the site's Git repository. When GitHub is connected, theme source and content/settings changes are also committed and pushed to the theme repository automatically. Without GitHub they stay on the server.
 - Sample images the theme references by a relative path (`../../assets/x.png`) do not come along with the imported entries; replace them from Media.
 - If the build fails because of the repository (for example a post missing a field its content schema requires), fix it on GitHub and click **Install** again: a theme that never built is cloned afresh.
 - A theme build contains the Wuppy version it was built with. After upgrading Wuppy, click **Rebuild**.

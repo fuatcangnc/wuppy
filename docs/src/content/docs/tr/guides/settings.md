@@ -33,8 +33,9 @@ yükleyin. Zamanlanmış yedekler yeniden başlatmadan sonra devreye girer.
 
 ## Temalar
 
-**Themes** kurulu temaları listeler ve birini etkinleştirir. Panelin kendisinde açık, koyu ve sistem modları ile
-renk ön ayarları vardır.
+**Themes** kurulu temaları listeler ve birini etkinleştirir. Bağlı GitHub teması, tema kaynağını ve `wuppy-site/`
+içerik/ayar snapshot’ını GitHub’a senkronlar; bkz. [GitHub temaları](/tr/guides/github-themes/#githuba-otomatik-senkron).
+Panelin kendisinde açık, koyu ve sistem modları ile renk ön ayarları vardır.
 
 ## Webhook'lar
 

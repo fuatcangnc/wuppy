@@ -7,7 +7,8 @@ sidebar:
 
 **Menus** builds navigation for the header, footer, sidebar or other locations.
 
-- Add items from **Pages**, **Posts**, **Categories** or **Custom links**.
+- Add items from **Pages**, **Posts**, **Categories**, **Custom links**, or any entry in a **Custom Fields** collection
+  (each collection gets its own group in the picker).
 - Drag items to reorder them, nest them to make sub-menus, or use the keyboard controls.
 - Create, rename and delete menus; assign them to locations under **Manage locations**.
 - Each language can have its own variant of a menu.

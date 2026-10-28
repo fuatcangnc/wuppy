@@ -16,7 +16,8 @@ Every site made with `create-wuppycms` starts with the **starter theme**: a dark
 | Footer link column | The menu assigned to the **footer** location (the header menu if there is none) |
 | Footer boxes | The **footer** widget area |
 | Page `lang` | **Settings** → locale |
-| Title, description, social cards | **SEO** settings and each entry's SEO fields |
+| Title, description, social cards | **Page settings** (SEO and Open Graph) and **Settings → SEO** defaults; Wuppy writes the final tags |
+| Search results | Each entry's **Site search settings** and the starter `/search` page |
 
 Posts, pages, author, category and tag pages, search, comments and the 404 page all use the same design. Inline title editing, preview links and the **Edit this page** button keep working.
 

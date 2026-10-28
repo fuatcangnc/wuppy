@@ -32,8 +32,9 @@ A backup is a single file with your content and site data. Download it, or resto
 
 ## Themes
 
-**Themes** lists the installed themes and activates one. The admin itself has light, dark and system modes and
-colour presets.
+**Themes** lists the installed themes and activates one. A connected GitHub theme also syncs theme source and a
+`wuppy-site/` content/settings snapshot to GitHub; see [Themes from GitHub](/guides/github-themes/#automatic-github-sync).
+The admin itself has light, dark and system modes and colour presets.
 
 ## Webhooks
 

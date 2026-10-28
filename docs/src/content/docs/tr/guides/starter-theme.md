@@ -16,7 +16,8 @@ sidebar:
 | Alt bilgideki bağlantı sütunu | **footer** konumuna atanmış menü (yoksa başlık menüsü) |
 | Alt bilgi kutuları | **footer** bileşen alanı |
 | Sayfanın `lang` değeri | **Ayarlar** → dil |
-| Başlık, açıklama, sosyal kartlar | **SEO** ayarları ve her içeriğin SEO alanları |
+| Başlık, açıklama, sosyal kartlar | **Page settings** (SEO ve Open Graph) ve **Settings → SEO** varsayılanları; son etiketleri Wuppy yazar |
+| Arama sonuçları | Her içeriğin **Site search settings** ayarları ve başlangıç `/search` sayfası |
 
 Yazılar, sayfalar, yazar, kategori ve etiket sayfaları, arama, yorumlar ve 404 sayfası aynı tasarımı kullanır. Başlığı sayfada düzenleme, önizleme bağlantıları ve **Edit this page** düğmesi çalışmaya devam eder.
 
