@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { SettingsPage } from "../src/components/settings/SettingsPage.tsx";
@@ -30,6 +30,17 @@ function server() {
 }
 
 describe("SettingsPage", () => {
+	it("groups the settings sections under headings", async () => {
+		server();
+		render(<SettingsPage />);
+		const nav = screen.getByRole("navigation", { name: "Settings sections" });
+		for (const heading of ["Site", "Media", "Security Settings", "Email Settings"]) {
+			expect(within(nav).getByText(heading, { selector: "p" })).toBeInTheDocument();
+		}
+		expect(within(nav).getByRole("button", { name: "General" })).toBeInTheDocument();
+		expect(within(nav).getByRole("button", { name: "Email templates" })).toBeInTheDocument();
+	});
+
 	it("saves allowed domains, social links, template overrides and backup schedule", async () => {
 		const calls = server();
 		render(

@@ -1,3 +1,15 @@
+import {
+	DatabaseBackup,
+	FileText,
+	Image as ImageIcon,
+	Mail,
+	MessageSquare,
+	Search,
+	Send,
+	Settings2,
+	Share2,
+	ShieldCheck,
+} from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
 import { useEffect, useState } from "react";
 import { apiData } from "../../lib/api.ts";
@@ -44,17 +56,66 @@ const KIND_LABEL: Record<EmailKind, string> = {
 const IMAGE_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"];
 const SOCIALS = ["twitter", "github", "linkedin", "facebook", "instagram", "youtube", "mastodon"];
 const SECTIONS = [
-	{ id: "general", label: "General", description: "Site identity and defaults." },
-	{ id: "seo", label: "SEO", description: "Search and social defaults." },
-	{ id: "email", label: "Email", description: "Provider and sender." },
-	{ id: "delivery", label: "Email delivery", description: "Send a test message." },
-	{ id: "templates", label: "Email templates", description: "Override the built-in texts." },
-	{ id: "media", label: "Media", description: "Upload limits and formats." },
-	{ id: "comments", label: "Comments", description: "Moderation and notifications." },
-	{ id: "social", label: "Social accounts", description: "Theme links." },
-	{ id: "security", label: "Security", description: "Invitation domain rules." },
-	{ id: "backups", label: "Backups", description: "Snapshot schedule." },
+	{
+		id: "general",
+		label: "General",
+		description: "Site identity and defaults.",
+		group: "Site",
+		icon: Settings2,
+	},
+	{ id: "seo", label: "SEO", description: "Search and social defaults.", group: "Site", icon: Search },
+	{
+		id: "social",
+		label: "Social accounts",
+		description: "Theme links.",
+		group: "Site",
+		icon: Share2,
+	},
+	{
+		id: "comments",
+		label: "Comments",
+		description: "Moderation and notifications.",
+		group: "Site",
+		icon: MessageSquare,
+	},
+	{
+		id: "media",
+		label: "Media usage",
+		description: "Upload limits and formats.",
+		group: "Media",
+		icon: ImageIcon,
+	},
+	{
+		id: "security",
+		label: "Security",
+		description: "Invitation domain rules.",
+		group: "Security Settings",
+		icon: ShieldCheck,
+	},
+	{
+		id: "backups",
+		label: "Backups",
+		description: "Snapshot schedule.",
+		group: "Security Settings",
+		icon: DatabaseBackup,
+	},
+	{ id: "email", label: "Email", description: "Provider and sender.", group: "Email Settings", icon: Mail },
+	{
+		id: "delivery",
+		label: "Email delivery",
+		description: "Send a test message.",
+		group: "Email Settings",
+		icon: Send,
+	},
+	{
+		id: "templates",
+		label: "Email templates",
+		description: "Override the built-in texts.",
+		group: "Email Settings",
+		icon: FileText,
+	},
 ] as const;
+const GROUPS = ["Site", "Media", "Security Settings", "Email Settings"] as const;
 
 interface TemplateInfo {
 	defaults: Record<EmailKind, { subject: string; text: string }>;
@@ -167,26 +228,43 @@ export function SettingsPage() {
 						<p className="mt-0.5 text-[11px] text-muted-foreground">Site identity, content and delivery.</p>
 					</div>
 					<nav className="custom-scrollbar min-h-0 flex-1 overflow-y-auto p-2" aria-label="Settings sections">
-						{SECTIONS.map((section) => (
-							<button
-								key={section.id}
-								type="button"
-								aria-current={activeSection === section.id ? "true" : undefined}
-								onClick={() => {
-									setActiveSection(section.id);
-									document
-										.getElementById(`settings-${section.id}`)
-										?.scrollIntoView({ behavior: "smooth", block: "start" });
-								}}
-								className={`flex w-full flex-col items-start gap-0.5 rounded-lg px-3 py-2 text-left transition-colors ${
-									activeSection === section.id
-										? "bg-tab text-foreground"
-										: "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
-								}`}
-							>
-								<span className="text-sm font-medium">{section.label}</span>
-								<span className="text-[11px]">{section.description}</span>
-							</button>
+						{GROUPS.map((group) => (
+							<div key={group} className="grid gap-0.5 pt-2 first:pt-1">
+								<p className="px-2.5 pb-1 text-[11px] font-semibold text-muted-foreground">{group}</p>
+								{SECTIONS.filter((section) => section.group === group).map((section) => {
+									const Icon = section.icon;
+									const active = activeSection === section.id;
+									return (
+										<button
+											key={section.id}
+											type="button"
+											aria-current={active ? "true" : undefined}
+											onClick={() => {
+												setActiveSection(section.id);
+												document
+													.getElementById(`settings-${section.id}`)
+													?.scrollIntoView({ behavior: "smooth", block: "start" });
+											}}
+											className={`group flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-left transition-colors ${
+												active
+													? "bg-tab text-foreground"
+													: "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+											}`}
+										>
+											<span
+												className={`grid size-7 shrink-0 place-items-center rounded-md border transition-colors ${
+													active
+														? "border-border bg-background text-foreground"
+														: "border-border/70 bg-background/60 text-muted-foreground group-hover:text-foreground"
+												}`}
+											>
+												<Icon size={14} />
+											</span>
+											<span className="truncate text-sm font-medium">{section.label}</span>
+										</button>
+									);
+								})}
+							</div>
 						))}
 					</nav>
 				</WorkspaceSidebar>
