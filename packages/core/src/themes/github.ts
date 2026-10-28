@@ -609,7 +609,7 @@ export class GithubThemes {
 						},
 					})) as { stdout?: string }
 				).stdout ?? "",
-			).trim();
+			).trimEnd();
 		if (includeSource) {
 			// Changes already on disk (before auto-push was enabled, or made from another editor) travel with the next
 			// push too, but only source files: the wrapper configs and generated theme files stay local.
@@ -620,24 +620,33 @@ export class GithubThemes {
 				if (path) this.pushPaths.add(path);
 			}
 		}
-		if (this.pushPaths.size === 0) {
-			this.pushState = "idle";
-			return { ok: true };
-		}
 		const paths = [...this.pushPaths];
 		this.pushPaths.clear();
 		const previous = new Set(paths);
 		this.pushState = "pushing";
 		try {
-			await git("add", "--", ...paths);
-			const changes = await git("status", "--porcelain", "--", ...paths);
-			if (!changes) {
-				this.pushState = "idle";
-				this.pushAt = new Date().toISOString();
-				return { ok: true };
+			if (paths.length) {
+				await git("add", "--", ...paths);
+				const changes = await git("status", "--porcelain", "--", ...paths);
+				if (changes) await git("commit", "--quiet", "-m", "Wuppy: theme changes");
 			}
-			await git("commit", "--quiet", "-m", "Wuppy: theme changes");
-			await git("push", "--quiet", "origin", "HEAD");
+			try {
+				await git("push", "--quiet", "origin", "HEAD");
+			} catch (e) {
+				// GitHub may have moved while this server was editing. Rebase the Wuppy commit onto it once, keeping
+				// the wrapper files (which Wuppy changes locally) in an autostash, then push again.
+				if (!/fetch first|non-fast-forward|rejected/i.test((e as Error).message)) throw e;
+				const branch = await git("rev-parse", "--abbrev-ref", "HEAD");
+				await git("fetch", "--quiet", "origin", branch);
+				// A generated file such as design-system.md can be untracked here while GitHub now tracks it. Let the
+				// repository's copy come in; restoring a stale generated copy would make the rebase impossible.
+				const remoteFiles = new Set((await git("ls-tree", "-r", "--name-only", `origin/${branch}`)).split("\n"));
+				for (const file of (await git("ls-files", "--others", "--exclude-standard")).split("\n"))
+					if (remoteFiles.has(file)) await rm(join(dir, file), { force: true, recursive: true });
+				// Wuppy's live theme is the source of truth for conflicts; keep remote history and non-conflicting files.
+				await git("pull", "--rebase", "--autostash", "--strategy-option=theirs", "origin", branch);
+				await git("push", "--quiet", "origin", "HEAD");
+			}
 			this.pushState = "idle";
 			this.pushError = undefined;
 			this.pushAt = new Date().toISOString();

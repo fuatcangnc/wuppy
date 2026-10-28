@@ -58,6 +58,26 @@ const page = (nodes: object[], next: boolean) =>
 	);
 
 describe("GitHub themes", () => {
+	it("rebases onto a moved GitHub branch before retrying a push", async () => {
+		const calls: string[][] = [];
+		let pushes = 0;
+		const run: Run = async (_cmd, args) => {
+			calls.push(args);
+			if (args[0] === "push" && pushes++ === 0) throw new Error("! [rejected] HEAD -> main (fetch first)");
+			if (args[0] === "rev-parse") return { stdout: "main\n" };
+			if (args[0] === "status") return { stdout: " M src/index.astro\n" };
+			return { stdout: "" };
+		};
+		const themes = new GithubThemes({ base, run });
+		const dir = themes.themeDir("me/site");
+		await mkdir(join(dir, "src"), { recursive: true });
+		await put(join(base, ".wuppy/themes/active.json"), JSON.stringify({ repo: "me/site", dir }));
+		await themes.writeSource("src/index.astro", "<h1>Changed</h1>\n");
+		expect(await themes.pushAll("gho_secret")).toEqual({ ok: true });
+		expect(calls.some((args) => args[0] === "pull" && args.includes("--autostash"))).toBe(true);
+		expect(calls.filter((args) => args[0] === "push")).toHaveLength(2);
+	});
+
 	it("commits and pushes theme source edits made by the editor", async () => {
 		const calls: { cmd: string; args: string[]; env: NodeJS.ProcessEnv }[] = [];
 		const run: Run = async (cmd, args, { env }) => {
