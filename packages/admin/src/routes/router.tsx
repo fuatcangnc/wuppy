@@ -132,7 +132,9 @@ function Shell() {
 			state.location.pathname === "/content-types" ||
 			state.location.pathname === "/webhooks" ||
 			state.location.pathname === "/settings" ||
-			state.location.pathname === "/security",
+			state.location.pathname === "/security" ||
+			state.location.pathname === "/sites" ||
+			state.location.pathname === "/assistant",
 	});
 	const localAllowed = session.status === "authed" && session.user.role !== "client";
 	useEffect(() => {
@@ -336,12 +338,12 @@ function Shell() {
 	);
 
 	return (
-		<div className="min-h-screen bg-background text-foreground">
-			<div className="flex min-h-screen">
+		<div className="h-screen overflow-hidden bg-background text-foreground">
+			<div className="flex h-full">
 				<aside
-					className={`${mobileOpen ? "block" : "hidden"} w-64 shrink-0 bg-sidebar p-3 text-sidebar-foreground lg:block`}
+					className={`${mobileOpen ? "flex" : "hidden"} h-full w-64 shrink-0 flex-col overflow-hidden bg-sidebar p-3 text-sidebar-foreground lg:flex`}
 				>
-					<div className="mb-4 flex items-center gap-2 px-2">
+					<div className="mb-4 flex shrink-0 items-center gap-2 px-2">
 						<span className="grid size-8 place-items-center rounded-ui bg-primary text-sm font-bold text-primary-foreground">
 							W
 						</span>
@@ -351,15 +353,17 @@ function Shell() {
 						</div>
 					</div>
 					<SiteSwitcher />
-					<nav className="grid gap-1">{nav}</nav>
-					<div className="mt-6 border-t border-border px-2 pt-3 text-xs text-muted-foreground">
+					<div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto">
+						<nav className="grid gap-1">{nav}</nav>
+					</div>
+					<div className="mt-2 shrink-0 border-t border-border px-2 pt-3 text-xs text-muted-foreground">
 						<p>Wuppy 0.0.0</p>
 						<p className="mt-1">Files + Git</p>
 					</div>
 				</aside>
 
-				<div className="min-w-0 flex-1">
-					<header className="flex items-center justify-between gap-3 bg-background px-4 py-2">
+				<div className="flex h-full min-w-0 flex-1 flex-col overflow-hidden">
+					<header className="flex shrink-0 items-center justify-between gap-3 bg-background px-4 py-2">
 						<div className="flex items-center gap-2">
 							<Button
 								variant="ghost"
@@ -399,7 +403,7 @@ function Shell() {
 						</div>
 					</header>
 					{remote && (
-						<p className="border-y border-border bg-muted/40 px-4 py-1 text-xs text-muted-foreground">
+						<p className="shrink-0 border-y border-border bg-muted/40 px-4 py-1 text-xs text-muted-foreground">
 							Managing <span className="font-medium text-foreground">{remote.url.replace(/^https?:\/\//, "")}</span>
 							{remote.status === "connection_error" && (
 								<span className="text-destructive">
@@ -409,8 +413,20 @@ function Shell() {
 							)}
 						</p>
 					)}
-					<main className={fullWidth ? "w-full p-2 lg:p-3" : "mx-auto max-w-7xl p-4 lg:p-6"}>
-						<Outlet />
+					<main
+						className={
+							fullWidth
+								? "custom-scrollbar min-h-0 flex-1 overflow-y-auto p-2 lg:p-3"
+								: "custom-scrollbar min-h-0 flex-1 overflow-y-auto"
+						}
+					>
+						{fullWidth ? (
+							<Outlet />
+						) : (
+							<div className="mx-auto max-w-7xl p-4 lg:p-6">
+								<Outlet />
+							</div>
+						)}
 					</main>
 				</div>
 			</div>
