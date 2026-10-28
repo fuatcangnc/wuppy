@@ -64,14 +64,14 @@ görünür, yeniden build gerekmez. Sitede girdisi olmayan sayfa temanın kendi 
 
 Temanın `.astro` sayfaları (`index.astro`, `about.astro`, `tags/index.astro`, `404.astro`) da **Pages** listesinde
 **Theme page** etiketiyle görünür; sitenin bütün sayfaları tek yerde durur. Kendi metinleri temanın kodundadır; girdi
-sayfanın başlığını, `template` alanını (dosya, ör. `src/pages/index.astro`), SEO alanlarını ve bir gövdeyi tutar:
+sayfanın başlığını, `template` alanını (dosya, ör. `src/pages/index.astro`), sayfa ayarlarını (SEO, Open Graph, site araması, schema ve custom code) ve bir gövdeyi tutar:
 
 - Gövdeye (görsel editörde ya da Body alanında) eklenen bloklar ve tema bileşenleri sayfanın `<main>` öğesinin sonunda,
   `<main>` yoksa son öğesinin içinde çizilir. Görsel editör onları canlı sayfanın üzerinde yerinde düzenler.
 - **Edit** ekranındaki **Open in Code view** düğmesi, sayfanın kendi işaretlemesini değiştirmek için `.astro` dosyasını
   görsel editörün Code görünümünde açar.
 - Buradaki **SEO title**, **SEO description** ve **noindex**, tema sayfayı sunarken `<title>`, açıklama ve robots
-  etiketlerinin yerine geçer.
+  etiketlerinin yerine geçer; Open Graph, schema markup ve custom code da uygulanır.
 
 Sitede aynı adla bir sayfa varsa o korunur ve tema sayfası onun için listelenmez. Parametreli sayfalar
 (`[slug].astro`), `_` ile başlayan dosyalar ve uç noktalar (`rss.xml.js`) listelenmez: Code görünümünde düzenlenir.

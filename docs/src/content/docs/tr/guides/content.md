@@ -22,7 +22,7 @@ Listenin iki görünümü vardır: **bölünmüş** (solda liste, sağda önizle
 - **Slug**, başlığı yazarken otomatik oluşur; Türkçe karakterler ve aksanlar dönüştürülür. Slug'ı elle
   değiştirirseniz başlığı izlemeyi bırakır. Zaten var olan bir slug reddedilir.
 - Görsel ekleyin (Wuppy alt metin sorar) ve sitenizin izin verdiği içerik bileşenlerini kullanın.
-- Yan panel durum, tarih, yazar, SEO, dil ve taksonomileri gösterir.
+- Yan panel durum, tarih, yazar, dil, taksonomiler ve SEO, Open Graph, site araması, schema markup ve custom code için **Page settings** bölümünü gösterir.
 
 ### Kaydetme, yayınlama ve zamanlama
 
