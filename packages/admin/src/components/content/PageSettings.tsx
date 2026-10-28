@@ -1,4 +1,15 @@
-import { CircleAlert, Image as ImageIcon, Sparkles } from "@react-zero-ui/icon-sprite";
+import {
+	Braces,
+	CircleAlert,
+	Code2,
+	Globe,
+	Image as ImageIcon,
+	Lock,
+	Search,
+	Settings2,
+	Share2,
+	Sparkles,
+} from "@react-zero-ui/icon-sprite";
 import { useEffect, useState } from "react";
 import {
 	Button,
@@ -90,7 +101,11 @@ export function PageSettings({ data, onChange, path, kind, showHeader = true }: 
 			{showHeader && <CardHeader title="Page settings" description="Search, sharing, schema and page code." />}
 			<Accordion type="multiple" defaultValue={["general", "seo"]} className="px-2">
 				<AccordionItem value="general">
-					<AccordionTrigger>General</AccordionTrigger>
+					<AccordionTrigger>
+						<span className="flex items-center gap-2">
+							<Settings2 size={14} className="text-muted-foreground" /> General
+						</span>
+					</AccordionTrigger>
 					<AccordionContent className="grid gap-3">
 						<Input
 							label={kind === "posts" ? "Post title" : kind === "pages" ? "Page name" : "Title"}
@@ -104,7 +119,11 @@ export function PageSettings({ data, onChange, path, kind, showHeader = true }: 
 				</AccordionItem>
 
 				<AccordionItem value="access">
-					<AccordionTrigger>Access control</AccordionTrigger>
+					<AccordionTrigger>
+						<span className="flex items-center gap-2">
+							<Lock size={14} className="text-muted-foreground" /> Access control
+						</span>
+					</AccordionTrigger>
 					<AccordionContent className="grid gap-3">
 						<div className="rounded-md border border-border bg-muted/30 p-3">
 							<p className="text-sm font-medium">{data.draft === true ? "Draft" : "Public"}</p>
@@ -126,7 +145,11 @@ export function PageSettings({ data, onChange, path, kind, showHeader = true }: 
 				</AccordionItem>
 
 				<AccordionItem value="seo">
-					<AccordionTrigger>SEO settings</AccordionTrigger>
+					<AccordionTrigger>
+						<span className="flex items-center gap-2">
+							<Search size={14} className="text-muted-foreground" /> SEO settings
+						</span>
+					</AccordionTrigger>
 					<AccordionContent className="grid gap-4">
 						<SeoPreview
 							variant="search"
@@ -165,7 +188,11 @@ export function PageSettings({ data, onChange, path, kind, showHeader = true }: 
 				</AccordionItem>
 
 				<AccordionItem value="og">
-					<AccordionTrigger>Open Graph settings</AccordionTrigger>
+					<AccordionTrigger>
+						<span className="flex items-center gap-2">
+							<Share2 size={14} className="text-muted-foreground" /> Open Graph settings
+						</span>
+					</AccordionTrigger>
 					<AccordionContent className="grid gap-4">
 						<SeoPreview
 							variant="social"
@@ -222,7 +249,11 @@ export function PageSettings({ data, onChange, path, kind, showHeader = true }: 
 				</AccordionItem>
 
 				<AccordionItem value="search">
-					<AccordionTrigger>Site search settings</AccordionTrigger>
+					<AccordionTrigger>
+						<span className="flex items-center gap-2">
+							<Globe size={14} className="text-muted-foreground" /> Site search settings
+						</span>
+					</AccordionTrigger>
 					<AccordionContent className="grid gap-4">
 						<Checkbox
 							label="Exclude this page from site search"
@@ -276,7 +307,11 @@ export function PageSettings({ data, onChange, path, kind, showHeader = true }: 
 				</AccordionItem>
 
 				<AccordionItem value="schema">
-					<AccordionTrigger>Schema markup</AccordionTrigger>
+					<AccordionTrigger>
+						<span className="flex items-center gap-2">
+							<Braces size={14} className="text-muted-foreground" /> Schema markup
+						</span>
+					</AccordionTrigger>
 					<AccordionContent className="grid gap-3">
 						<p className="text-xs text-muted-foreground">
 							Add JSON-LD so search engines can better understand and display this page.
@@ -308,7 +343,11 @@ export function PageSettings({ data, onChange, path, kind, showHeader = true }: 
 				</AccordionItem>
 
 				<AccordionItem value="code">
-					<AccordionTrigger>Custom code</AccordionTrigger>
+					<AccordionTrigger>
+						<span className="flex items-center gap-2">
+							<Code2 size={14} className="text-muted-foreground" /> Custom code
+						</span>
+					</AccordionTrigger>
 					<AccordionContent className="grid gap-4">
 						<p className="text-xs text-muted-foreground">
 							Runs on this page only. Custom code can break the page; paste code you trust.

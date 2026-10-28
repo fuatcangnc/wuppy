@@ -11,6 +11,8 @@ interface Props {
 	onChange: (name: string, value: unknown) => void;
 	/** Uploads an image and resolves to its public URL. */
 	onUpload?: (file: File) => Promise<string>;
+	/** Human-friendly labels; the stored field names stay unchanged. */
+	labelOf?: (name: string) => string;
 }
 
 interface Byline {
@@ -35,12 +37,12 @@ interface EntryRef {
 const kindOf = (field: FieldDef) => (typeof field === "string" ? field : field.type);
 
 /** Edits structured values (json, repeater, blocks) as JSON; only valid JSON is emitted. */
-function JsonField({ name, value, onChange }: { name: string; value: unknown; onChange: (v: unknown) => void }) {
+function JsonField({ label, value, onChange }: { label: string; value: unknown; onChange: (v: unknown) => void }) {
 	const [text, setText] = useState(value === undefined ? "" : JSON.stringify(value, null, 2));
 	const [error, setError] = useState("");
 	return (
 		<Textarea
-			label={name}
+			label={label}
 			className="min-h-32 font-mono"
 			value={text}
 			error={error || undefined}
@@ -109,7 +111,7 @@ function AddTerm({
 	);
 }
 
-export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
+export function FieldsForm({ fields, data, onChange, onUpload, labelOf }: Props) {
 	const [picking, setPicking] = useState<string | null>(null);
 	const [bylines, setBylines] = useState<Byline[]>([]);
 	const [taxonomies, setTaxonomies] = useState<Taxonomy[]>([]);
@@ -143,9 +145,10 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 	}, [fields]);
 
 	return (
-		<div className="grid gap-4">
+		<div className="grid items-start gap-4 md:grid-cols-2 md:gap-x-4 md:gap-y-5 md:[&>*:has(textarea)]:col-span-2 [&>fieldset]:md:col-span-2">
 			{Object.entries(fields).map(([name, field]) => {
 				const kind = kindOf(field);
+				const label = labelOf?.(name) ?? name;
 				if (typeof field === "object" && field.showIf && data[field.showIf.field] !== field.showIf.equals) return null;
 				const options: { taxonomy?: string; collection?: string; multiple?: boolean } =
 					typeof field === "string" ? {} : field;
@@ -157,7 +160,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 					return (
 						<Select
 							key={name}
-							label={name}
+							label={label}
 							value={typeof value === "string" ? value : ""}
 							onChange={(e) => onChange(name, e.target.value || undefined)}
 						>
@@ -171,13 +174,13 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 					);
 				}
 				if (kind === "json" || kind === "repeater" || kind === "blocks") {
-					return <JsonField key={name} name={name} value={value} onChange={(v) => onChange(name, v)} />;
+					return <JsonField key={name} label={label} value={value} onChange={(v) => onChange(name, v)} />;
 				}
 				if (kind === "boolean") {
 					return (
 						<Checkbox
 							key={name}
-							label={name}
+							label={label}
 							checked={value === true}
 							onChange={(e) => onChange(name, e.target.checked)}
 						/>
@@ -187,7 +190,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 					return (
 						<Textarea
 							key={name}
-							label={name}
+							label={label}
 							className="min-h-24"
 							value={typeof value === "string" ? value : ""}
 							onChange={(e) => onChange(name, e.target.value || undefined)}
@@ -196,9 +199,9 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 				}
 				if (kind === "image") {
 					return (
-						<div key={name} className="grid gap-2">
+						<div key={name} className="grid gap-2 md:col-span-2">
 							<Input
-								label={name}
+								label={label}
 								value={typeof value === "string" ? value : ""}
 								onChange={(e) => onChange(name, e.target.value || undefined)}
 							/>
@@ -209,7 +212,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 								<Input
 									type="file"
 									accept="image/png,image/jpeg,image/gif,image/webp"
-									aria-label={`Upload ${name}`}
+									aria-label={`Upload ${label}`}
 									onChange={(e) => {
 										const file = e.target.files?.[0];
 										if (file) void onUpload(file).then((url) => onChange(name, url));
@@ -232,7 +235,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 						onChange(name, next.length ? next.map((c) => (c.role ? c : c.byline)) : undefined);
 					return (
 						<fieldset key={name} className="grid gap-2">
-							<legend className="text-sm font-medium">{name}</legend>
+							<legend className="text-sm font-medium">{label}</legend>
 							{credits.map((credit, i) => (
 								<div key={credit.byline} className="flex items-center gap-2 text-sm">
 									<span className="flex-1">{bylines.find((b) => b.slug === credit.byline)?.name ?? credit.byline}</span>
@@ -274,7 +277,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 					return (
 						<Select
 							key={name}
-							label={name}
+							label={label}
 							value={typeof value === "string" ? value : ""}
 							onChange={(e) => onChange(name, e.target.value || undefined)}
 						>
@@ -298,7 +301,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 					const title = (slug: string) => sections.find((s) => s.slug === slug)?.title ?? `${slug} (missing)`;
 					return (
 						<fieldset key={name} className="grid gap-2">
-							<legend className="text-sm font-medium">{name}</legend>
+							<legend className="text-sm font-medium">{label}</legend>
 							{chosen.map((slug, i) => (
 								<div key={slug} className="flex items-center gap-2 text-sm">
 									<span className="flex-1">{title(slug)}</span>
@@ -362,7 +365,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 						const selected = Array.isArray(value) ? value.map(String) : [];
 						return (
 							<fieldset key={name} className="grid gap-2">
-								<legend className="text-sm font-medium">{name}</legend>
+								<legend className="text-sm font-medium">{label}</legend>
 								<div className="flex flex-wrap gap-3">
 									{terms.map((term) => (
 										<Checkbox
@@ -395,7 +398,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 					return (
 						<Select
 							key={name}
-							label={name}
+							label={label}
 							value={typeof value === "string" ? value : ""}
 							onChange={(e) => onChange(name, e.target.value || undefined)}
 						>
@@ -414,7 +417,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 						const selected = Array.isArray(value) ? value.map(String) : [];
 						return (
 							<fieldset key={name} className="grid gap-2">
-								<legend className="text-sm font-medium">{name}</legend>
+								<legend className="text-sm font-medium">{label}</legend>
 								<div className="grid gap-1">
 									{entries.map((entry) => (
 										<Checkbox
@@ -436,7 +439,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 					return (
 						<Select
 							key={name}
-							label={name}
+							label={label}
 							value={typeof value === "string" ? value : ""}
 							onChange={(e) => onChange(name, e.target.value || undefined)}
 						>
@@ -453,7 +456,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 					return (
 						<Input
 							key={name}
-							label={name}
+							label={label}
 							placeholder="comma, separated"
 							value={Array.isArray(value) ? value.join(", ") : ""}
 							onChange={(e) => {
@@ -470,7 +473,7 @@ export function FieldsForm({ fields, data, onChange, onUpload }: Props) {
 				return (
 					<Input
 						key={name}
-						label={name}
+						label={label}
 						type={inputType}
 						value={value === undefined || value === null ? "" : String(value)}
 						onChange={(e) => {

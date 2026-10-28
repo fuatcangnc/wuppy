@@ -1,5 +1,6 @@
+import { ArrowLeft, ExternalLink, Pencil } from "@react-zero-ui/icon-sprite";
 import { useStore } from "@nanostores/react";
-import { useBlocker, useNavigate, useParams } from "@tanstack/react-router";
+import { Link, useBlocker, useNavigate, useParams } from "@tanstack/react-router";
 import { Fragment, useEffect, useState } from "react";
 import { api, slugPath } from "../../lib/api.ts";
 import { templateOf, templateUrl } from "../../lib/theme-page.ts";
@@ -26,7 +27,7 @@ import {
 } from "../../stores/editor.ts";
 import { loadHistory } from "../../stores/git.ts";
 import { $collections, loadCollections, uploadImage } from "../../stores/content.ts";
-import { Badge, Button, Card, CardHeader, ErrorText, Input, PageHeader } from "../../ui/index.tsx";
+import { Badge, Button, Card, CardHeader, ErrorText, Input } from "../../ui/index.tsx";
 import { FieldsForm } from "./FieldsForm.tsx";
 import { LinkedFrom } from "./LinkedFrom.tsx";
 import { PageSettings } from "./PageSettings.tsx";
@@ -120,32 +121,47 @@ export function EditorPage() {
 
 	return (
 		<div className="grid gap-5">
-			<PageHeader
-				title={String(doc.data.title ?? slug)}
-				description={`${collection}/${slug}`}
-				actions={
-					<>
-						<Badge tone={status === "published" ? "success" : "warning"}>{status}</Badge>
-						<span role="status" aria-live="polite" className="text-xs text-muted-foreground">
-							{saving
-								? "Saving…"
-								: dirty
-									? autosaved
-										? "Unsaved changes (recovery copy kept)"
-										: "Unsaved changes"
-									: "All changes saved"}
-						</span>
+			<div className="flex flex-wrap items-start justify-between gap-4 border-b border-border pb-5">
+				<div className="flex min-w-0 items-start gap-3">
+					<Link
+						to="/c/$collection"
+						params={{ collection }}
+						aria-label={`Back to ${collection}`}
+						className="mt-1 grid size-8 shrink-0 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+					>
+						<ArrowLeft size={16} />
+					</Link>
+					<div className="min-w-0">
+						<div className="flex flex-wrap items-center gap-2">
+							<h1 className="truncate text-2xl font-semibold tracking-tight">{String(doc.data.title ?? slug)}</h1>
+							<Badge tone={status === "published" ? "success" : "warning"}>{status}</Badge>
+						</div>
+						<p className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+							<Link to="/c/$collection" params={{ collection }} className="hover:text-foreground">
+								{collection}
+							</Link>
+							<span className="text-border">/</span>
+							<span className="font-mono">{slug}</span>
+						</p>
+					</div>
+				</div>
+				<div className="flex flex-col items-end gap-1">
+					<div className="flex flex-wrap items-center justify-end gap-2">
 						<a href={siteUrl} target="_blank" rel="noreferrer" className="contents">
-							<Button variant="secondary">View on site</Button>
+							<Button variant="secondary" size="sm">
+								<ExternalLink size={14} /> View site
+							</Button>
 						</a>
 						<Button
 							variant="secondary"
+							size="sm"
 							onClick={() => void navigate({ to: "/v/$collection/$", params: { collection, _splat: slug } })}
 						>
-							Edit with Visual
+							<Pencil size={14} /> Visual editor
 						</Button>
 						<Button
-							variant="secondary"
+							variant="ghost"
+							size="sm"
 							onClick={() =>
 								void api<{ data: { url: string } }>("GET", `/api/preview-link/${collection}/${slugPath(slug)}`)
 									.then((r) => setPreviewUrl(new URL(r.data.url, location.origin).href))
@@ -156,6 +172,7 @@ export function EditorPage() {
 						</Button>
 						<Button
 							variant="secondary"
+							size="sm"
 							disabled={saving}
 							onClick={() =>
 								void setPublished(status !== "published").then((ok) => ok && void loadHistory(collection, slug))
@@ -164,6 +181,8 @@ export function EditorPage() {
 							{status === "published" ? "Unpublish" : "Publish"}
 						</Button>
 						<Button
+							size="sm"
+							variant={dirty ? "default" : "secondary"}
 							disabled={!dirty || saving || !!lockedBy}
 							onClick={() =>
 								void save().then((ok) => {
@@ -173,9 +192,18 @@ export function EditorPage() {
 						>
 							{saving ? "Saving…" : dirty ? "Save" : "Saved"}
 						</Button>
-					</>
-				}
-			/>
+					</div>
+					<span role="status" aria-live="polite" className="text-[11px] text-muted-foreground">
+						{saving
+							? "Saving…"
+							: dirty
+								? autosaved
+									? "Unsaved changes (recovery copy kept)"
+									: "Unsaved changes"
+								: "All changes saved"}
+					</span>
+				</div>
+			</div>
 			<ErrorText>{error}</ErrorText>
 			{previewUrl && (
 				<p className="text-sm" role="status">
@@ -252,7 +280,13 @@ export function EditorPage() {
 						<Card>
 							<CardHeader title="Fields" description={`${Object.keys(contentFields).length} configured fields`} />
 							<div className="p-4">
-								<FieldsForm fields={contentFields} data={doc.data} onChange={setField} onUpload={uploadImage} />
+								<FieldsForm
+									fields={contentFields}
+									data={doc.data}
+									onChange={setField}
+									onUpload={uploadImage}
+									labelOf={fieldLabel}
+								/>
 							</div>
 						</Card>
 					)}
@@ -344,6 +378,26 @@ export function EditorPage() {
 				</aside>
 			</div>
 		</div>
+	);
+}
+
+const FIELD_ACRONYMS = new Set(["seo", "cta", "url", "id", "og", "api", "rss"]);
+
+/** `featureTitle` -> "Feature title"; the field key itself is never changed. */
+function fieldLabel(name: string): string {
+	const words = name
+		.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+		.replace(/[-_]+/g, " ")
+		.split(/\s+/)
+		.filter(Boolean);
+	return (
+		words
+			.map((word, index) => {
+				const lower = word.toLowerCase();
+				if (FIELD_ACRONYMS.has(lower)) return lower.toUpperCase();
+				return index === 0 ? lower.charAt(0).toUpperCase() + lower.slice(1) : lower;
+			})
+			.join(" ") || name
 	);
 }
 
