@@ -557,6 +557,15 @@ export function createApp({
 	return (
 		app
 			.use("/api/*", hardenHeaders, csrf, auth, writeRateLimit(), idempotency())
+			// Content and site-data CRUD also updates the `wuppy-site/` snapshot in a connected GitHub theme.
+			.use("/api/*", async (c, next) => {
+				await next();
+				if (!themes || !github || c.res.status < 200 || c.res.status >= 300) return;
+				if (["GET", "HEAD", "OPTIONS"].includes(c.req.method)) return;
+				if (!/^\/api\/(content|data|calendar|trash)(\/|$)/.test(c.req.path)) return;
+				const token = github.token(c.get("user").id);
+				if (token) themes.scheduleSitePush(token);
+			})
 			.get("/api/hub/whoami", async (c) => {
 				const user = c.get("user");
 				if (!user.hub) throw new ApiError(403, "NOT_A_HUB_TOKEN", "Only a hub token can call this");

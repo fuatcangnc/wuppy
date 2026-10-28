@@ -58,6 +58,21 @@ const page = (nodes: object[], next: boolean) =>
 	);
 
 describe("GitHub themes", () => {
+	it("snapshots site content and settings into the GitHub theme without secrets", async () => {
+		const themes = new GithubThemes({ base, run: async () => ({ stdout: "" }) });
+		const dir = themes.themeDir("me/site");
+		await mkdir(join(dir, "src"), { recursive: true });
+		await put(join(base, ".wuppy/themes/active.json"), JSON.stringify({ repo: "me/site", dir }));
+		await put(join(base, "content/pages/home.md"), "---\ntitle: Home\n---\n");
+		await put(join(base, ".wuppy/data/settings.json"), '{"siteName":"Example"}');
+		await put(join(base, ".wuppy/data/webhooks.json"), '{"secret":"do-not-push"}');
+		await themes.syncSite();
+		expect(await readFile(join(dir, "wuppy-site/content/pages/home.md"), "utf8")).toContain("title: Home");
+		expect(await readFile(join(dir, "wuppy-site/data/settings.json"), "utf8")).toContain("Example");
+		expect(existsSync(join(dir, "wuppy-site/data/webhooks.json"))).toBe(false);
+		expect(await readFile(join(dir, "wuppy-site/README.md"), "utf8")).toContain("Webhook secrets");
+	});
+
 	it("rebases onto a moved GitHub branch before retrying a push", async () => {
 		const calls: string[][] = [];
 		let pushes = 0;

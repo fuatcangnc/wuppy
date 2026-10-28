@@ -158,7 +158,10 @@ export function ThemesPage() {
 			)}
 
 			<Card>
-				<CardHeader title="Active" description="Switch between the built-in site and the themes built here." />
+				<CardHeader
+					title="Active"
+					description="Switch between the built-in site and the themes built here. Theme source and a wuppy-site/ content snapshot push to GitHub."
+				/>
 				<ul className="divide-y">
 					{[null, ...state.installed].map((repo) => (
 						<li key={repo ?? "built-in"} className="flex items-center justify-between gap-3 px-6 py-3">
@@ -187,9 +190,11 @@ export function ThemesPage() {
 								<Spinner /> Pushing theme changes to GitHub…
 							</span>
 						) : state.push.at ? (
-							<span>Theme changes push automatically · last push {new Date(state.push.at).toLocaleString()}</span>
+							<span>
+								Theme and site changes push automatically · last push {new Date(state.push.at).toLocaleString()}
+							</span>
 						) : (
-							<span>Theme changes push automatically to GitHub.</span>
+							<span>Theme and site changes push automatically to GitHub.</span>
 						)}
 						{state.github.connected && (
 							<Button

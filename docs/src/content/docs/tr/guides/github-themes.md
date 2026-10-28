@@ -57,7 +57,9 @@ Temanın `wuppy.config.mjs` dosyası hangi koleksiyonunun hangi site koleksiyonu
 
 ## Tema sayfaları
 
-Temada **Code view** veya **görsel editörde** yapılan değişiklikler kısa bir bekleyişten sonra bağlı GitHub deposuna otomatik commit edilip push edilir. Otomatik push açılmadan önce diskte kalan değişiklikler için **Themes → Push changes** kullanılır. Wuppy her tema sayfasına Open Graph ve Twitter etiketlerini kendisi ekler; temanın bu tekrarı yapmasına gerek yoktur.
+Temada **Code view** veya **görsel editörde** yapılan değişiklikler ve site içerik/ayar değişiklikleri kısa bir bekleyişten sonra bağlı GitHub deposuna otomatik commit edilip push edilir. Tema deposundaki `wuppy-site/` klasörü site içeriğini ve `.wuppy/data` ayarlarını yansıtır (webhook sırları hariç); tema build’i bu klasörü yok sayar. Otomatik push açılmadan önce diskte kalan değişiklikler için **Themes → Push changes** kullanılır.
+
+Taslak veya özel içerik varsa özel (private) bir depo kullanın. Wuppy her tema sayfasına Open Graph ve Twitter etiketlerini kendisi ekler; temanın bu tekrarı yapmasına gerek yoktur.
 
 Temanın Markdown sayfaları (`src/pages/about.md`, `src/pages/docs/intro.mdx`) da içeriktir. Tema etkinleştirilince
 sitenin **Pages** koleksiyonuna kopyalanır (temanın `layout` satırı olmadan); admin'de her sayfa gibi düzenlenir.

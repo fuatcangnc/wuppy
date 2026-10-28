@@ -2,7 +2,7 @@ import { execFile } from "node:child_process";
 import { createRequire } from "node:module";
 import { randomBytes } from "node:crypto";
 import { existsSync, realpathSync } from "node:fs";
-import { lstat, mkdir, readdir, readFile, rename, rm, symlink, writeFile } from "node:fs/promises";
+import { cp, lstat, mkdir, readdir, readFile, rename, rm, symlink, writeFile } from "node:fs/promises";
 import { extname, join, relative, resolve, sep } from "node:path";
 import type { DatabaseSync } from "node:sqlite";
 import { pathToFileURL } from "node:url";
@@ -173,6 +173,7 @@ const SOURCE_SKIP_DIRS = new Set([
 	"dist-old",
 	".astro",
 	".wuppy",
+	"wuppy-site",
 	"coverage",
 ]);
 const SOURCE_SKIP_FILES = new Set(["package-lock.json", "pnpm-lock.yaml", "yarn.lock", "bun.lockb"]);
@@ -257,6 +258,7 @@ export class GithubThemes {
 	private edits: Promise<unknown> = Promise.resolve();
 	private pushPaths = new Set<string>();
 	private pushRepo: string | undefined;
+	private siteSyncPending = false;
 	private pushToken: string | undefined;
 	private pushState: "idle" | "pending" | "pushing" | "failed" = "idle";
 	private pushError: string | undefined;
@@ -565,13 +567,31 @@ export class GithubThemes {
 		this.pushToken = token;
 		this.pushState = "pending";
 		this.pushError = undefined;
+		this.scheduleFlush();
+	}
+
+	/** Schedules a push that first writes the site's content/settings snapshot into the theme repository. */
+	scheduleSitePush(token?: string): void {
+		if (!token) return;
+		this.pushToken = token;
+		this.pushState = "pending";
+		this.pushError = undefined;
+		this.siteSyncPending = true;
+		this.scheduleFlush();
+	}
+
+	private scheduleFlush(): void {
 		clearTimeout(this.pushTimer);
 		this.pushTimer = setTimeout(() => {
-			void this.pushNow(true).catch((e: Error) => {
-				this.pushState = "failed";
-				this.pushError = e.message.slice(0, 500);
-				console.error("[wuppy] theme push failed:", e.message);
-			});
+			const syncSite = this.siteSyncPending;
+			this.siteSyncPending = false;
+			void (syncSite ? this.syncSite() : Promise.resolve())
+				.then(() => this.pushNow(true))
+				.catch((e: Error) => {
+					this.pushState = "failed";
+					this.pushError = e.message.slice(0, 500);
+					console.error("[wuppy] theme push failed:", e.message);
+				});
 		}, PUSH_AFTER);
 	}
 
@@ -579,7 +599,36 @@ export class GithubThemes {
 	async pushAll(token: string): Promise<{ ok: boolean; error?: string }> {
 		this.pushToken = token;
 		this.pushRepo = (await this.activeTheme())?.repo;
+		await this.syncSite();
 		return this.pushNow(true);
+	}
+
+	/**
+	 * Writes the site content and data into `wuppy-site/` in the theme repository. This makes page/content and
+	 * settings CRUD visible in the connected GitHub repo, while the theme code stays the buildable part of the repo.
+	 */
+	async syncSite(): Promise<void> {
+		const active = await this.activeTheme();
+		if (!active) return;
+		const target = join(active.dir, "wuppy-site");
+		await rm(target, { recursive: true, force: true });
+		await mkdir(target, { recursive: true });
+		const content = join(this.o.base, "content");
+		if (existsSync(content)) await cp(content, join(target, "content"), { recursive: true, force: true });
+		const data = join(this.o.base, ".wuppy", "data");
+		if (existsSync(data)) {
+			await mkdir(join(target, "data"), { recursive: true });
+			for (const name of await readdir(data)) {
+				// Webhook secrets are deliberately not copied into a repository.
+				if (name.endsWith(".json") && name !== "webhooks.json")
+					await cp(join(data, name), join(target, "data", name), { force: true });
+			}
+		}
+		await writeFile(
+			join(target, "README.md"),
+			"# Wuppy site snapshot\n\nThis folder is written automatically by Wuppy when site content or settings change.\nTheme code remains in `src/`. Webhook secrets are not included.\n",
+		);
+		this.pushRepo = active.repo;
 	}
 
 	/** Commits the files changed by the editor and pushes them to the repo's current branch. */
@@ -613,7 +662,7 @@ export class GithubThemes {
 		if (includeSource) {
 			// Changes already on disk (before auto-push was enabled, or made from another editor) travel with the next
 			// push too, but only source files: the wrapper configs and generated theme files stay local.
-			const status = await git("status", "--porcelain", "--", "src");
+			const status = await git("status", "--porcelain", "--", "src", "wuppy-site");
 			for (const line of status.split("\n")) {
 				const raw = line.slice(3).trim();
 				const path = raw.includes(" -> ") ? raw.split(" -> ").at(-1) : raw;
