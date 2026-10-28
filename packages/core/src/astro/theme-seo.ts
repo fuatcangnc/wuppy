@@ -14,15 +14,40 @@ const absolute = (value: string, origin?: string) => {
 	}
 };
 
-/** Puts a Pages entry's SEO, Open Graph, schema and custom-code fields into the `<head>` a theme page rendered. */
-export function withSeo(html: string, data: Record<string, unknown>, origin?: string): string {
+export interface SeoSite {
+	name?: string;
+	url?: string;
+	image?: string;
+	description?: string;
+}
+
+/** Puts a page's SEO, Open Graph, schema and custom-code fields into the `<head>` a theme page rendered. */
+export function withSeo(
+	html: string,
+	data: Record<string, unknown>,
+	origin?: string,
+	site?: SeoSite,
+	path?: string,
+): string {
 	const str = (k: string) => (typeof data[k] === "string" && data[k] ? (data[k] as string) : undefined);
+	const existingTitle = html
+		.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]
+		?.replace(/<[^>]+>/g, "")
+		.trim();
+	const existingDescription = html
+		.match(/<meta\s+name=["']description["'][^>]*content=["']([^"']*)["'][^>]*>/i)?.[1]
+		?.trim();
+	// Page settings are authoritative when present. A theme with no page entry still gets Open Graph tags from its
+	// own title/description and the site settings, so a theme never has to repeat the same boilerplate.
+	const hasContext = Boolean(origin || site || path);
 	const seoTitle = str("seoTitle");
 	const seoDescription = str("seoDescription");
-	const ogTitle = str("ogTitle") || seoTitle;
-	const ogDescription = str("ogDescription") || seoDescription;
-	const ogImage = str("ogImage") || str("cover");
+	const ogTitle = str("ogTitle") || seoTitle || (hasContext ? str("title") || existingTitle : undefined);
+	const ogDescription =
+		str("ogDescription") || seoDescription || (hasContext ? str("description") || existingDescription : undefined);
+	const ogImage = str("ogImage") || str("cover") || (hasContext ? site?.image : undefined);
 	const canonical = str("canonical");
+	const publicOrigin = site?.url || origin;
 	let out = html;
 	const tags: string[] = [];
 	const setMeta = (attribute: "name" | "property", key: string, content: string) => {
@@ -31,20 +56,32 @@ export function withSeo(html: string, data: Record<string, unknown>, origin?: st
 		if (re.test(out)) out = out.replace(re, tag);
 		else tags.push(tag);
 	};
+	const hasMeta = (attribute: "name" | "property", key: string) =>
+		new RegExp(`<meta\\s+${attribute}=["']${escapeRegExp(key)}["'][^>]*>`, "i").test(out);
 
 	if (seoTitle) out = out.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(seoTitle)}</title>`);
 	if (seoDescription) setMeta("name", "description", seoDescription);
 	if (ogTitle) setMeta("property", "og:title", ogTitle);
 	if (ogDescription) setMeta("property", "og:description", ogDescription);
-	if (ogImage) setMeta("property", "og:image", absolute(ogImage, origin));
+	if (ogImage) setMeta("property", "og:image", absolute(ogImage, publicOrigin));
+	if (ogTitle) setMeta("name", "twitter:title", ogTitle);
+	if (ogDescription) setMeta("name", "twitter:description", ogDescription);
+	if (ogImage) setMeta("name", "twitter:image", absolute(ogImage, publicOrigin));
+	if (ogImage) setMeta("name", "twitter:card", "summary_large_image");
+	if (site?.name) setMeta("property", "og:site_name", site.name);
+	if (hasContext && !hasMeta("property", "og:type")) setMeta("property", "og:type", "website");
+	let canonicalHref: string | undefined;
 	if (canonical) {
 		const clean = canonical.length > 1 ? canonical.replace(/\/+$/, "") : canonical;
-		const href = absolute(clean, origin);
-		const tag = `<link rel="canonical" href="${esc(href)}">`;
+		canonicalHref = absolute(clean, publicOrigin);
+		const tag = `<link rel="canonical" href="${esc(canonicalHref)}">`;
 		const re = /<link\s+rel=["']canonical["'][^>]*>/i;
 		if (re.test(out)) out = out.replace(re, tag);
 		else tags.push(tag);
-		setMeta("property", "og:url", href);
+		setMeta("property", "og:url", canonicalHref);
+	} else if (hasContext && path && publicOrigin) {
+		canonicalHref = absolute(path, publicOrigin);
+		if (!hasMeta("property", "og:url")) setMeta("property", "og:url", canonicalHref);
 	}
 	if (data.noindex === true) setMeta("name", "robots", "noindex");
 
@@ -99,22 +136,47 @@ async function entryTitle(site: string, theme: string, path: string): Promise<Re
 	return { ...data, seoTitle: data.seoTitle || data.title };
 }
 
-/** A theme run for a site: the theme's `.astro` pages get the SEO title, description and noindex set in the admin. */
+interface SiteSettings {
+	siteName?: string;
+	siteUrl?: string;
+	description?: string;
+	seo?: { image?: string; description?: string };
+}
+
+async function readSiteSettings(root: string): Promise<SiteSettings> {
+	return JSON.parse(await readFile(join(root, ".wuppy/data/settings.json"), "utf8").catch(() => "{}")) as SiteSettings;
+}
+
+/** A theme run for a site: the theme's `.astro` pages get the SEO, Open Graph, schema and code fields set in the admin. */
 export function createThemeSeoMiddleware(site: string, theme: string) {
-	let dir: Promise<string | undefined> | undefined;
+	let configPromise: ReturnType<typeof loadSiteConfig> | undefined;
+	let settingsPromise: Promise<SiteSettings> | undefined;
 	return async (ctx: { request: Request; url: URL }, next: () => Promise<Response>): Promise<Response> => {
 		if (ctx.request.method !== "GET") return next();
 		const res = await next();
 		if (res.status !== 200 || !(res.headers.get("content-type") ?? "").includes("text/html")) return res;
 		const path = ctx.url.pathname.replace(/\/$/, "") || "/";
-		// shortcut: reads the Pages folder per HTML request; cache it if a site grows many pages.
+		const config = await (configPromise ??= loadSiteConfig(site, theme));
+		const settings = await (settingsPromise ??= readSiteSettings(site));
 		const data =
-			(await templatePages(site, await (dir ??= loadSiteConfig(site, theme).then((c) => pagesDir(c.collections))))).get(
-				path,
-			) ?? (await entryTitle(site, theme, path));
-		if (!data) return res;
+			(await templatePages(site, pagesDir(config.collections))).get(path) ?? (await entryTitle(site, theme, path));
 		const headers = new Headers(res.headers);
 		headers.delete("content-length");
-		return new Response(withSeo(await res.text(), data, ctx.url.origin), { status: res.status, headers });
+		const publicUrl = settings.siteUrl || config.site?.url || ctx.url.origin;
+		return new Response(
+			withSeo(
+				await res.text(),
+				data ?? {},
+				publicUrl,
+				{
+					name: settings.siteName || config.site?.name,
+					url: publicUrl,
+					image: settings.seo?.image,
+					description: settings.seo?.description,
+				},
+				path,
+			),
+			{ status: res.status, headers },
+		);
 	};
 }

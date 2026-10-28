@@ -95,6 +95,8 @@ export const olderThan = (range: string, min: string): boolean => {
 };
 /** How long element edits pause before a production theme is built again. */
 const REBUILD_AFTER = 90_000;
+/** Theme edits are pushed after a short pause, so a visual-edit burst becomes one commit. */
+const PUSH_AFTER = 6_000;
 const PRODUCTION = (import.meta as { env?: { PROD?: boolean } }).env?.PROD ?? process.env.NODE_ENV === "production";
 
 const REPO = /^[\w-][\w.-]*\/[\w-][\w.-]*$/;
@@ -251,7 +253,14 @@ export class GithubThemes {
 	job: ThemeJob | null = null;
 	private readonly dir: string;
 	private rebuildTimer: ReturnType<typeof setTimeout> | undefined;
+	private pushTimer: ReturnType<typeof setTimeout> | undefined;
 	private edits: Promise<unknown> = Promise.resolve();
+	private pushPaths = new Set<string>();
+	private pushRepo: string | undefined;
+	private pushToken: string | undefined;
+	private pushState: "idle" | "pending" | "pushing" | "failed" = "idle";
+	private pushError: string | undefined;
+	private pushAt: string | undefined;
 
 	constructor(
 		private readonly o: {
@@ -544,8 +553,109 @@ export class GithubThemes {
 		const existing = await lstat(target).catch(() => null);
 		if (existing?.isSymbolicLink() || (existing && !existing.isFile())) throw new Error("Not a regular theme file");
 		await writeFile(target, content);
+		this.pushRepo = active.repo;
+		this.pushPaths.add(relative(root, target).split(sep).join("/"));
 		// A production server shows the theme's build: a change made in Code view goes live with the next one.
 		if (PRODUCTION) this.rebuildSoon();
+	}
+
+	/** Pushes theme changes to GitHub after an edit burst; no token (GitHub disconnected) leaves them local. */
+	schedulePush(token?: string): void {
+		if (!token) return;
+		this.pushToken = token;
+		this.pushState = "pending";
+		this.pushError = undefined;
+		clearTimeout(this.pushTimer);
+		this.pushTimer = setTimeout(() => {
+			void this.pushNow(true).catch((e: Error) => {
+				this.pushState = "failed";
+				this.pushError = e.message.slice(0, 500);
+				console.error("[wuppy] theme push failed:", e.message);
+			});
+		}, PUSH_AFTER);
+	}
+
+	/** Push now, including source changes that were already on disk before this edit. */
+	async pushAll(token: string): Promise<{ ok: boolean; error?: string }> {
+		this.pushToken = token;
+		this.pushRepo = (await this.activeTheme())?.repo;
+		return this.pushNow(true);
+	}
+
+	/** Commits the files changed by the editor and pushes them to the repo's current branch. */
+	async pushNow(includeSource = false): Promise<{ ok: boolean; error?: string }> {
+		clearTimeout(this.pushTimer);
+		const token = this.pushToken;
+		const active = await this.activeTheme();
+		if (!active || !token || active.repo !== this.pushRepo) {
+			this.pushState = "idle";
+			return { ok: true };
+		}
+		const run = this.o.run ?? defaultRun;
+		const dir = active.dir;
+		const git = async (...args: string[]) =>
+			String(
+				(
+					(await run("git", args, {
+						cwd: dir,
+						env: {
+							...gitEnv(token),
+							...Object.fromEntries(
+								IDENTITY.flatMap((kind) => [
+									[`GIT_${kind}_NAME`, "Wuppy"],
+									[`GIT_${kind}_EMAIL`, "wuppy@localhost"],
+								]),
+							),
+						},
+					})) as { stdout?: string }
+				).stdout ?? "",
+			).trim();
+		if (includeSource) {
+			// Changes already on disk (before auto-push was enabled, or made from another editor) travel with the next
+			// push too, but only source files: the wrapper configs and generated theme files stay local.
+			const status = await git("status", "--porcelain", "--", "src");
+			for (const line of status.split("\n")) {
+				const raw = line.slice(3).trim();
+				const path = raw.includes(" -> ") ? raw.split(" -> ").at(-1) : raw;
+				if (path) this.pushPaths.add(path);
+			}
+		}
+		if (this.pushPaths.size === 0) {
+			this.pushState = "idle";
+			return { ok: true };
+		}
+		const paths = [...this.pushPaths];
+		this.pushPaths.clear();
+		const previous = new Set(paths);
+		this.pushState = "pushing";
+		try {
+			await git("add", "--", ...paths);
+			const changes = await git("status", "--porcelain", "--", ...paths);
+			if (!changes) {
+				this.pushState = "idle";
+				this.pushAt = new Date().toISOString();
+				return { ok: true };
+			}
+			await git("commit", "--quiet", "-m", "Wuppy: theme changes");
+			await git("push", "--quiet", "origin", "HEAD");
+			this.pushState = "idle";
+			this.pushError = undefined;
+			this.pushAt = new Date().toISOString();
+			return { ok: true };
+		} catch (e) {
+			for (const path of previous) this.pushPaths.add(path);
+			this.pushState = "failed";
+			this.pushError = (e as Error).message.slice(0, 500);
+			return { ok: false, error: this.pushError };
+		}
+	}
+
+	pushStatus(): { state: "idle" | "pending" | "pushing" | "failed"; at?: string; error?: string } {
+		return {
+			state: this.pushState,
+			...(this.pushAt ? { at: this.pushAt } : {}),
+			...(this.pushError ? { error: this.pushError } : {}),
+		};
 	}
 
 	/**
@@ -789,6 +899,10 @@ export class GithubThemes {
 		}
 		// The edits laid over the old theme's pages have no place on another one.
 		await clearOverlay(this.o.base);
+		this.pushPaths.clear();
+		this.pushRepo = undefined;
+		this.pushState = "idle";
+		clearTimeout(this.pushTimer);
 		return { restarting: this.o.restart?.() ?? false };
 	}
 }

@@ -53,6 +53,24 @@ describe("theme page SEO", () => {
 		expect(out).toContain("<script data-custom>ok</script></body>");
 	});
 
+	it("adds complete Open Graph tags to a theme page that has none", () => {
+		const html =
+			'<html><head><title>Theme page</title><meta name="description" content="Theme description"></head><body></body></html>';
+		const out = withSeo(
+			html,
+			{},
+			"http://localhost:4321",
+			{ name: "Example", url: "https://example.com", image: "/site.png" },
+			"/about",
+		);
+		expect(out).toContain('<meta property="og:title" content="Theme page">');
+		expect(out).toContain('<meta property="og:description" content="Theme description">');
+		expect(out).toContain('<meta property="og:url" content="https://example.com/about">');
+		expect(out).toContain('<meta property="og:image" content="https://example.com/site.png">');
+		expect(out).toContain('<meta property="og:site_name" content="Example">');
+		expect(out).toContain('<meta name="twitter:card" content="summary_large_image">');
+	});
+
 	it("ignores invalid schema JSON and leaves an untouched head alone", () => {
 		const html = "<html><head></head><body></body></html>";
 		expect(withSeo(html, { schemaJson: "not json" })).toBe(html);

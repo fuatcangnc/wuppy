@@ -29,6 +29,7 @@ interface ThemeState {
 	active: string | null;
 	installed: string[];
 	job: ThemeJob | null;
+	push: { state: "idle" | "pending" | "pushing" | "failed"; at?: string; error?: string };
 	github: { configured: boolean; connected: boolean };
 }
 
@@ -117,6 +118,14 @@ export function ThemesPage() {
 			.catch((e: Error) => toast(e.message, "error"));
 	};
 
+	const pushThemes = () =>
+		void apiData("POST", "/api/themes/push", {})
+			.then(() => {
+				toast("Theme changes pushed to GitHub");
+				void load();
+			})
+			.catch((e: Error) => toast(e.message, "error"));
+
 	const activate = (repo: string | null) =>
 		void apiData<{ restarting: boolean }>("POST", "/api/themes/activate", { repo })
 			.then((r) => {
@@ -165,6 +174,35 @@ export function ThemesPage() {
 						</li>
 					))}
 				</ul>
+				{state.active && (
+					<div className="flex flex-wrap items-center justify-between gap-2 border-t px-6 py-3 text-xs text-muted-foreground">
+						{!state.github.connected ? (
+							<span>Connect GitHub to push theme edits to the repository automatically.</span>
+						) : state.push.state === "failed" ? (
+							<span className="text-destructive">
+								Theme push failed: {state.push.error || "Check the repository permissions."}
+							</span>
+						) : state.push.state === "pending" || state.push.state === "pushing" ? (
+							<span className="flex items-center gap-1.5">
+								<Spinner /> Pushing theme changes to GitHub…
+							</span>
+						) : state.push.at ? (
+							<span>Theme changes push automatically · last push {new Date(state.push.at).toLocaleString()}</span>
+						) : (
+							<span>Theme changes push automatically to GitHub.</span>
+						)}
+						{state.github.connected && (
+							<Button
+								size="sm"
+								variant="secondary"
+								disabled={state.push.state === "pushing" || state.push.state === "pending"}
+								onClick={pushThemes}
+							>
+								Push changes
+							</Button>
+						)}
+					</div>
+				)}
 			</Card>
 
 			{job && job.status !== "done" && (

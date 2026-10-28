@@ -20,7 +20,7 @@ sidebar:
   adresinden başlangıç verisi üretir. **Custom code** sayfaya özel head ve body kodu ekler (yalnızca güvendiğiniz kodu
   yapıştırın).
 - **Settings → SEO** site geneli varsayılanları ve başlık şablonunu belirler.
-- Sayfalar canonical, Open Graph, Twitter ve `hreflang` etiketleri alır; JSON-LD sayfa şemasından yazılır.
+- Wuppy tema sayfalarına canonical, Open Graph, Twitter ve `hreflang` etiketlerini kendisi ekler; JSON-LD sayfa şemasından yazılır.
 - `sitemap.xml` taslakları ve sitemap indekslemesi kapalı sayfaları dışarıda bırakır; hangi koleksiyonları içereceğini
   ve önceliklerini seçin. `robots.txt` da oluşturulur.
 

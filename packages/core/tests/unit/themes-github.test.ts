@@ -58,6 +58,24 @@ const page = (nodes: object[], next: boolean) =>
 	);
 
 describe("GitHub themes", () => {
+	it("commits and pushes theme source edits made by the editor", async () => {
+		const calls: { cmd: string; args: string[]; env: NodeJS.ProcessEnv }[] = [];
+		const run: Run = async (cmd, args, { env }) => {
+			calls.push({ cmd, args, env });
+			return { stdout: args[0] === "status" ? "M  src/index.astro\n" : "" };
+		};
+		const themes = new GithubThemes({ base, run });
+		const dir = themes.themeDir("me/site");
+		await mkdir(join(dir, "src"), { recursive: true });
+		await put(join(base, ".wuppy/themes/active.json"), JSON.stringify({ repo: "me/site", dir }));
+		await themes.writeSource("src/index.astro", "<h1>Changed</h1>\n");
+		expect(await themes.pushAll("gho_secret")).toEqual({ ok: true });
+		expect(calls.map((item) => item.args[0])).toEqual(["status", "add", "status", "commit", "push"]);
+		expect(calls.at(-1)!.args).toEqual(["push", "--quiet", "origin", "HEAD"]);
+		expect(calls.at(-1)!.env.GIT_CONFIG_VALUE_0).toContain(Buffer.from("x-access-token:gho_secret").toString("base64"));
+		expect(themes.pushStatus().state).toBe("idle");
+	});
+
 	it("clones, wraps, installs, links Wuppy, builds and activates", async () => {
 		const calls: { cmd: string; args: string[]; env: NodeJS.ProcessEnv }[] = [];
 		const restart = vi.fn(() => true);

@@ -57,6 +57,8 @@ The theme's `wuppy.config.mjs` says which of its collections reads which site co
 
 ## Theme pages
 
+Theme edits made in **Code view** or the **visual editor** are committed and pushed to the connected GitHub repository automatically after a short pause. **Themes → Push changes** pushes any edits that were already on disk before auto-push was enabled. Wuppy adds Open Graph and Twitter tags to every theme page itself, so themes do not have to repeat that boilerplate.
+
 A theme's Markdown pages (`src/pages/about.md`, `src/pages/docs/intro.mdx`) are content too. When the theme is
 activated they are copied into the site's **Pages** (without the theme's `layout` line), so they are edited in the
 admin like any page. The theme keeps serving them at the same URL with its own layout, and reads the site's entry on

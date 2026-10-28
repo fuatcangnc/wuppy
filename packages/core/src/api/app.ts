@@ -1726,6 +1726,7 @@ export function createApp({
 						active: await themes.active(),
 						installed: await themes.installed(),
 						job: themes.job,
+						push: themes.pushStatus(),
 						github: { configured: !!github?.configured, connected: !!github?.token(c.get("user").id) },
 					},
 				});
@@ -1743,6 +1744,7 @@ export function createApp({
 					.parse(await c.req.json().catch(() => ({})));
 				try {
 					await themes.writeSource(body.path, body.content);
+					themes.schedulePush(github?.token(c.get("user").id) ?? undefined);
 					record(c, "theme.file.write", { detail: body.path });
 					return c.json({ data: { ok: true } });
 				} catch (e) {
@@ -1793,10 +1795,25 @@ export function createApp({
 					.parse(await c.req.json().catch(() => ({})));
 				try {
 					const out = await themes.editElement(body.file, body.loc, body.edit, body.tag, body.live, body.host);
+					themes.schedulePush(github?.token(c.get("user").id) ?? undefined);
 					record(c, "theme.file.write", { detail: body.file });
 					return c.json({ data: out });
 				} catch (e) {
 					throw new ApiError(400, "INVALID_THEME_EDIT", (e as Error).message);
+				}
+			})
+			.post("/api/themes/push", need("site:settings"), async (c) => {
+				if (!themes) throw new ApiError(400, "NOT_ENABLED", "Themes are not enabled");
+				const token = github?.token(c.get("user").id);
+				if (!token) throw new ApiError(409, "GITHUB_NOT_CONNECTED", "Connect GitHub first");
+				try {
+					const result = await themes.pushAll(token);
+					if (!result.ok) throw new ApiError(502, "GITHUB_FAILED", result.error ?? "Theme push failed");
+					record(c, "theme.push");
+					return c.json({ data: result });
+				} catch (e) {
+					if (e instanceof ApiError) throw e;
+					throw new ApiError(502, "GITHUB_FAILED", (e as Error).message);
 				}
 			})
 			.post("/api/themes/rebuild", need("site:settings"), async (c) => {

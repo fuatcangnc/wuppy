@@ -18,7 +18,7 @@ sidebar:
 - **Schema markup** stores JSON-LD for the page; **Generate schema markup** starts from the page title, description,
   image and canonical URL. **Custom code** adds page-only head and body code (paste only trusted code).
 - **Settings → SEO** sets site-wide defaults and the title template.
-- Pages get canonical, Open Graph, Twitter and `hreflang` tags, and JSON-LD is rendered from the page schema.
+- Wuppy adds canonical, Open Graph, Twitter and `hreflang` tags to theme pages automatically; JSON-LD is rendered from the page schema.
 - `sitemap.xml` leaves drafts and pages with sitemap indexing off out; choose which collections it includes and their
   priority. `robots.txt` is created too.
 
