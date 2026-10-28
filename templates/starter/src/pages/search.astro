@@ -3,18 +3,30 @@ import { getCollection } from "astro:content";
 import PageHero from "../components/PageHero.astro";
 import Base from "../layouts/Base.astro";
 
-const posts = await getCollection("posts", ({ data }) => data.draft !== true);
-const items = posts.map((post) => ({
-	title: post.data.title,
-	slug: post.id,
-	body: post.body,
-}));
+const posts = await getCollection("posts", ({ data }) => data.draft !== true && data.searchExclude !== true);
+const pages = await getCollection("pages", ({ data }) => data.draft !== true && data.searchExclude !== true);
+const items = [
+	...posts.map((post) => ({
+		title: post.data.searchTitle ?? post.data.seoTitle ?? post.data.title,
+		description: post.data.searchDescription ?? post.data.seoDescription ?? "",
+		image: post.data.searchImage ?? post.data.ogImage ?? post.data.cover ?? "",
+		href: `/posts/${post.id}`,
+		body: post.body,
+	})),
+	...pages.map((page) => ({
+		title: page.data.searchTitle ?? page.data.seoTitle ?? page.data.title,
+		description: page.data.searchDescription ?? page.data.seoDescription ?? "",
+		image: page.data.searchImage ?? page.data.ogImage ?? "",
+		href: page.id === "index" ? "/" : `/${page.id}`,
+		body: page.body,
+	})),
+];
 ---
 <Base title="Search">
-	<PageHero title="Search" kicker="Find a post" crumbs={[{ label: "Search" }]} />
+	<PageHero title="Search" kicker="Find a page" crumbs={[{ label: "Search" }]} />
 	<section class="section">
 		<div class="narrow">
-			<input id="q" type="search" placeholder="Search posts…" class="input" aria-label="Search posts" autofocus />
+			<input id="q" type="search" placeholder="Search the site…" class="input" aria-label="Search the site" autofocus />
 			<ul id="results" class="cards" style="margin-top:1.5rem;grid-template-columns:1fr"></ul>
 		</div>
 	</section>
@@ -28,10 +40,28 @@ const items = posts.map((post) => ({
 				li.className = "card";
 				const body = document.createElement("div");
 				body.className = "card-body";
+				if (item.image) {
+					const image = document.createElement("img");
+					image.src = item.image;
+					image.alt = "";
+					image.loading = "lazy";
+					image.style.width = "100%";
+					image.style.aspectRatio = "16 / 9";
+					image.style.objectFit = "cover";
+					image.style.borderRadius = "8px";
+					image.style.marginBottom = "0.75rem";
+					body.append(image);
+				}
 				const a = document.createElement("a");
-				a.href = `/posts/${item.slug}`;
+				a.href = item.href;
 				a.textContent = item.title;
 				body.append(a);
+				if (item.description) {
+					const description = document.createElement("p");
+					description.textContent = item.description;
+					description.style.marginTop = "0.35rem";
+					body.append(description);
+				}
 				li.append(body);
 				results.append(li);
 			}
@@ -39,7 +69,11 @@ const items = posts.map((post) => ({
 		const params = new URLSearchParams(location.search);
 		const search = () => {
 			const q = input.value.trim().toLowerCase();
-			render(q ? items.filter((item) => `${item.title}\n${item.body}`.toLowerCase().includes(q)) : []);
+			render(
+				q
+					? items.filter((item) => `${item.title}\n${item.description}\n${item.body}`.toLowerCase().includes(q))
+					: [],
+			);
 		};
 		input.value = params.get("q") ?? "";
 		input.addEventListener("input", search);

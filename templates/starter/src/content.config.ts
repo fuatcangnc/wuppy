@@ -16,6 +16,13 @@ const posts = defineCollection({
 		seoDescription: z.string().optional(),
 		canonical: z.string().optional(),
 		noindex: z.boolean().default(false),
+		ogTitle: z.string().optional(),
+		ogDescription: z.string().optional(),
+		ogImage: z.string().optional(),
+		searchTitle: z.string().optional(),
+		searchDescription: z.string().optional(),
+		searchImage: z.string().optional(),
+		searchExclude: z.boolean().default(false),
 	}),
 });
 
@@ -27,6 +34,14 @@ const pages = defineCollection({
 		seoTitle: z.string().optional(),
 		seoDescription: z.string().optional(),
 		noindex: z.boolean().default(false),
+		canonical: z.string().optional(),
+		ogTitle: z.string().optional(),
+		ogDescription: z.string().optional(),
+		ogImage: z.string().optional(),
+		searchTitle: z.string().optional(),
+		searchDescription: z.string().optional(),
+		searchImage: z.string().optional(),
+		searchExclude: z.boolean().default(false),
 	}),
 });
 

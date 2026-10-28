@@ -1,26 +1,71 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { parseDocument } from "../content/parsers/frontmatter.ts";
-import { esc } from "../seo/index.ts";
+import { esc, renderJsonLd } from "../seo/index.ts";
 import { loadSiteConfig, pagesDir, routedEntry, templateUrl } from "../themes/site.ts";
 
-/** Puts a Pages entry's SEO fields into the `<head>` a theme page rendered. */
-export function withSeo(html: string, data: Record<string, unknown>): string {
-	const str = (k: string) => (typeof data[k] === "string" && data[k] ? (data[k] as string) : undefined);
-	const title = str("seoTitle");
-	const description = str("seoDescription");
-	let out = html;
-	if (title) out = out.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(title)}</title>`);
-	const tags: string[] = [];
-	if (description) {
-		const meta = /<meta\s+name=["']description["'][^>]*>/i;
-		const tag = `<meta name="description" content="${esc(description)}">`;
-		if (meta.test(out)) out = out.replace(meta, tag);
-		else tags.push(tag);
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const absolute = (value: string, origin?: string) => {
+	if (!origin) return value;
+	try {
+		return new URL(value, origin).href;
+	} catch {
+		return value;
 	}
-	if (data.noindex === true) tags.push('<meta name="robots" content="noindex">');
+};
+
+/** Puts a Pages entry's SEO, Open Graph, schema and custom-code fields into the `<head>` a theme page rendered. */
+export function withSeo(html: string, data: Record<string, unknown>, origin?: string): string {
+	const str = (k: string) => (typeof data[k] === "string" && data[k] ? (data[k] as string) : undefined);
+	const seoTitle = str("seoTitle");
+	const seoDescription = str("seoDescription");
+	const ogTitle = str("ogTitle") || seoTitle;
+	const ogDescription = str("ogDescription") || seoDescription;
+	const ogImage = str("ogImage") || str("cover");
+	const canonical = str("canonical");
+	let out = html;
+	const tags: string[] = [];
+	const setMeta = (attribute: "name" | "property", key: string, content: string) => {
+		const tag = `<meta ${attribute}="${key}" content="${esc(content)}">`;
+		const re = new RegExp(`<meta\\s+${attribute}=["']${escapeRegExp(key)}["'][^>]*>`, "i");
+		if (re.test(out)) out = out.replace(re, tag);
+		else tags.push(tag);
+	};
+
+	if (seoTitle) out = out.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(seoTitle)}</title>`);
+	if (seoDescription) setMeta("name", "description", seoDescription);
+	if (ogTitle) setMeta("property", "og:title", ogTitle);
+	if (ogDescription) setMeta("property", "og:description", ogDescription);
+	if (ogImage) setMeta("property", "og:image", absolute(ogImage, origin));
+	if (canonical) {
+		const clean = canonical.length > 1 ? canonical.replace(/\/+$/, "") : canonical;
+		const href = absolute(clean, origin);
+		const tag = `<link rel="canonical" href="${esc(href)}">`;
+		const re = /<link\s+rel=["']canonical["'][^>]*>/i;
+		if (re.test(out)) out = out.replace(re, tag);
+		else tags.push(tag);
+		setMeta("property", "og:url", href);
+	}
+	if (data.noindex === true) setMeta("name", "robots", "noindex");
+
+	if (str("schemaJson")) {
+		try {
+			const schema: unknown = JSON.parse(str("schemaJson")!);
+			if (schema && typeof schema === "object") tags.push(renderJsonLd(schema));
+		} catch {
+			// Invalid JSON is ignored; the editor warns the user before saving.
+		}
+	}
+	if (str("customHead")) tags.push(str("customHead")!);
 	const at = out.search(/<\/head>/i);
-	return tags.length && at !== -1 ? out.slice(0, at) + tags.join("") + out.slice(at) : out;
+	if (tags.length && at !== -1) out = out.slice(0, at) + tags.join("") + out.slice(at);
+
+	const customBody = str("customBody");
+	if (customBody) {
+		const bodyAt = out.search(/<\/body>/i);
+		out = bodyAt === -1 ? out + customBody : out.slice(0, bodyAt) + customBody + out.slice(bodyAt);
+	}
+	return out;
 }
 
 /**
@@ -66,10 +111,10 @@ export function createThemeSeoMiddleware(site: string, theme: string) {
 		const data =
 			(await templatePages(site, await (dir ??= loadSiteConfig(site, theme).then((c) => pagesDir(c.collections))))).get(
 				path,
-			) ?? (res.headers.has("x-wuppy-site-page") ? await entryTitle(site, theme, path) : undefined);
+			) ?? (await entryTitle(site, theme, path));
 		if (!data) return res;
 		const headers = new Headers(res.headers);
 		headers.delete("content-length");
-		return new Response(withSeo(await res.text(), data), { status: res.status, headers });
+		return new Response(withSeo(await res.text(), data, ctx.url.origin), { status: res.status, headers });
 	};
 }

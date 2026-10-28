@@ -26,10 +26,10 @@ import {
 } from "../../stores/editor.ts";
 import { loadHistory } from "../../stores/git.ts";
 import { $collections, loadCollections, uploadImage } from "../../stores/content.ts";
-import { Badge, Button, Card, CardHeader, Checkbox, ErrorText, Input, PageHeader, Textarea } from "../../ui/index.tsx";
+import { Badge, Button, Card, CardHeader, ErrorText, Input, PageHeader } from "../../ui/index.tsx";
 import { FieldsForm } from "./FieldsForm.tsx";
 import { LinkedFrom } from "./LinkedFrom.tsx";
-import { SeoPreview } from "./SeoPreview.tsx";
+import { PageSettings } from "./PageSettings.tsx";
 import { MarkdownEditor } from "../editor/MarkdownEditor.tsx";
 import { HistoryPanel } from "../git/HistoryPanel.tsx";
 import { TranslatePanel } from "./TranslatePanel.tsx";
@@ -91,9 +91,32 @@ export function EditorPage() {
 	const status = doc.data.draft === true ? "draft" : "published";
 	// A theme `.astro` page: its text lives in the theme's code, so the entry holds only its title and SEO fields.
 	const template = templateOf(doc.data);
-	const siteUrl = template
+	const publicPath = template
 		? templateUrl(template)
-		: `${(info?.route ?? `/${collection}/{slug}`).replace("{slug}", slug)}?wuppy-edit=1`;
+		: (info?.route ?? `/${collection}/{slug}`).replace("{slug}", slug);
+	const siteUrl = `${publicPath}?wuppy-edit=1`;
+	const kind = info?.kind ?? (collection === "pages" ? "pages" : collection === "posts" ? "posts" : undefined);
+	const advancedFields = new Set([
+		"title",
+		"draft",
+		"publishAt",
+		"author",
+		"seoTitle",
+		"seoDescription",
+		"canonical",
+		"noindex",
+		"ogTitle",
+		"ogDescription",
+		"ogImage",
+		"searchTitle",
+		"searchDescription",
+		"searchImage",
+		"searchExclude",
+		"schemaJson",
+		"customHead",
+		"customBody",
+	]);
+	const contentFields = Object.fromEntries(Object.entries(fields).filter(([name]) => !advancedFields.has(name)));
 
 	return (
 		<div className="grid gap-5">
@@ -225,12 +248,14 @@ export function EditorPage() {
 
 			<div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
 				<section className="grid content-start gap-4">
-					<Card>
-						<CardHeader title="Fields" description={`${Object.keys(fields).length} configured fields`} />
-						<div className="p-4">
-							<FieldsForm fields={fields} data={doc.data} onChange={setField} onUpload={uploadImage} />
-						</div>
-					</Card>
+					{Object.keys(contentFields).length > 0 && (
+						<Card>
+							<CardHeader title="Fields" description={`${Object.keys(contentFields).length} configured fields`} />
+							<div className="p-4">
+								<FieldsForm fields={contentFields} data={doc.data} onChange={setField} onUpload={uploadImage} />
+							</div>
+						</Card>
+					)}
 					<LinkedFrom collection={collection} slug={slug} />
 					{template && (
 						<Card>
@@ -263,11 +288,6 @@ export function EditorPage() {
 					<Card>
 						<CardHeader title="Publish" />
 						<div className="grid gap-3 p-4">
-							<Checkbox
-								label="Draft"
-								checked={doc.data.draft === true}
-								onChange={(e) => setField("draft", e.target.checked ? true : undefined)}
-							/>
 							<Input
 								label="Publish at"
 								type="datetime-local"
@@ -283,6 +303,8 @@ export function EditorPage() {
 							/>
 						</div>
 					</Card>
+
+					<PageSettings data={doc.data} onChange={setField} path={publicPath} kind={kind} />
 
 					<Card>
 						<CardHeader title="Summary" />
@@ -307,39 +329,6 @@ export function EditorPage() {
 					<Card>
 						<CardHeader title="Translations" />
 						<TranslatePanel collection={collection} slug={slug} onLocales={setTranslations} />
-					</Card>
-
-					<Card>
-						<CardHeader title="SEO" description="Overrides the site defaults." />
-						<div className="grid gap-3 p-4">
-							<Input
-								label="Meta title"
-								value={String(doc.data.seoTitle ?? "")}
-								onChange={(e) => setField("seoTitle", e.target.value || undefined)}
-							/>
-							<Textarea
-								label="Meta description"
-								value={String(doc.data.seoDescription ?? "")}
-								onChange={(e) => setField("seoDescription", e.target.value || undefined)}
-							/>
-							<Input
-								label="Canonical URL"
-								value={String(doc.data.canonical ?? "")}
-								onChange={(e) => setField("canonical", e.target.value || undefined)}
-							/>
-							<Checkbox
-								label="Noindex this entry"
-								checked={doc.data.noindex === true}
-								onChange={(e) => setField("noindex", e.target.checked ? true : undefined)}
-							/>
-							<SeoPreview
-								title={String(doc.data.title ?? slug)}
-								seoTitle={doc.data.seoTitle ? String(doc.data.seoTitle) : undefined}
-								seoDescription={doc.data.seoDescription ? String(doc.data.seoDescription) : undefined}
-								image={doc.data.cover ? String(doc.data.cover) : undefined}
-								path={(info?.route ?? `/${collection}/{slug}`).replace("{slug}", slug)}
-							/>
-						</div>
 					</Card>
 
 					<Card>

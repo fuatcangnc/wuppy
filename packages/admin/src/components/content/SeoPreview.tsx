@@ -41,7 +41,7 @@ export function seoPreview(input: SeoPreviewInput, site: SiteSeo) {
 	return { title, description, image, warnings, url: `${host}${input.path}` };
 }
 
-export function SeoPreview(input: SeoPreviewInput) {
+export function SeoPreview(input: SeoPreviewInput & { variant?: "both" | "search" | "social" }) {
 	const [site, setSite] = useState<SiteSeo | null>(null);
 	useEffect(() => {
 		void apiData<SiteSeo>("GET", "/api/data/settings")
@@ -50,27 +50,35 @@ export function SeoPreview(input: SeoPreviewInput) {
 	}, []);
 	if (!site) return null;
 	const p = seoPreview(input, site);
+	const showSearch = input.variant !== "social";
+	const showSocial = input.variant !== "search";
+	const warnings = p.warnings.filter((w) => !(input.variant === "search" && w.startsWith("No share image")));
 	return (
-		<div className="grid gap-3" aria-label="Search and social preview">
-			<div className="rounded-md border p-3 text-sm">
-				<div className="truncate text-xs text-muted-foreground">{p.url}</div>
-				<div className="truncate text-base font-medium text-blue-700 dark:text-blue-400">{p.title}</div>
-				<div className="line-clamp-2 text-muted-foreground">{p.description}</div>
-			</div>
-			<div className="overflow-hidden rounded-md border text-sm">
-				{p.image ? (
-					<img src={apiUrl(p.image)} alt="" className="h-32 w-full object-cover" />
-				) : (
-					<div className="h-32 bg-muted" />
-				)}
-				<div className="p-3">
-					<div className="text-xs uppercase text-muted-foreground">{p.url.split("/")[0]}</div>
-					<div className="font-medium">{input.seoTitle || input.title}</div>
+		<div className="grid gap-3" aria-label={showSocial && !showSearch ? "Social preview" : "Search and social preview"}>
+			{showSearch && (
+				<div className="rounded-md border p-3 text-sm">
+					<div className="truncate text-xs text-muted-foreground">{p.url}</div>
+					<div className="truncate text-base font-medium text-blue-700 dark:text-blue-400">{p.title}</div>
+					<div className="line-clamp-2 text-muted-foreground">{p.description}</div>
 				</div>
-			</div>
-			{p.warnings.length > 0 && (
+			)}
+			{showSocial && (
+				<div className="overflow-hidden rounded-md border text-sm">
+					{p.image ? (
+						<img src={apiUrl(p.image)} alt="" className="h-32 w-full object-cover" />
+					) : (
+						<div className="h-32 bg-muted" />
+					)}
+					<div className="p-3">
+						<div className="text-xs uppercase text-muted-foreground">{p.url.split("/")[0]}</div>
+						<div className="font-medium">{input.seoTitle || input.title}</div>
+						<div className="line-clamp-2 text-muted-foreground">{p.description}</div>
+					</div>
+				</div>
+			)}
+			{warnings.length > 0 && (
 				<ul className="list-disc pl-5 text-xs text-muted-foreground">
-					{p.warnings.map((w) => (
+					{warnings.map((w) => (
 						<li key={w}>{w}</li>
 					))}
 				</ul>

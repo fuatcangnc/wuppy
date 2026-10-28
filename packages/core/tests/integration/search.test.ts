@@ -51,4 +51,25 @@ describe("SearchIndex", () => {
 		await svc.put("posts", "n", { data: { title: "Renamed" }, body: "" });
 		expect(await index.search({ q: "brand" })).toEqual([]);
 	});
+
+	it("uses page search metadata and can exclude an entry", async () => {
+		await svc.put("pages", "hidden", { data: { title: "Secret", searchExclude: true }, body: "" });
+		await svc.put("pages", "shown", {
+			data: {
+				title: "Original",
+				searchTitle: "Custom title",
+				searchDescription: "A custom description",
+				searchImage: "/search.png",
+			},
+			body: "",
+		});
+		const index = new SearchIndex(svc);
+		expect(await index.search({ q: "secret" })).toEqual([]);
+		const hit = (await index.search({ q: "custom" })).find((item) => item.slug === "shown");
+		expect(hit).toMatchObject({
+			title: "Custom title",
+			description: "A custom description",
+			image: "/search.png",
+		});
+	});
 });

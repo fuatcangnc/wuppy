@@ -8,6 +8,10 @@ export interface SearchHit {
 	status: "draft" | "published";
 	/** HTML-safe: every character is escaped except the `<mark>` wrappers around matches. */
 	excerpt: string;
+	/** Page-level search description, when one is set. */
+	description?: string;
+	/** Page-level search image, when one is set. */
+	image?: string;
 }
 
 export interface SearchOptions {
@@ -41,17 +45,48 @@ export class SearchIndex {
 		const version = this.service.version;
 		const db = new DatabaseSync(":memory:");
 		db.exec(
-			"CREATE VIRTUAL TABLE docs USING fts5(collection UNINDEXED, slug UNINDEXED, status UNINDEXED, title, body, meta, tokenize='unicode61 remove_diacritics 2')",
+			"CREATE VIRTUAL TABLE docs USING fts5(collection UNINDEXED, slug UNINDEXED, status UNINDEXED, title, body, meta, description UNINDEXED, image UNINDEXED, tokenize='unicode61 remove_diacritics 2')",
 		);
-		const insert = db.prepare("INSERT INTO docs VALUES (?, ?, ?, ?, ?, ?)");
+		const insert = db.prepare("INSERT INTO docs VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		db.exec("BEGIN");
 		for (const c of this.service.collections) {
 			for (const e of await this.service.listEntries(c.name)) {
-				const title = typeof e.data.title === "string" ? e.data.title : e.slug;
+				if (e.data.searchExclude === true) continue;
+				const title =
+					typeof e.data.searchTitle === "string" && e.data.searchTitle
+						? e.data.searchTitle
+						: typeof e.data.seoTitle === "string" && e.data.seoTitle
+							? e.data.seoTitle
+							: typeof e.data.title === "string"
+								? e.data.title
+								: e.slug;
+				const description =
+					typeof e.data.searchDescription === "string"
+						? e.data.searchDescription
+						: typeof e.data.seoDescription === "string"
+							? e.data.seoDescription
+							: undefined;
+				const image =
+					typeof e.data.searchImage === "string"
+						? e.data.searchImage
+						: typeof e.data.ogImage === "string"
+							? e.data.ogImage
+							: typeof e.data.cover === "string"
+								? e.data.cover
+								: undefined;
 				const meta = Object.values(e.data)
 					.filter((v) => typeof v === "string" || Array.isArray(v))
 					.join(" ");
-				insert.run(c.name, e.slug, e.data.draft === true ? "draft" : "published", title, e.body, meta);
+				insert.run(
+					c.name,
+					e.slug,
+					e.data.draft === true ? "draft" : "published",
+					title,
+					e.body,
+					meta,
+					description ?? null,
+					image ?? null,
+				);
 			}
 		}
 		db.exec("COMMIT");
@@ -76,7 +111,7 @@ export class SearchIndex {
 		const where = [collection ? "collection = ?" : "", status ? "status = ?" : ""].filter(Boolean);
 		const rows = db
 			.prepare(
-				`SELECT collection, slug, status, title, snippet(docs, 4, '${OPEN}', '${CLOSE}', '…', 20) AS excerpt
+				`SELECT collection, slug, status, title, snippet(docs, 4, '${OPEN}', '${CLOSE}', '…', 20) AS excerpt, description, image
 				 FROM docs WHERE docs MATCH ? ${where.map((w) => `AND ${w}`).join(" ")} ORDER BY bm25(docs, 0, 0, 0, 5, 1, 2) LIMIT ?`,
 			)
 			.all(match, ...[collection, status].filter((v): v is string => !!v), Math.min(limit, 100)) as Array<{
@@ -85,7 +120,14 @@ export class SearchIndex {
 			status: "draft" | "published";
 			title: string;
 			excerpt: string;
+			description: string | null;
+			image: string | null;
 		}>;
-		return rows.map((r) => ({ ...r, excerpt: marked(r.excerpt.replace(/\s+/g, " ")) }));
+		return rows.map((r) => ({
+			...r,
+			description: r.description ?? undefined,
+			image: r.image ?? undefined,
+			excerpt: marked(r.excerpt.replace(/\s+/g, " ")),
+		}));
 	}
 }

@@ -64,14 +64,14 @@ each request: a save shows at once, no rebuild. A page the site has no entry for
 
 The theme's `.astro` pages (`index.astro`, `about.astro`, `tags/index.astro`, `404.astro`) are listed in **Pages** too,
 marked **Theme page**, so every page of the site is in one place. Their own text is in the theme's code; the entry
-holds the page's title, its `template` (the file, e.g. `src/pages/index.astro`), its SEO fields and a body:
+holds the page's title, its `template` (the file, e.g. `src/pages/index.astro`), its page settings (SEO, Open Graph, site search, schema and custom code) and a body:
 
 - Blocks and theme components added to the body (in the visual editor or the Body field) render at the end of the
   page's `<main>`, or inside its last element when it has none. The visual editor edits them in place on the live page.
 - **Edit** shows an **Open in Code view** button that opens the page's `.astro` file in the visual editor's Code view,
   for changes to the page's own markup.
 - **SEO title**, **SEO description** and **noindex** set there replace the page's `<title>`, description and robots
-  tags when the theme serves it.
+  tags when the theme serves it; Open Graph, schema markup and custom code are applied too.
 
 A site page with the same name is kept and the theme page is not listed for it. Pages with parameters
 (`[slug].astro`), files starting with `_` and endpoints (`rss.xml.js`) are not listed: edit them in Code view.

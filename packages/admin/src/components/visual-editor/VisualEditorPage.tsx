@@ -11,6 +11,7 @@ import {
 	Redo2,
 	Search,
 	Settings as SettingsIcon,
+	Settings2,
 	Square,
 	SwatchBook,
 	Text as TextIcon,
@@ -30,8 +31,9 @@ import {
 	claimLock,
 	openEntry,
 	releaseLock,
+	setField,
 } from "../../stores/editor.ts";
-import { Button, ErrorText, IconButton, toast } from "../../ui/index.tsx";
+import { Button, Dialog, ErrorText, IconButton, toast } from "../../ui/index.tsx";
 import { StudioBar } from "../shared/StudioBar.tsx";
 import { $zoom, Canvas, fitView, zoomBy } from "./Canvas.tsx";
 import { CodeWorkspace } from "./CodeView.tsx";
@@ -42,6 +44,7 @@ import { Breadcrumbs, ContextMenu, Inserter, Notch, Settings, Spotlight } from "
 import { PropertiesPanel } from "./Properties.tsx";
 import { SelectorsPanel } from "./Selectors.tsx";
 import { AiPanel } from "./AiPanel.tsx";
+import { PageSettings } from "../content/PageSettings.tsx";
 import {
 	$codeFile,
 	$editingComponent,
@@ -154,6 +157,7 @@ export function VisualEditorPage() {
 	const loaded = doc?.slug === slug && doc.collection === collection;
 	const unsaved = dirty || visualDirty || !!editing;
 	const [view, setView] = useState<"design" | "code">("design");
+	const [pageSettingsOpen, setPageSettingsOpen] = useState(false);
 	const [codeDirty, setCodeDirty] = useState(false);
 	const codeFile = useStore($codeFile);
 
@@ -228,6 +232,7 @@ export function VisualEditorPage() {
 	const component = editing && visual.components.find((c) => c.id === editing.id);
 	const template = doc ? templateOf(doc.data) : undefined;
 	const livePath = template ? templateUrl(template) : (info?.route ?? `/${collection}/{slug}`).replace("{slug}", slug);
+	const kind = info?.kind ?? (collection === "pages" ? "pages" : collection === "posts" ? "posts" : undefined);
 	const toggleCode = () => {
 		if (view === "code" && codeDirty && !confirm("Discard unsaved code changes?")) return;
 		$mode.set("design");
@@ -345,6 +350,9 @@ export function VisualEditorPage() {
 							<span className="mx-auto max-[1700px]:hidden truncate text-xs text-[#a1a1aa]">
 								{String(doc.data.title ?? slug)}
 							</span>
+							<IconButton label="Page settings" onClick={() => setPageSettingsOpen(true)}>
+								<Settings2 size={16} />
+							</IconButton>
 							<IconButton label="Editor settings" onClick={() => $settings.set(true)}>
 								<SettingsIcon size={16} />
 							</IconButton>
@@ -394,6 +402,11 @@ export function VisualEditorPage() {
 			<Spotlight />
 			<Settings />
 			<ContextMenu />
+			<Dialog open={pageSettingsOpen} title="Page settings" size="medium" onClose={() => setPageSettingsOpen(false)}>
+				<div className="p-6">
+					<PageSettings data={doc.data} onChange={setField} path={livePath} kind={kind} showHeader={false} />
+				</div>
+			</Dialog>
 		</div>
 	);
 }
